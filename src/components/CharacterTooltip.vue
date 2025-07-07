@@ -60,15 +60,17 @@ defineProps<Props>()
 <style scoped>
 .tooltip {
   position: fixed;
-  z-index: 1000;
+  z-index: 9999;
   pointer-events: none;
-  background: v-bind('COLORS.bgOverlay');
-  border: 2px solid v-bind('COLORS.primary');
+  background: rgba(15, 15, 35, 0.95);
+  border: 2px solid #00d4ff;
   border-radius: 8px;
   padding: 12px;
-  color: v-bind('COLORS.textPrimary');
+  color: white;
   font-size: 14px;
   max-width: 280px;
+  backdrop-filter: blur(10px);
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.5);
 }
 
 .tooltip-header {
@@ -82,7 +84,7 @@ defineProps<Props>()
   width: 48px;
   height: 48px;
   border-radius: 50%;
-  border: 2px solid v-bind('COLORS.primary');
+  border: 2px solid #00d4ff;
 }
 
 .tooltip-info {
@@ -94,7 +96,7 @@ defineProps<Props>()
 .tooltip-name {
   font-weight: bold;
   font-size: 16px;
-  color: v-bind('COLORS.primary');
+  color: #00d4ff;
 }
 
 .tooltip-rarity {
@@ -118,7 +120,7 @@ defineProps<Props>()
 }
 
 .tooltip-separator {
-  color: v-bind('COLORS.textSecondary');
+  color: #6c757d;
 }
 
 .tooltip-labels {
@@ -132,7 +134,7 @@ defineProps<Props>()
   font-size: 11px;
   padding: 3px 6px;
   border-radius: 10px;
-  background: v-bind('COLORS.primary');
+  background: #00d4ff;
   color: black;
   font-weight: 500;
 }
