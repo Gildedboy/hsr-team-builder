@@ -14,7 +14,8 @@ export function useSearch() {
   })
 
   const selectCharacterFromSearch = (character: Character, onSelect: (char: Character) => void) => {
-    onSelect(character)
+    // Always select the character from search, don't toggle
+    onSelect(character, false) // Pass false to indicate no toggle
     searchQuery.value = ''
     showSearchSuggestions.value = false
   }

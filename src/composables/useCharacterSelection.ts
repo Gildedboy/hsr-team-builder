@@ -4,8 +4,12 @@ import type { Character } from '@/types/Character'
 export function useCharacterSelection() {
   const selectedCharacter = ref<Character | null>(null)
 
-  const selectCharacter = (character: Character) => {
-    selectedCharacter.value = selectedCharacter.value?.id === character.id ? null : character
+  const selectCharacter = (character: Character, shouldToggle: boolean = true) => {
+    if (shouldToggle) {
+      selectedCharacter.value = selectedCharacter.value?.id === character.id ? null : character
+    } else {
+      selectedCharacter.value = character
+    }
   }
 
   const isCharacterRecommended = (selectedChar: Character, charId: string): boolean => {
