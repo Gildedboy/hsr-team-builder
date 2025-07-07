@@ -5,7 +5,7 @@ export function useCharacterSelection() {
   const selectedCharacter = ref<Character | null>(null)
 
   const selectCharacter = (character: Character) => {
-    selectedCharacter.value = character
+    selectedCharacter.value = selectedCharacter.value?.id === character.id ? null : character
   }
 
   const isCharacterRecommended = (selectedChar: Character, charId: string): boolean => {
