@@ -109,6 +109,7 @@ import type { Character } from '@/types/Character'
 import { getCharacterAvatar } from '@/data/avatars'
 import { useTeamRecommendations } from '@/composables/useTeamRecommendations'
 import { useTooltip } from '@/composables/useTooltip'
+import { COLORS } from '@/constants/design'
 import CharacterTooltip from './CharacterTooltip.vue'
 
 interface Props {
@@ -123,7 +124,7 @@ const { hoveredCharacter, tooltipPosition, showTooltip, hideTooltip } = useToolt
 
 <style scoped>
 .team-recommendations {
-  background: rgba(255, 255, 255, 0.05);
+  background: v-bind('COLORS.bgPrimary');
   padding: 25px;
   border-radius: 15px;
   height: 320px;
@@ -131,7 +132,7 @@ const { hoveredCharacter, tooltipPosition, showTooltip, hideTooltip } = useToolt
 }
 
 .title {
-  color: #00d4ff;
+  color: v-bind('COLORS.primary');
   margin-bottom: 20px;
   font-size: 24px;
 }
@@ -154,7 +155,7 @@ const { hoveredCharacter, tooltipPosition, showTooltip, hideTooltip } = useToolt
 }
 
 .tab.active {
-  background: #00d4ff;
+  background: v-bind('COLORS.primary');
   color: black;
 }
 
@@ -175,15 +176,15 @@ const { hoveredCharacter, tooltipPosition, showTooltip, hideTooltip } = useToolt
 }
 
 .tier-title.bis {
-  color: #ffd700;
+  color: v-bind('COLORS.bis');
 }
 
 .tier-title.generalist {
-  color: #00d4ff;
+  color: v-bind('COLORS.generalist');
 }
 
 .tier-title.f2p {
-  color: #2ecc71;
+  color: v-bind('COLORS.f2p');
 }
 
 .character-grid {
@@ -206,15 +207,15 @@ const { hoveredCharacter, tooltipPosition, showTooltip, hideTooltip } = useToolt
 }
 
 .bis-border {
-  border-color: #ffd700;
+  border-color: v-bind('COLORS.bis');
 }
 
 .generalist-border {
-  border-color: #00d4ff;
+  border-color: v-bind('COLORS.generalist');
 }
 
 .f2p-border {
-  border-color: #2ecc71;
+  border-color: v-bind('COLORS.f2p');
 }
 
 .character-name {
@@ -224,7 +225,7 @@ const { hoveredCharacter, tooltipPosition, showTooltip, hideTooltip } = useToolt
 }
 
 .no-options {
-  color: #ff6b6b;
+  color: v-bind('COLORS.warning');
   font-size: 12px;
   padding: 10px;
 }
