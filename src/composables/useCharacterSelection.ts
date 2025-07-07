@@ -1,23 +1,11 @@
-import { ref, computed } from 'vue'
-import { characters } from '@/data/characters'
+import { ref } from 'vue'
 import type { Character } from '@/types/Character'
 
 export function useCharacterSelection() {
   const selectedCharacter = ref<Character | null>(null)
-  const hoveredCharacter = ref<Character | null>(null)
-  const tooltipPosition = ref({ x: 0, y: 0 })
 
   const selectCharacter = (character: Character) => {
     selectedCharacter.value = character
-  }
-
-  const showTooltip = (character: Character, event: MouseEvent) => {
-    hoveredCharacter.value = character
-    tooltipPosition.value = { x: event.clientX, y: event.clientY }
-  }
-
-  const hideTooltip = () => {
-    hoveredCharacter.value = null
   }
 
   const isCharacterRecommended = (selectedChar: Character, charId: string): boolean => {
@@ -45,11 +33,7 @@ export function useCharacterSelection() {
 
   return {
     selectedCharacter,
-    hoveredCharacter,
-    tooltipPosition,
     selectCharacter,
-    showTooltip,
-    hideTooltip,
     isCharacterRecommended
   }
 }
