@@ -1,0 +1,29 @@
+/* Reset and base styles */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html {
+  background: #0f0f23;
+  height: 100%;
+  overflow-x: hidden;
+  overscroll-behavior: none;
+}
+
+body {
+  background: linear-gradient(135deg, #0f0f23, #1a1a2e, #16213e);
+  background-attachment: fixed;
+  color: white;
+  font-family: 'Inter', system-ui, sans-serif;
+  min-height: 100vh;
+  height: 100%;
+  overflow-x: hidden;
+  overscroll-behavior: none;
+  position: relative;
+}
+
+#app {
+  min-height: 100vh;
+}
