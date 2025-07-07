@@ -31,9 +31,33 @@ export function useCharacterSelection() {
     return allRecommended.has(charId)
   }
 
+  const getRecommendationTier = (selectedChar: Character, charId: string): 'bis' | 'generalist' | 'f2p' | null => {
+    if (!selectedChar.teamRecommendations) return null
+    
+    const rec = selectedChar.teamRecommendations
+    
+    // Check BiS first (highest priority)
+    if (rec.subDPS?.bis.includes(charId) || rec.bufferDebuffer.bis.includes(charId) || rec.sustain.bis.includes(charId)) {
+      return 'bis'
+    }
+    
+    // Check Generalist
+    if (rec.subDPS?.generalist.includes(charId) || rec.bufferDebuffer.generalist.includes(charId) || rec.sustain.generalist.includes(charId)) {
+      return 'generalist'
+    }
+    
+    // Check F2P
+    if (rec.subDPS?.f2p.includes(charId) || rec.bufferDebuffer.f2p.includes(charId) || rec.sustain.f2p.includes(charId)) {
+      return 'f2p'
+    }
+    
+    return null
+  }
+
   return {
     selectedCharacter,
     selectCharacter,
-    isCharacterRecommended
+    isCharacterRecommended,
+    getRecommendationTier
   }
 }

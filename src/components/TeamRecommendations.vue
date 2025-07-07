@@ -38,14 +38,14 @@
             v-for="characterId in currentRecommendations.bis"
             :key="characterId"
             class="character-item"
-            @mouseenter="showTooltip(characterId, $event)"
-            @mouseleave="hideTooltip"
           >
             <img 
               :src="getCharacterAvatar(characterId)" 
               :alt="getCharacterName(characterId)" 
               class="character-avatar bis-border"
               @error="$event.target.src = '/images/placeholder.svg'"
+              @mouseenter="showTooltip(characterId, $event)"
+              @mouseleave="hideTooltip"
             />
             <div class="character-name">{{ getCharacterName(characterId) }}</div>
           </div>
@@ -60,14 +60,14 @@
             v-for="characterId in currentRecommendations.generalist"
             :key="characterId"
             class="character-item"
-            @mouseenter="showTooltip(characterId, $event)"
-            @mouseleave="hideTooltip"
           >
             <img 
               :src="getCharacterAvatar(characterId)" 
               :alt="getCharacterName(characterId)" 
               class="character-avatar generalist-border"
               @error="$event.target.src = '/images/placeholder.svg'"
+              @mouseenter="showTooltip(characterId, $event)"
+              @mouseleave="hideTooltip"
             />
             <div class="character-name">{{ getCharacterName(characterId) }}</div>
           </div>
@@ -85,14 +85,14 @@
             v-for="characterId in currentRecommendations.f2p"
             :key="characterId"
             class="character-item"
-            @mouseenter="showTooltip(characterId, $event)"
-            @mouseleave="hideTooltip"
           >
             <img 
               :src="getCharacterAvatar(characterId)" 
               :alt="getCharacterName(characterId)" 
               class="character-avatar f2p-border"
               @error="$event.target.src = '/images/placeholder.svg'"
+              @mouseenter="showTooltip(characterId, $event)"
+              @mouseleave="hideTooltip"
             />
             <div class="character-name">{{ getCharacterName(characterId) }}</div>
           </div>
@@ -125,9 +125,11 @@ const { hoveredCharacter, tooltipPosition, showTooltip, hideTooltip } = useToolt
 <style scoped>
 .team-recommendations {
   background: v-bind('COLORS.bgPrimary');
-  padding: 25px;
+  padding: 20px;
   border-radius: 15px;
-  height: 320px;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
   overflow: hidden;
 }
 
@@ -135,20 +137,23 @@ const { hoveredCharacter, tooltipPosition, showTooltip, hideTooltip } = useToolt
   color: v-bind('COLORS.primary');
   margin-bottom: 20px;
   font-size: 24px;
+  margin: 0 0 20px 0;
+  font-weight: 600;
 }
 
 .tabs {
   display: flex;
-  gap: 10px;
-  margin-bottom: 15px;
+  gap: 8px;
+  margin-bottom: 50px;
 }
 
 .tab {
   padding: 8px 16px;
-  border-radius: 8px;
+  border-radius: 6px;
   border: none;
   cursor: pointer;
   font-weight: 600;
+  font-size: 14px;
   transition: all 0.2s;
   background: rgba(255, 255, 255, 0.1);
   color: white;
@@ -160,19 +165,24 @@ const { hoveredCharacter, tooltipPosition, showTooltip, hideTooltip } = useToolt
 }
 
 .recommendations {
-  display: grid;
+  display: flex;
   gap: 15px;
-  height: calc(100% - 80px);
+  flex: 1;
   overflow-y: auto;
+  justify-content: space-between;
 }
 
 .tier {
+  flex: 1;
   text-align: center;
+  display: flex;
+  flex-direction: column;
 }
 
 .tier-title {
-  font-size: 14px;
-  margin-bottom: 10px;
+  font-size: 16px;
+  margin-bottom: 15px;
+  font-weight: 600;
 }
 
 .tier-title.bis {
@@ -192,6 +202,7 @@ const { hoveredCharacter, tooltipPosition, showTooltip, hideTooltip } = useToolt
   flex-wrap: wrap;
   gap: 8px;
   justify-content: center;
+  flex: 1;
 }
 
 .character-item {
@@ -202,8 +213,9 @@ const { hoveredCharacter, tooltipPosition, showTooltip, hideTooltip } = useToolt
   width: 60px;
   height: 60px;
   border-radius: 50%;
-  border: 2px solid;
+  border: 3px solid;
   cursor: pointer;
+  margin-bottom: 4px;
 }
 
 .bis-border {
@@ -220,13 +232,17 @@ const { hoveredCharacter, tooltipPosition, showTooltip, hideTooltip } = useToolt
 
 .character-name {
   color: white;
-  font-size: 10px;
-  margin-top: 2px;
+  font-size: 11px;
+  font-weight: 500;
 }
 
 .no-options {
   color: v-bind('COLORS.warning');
   font-size: 12px;
   padding: 10px;
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 </style>

@@ -29,7 +29,7 @@ const characterAvatarMap: Record<string, string> = {
   tingyun: '1202',
   luocha: '1203',
   'jing-yuan': '1204',
-  guinaifen: '1205',
+  guinaifen: '1210',
   yukong: '1207',
   'fu-xuan': '1208',
   yanqing: '1209',
