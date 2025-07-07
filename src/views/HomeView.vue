@@ -1,11 +1,13 @@
 <script setup lang="ts">
 import TeamRecommendations from '@/components/TeamRecommendations.vue'
+import CharacterTooltip from '@/components/CharacterTooltip.vue'
 import { characters } from '@/data/characters'
 import { getCharacterAvatar } from '@/data/avatars'
 import { useCharacterFilters } from '@/composables/useCharacterFilters'
 import { useCharacterGrouping } from '@/composables/useCharacterGrouping'
 import { useCharacterSelection } from '@/composables/useCharacterSelection'
 import { useSearch } from '@/composables/useSearch'
+import { useTooltip } from '@/composables/useTooltip'
 import { FILTER_OPTIONS } from '@/constants/filterOptions'
 
 const {
@@ -23,13 +25,11 @@ const { charactersByRole } = useCharacterGrouping(filteredCharacters)
 
 const {
   selectedCharacter,
-  hoveredCharacter,
-  tooltipPosition,
   selectCharacter,
-  showTooltip,
-  hideTooltip,
   isCharacterRecommended
 } = useCharacterSelection()
+
+const { hoveredCharacter, tooltipPosition, showTooltip, hideTooltip } = useTooltip()
 
 const {
   searchQuery: searchQueryRef,
@@ -209,8 +209,8 @@ const handleClearFilters = () => {
                     v-for="char in chars" 
                     :key="char.id" 
                     @click="selectCharacter(char)" 
-                    @mouseenter="showTooltip(char, $event)"
-                    @mouseleave="hideTooltip()"
+                    @mouseenter="showTooltip(char.id, $event)"
+                    @mouseleave="hideTooltip"
                     style="cursor: pointer; transition: all 0.3s ease; position: relative; border-radius: 8px; overflow: hidden;"
                     :style="{
                       opacity: (selectedCharacter && !isCharacterRecommended(selectedCharacter, char.id) && selectedCharacter.id !== char.id) || 
@@ -251,8 +251,8 @@ const handleClearFilters = () => {
                     v-for="char in chars" 
                     :key="char.id" 
                     @click="selectCharacter(char)" 
-                    @mouseenter="showTooltip(char, $event)"
-                    @mouseleave="hideTooltip()"
+                    @mouseenter="showTooltip(char.id, $event)"
+                    @mouseleave="hideTooltip"
                     style="cursor: pointer; transition: all 0.3s ease; position: relative; border-radius: 8px; overflow: hidden;"
                     :style="{
                       opacity: (selectedCharacter && !isCharacterRecommended(selectedCharacter, char.id) && selectedCharacter.id !== char.id) || 
@@ -293,8 +293,8 @@ const handleClearFilters = () => {
                     v-for="char in chars" 
                     :key="char.id" 
                     @click="selectCharacter(char)" 
-                    @mouseenter="showTooltip(char, $event)"
-                    @mouseleave="hideTooltip()"
+                    @mouseenter="showTooltip(char.id, $event)"
+                    @mouseleave="hideTooltip"
                     style="cursor: pointer; transition: all 0.3s ease; position: relative; border-radius: 8px; overflow: hidden;"
                     :style="{
                       opacity: (selectedCharacter && !isCharacterRecommended(selectedCharacter, char.id) && selectedCharacter.id !== char.id) || 
@@ -332,50 +332,7 @@ const handleClearFilters = () => {
       </table>
     </div>
 
-    <!-- Character Tooltip -->
-    <div 
-      v-if="hoveredCharacter" 
-      style="position: fixed; z-index: 1000; pointer-events: none; background: rgba(0, 0, 0, 0.9); border: 2px solid #00d4ff; border-radius: 8px; padding: 12px; color: white; font-size: 14px; max-width: 280px;"
-      :style="{
-        left: tooltipPosition.x + 10 + 'px',
-        top: tooltipPosition.y - 10 + 'px'
-      }"
-    >
-      <div style="display: flex; align-items: center; gap: 12px; margin-bottom: 8px;">
-        <img 
-          :src="getCharacterAvatar(hoveredCharacter.id)" 
-          :alt="hoveredCharacter.name" 
-          style="width: 48px; height: 48px; border-radius: 50%; border: 2px solid #00d4ff;"
-          @error="$event.target.src = '/images/placeholder.svg'"
-        />
-        <div style="display: flex; align-items: center; gap: 8px;">
-          <div style="font-weight: bold; font-size: 16px; color: #00d4ff;">{{ hoveredCharacter.name }}</div>
-          <div :style="{ color: hoveredCharacter.rarity === 4 ? '#8a5fcc' : '#ffd700', fontSize: '14px' }">{{ hoveredCharacter.rarity }}★</div>
-        </div>
-      </div>
-      
-      <div style="margin-bottom: 6px;">
-        <div style="display: flex; align-items: center; gap: 8px; margin-bottom: 4px;">
-          <img :src="`/images/element/${hoveredCharacter.element}.webp`" :alt="hoveredCharacter.element" style="width: 20px; height: 20px;" />
-          <span style="font-weight: 600;">{{ hoveredCharacter.element }}</span>
-          <span style="color: #aaa;">•</span>
-          <img :src="`/images/path/${hoveredCharacter.path}.webp`" :alt="hoveredCharacter.path" style="width: 20px; height: 20px;" />
-          <span style="font-weight: 600;">{{ hoveredCharacter.path }}</span>
-        </div>
-      </div>
-      
-      <div style="margin-top: 8px;">
-        <div style="display: flex; flex-wrap: wrap; gap: 4px;">
-          <span 
-            v-for="label in hoveredCharacter.labels.slice().sort()" 
-            :key="label"
-            style="font-size: 11px; padding: 3px 6px; border-radius: 10px; background: #00d4ff; color: black; font-weight: 500;"
-          >
-            {{ label }}
-          </span>
-        </div>
-      </div>
-    </div>
+    <CharacterTooltip :character="hoveredCharacter" :position="tooltipPosition" />
 
   </main>
 </template>

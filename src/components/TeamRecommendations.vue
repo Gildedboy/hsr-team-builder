@@ -1,36 +1,27 @@
 <template>
-  <div v-if="character.teamRecommendations" style="background: rgba(255, 255, 255, 0.05); padding: 25px; border-radius: 15px; height: 320px; overflow: hidden;">
-    <h2 style="color: #00d4ff; margin-bottom: 20px; font-size: 24px;">Recommended Teammates for {{ character.name }}</h2>
+  <div v-if="character.teamRecommendations" class="team-recommendations">
+    <h2 class="title">Recommended Teammates for {{ character.name }}</h2>
     
     <!-- Role Tabs -->
-    <div style="display: flex; gap: 10px; margin-bottom: 15px;">
+    <div class="tabs">
       <button
         v-if="character.teamRecommendations.requiresSubDPS"
-        style="padding: 8px 16px; border-radius: 8px; border: none; cursor: pointer; font-weight: 600; transition: all 0.2s;"
-        :style="{
-          background: activeTab === 'subDPS' ? '#00d4ff' : 'rgba(255, 255, 255, 0.1)',
-          color: activeTab === 'subDPS' ? 'black' : 'white'
-        }"
+        class="tab"
+        :class="{ active: activeTab === 'subDPS' }"
         @click="activeTab = 'subDPS'"
       >
         Sub DPS
       </button>
       <button
-        style="padding: 8px 16px; border-radius: 8px; border: none; cursor: pointer; font-weight: 600; transition: all 0.2s;"
-        :style="{
-          background: activeTab === 'bufferDebuffer' ? '#00d4ff' : 'rgba(255, 255, 255, 0.1)',
-          color: activeTab === 'bufferDebuffer' ? 'black' : 'white'
-        }"
+        class="tab"
+        :class="{ active: activeTab === 'bufferDebuffer' }"
         @click="activeTab = 'bufferDebuffer'"
       >
         Buffer/Debuffer
       </button>
       <button
-        style="padding: 8px 16px; border-radius: 8px; border: none; cursor: pointer; font-weight: 600; transition: all 0.2s;"
-        :style="{
-          background: activeTab === 'sustain' ? '#00d4ff' : 'rgba(255, 255, 255, 0.1)',
-          color: activeTab === 'sustain' ? 'black' : 'white'
-        }"
+        class="tab"
+        :class="{ active: activeTab === 'sustain' }"
         @click="activeTab = 'sustain'"
       >
         Sustain
@@ -38,138 +29,87 @@
     </div>
 
     <!-- Recommendation Tiers -->
-    <div v-if="currentRecommendations" :style="{
-      display: 'grid',
-      gridTemplateColumns: getGridColumns(),
-      gap: '15px',
-      height: 'calc(100% - 80px)',
-      overflowY: 'auto'
-    }">
+    <div v-if="currentRecommendations" class="recommendations" :style="{ gridTemplateColumns: getGridColumns() }">
       <!-- BiS -->
-      <div v-if="currentRecommendations.bis.length > 0" style="text-align: center;">
-        <h3 style="color: #ffd700; font-size: 14px; margin-bottom: 10px;">Best in Slot (BiS)</h3>
-        <div style="display: flex; flex-wrap: wrap; gap: 8px; justify-content: center;">
+      <div v-if="currentRecommendations.bis.length > 0" class="tier">
+        <h3 class="tier-title bis">Best in Slot (BiS)</h3>
+        <div class="character-grid">
           <div 
             v-for="characterId in currentRecommendations.bis"
             :key="characterId"
-            style="text-align: center;"
+            class="character-item"
+            @mouseenter="showTooltip(characterId, $event)"
+            @mouseleave="hideTooltip"
           >
             <img 
               :src="getCharacterAvatar(characterId)" 
               :alt="getCharacterName(characterId)" 
-              style="width: 60px; height: 60px; border-radius: 50%; border: 2px solid #ffd700; cursor: pointer;" 
-              @error="onImageError"
-              @mouseenter="showTooltip(characterId, $event)"
-              @mouseleave="hideTooltip"
+              class="character-avatar bis-border"
+              @error="$event.target.src = '/images/placeholder.svg'"
             />
-            <div style="color: white; font-size: 10px; margin-top: 2px;">{{ getCharacterName(characterId) }}</div>
+            <div class="character-name">{{ getCharacterName(characterId) }}</div>
           </div>
         </div>
       </div>
 
       <!-- Generalist -->
-      <div v-if="currentRecommendations.generalist.length > 0" style="text-align: center;">
-        <h3 style="color: #00d4ff; font-size: 14px; margin-bottom: 10px;">Generalist</h3>
-        <div style="display: flex; flex-wrap: wrap; gap: 8px; justify-content: center;">
+      <div v-if="currentRecommendations.generalist.length > 0" class="tier">
+        <h3 class="tier-title generalist">Generalist</h3>
+        <div class="character-grid">
           <div 
             v-for="characterId in currentRecommendations.generalist"
             :key="characterId"
-            style="text-align: center;"
+            class="character-item"
+            @mouseenter="showTooltip(characterId, $event)"
+            @mouseleave="hideTooltip"
           >
             <img 
               :src="getCharacterAvatar(characterId)" 
               :alt="getCharacterName(characterId)" 
-              style="width: 60px; height: 60px; border-radius: 50%; border: 2px solid #00d4ff; cursor: pointer;" 
-              @error="onImageError"
-              @mouseenter="showTooltip(characterId, $event)"
-              @mouseleave="hideTooltip"
+              class="character-avatar generalist-border"
+              @error="$event.target.src = '/images/placeholder.svg'"
             />
-            <div style="color: white; font-size: 10px; margin-top: 2px;">{{ getCharacterName(characterId) }}</div>
+            <div class="character-name">{{ getCharacterName(characterId) }}</div>
           </div>
         </div>
       </div>
 
       <!-- F2P -->
-      <div v-if="currentRecommendations.f2p.length > 0 || (activeTab === 'sustain' && character.teamRecommendations.anySustainAvailable === false)" style="text-align: center;">
-        <h3 style="color: #2ecc71; font-size: 14px; margin-bottom: 10px;">F2P Options</h3>
-        <div v-if="activeTab === 'sustain' && character.teamRecommendations.anySustainAvailable === false" style="color: #ff6b6b; font-size: 12px; padding: 10px;">
+      <div v-if="currentRecommendations.f2p.length > 0 || (activeTab === 'sustain' && character.teamRecommendations.anySustainAvailable === false)" class="tier">
+        <h3 class="tier-title f2p">F2P Options</h3>
+        <div v-if="activeTab === 'sustain' && character.teamRecommendations.anySustainAvailable === false" class="no-options">
           No F2P sustain options available
         </div>
-        <div v-else style="display: flex; flex-wrap: wrap; gap: 8px; justify-content: center;">
+        <div v-else class="character-grid">
           <div 
             v-for="characterId in currentRecommendations.f2p"
             :key="characterId"
-            style="text-align: center;"
+            class="character-item"
+            @mouseenter="showTooltip(characterId, $event)"
+            @mouseleave="hideTooltip"
           >
             <img 
               :src="getCharacterAvatar(characterId)" 
               :alt="getCharacterName(characterId)" 
-              style="width: 60px; height: 60px; border-radius: 50%; border: 2px solid #2ecc71; cursor: pointer;" 
-              @error="onImageError"
-              @mouseenter="showTooltip(characterId, $event)"
-              @mouseleave="hideTooltip"
+              class="character-avatar f2p-border"
+              @error="$event.target.src = '/images/placeholder.svg'"
             />
-            <div style="color: white; font-size: 10px; margin-top: 2px;">{{ getCharacterName(characterId) }}</div>
+            <div class="character-name">{{ getCharacterName(characterId) }}</div>
           </div>
         </div>
       </div>
     </div>
     
-    <!-- Character Tooltip -->
-    <div 
-      v-if="hoveredCharacter" 
-      style="position: fixed; z-index: 1000; pointer-events: none; background: rgba(0, 0, 0, 0.9); border: 2px solid #00d4ff; border-radius: 8px; padding: 12px; color: white; font-size: 14px; max-width: 280px;"
-      :style="{
-        left: tooltipPosition.x + 10 + 'px',
-        top: tooltipPosition.y - 10 + 'px'
-      }"
-    >
-      <div style="display: flex; align-items: center; gap: 12px; margin-bottom: 8px;">
-        <img 
-          :src="getCharacterAvatar(hoveredCharacter.id)" 
-          :alt="hoveredCharacter.name" 
-          style="width: 48px; height: 48px; border-radius: 50%; border: 2px solid #00d4ff;"
-          @error="onImageError"
-        />
-        <div style="display: flex; align-items: center; gap: 8px;">
-          <div style="font-weight: bold; font-size: 16px; color: #00d4ff;">{{ hoveredCharacter.name }}</div>
-          <div :style="{ color: hoveredCharacter.rarity === 4 ? '#8a5fcc' : '#ffd700', fontSize: '14px' }">{{ hoveredCharacter.rarity }}★</div>
-        </div>
-      </div>
-      
-      <div style="margin-bottom: 6px;">
-        <div style="display: flex; align-items: center; gap: 8px; margin-bottom: 4px;">
-          <img :src="`/images/element/${hoveredCharacter.element}.webp`" :alt="hoveredCharacter.element" style="width: 20px; height: 20px;" />
-          <span style="font-weight: 600;">{{ hoveredCharacter.element }}</span>
-          <span style="color: #aaa;">•</span>
-          <img :src="`/images/path/${hoveredCharacter.path}.webp`" :alt="hoveredCharacter.path" style="width: 20px; height: 20px;" />
-          <span style="font-weight: 600;">{{ hoveredCharacter.path }}</span>
-        </div>
-      </div>
-      
-      <div style="margin-top: 8px;">
-        <div style="display: flex; flex-wrap: wrap; gap: 4px;">
-          <span 
-            v-for="label in hoveredCharacter.labels.slice().sort()" 
-            :key="label"
-            style="font-size: 11px; padding: 3px 6px; border-radius: 10px; background: #00d4ff; color: black; font-weight: 500;"
-          >
-            {{ label }}
-          </span>
-        </div>
-      </div>
-    </div>
+    <CharacterTooltip :character="hoveredCharacter" :position="tooltipPosition" />
   </div>
 </template>
 
 <script setup lang="ts">
-import { ref, computed } from 'vue'
 import type { Character } from '@/types/Character'
 import { getCharacterAvatar } from '@/data/avatars'
-import { characters } from '@/data/characters'
-
-const hoveredCharacter = ref<Character | null>(null)
-const tooltipPosition = ref({ x: 0, y: 0 })
+import { useTeamRecommendations } from '@/composables/useTeamRecommendations'
+import { useTooltip } from '@/composables/useTooltip'
+import CharacterTooltip from './CharacterTooltip.vue'
 
 interface Props {
   character: Character
@@ -177,57 +117,115 @@ interface Props {
 
 const props = defineProps<Props>()
 
-const activeTab = ref<'subDPS' | 'bufferDebuffer' | 'sustain'>(
-  props.character.teamRecommendations?.requiresSubDPS ? 'subDPS' : 'bufferDebuffer'
-)
-
-const currentRecommendations = computed(() => {
-  if (!props.character.teamRecommendations) return null
-  
-  switch (activeTab.value) {
-    case 'subDPS':
-      return props.character.teamRecommendations.subDPS
-    case 'bufferDebuffer':
-      return props.character.teamRecommendations.bufferDebuffer
-    case 'sustain':
-      return props.character.teamRecommendations.sustain
-    default:
-      return null
-  }
-})
-
-const getCharacterName = (characterId: string): string => {
-  const character = characters.find(c => c.id === characterId)
-  return character?.name || characterId
-}
-
-const onImageError = (event: Event) => {
-  const target = event.target as HTMLImageElement
-  target.src = '/images/placeholder.svg'
-}
-
-const showTooltip = (characterId: string, event: MouseEvent) => {
-  const character = characters.find(c => c.id === characterId)
-  if (character) {
-    hoveredCharacter.value = character
-    tooltipPosition.value = { x: event.clientX, y: event.clientY }
-  }
-}
-
-const hideTooltip = () => {
-  hoveredCharacter.value = null
-}
-
-const getGridColumns = () => {
-  if (!currentRecommendations.value) return '1fr'
-  
-  const visibleSections = []
-  if (currentRecommendations.value.bis.length > 0) visibleSections.push('1fr')
-  if (currentRecommendations.value.generalist.length > 0) visibleSections.push('1fr')
-  if (currentRecommendations.value.f2p.length > 0 || (activeTab.value === 'sustain' && props.character.teamRecommendations?.anySustainAvailable === false)) {
-    visibleSections.push('1fr')
-  }
-  
-  return visibleSections.join(' ') || '1fr'
-}
+const { activeTab, currentRecommendations, getCharacterName, getGridColumns } = useTeamRecommendations(props.character)
+const { hoveredCharacter, tooltipPosition, showTooltip, hideTooltip } = useTooltip()
 </script>
+
+<style scoped>
+.team-recommendations {
+  background: rgba(255, 255, 255, 0.05);
+  padding: 25px;
+  border-radius: 15px;
+  height: 320px;
+  overflow: hidden;
+}
+
+.title {
+  color: #00d4ff;
+  margin-bottom: 20px;
+  font-size: 24px;
+}
+
+.tabs {
+  display: flex;
+  gap: 10px;
+  margin-bottom: 15px;
+}
+
+.tab {
+  padding: 8px 16px;
+  border-radius: 8px;
+  border: none;
+  cursor: pointer;
+  font-weight: 600;
+  transition: all 0.2s;
+  background: rgba(255, 255, 255, 0.1);
+  color: white;
+}
+
+.tab.active {
+  background: #00d4ff;
+  color: black;
+}
+
+.recommendations {
+  display: grid;
+  gap: 15px;
+  height: calc(100% - 80px);
+  overflow-y: auto;
+}
+
+.tier {
+  text-align: center;
+}
+
+.tier-title {
+  font-size: 14px;
+  margin-bottom: 10px;
+}
+
+.tier-title.bis {
+  color: #ffd700;
+}
+
+.tier-title.generalist {
+  color: #00d4ff;
+}
+
+.tier-title.f2p {
+  color: #2ecc71;
+}
+
+.character-grid {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  justify-content: center;
+}
+
+.character-item {
+  text-align: center;
+}
+
+.character-avatar {
+  width: 60px;
+  height: 60px;
+  border-radius: 50%;
+  border: 2px solid;
+  cursor: pointer;
+}
+
+.bis-border {
+  border-color: #ffd700;
+}
+
+.generalist-border {
+  border-color: #00d4ff;
+}
+
+.f2p-border {
+  border-color: #2ecc71;
+}
+
+.character-name {
+  color: white;
+  font-size: 10px;
+  margin-top: 2px;
+}
+
+.no-options {
+  color: #ff6b6b;
+  font-size: 12px;
+  padding: 10px;
+}
+</style>
