@@ -1,10 +1,10 @@
 <template>
   <div 
     v-if="character" 
-    class="tooltip"
+    class="character-tooltip"
     :style="{
-      left: position.x + 10 + 'px',
-      top: position.y - 10 + 'px'
+      left: position.x - 160 + 'px',
+      top: position.y - 200 + 'px'
     }"
   >
     <div class="tooltip-header">

@@ -4,9 +4,10 @@
       v-for="char in characters" 
       :key="char.id" 
       @click="$emit('select', char)" 
-
+      @mouseenter="showTooltip(char.id, $event)"
+      @mouseleave="hideTooltip"
       class="character-item"
-:class="{
+      :class="{
         selected: selectedCharacter?.id === char.id,
         recommended: selectedCharacter && isRecommended(char.id),
         'recommended-bis': selectedCharacter && getRecommendationTier(char.id) === 'bis',
@@ -19,22 +20,21 @@
         :src="getCharacterAvatar(char.id)" 
         :alt="char.name" 
         class="character-avatar"
-        :data-bs-toggle="'tooltip'"
-        :data-bs-html="'true'"
-        :data-bs-title="getTooltipContent(char)"
         @error="$event.target.src = '/images/placeholder.svg'"
       />
       <div class="character-name">{{ char.name }}</div>
     </div>
+    
+    <CharacterTooltip :character="hoveredCharacter" :position="tooltipPosition" />
   </div>
 </template>
 
 <script setup lang="ts">
-import { onMounted, nextTick } from 'vue'
 import type { Character } from '@/types/Character'
 import { getCharacterAvatar } from '@/data/avatars'
 import { COLORS } from '@/constants/design'
-import { Tooltip } from 'bootstrap'
+import { useTooltip } from '@/composables/useTooltip'
+import CharacterTooltip from './CharacterTooltip.vue'
 
 interface Props {
   characters: Character[]
@@ -48,8 +48,6 @@ interface Props {
 
 interface Emits {
   (e: 'select', character: Character): void
-  (e: 'hover', characterId: string, event: MouseEvent): void
-  (e: 'unhover'): void
 }
 
 const props = withDefaults(defineProps<Props>(), {
@@ -61,6 +59,8 @@ const props = withDefaults(defineProps<Props>(), {
 })
 
 defineEmits<Emits>()
+
+const { hoveredCharacter, tooltipPosition, showTooltip, hideTooltip } = useTooltip()
 
 const isFiltered = (char: Character) => {
   const hasFilters = (props.selectedElements.length > 0 && !props.selectedElements.includes(char.element)) ||
@@ -74,46 +74,7 @@ const isFiltered = (char: Character) => {
   return hasFilters || isNotRecommended
 }
 
-const getTooltipContent = (char: Character) => {
-  const rarityColor = char.rarity === 5 ? COLORS.rarity5 : COLORS.rarity4
-  const labels = char.labels.slice().sort().map(label => 
-    `<span class="badge bg-primary text-dark me-1 mb-1" style="font-size: 10px;">${label}</span>`
-  ).join('')
-  
-  return `
-    <div class="text-start">
-      <div class="d-flex align-items-center mb-2">
-        <img src="${getCharacterAvatar(char.id)}" alt="${char.name}" class="rounded-circle me-2" style="width: 20px; height: 20px; border: 1px solid #00d4ff;" />
-        <div>
-          <div class="fw-bold text-primary" style="font-size: 12px;">${char.name}</div>
-          <div style="color: ${rarityColor}; font-size: 10px; font-weight: 600;">${char.rarity}★</div>
-        </div>
-      </div>
-      <div class="d-flex align-items-center mb-2" style="font-size: 10px;">
-        <img src="/images/element/${char.element}.webp" alt="${char.element}" style="width: 8px; height: 8px;" class="me-1" />
-        <span class="me-2">${char.element}</span>
-        <span class="text-muted me-1">•</span>
-        <img src="/images/path/${char.path}.webp" alt="${char.path}" style="width: 8px; height: 8px;" class="me-1" />
-        <span>${char.path}</span>
-      </div>
-      <div>${labels}</div>
-    </div>
-  `
-}
 
-onMounted(() => {
-  nextTick(() => {
-    // Initialize Bootstrap tooltips
-    const tooltipTriggerList = document.querySelectorAll('[data-bs-toggle="tooltip"]')
-    tooltipTriggerList.forEach(tooltipTriggerEl => {
-      new Tooltip(tooltipTriggerEl, {
-        html: true,
-        placement: 'top',
-        trigger: 'hover'
-      })
-    })
-  })
-})
 </script>
 
 <style scoped>

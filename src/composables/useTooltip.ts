@@ -10,7 +10,8 @@ export function useTooltip() {
     const character = characters.find(c => c.id === characterId)
     if (character) {
       hoveredCharacter.value = character
-      tooltipPosition.value = { x: event.clientX, y: event.clientY }
+      const rect = (event.target as HTMLElement).getBoundingClientRect()
+      tooltipPosition.value = { x: rect.left + rect.width / 2, y: rect.top }
     }
   }
 

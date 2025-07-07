@@ -1,18 +1,24 @@
-# my-vue-ts-app
+# Honkai Star Rail Team Builder
 
-This template should help get you started developing with Vue 3 in Vite.
+A comprehensive team building tool for Honkai: Star Rail that helps players discover optimal team compositions and character synergies.
 
-## Recommended IDE Setup
+## Features
 
-[VSCode](https://code.visualstudio.com/) + [Volar](https://marketplace.visualstudio.com/items?itemName=Vue.volar) (and disable Vetur).
+- **Interactive Character Grid** - Browse all characters organized by role (DPS, Support, Sustain)
+- **Smart Team Recommendations** - Get BiS (Best in Slot), Generalist, and F2P team suggestions
+- **Advanced Filtering** - Filter by element, path, rarity, and archetype
+- **Character Search** - Quick search with autocomplete suggestions
+- **Detailed Tooltips** - Hover over characters to see their stats and labels
+- **Responsive Design** - Works on desktop and mobile devices
+- **Modern UI** - Dark theme with glassmorphism effects and smooth animations
 
-## Type Support for `.vue` Imports in TS
+## Tech Stack
 
-TypeScript cannot handle type information for `.vue` imports by default, so we replace the `tsc` CLI with `vue-tsc` for type checking. In editors, we need [Volar](https://marketplace.visualstudio.com/items?itemName=Vue.volar) to make the TypeScript language service aware of `.vue` types.
-
-## Customize configuration
-
-See [Vite Configuration Reference](https://vite.dev/config/).
+- **Vue 3** with Composition API
+- **TypeScript** for type safety
+- **Bootstrap 5** for responsive components
+- **Vite** for fast development and building
+- **Custom CSS** with modern design patterns
 
 ## Project Setup
 
@@ -20,20 +26,45 @@ See [Vite Configuration Reference](https://vite.dev/config/).
 npm install
 ```
 
-### Compile and Hot-Reload for Development
+### Development
 
 ```sh
 npm run dev
 ```
 
-### Type-Check, Compile and Minify for Production
+### Production Build
 
 ```sh
 npm run build
 ```
 
-### Lint with [ESLint](https://eslint.org/)
+### Linting
 
 ```sh
 npm run lint
 ```
+
+## Usage
+
+1. **Browse Characters** - Characters are organized by their primary roles
+2. **Select a Character** - Click on any character to see team recommendations
+3. **Use Filters** - Filter characters by element, path, rarity, or archetype
+4. **Search** - Use the search bar to quickly find specific characters
+5. **View Recommendations** - See BiS, Generalist, and F2P teammate suggestions
+
+## Character Data
+
+The app includes comprehensive character data with:
+- Character stats and rarities
+- Element and path classifications
+- Role-based categorization
+- Team synergy recommendations
+- Character labels and archetypes
+
+## Contributing
+
+Feel free to contribute by:
+- Adding new characters
+- Updating team recommendations
+- Improving the UI/UX
+- Reporting bugs or suggesting features
