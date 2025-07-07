@@ -61,7 +61,7 @@
         <!-- Generalist -->
         <div v-if="currentRecommendations.generalist.length > 0" class="col-md-4">
           <div class="text-center">
-            <h3 class="h6 fw-bold mb-3" style="color: #9b59b6;">Generalist</h3>
+            <h3 class="h6 fw-bold mb-3" :style="{ color: COLORS.generalist }">Generalist</h3>
             <div class="d-flex flex-wrap gap-2 justify-content-center">
               <div 
                 v-for="characterId in currentRecommendations.generalist"
@@ -72,7 +72,7 @@
                   :src="getCharacterAvatar(characterId)" 
                   :alt="getCharacterName(characterId)" 
                   class="rounded-circle border border-3 cursor-pointer mb-1"
-                  style="width: 60px; height: 60px; border-color: #9b59b6 !important;"
+                  :style="{ width: '60px', height: '60px', borderColor: COLORS.generalist + ' !important' }"
                   @error="$event.target.src = '/images/placeholder.svg'"
                   @mouseenter="showTooltip(characterId, $event)"
                   @mouseleave="hideTooltip"

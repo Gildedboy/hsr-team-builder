@@ -44,6 +44,18 @@ const handleClearFilters = () => {
   searchQueryRef.value = ''
   selectedCharacter.value = null
 }
+
+const getActiveTab = () => {
+  const hasDps = Object.values(charactersByRole.value.dps).some(chars => chars.length > 0)
+  const hasSupport = Object.values(charactersByRole.value.support).some(chars => chars.length > 0)
+  const hasSustain = Object.values(charactersByRole.value.sustain).some(chars => chars.length > 0)
+  
+  // Default priority: DPS > Support > Sustain
+  if (hasDps) return 'dps'
+  if (hasSupport) return 'support'
+  if (hasSustain) return 'sustain'
+  return 'dps'
+}
 </script>
 
 <template>
@@ -371,9 +383,9 @@ const handleClearFilters = () => {
       <!-- Mobile Tab View -->
       <div class="d-lg-none">
         <ul class="nav nav-tabs nav-fill" role="tablist">
-          <li class="nav-item" role="presentation">
+          <li v-show="Object.values(charactersByRole.dps).some(chars => chars.length > 0)" class="nav-item" role="presentation">
             <button
-              class="nav-link active fw-bold custom-tab"
+              :class="getActiveTab() === 'dps' ? 'nav-link active fw-bold custom-tab' : 'nav-link fw-bold custom-tab'"
               data-bs-toggle="tab"
               data-bs-target="#dps-tab"
               type="button"
@@ -382,9 +394,9 @@ const handleClearFilters = () => {
               DPS
             </button>
           </li>
-          <li class="nav-item" role="presentation">
+          <li v-show="Object.values(charactersByRole.support).some(chars => chars.length > 0)" class="nav-item" role="presentation">
             <button
-              class="nav-link fw-bold custom-tab"
+              :class="getActiveTab() === 'support' ? 'nav-link active fw-bold custom-tab' : 'nav-link fw-bold custom-tab'"
               data-bs-toggle="tab"
               data-bs-target="#support-tab"
               type="button"
@@ -393,9 +405,9 @@ const handleClearFilters = () => {
               Support
             </button>
           </li>
-          <li class="nav-item" role="presentation">
+          <li v-show="Object.values(charactersByRole.sustain).some(chars => chars.length > 0)" class="nav-item" role="presentation">
             <button
-              class="nav-link fw-bold custom-tab"
+              :class="getActiveTab() === 'sustain' ? 'nav-link active fw-bold custom-tab' : 'nav-link fw-bold custom-tab'"
               data-bs-toggle="tab"
               data-bs-target="#sustain-tab"
               type="button"
@@ -407,7 +419,7 @@ const handleClearFilters = () => {
         </ul>
         <div class="tab-content">
           <div
-            class="tab-pane fade show active p-3"
+            :class="getActiveTab() === 'dps' ? 'tab-pane fade show active p-3' : 'tab-pane fade p-3'"
             id="dps-tab"
             role="tabpanel"
             style="background: rgba(0, 212, 255, 0.05)"
@@ -443,7 +455,7 @@ const handleClearFilters = () => {
             </div>
           </div>
           <div
-            class="tab-pane fade p-3"
+            :class="getActiveTab() === 'support' ? 'tab-pane fade show active p-3' : 'tab-pane fade p-3'"
             id="support-tab"
             role="tabpanel"
             style="background: rgba(155, 89, 182, 0.05)"
@@ -479,7 +491,7 @@ const handleClearFilters = () => {
             </div>
           </div>
           <div
-            class="tab-pane fade p-3"
+            :class="getActiveTab() === 'sustain' ? 'tab-pane fade show active p-3' : 'tab-pane fade p-3'"
             id="sustain-tab"
             role="tabpanel"
             style="background: rgba(46, 204, 113, 0.05)"
