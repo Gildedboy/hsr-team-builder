@@ -80,6 +80,11 @@ export const characters: Character[] = [
     labels: ['Support', 'Buffer', 'Crit Support', 'Generalist'],
     teamRecommendations: {
       requiresSubDPS: false,
+      mainDPS: {
+        bis: [],
+        generalist: [],
+        f2p: [],
+      },
       bufferDebuffer: {
         bis: [],
         generalist: [],
@@ -657,19 +662,6 @@ export const characters: Character[] = [
     mainArchetype: 'DPS',
     labels: ['DPS', 'Follow-up Attack', 'Ultimate Based'],
     teamRecommendations: {
-      requiresSubDPS: false,
-      bufferDebuffer: {
-        bis: [],
-        generalist: [],
-        f2p: [],
-      },
-      sustain: {
-        bis: [],
-        generalist: [],
-        f2p: [],
-      },
-    },
-    teamRecommendations: {
       requiresSubDPS: true,
       subDPS: {
         bis: ['cipher'],
@@ -683,10 +675,9 @@ export const characters: Character[] = [
       },
       sustain: {
         bis: ['aventurine', 'lingsha'],
-        generalist: ['gallagher'],
-        f2p: [],
+        generalist: [],
+        f2p: ['gallagher'],
       },
-      anySustainAvailable: false,
     },
   },
   {

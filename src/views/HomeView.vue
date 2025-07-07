@@ -1,264 +1,57 @@
 <script setup lang="ts">
-import { ref, computed, watch } from 'vue'
-import CharacterCard from '@/components/CharacterCard.vue'
-import CharacterFilter from '@/components/CharacterFilter.vue'
 import TeamRecommendations from '@/components/TeamRecommendations.vue'
 import { characters } from '@/data/characters'
 import { getCharacterAvatar } from '@/data/avatars'
-import type { Character, CharacterLabel } from '@/types/Character'
+import { useCharacterFilters } from '@/composables/useCharacterFilters'
+import { useCharacterGrouping } from '@/composables/useCharacterGrouping'
+import { useCharacterSelection } from '@/composables/useCharacterSelection'
+import { useSearch } from '@/composables/useSearch'
+import { FILTER_OPTIONS } from '@/constants/filterOptions'
 
-const selectedCharacter = ref<Character | null>(null)
-const hoveredCharacter = ref<Character | null>(null)
-const tooltipPosition = ref({ x: 0, y: 0 })
-const selectedLabels = ref<CharacterLabel[]>([])
-const selectedElements = ref<string[]>([])
-const selectedPaths = ref<string[]>([])
-const selectedRarities = ref<number[]>([])
-const selectedArchetypes = ref<string[]>([])
-const searchQuery = ref<string>('')
-const showSearchSuggestions = ref<boolean>(false)
-const searchSuggestions = computed(() => {
-  if (searchQuery.value.length < 3) return []
-  return characters.filter(char => 
-    char.name.toLowerCase().includes(searchQuery.value.toLowerCase())
-  ).slice(0, 5)
-})
+const {
+  selectedElements,
+  selectedPaths,
+  selectedRarities,
+  selectedArchetypes,
+  searchQuery,
+  filteredCharacters,
+  toggleFilter,
+  clearFilters
+} = useCharacterFilters(characters)
 
-// Available filter options
-const availableElements = ['Physical', 'Fire', 'Ice', 'Lightning', 'Wind', 'Quantum', 'Imaginary']
-const availablePaths = ['Destruction', 'Hunt', 'Erudition', 'Harmony', 'Nihility', 'Preservation', 'Abundance']
-const availableRarities = [5, 4]
-const availableArchetypes = ['DPS', 'Break DPS', 'DoT', 'Buffer', 'Debuff', 'Support', 'Healer', 'Shielder']
+const { charactersByRole } = useCharacterGrouping(filteredCharacters)
 
-// Filter characters based on selected filters
-const filteredCharacters = computed(() => {
-  return characters.filter(character => {
-    const searchMatch = searchQuery.value === '' || 
-      character.name.toLowerCase().includes(searchQuery.value.toLowerCase())
-    
-    const elementMatch = selectedElements.value.length === 0 || 
-      selectedElements.value.includes(character.element)
-    
-    const pathMatch = selectedPaths.value.length === 0 || 
-      selectedPaths.value.includes(character.path)
-    
-    const rarityMatch = selectedRarities.value.length === 0 || 
-      selectedRarities.value.includes(character.rarity)
-    
-    const archetypeMatch = selectedArchetypes.value.length === 0 || 
-      selectedArchetypes.value.includes(character.mainArchetype)
-    
-    return searchMatch && elementMatch && pathMatch && rarityMatch && archetypeMatch
-  })
-})
+const {
+  selectedCharacter,
+  hoveredCharacter,
+  tooltipPosition,
+  selectCharacter,
+  showTooltip,
+  hideTooltip,
+  isCharacterRecommended
+} = useCharacterSelection()
 
-// Group characters by role categories
-const charactersByRole = computed(() => {
-  const filtered = filteredCharacters.value
-  
-  // DPS characters and their subcategories
-  const dpsCharacters = filtered.filter(char => 
-    char.mainArchetype === 'DPS' || char.mainArchetype === 'Break DPS' || char.mainArchetype === 'DoT'
-  )
-  
-  const dpsCategories = {
-    'Follow-up': dpsCharacters.filter(char => 
-      char.labels.some(label => label.includes('Follow-up'))
-    ),
-    'DoT': dpsCharacters.filter(char => 
-      char.labels.some(label => label.includes('DoT')) || char.mainArchetype === 'DoT'
-    ),
-    'Counter': dpsCharacters.filter(char => 
-      char.labels.some(label => label.includes('Counter'))
-    ),
-    'Break': dpsCharacters.filter(char => 
-      char.labels.some(label => label.includes('Break')) || char.mainArchetype === 'Break DPS'
-    ),
-    'Hypercarry': dpsCharacters.filter(char => 
-      char.labels.some(label => label.includes('Hypercarry'))
-    ),
-    'AoE': dpsCharacters.filter(char => 
-      char.labels.some(label => label.includes('AoE'))
-    ),
-    'HP Scaling': dpsCharacters.filter(char => 
-      char.labels.some(label => label.includes('HP Scaling'))
-    ),
-    'Debuffer DPS': dpsCharacters.filter(char => 
-      char.labels.some(label => label.includes('Debuff'))
-    ),
-    'Other DPS': dpsCharacters.filter(char => 
-      !char.labels.some(label => 
-        label.includes('Follow-up') || label.includes('DoT') || 
-        label.includes('Counter') || label.includes('Break') || 
-        label.includes('Hypercarry') || label.includes('AoE') || 
-        label.includes('HP Scaling') || label.includes('Debuff')
-      ) && char.mainArchetype !== 'DoT' && char.mainArchetype !== 'Break DPS'
-    )
-  }
-  
-  // Sub-DPS/Buffer/Debuffer characters
-  const supportCharacters = filtered.filter(char => 
-    char.mainArchetype === 'Buffer' || char.mainArchetype === 'Debuff' || char.mainArchetype === 'Support'
-  )
-  
-  const supportCategories = {
-    'Buffer': supportCharacters.filter(char => 
-      char.mainArchetype === 'Buffer' || char.labels.some(label => label.includes('Buffer'))
-    ),
-    'Debuffer': supportCharacters.filter(char => 
-      char.mainArchetype === 'Debuff' || char.labels.some(label => label.includes('Debuff'))
-    ),
-    'Sub-DPS': supportCharacters.filter(char => 
-      char.labels.some(label => label.includes('Sub-DPS')) || char.mainArchetype === 'Support'
-    )
-  }
-  
-  // Sustain characters
-  const sustainCharacters = filtered.filter(char => 
-    char.mainArchetype === 'Healer' || char.mainArchetype === 'Shielder'
-  )
-  
-  const sustainCategories = {
-    'Healer': sustainCharacters.filter(char => char.mainArchetype === 'Healer'),
-    'Shielder': sustainCharacters.filter(char => char.mainArchetype === 'Shielder')
-  }
-  
-  // Sort all characters by rarity (5-star first) then alphabetically within each category
-  const sortByRarityThenName = (a, b) => {
-    if (a.rarity !== b.rarity) return b.rarity - a.rarity // 5-star first
-    return a.name.localeCompare(b.name)
-  }
-  Object.values(dpsCategories).forEach(chars => chars.sort(sortByRarityThenName))
-  Object.values(supportCategories).forEach(chars => chars.sort(sortByRarityThenName))
-  Object.values(sustainCategories).forEach(chars => chars.sort(sortByRarityThenName))
-  
-  return {
-    dps: dpsCategories,
-    support: supportCategories,
-    sustain: sustainCategories
-  }
-})
+const {
+  searchQuery: searchQueryRef,
+  showSearchSuggestions,
+  searchSuggestions,
+  selectCharacterFromSearch,
+  onSearchFocus,
+  onSearchBlur
+} = useSearch()
 
-// Helper function to check if character is recommended
-const isCharacterRecommended = (selectedChar: Character, charId: string): boolean => {
-  if (!selectedChar.teamRecommendations) {
-    return false
-  }
-  
-  const rec = selectedChar.teamRecommendations
-  const allRecommended = new Set<string>()
-  
-  if (rec.subDPS) {
-    rec.subDPS.bis.forEach(id => allRecommended.add(id))
-    rec.subDPS.generalist.forEach(id => allRecommended.add(id))
-    rec.subDPS.f2p.forEach(id => allRecommended.add(id))
-  }
-  
-  rec.bufferDebuffer.bis.forEach(id => allRecommended.add(id))
-  rec.bufferDebuffer.generalist.forEach(id => allRecommended.add(id))
-  rec.bufferDebuffer.f2p.forEach(id => allRecommended.add(id))
-  
-  rec.sustain.bis.forEach(id => allRecommended.add(id))
-  rec.sustain.generalist.forEach(id => allRecommended.add(id))
-  rec.sustain.f2p.forEach(id => allRecommended.add(id))
-  
-  return allRecommended.has(charId)
+const handleSelectFromSearch = (character: any) => {
+  selectCharacterFromSearch(character, selectCharacter)
 }
 
-// Get team suggestions based on selected character
-const teamSuggestions = computed(() => {
-  if (!selectedCharacter.value) return []
-  
-  const recommendations = selectedCharacter.value.teamRecommendations
-  if (!recommendations) {
-    return []
-  }
-  
-  const allRecommendations = new Set<string>()
-  
-  if (recommendations.subDPS) {
-    recommendations.subDPS.bis.forEach(id => allRecommendations.add(id))
-    recommendations.subDPS.generalist.forEach(id => allRecommendations.add(id))
-    recommendations.subDPS.f2p.forEach(id => allRecommendations.add(id))
-  }
-  
-  recommendations.bufferDebuffer.bis.forEach(id => allRecommendations.add(id))
-  recommendations.bufferDebuffer.generalist.forEach(id => allRecommendations.add(id))
-  recommendations.bufferDebuffer.f2p.forEach(id => allRecommendations.add(id))
-  
-  recommendations.sustain.bis.forEach(id => allRecommendations.add(id))
-  recommendations.sustain.generalist.forEach(id => allRecommendations.add(id))
-  recommendations.sustain.f2p.forEach(id => allRecommendations.add(id))
-  
-  return Array.from(allRecommendations)
-    .map(id => characters.find(char => char.id === id))
-    .filter(char => char !== undefined)
-})
-
-const selectCharacter = (character: Character) => {
-  selectedCharacter.value = character
+const handleClearFilters = () => {
+  clearFilters()
+  searchQueryRef.value = ''
 }
-
-const showTooltip = (character: Character, event: MouseEvent) => {
-  hoveredCharacter.value = character
-  tooltipPosition.value = { x: event.clientX, y: event.clientY }
-}
-
-const hideTooltip = () => {
-  hoveredCharacter.value = null
-}
-
-
-
-const toggleFilter = (filterArray: any[], value: any) => {
-  const index = filterArray.indexOf(value)
-  if (index > -1) {
-    filterArray.splice(index, 1)
-  } else {
-    filterArray.push(value)
-  }
-}
-
-const clearFilters = () => {
-  searchQuery.value = ''
-  showSearchSuggestions.value = false
-  selectedElements.value = []
-  selectedPaths.value = []
-  selectedRarities.value = []
-  selectedArchetypes.value = []
-}
-
-const selectCharacterFromSearch = (character: Character) => {
-  selectedCharacter.value = character
-  searchQuery.value = ''
-  showSearchSuggestions.value = false
-}
-
-const onSearchFocus = () => {
-  if (searchQuery.value.length >= 3) {
-    showSearchSuggestions.value = true
-  }
-}
-
-const onSearchBlur = () => {
-  // Delay hiding to allow clicking on suggestions
-  setTimeout(() => {
-    showSearchSuggestions.value = false
-  }, 200)
-}
-
-// Watch search query to show/hide suggestions
-watch(searchQuery, (newValue) => {
-  if (newValue.length >= 3) {
-    showSearchSuggestions.value = true
-  } else {
-    showSearchSuggestions.value = false
-  }
-})
 </script>
 
 <template>
-  <main class="min-h-screen p-4 md:p-6 lg:p-8">
+  <main class="min-h-screen px-4 py-4 md:px-6 md:py-6 lg:px-8 lg:py-8" style="padding-left: max(1rem, 10px); padding-right: max(1rem, 10px);">
     <div style="text-align: center; margin-bottom: 30px;">
       <h1 style="font-size: 48px; font-weight: 700; margin-bottom: 15px; background: linear-gradient(135deg, #00d4ff, #9b59b6); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;">
         Honkai Star Rail Team Builder
@@ -278,7 +71,7 @@ watch(searchQuery, (newValue) => {
       <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
         <h3 style="color: #00d4ff; font-size: 24px; font-weight: 600; margin: 0;">Filters</h3>
         <button 
-          @click="clearFilters()"
+          @click="handleClearFilters()"
           style="padding: 8px 16px; border-radius: 8px; border: none; cursor: pointer; font-size: 12px; font-weight: 600; background: #e74c3c; color: white; transition: all 0.2s;"
         >
           RESET
@@ -288,7 +81,7 @@ watch(searchQuery, (newValue) => {
       <!-- Search Bar -->
       <div style="margin-bottom: 20px; position: relative;">
         <input 
-          v-model="searchQuery"
+          v-model="searchQueryRef"
           type="text"
           placeholder="Search characters..."
           style="width: 100%; padding: 12px 16px; border-radius: 8px; border: 2px solid rgba(0, 212, 255, 0.3); background: rgba(0, 0, 0, 0.3); color: white; font-size: 14px; outline: none; transition: border-color 0.2s;"
@@ -305,7 +98,7 @@ watch(searchQuery, (newValue) => {
             v-for="character in searchSuggestions"
             :key="character.id"
             style="padding: 12px; cursor: pointer; display: flex; align-items: center; gap: 12px; transition: background-color 0.2s;"
-            @click="selectCharacterFromSearch(character)"
+            @click="handleSelectFromSearch(character)"
             @mouseenter="$event.target.style.background = 'rgba(0, 212, 255, 0.2)'"
             @mouseleave="$event.target.style.background = 'transparent'"
           >
@@ -333,7 +126,7 @@ watch(searchQuery, (newValue) => {
         <div style="display: flex; flex-wrap: wrap; gap: 8px; align-items: center;">
           <span style="color: white; font-size: 14px; margin-right: 8px;">★:</span>
           <button 
-            v-for="rarity in availableRarities" 
+            v-for="rarity in FILTER_OPTIONS.rarities" 
             :key="rarity"
             @click="toggleFilter(selectedRarities, rarity)"
             style="padding: 6px 12px; border-radius: 8px; border: none; cursor: pointer; font-size: 14px; font-weight: 600; transition: all 0.2s;"
@@ -350,7 +143,7 @@ watch(searchQuery, (newValue) => {
         <div style="display: flex; gap: 15px; justify-content: center;">
           <div style="display: flex; flex-wrap: wrap; gap: 4px; justify-content: center;">
             <button 
-              v-for="element in availableElements" 
+              v-for="element in FILTER_OPTIONS.elements" 
               :key="element"
               @click="toggleFilter(selectedElements, element)"
               style="padding: 8px; border-radius: 8px; border: 2px solid transparent; cursor: pointer; transition: all 0.2s;"
@@ -364,7 +157,7 @@ watch(searchQuery, (newValue) => {
           </div>
           <div style="display: flex; flex-wrap: wrap; gap: 4px; justify-content: center;">
             <button 
-              v-for="path in availablePaths" 
+              v-for="path in FILTER_OPTIONS.paths" 
               :key="path"
               @click="toggleFilter(selectedPaths, path)"
               style="padding: 8px; border-radius: 8px; border: 2px solid transparent; cursor: pointer; transition: all 0.2s;"
@@ -381,7 +174,7 @@ watch(searchQuery, (newValue) => {
         <!-- Archetype -->
         <div style="display: flex; flex-wrap: wrap; gap: 4px; justify-content: flex-end;">
           <button 
-            v-for="archetype in availableArchetypes" 
+            v-for="archetype in FILTER_OPTIONS.archetypes" 
             :key="archetype"
             @click="toggleFilter(selectedArchetypes, archetype)"
             style="font-size: 12px; padding: 6px 12px; border-radius: 20px; border: none; cursor: pointer; font-weight: 500; transition: all 0.2s;"
