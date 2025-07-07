@@ -47,6 +47,7 @@
 <script setup lang="ts">
 import type { Character } from '@/types/Character'
 import { getCharacterAvatar } from '@/data/avatars'
+import { COLORS } from '@/constants/design'
 
 interface Props {
   character: Character | null
@@ -61,11 +62,11 @@ defineProps<Props>()
   position: fixed;
   z-index: 1000;
   pointer-events: none;
-  background: rgba(0, 0, 0, 0.9);
-  border: 2px solid #00d4ff;
+  background: v-bind('COLORS.bgOverlay');
+  border: 2px solid v-bind('COLORS.primary');
   border-radius: 8px;
   padding: 12px;
-  color: white;
+  color: v-bind('COLORS.textPrimary');
   font-size: 14px;
   max-width: 280px;
 }
@@ -81,7 +82,7 @@ defineProps<Props>()
   width: 48px;
   height: 48px;
   border-radius: 50%;
-  border: 2px solid #00d4ff;
+  border: 2px solid v-bind('COLORS.primary');
 }
 
 .tooltip-info {
@@ -93,7 +94,7 @@ defineProps<Props>()
 .tooltip-name {
   font-weight: bold;
   font-size: 16px;
-  color: #00d4ff;
+  color: v-bind('COLORS.primary');
 }
 
 .tooltip-rarity {
@@ -117,7 +118,7 @@ defineProps<Props>()
 }
 
 .tooltip-separator {
-  color: #aaa;
+  color: v-bind('COLORS.textSecondary');
 }
 
 .tooltip-labels {
@@ -131,7 +132,7 @@ defineProps<Props>()
   font-size: 11px;
   padding: 3px 6px;
   border-radius: 10px;
-  background: #00d4ff;
+  background: v-bind('COLORS.primary');
   color: black;
   font-weight: 500;
 }

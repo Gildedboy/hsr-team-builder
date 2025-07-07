@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import TeamRecommendations from '@/components/TeamRecommendations.vue'
 import CharacterTooltip from '@/components/CharacterTooltip.vue'
+import CharacterGrid from '@/components/CharacterGrid.vue'
 import { characters } from '@/data/characters'
 import { getCharacterAvatar } from '@/data/avatars'
 import { useCharacterFilters } from '@/composables/useCharacterFilters'
@@ -9,6 +10,7 @@ import { useCharacterSelection } from '@/composables/useCharacterSelection'
 import { useSearch } from '@/composables/useSearch'
 import { useTooltip } from '@/composables/useTooltip'
 import { FILTER_OPTIONS } from '@/constants/filterOptions'
+import { COLORS } from '@/constants/design'
 
 const {
   selectedElements,
@@ -53,10 +55,10 @@ const handleClearFilters = () => {
 <template>
   <main class="min-h-screen px-4 py-4 md:px-6 md:py-6 lg:px-8 lg:py-8" style="padding-left: max(1rem, 10px); padding-right: max(1rem, 10px);">
     <div style="text-align: center; margin-bottom: 30px;">
-      <h1 style="font-size: 48px; font-weight: 700; margin-bottom: 15px; background: linear-gradient(135deg, #00d4ff, #9b59b6); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;">
+      <h1 :style="{ fontSize: '48px', fontWeight: '700', marginBottom: '15px', background: `linear-gradient(135deg, ${COLORS.primary}, ${COLORS.secondary})`, WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent', backgroundClip: 'text' }">
         Honkai Star Rail Team Builder
       </h1>
-      <p style="font-size: 16px; color: #aaa; padding: 0 20px;">
+      <p :style="{ fontSize: '16px', color: COLORS.textSecondary, padding: '0 20px' }">
         Select a character to see team recommendations and use filters to find specific archetypes
       </p>
     </div>
@@ -67,12 +69,12 @@ const handleClearFilters = () => {
     </div>
 
     <!-- Filter Section -->
-    <div style="background: rgba(255, 255, 255, 0.05); padding: 25px; border-radius: 15px; margin-bottom: 40px;">
+    <div :style="{ background: COLORS.bgPrimary, padding: '25px', borderRadius: '15px', marginBottom: '40px' }">
       <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
-        <h3 style="color: #00d4ff; font-size: 24px; font-weight: 600; margin: 0;">Filters</h3>
+        <h3 :style="{ color: COLORS.primary, fontSize: '24px', fontWeight: '600', margin: '0' }">Filters</h3>
         <button 
           @click="handleClearFilters()"
-          style="padding: 8px 16px; border-radius: 8px; border: none; cursor: pointer; font-size: 12px; font-weight: 600; background: #e74c3c; color: white; transition: all 0.2s;"
+          :style="{ padding: '8px 16px', borderRadius: '8px', border: 'none', cursor: 'pointer', fontSize: '12px', fontWeight: '600', background: COLORS.warning, color: 'white', transition: 'all 0.2s' }"
         >
           RESET
         </button>
@@ -84,7 +86,7 @@ const handleClearFilters = () => {
           v-model="searchQueryRef"
           type="text"
           placeholder="Search characters..."
-          style="width: 100%; padding: 12px 16px; border-radius: 8px; border: 2px solid rgba(0, 212, 255, 0.3); background: rgba(0, 0, 0, 0.3); color: white; font-size: 14px; outline: none; transition: border-color 0.2s;"
+          :style="{ width: '100%', padding: '12px 16px', borderRadius: '8px', border: `2px solid rgba(0, 212, 255, 0.3)`, background: 'rgba(0, 0, 0, 0.3)', color: 'white', fontSize: '14px', outline: 'none', transition: 'border-color 0.2s' }"
           @focus="onSearchFocus"
           @blur="onSearchBlur"
         />
@@ -92,7 +94,7 @@ const handleClearFilters = () => {
         <!-- Search Suggestions Dropdown -->
         <div 
           v-if="showSearchSuggestions && searchSuggestions.length > 0"
-          style="position: absolute; top: 100%; left: 0; right: 0; background: rgba(0, 0, 0, 0.95); border: 2px solid #00d4ff; border-top: none; border-radius: 0 0 8px 8px; z-index: 50; max-height: 200px; overflow-y: auto;"
+          :style="{ position: 'absolute', top: '100%', left: '0', right: '0', background: 'rgba(0, 0, 0, 0.95)', border: `2px solid ${COLORS.primary}`, borderTop: 'none', borderRadius: '0 0 8px 8px', zIndex: '50', maxHeight: '200px', overflowY: 'auto' }"
         >
           <div 
             v-for="character in searchSuggestions"
@@ -112,10 +114,10 @@ const handleClearFilters = () => {
               <div style="color: white; font-weight: 600; font-size: 14px;">{{ character.name }}</div>
               <div style="display: flex; align-items: center; gap: 8px; margin-top: 4px;">
                 <img :src="`/images/element/${character.element}.webp`" :alt="character.element" style="width: 16px; height: 16px;" />
-                <span style="color: #aaa; font-size: 12px;">{{ character.element }}</span>
-                <span style="color: #666;">•</span>
+                <span :style="{ color: COLORS.textSecondary, fontSize: '12px' }">{{ character.element }}</span>
+                <span :style="{ color: COLORS.textMuted }">•</span>
                 <img :src="`/images/path/${character.path}.webp`" :alt="character.path" style="width: 16px; height: 16px;" />
-                <span style="color: #aaa; font-size: 12px;">{{ character.path }}</span>
+                <span :style="{ color: COLORS.textSecondary, fontSize: '12px' }">{{ character.path }}</span>
               </div>
             </div>
           </div>
@@ -132,7 +134,7 @@ const handleClearFilters = () => {
             style="padding: 6px 12px; border-radius: 8px; border: none; cursor: pointer; font-size: 14px; font-weight: 600; transition: all 0.2s;"
             :style="{
               background: selectedRarities.includes(rarity) ? 'rgba(0, 212, 255, 0.2)' : 'rgba(255, 255, 255, 0.1)',
-              color: rarity === 5 ? '#ffd700' : '#8a5fcc'
+              color: rarity === 5 ? COLORS.rarity5 : COLORS.rarity4
             }"
           >
             {{ rarity }}★
@@ -149,7 +151,7 @@ const handleClearFilters = () => {
               style="padding: 8px; border-radius: 8px; border: 2px solid transparent; cursor: pointer; transition: all 0.2s;"
               :style="{
                 background: selectedElements.includes(element) ? 'rgba(0, 212, 255, 0.2)' : 'rgba(255, 255, 255, 0.1)',
-                borderColor: selectedElements.includes(element) ? '#00d4ff' : 'transparent'
+                borderColor: selectedElements.includes(element) ? COLORS.primary : 'transparent'
               }"
             >
               <img :src="`/images/element/${element}.webp`" :alt="element" style="width: 20px; height: 20px;" />
@@ -163,7 +165,7 @@ const handleClearFilters = () => {
               style="padding: 8px; border-radius: 8px; border: 2px solid transparent; cursor: pointer; transition: all 0.2s;"
               :style="{
                 background: selectedPaths.includes(path) ? 'rgba(0, 212, 255, 0.2)' : 'rgba(255, 255, 255, 0.1)',
-                borderColor: selectedPaths.includes(path) ? '#00d4ff' : 'transparent'
+                borderColor: selectedPaths.includes(path) ? COLORS.primary : 'transparent'
               }"
             >
               <img :src="`/images/path/${path}.webp`" :alt="path" style="width: 20px; height: 20px;" />
@@ -179,7 +181,7 @@ const handleClearFilters = () => {
             @click="toggleFilter(selectedArchetypes, archetype)"
             style="font-size: 12px; padding: 6px 12px; border-radius: 20px; border: none; cursor: pointer; font-weight: 500; transition: all 0.2s;"
             :style="{
-              background: selectedArchetypes.includes(archetype) ? '#00d4ff' : 'rgba(255, 255, 255, 0.1)',
+              background: selectedArchetypes.includes(archetype) ? COLORS.primary : 'rgba(255, 255, 255, 0.1)',
               color: selectedArchetypes.includes(archetype) ? 'black' : 'white'
             }"
           >
@@ -190,141 +192,63 @@ const handleClearFilters = () => {
     </div>
     
     <!-- Characters grouped by archetype -->
-    <div style="background: rgba(255, 255, 255, 0.08); border-radius: 15px; padding: 25px; margin-bottom: 40px; box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3); overflow-x: auto;">
-      <table style="width: 100%; border-collapse: separate; border-spacing: 0; min-width: 800px; border: 1px solid #333; border-radius: 12px; overflow: hidden;">
+    <div :style="{ background: COLORS.bgSecondary, borderRadius: '15px', padding: '25px', marginBottom: '40px', boxShadow: '0 4px 12px rgba(0, 0, 0, 0.3)', overflowX: 'auto' }">
+      <table :style="{ width: '100%', borderCollapse: 'separate', borderSpacing: '0', minWidth: '800px', border: `1px solid ${COLORS.border}`, borderRadius: '12px', overflow: 'hidden' }">
         <thead>
           <tr style="background: linear-gradient(135deg, #1a1a2e, #16213e);">
-            <th style="color: #00d4ff; padding: 20px; text-align: center; font-size: 18px; font-weight: 700; border-bottom: 2px solid #444; border-right: 1px solid #333; width: 33.33%;">DPS</th>
-            <th style="color: #00d4ff; padding: 20px; text-align: center; font-size: 18px; font-weight: 700; border-bottom: 2px solid #444; border-right: 1px solid #333; width: 33.33%;">Sub-DPS / Buffer / Debuffer</th>
-            <th style="color: #00d4ff; padding: 20px; text-align: center; font-size: 18px; font-weight: 700; border-bottom: 2px solid #444; width: 33.34%;">Sustain</th>
+            <th :style="{ color: COLORS.primary, padding: '20px', textAlign: 'center', fontSize: '18px', fontWeight: '700', borderBottom: `2px solid ${COLORS.border}`, borderRight: `1px solid ${COLORS.border}`, width: '33.33%' }">DPS</th>
+            <th :style="{ color: COLORS.primary, padding: '20px', textAlign: 'center', fontSize: '18px', fontWeight: '700', borderBottom: `2px solid ${COLORS.border}`, borderRight: `1px solid ${COLORS.border}`, width: '33.33%' }">Sub-DPS / Buffer / Debuffer</th>
+            <th :style="{ color: COLORS.primary, padding: '20px', textAlign: 'center', fontSize: '18px', fontWeight: '700', borderBottom: `2px solid ${COLORS.border}`, width: '33.34%' }">Sustain</th>
           </tr>
         </thead>
         <tbody>
           <tr>
-            <td valign="top" style="vertical-align: top; padding: 20px; background: rgba(0, 212, 255, 0.05); border-right: 1px solid #333;">
+            <td valign="top" :style="{ verticalAlign: 'top', padding: '20px', background: 'rgba(0, 212, 255, 0.05)', borderRight: `1px solid ${COLORS.border}` }">
               <div v-for="(chars, category) in charactersByRole.dps" :key="category" v-show="chars.length > 0" style="margin-bottom: 25px;">
-                <h3 style="color: #00d4ff; font-size: 16px; margin-bottom: 15px; padding: 8px 12px; background: rgba(0, 212, 255, 0.1); border-radius: 8px; border-left: 4px solid #00d4ff;">{{ category }} ({{ chars.length }})</h3>
-                <div style="display: grid; grid-template-columns: repeat(auto-fit, 70px); gap: 10px; padding: 0 8px; justify-content: start;">
-                  <div 
-                    v-for="char in chars" 
-                    :key="char.id" 
-                    @click="selectCharacter(char)" 
-                    @mouseenter="showTooltip(char.id, $event)"
-                    @mouseleave="hideTooltip"
-                    style="cursor: pointer; transition: all 0.3s ease; position: relative; border-radius: 8px; overflow: hidden;"
-                    :style="{
-                      opacity: (selectedCharacter && !isCharacterRecommended(selectedCharacter, char.id) && selectedCharacter.id !== char.id) || 
-                               (selectedElements.length > 0 && !selectedElements.includes(char.element)) ||
-                               (selectedPaths.length > 0 && !selectedPaths.includes(char.path)) ||
-                               (selectedRarities.length > 0 && !selectedRarities.includes(char.rarity)) ? '0.25' : '1',
-                      transform: selectedCharacter?.id === char.id ? 'scale(1.1)' : 'scale(1)',
-                      boxShadow: selectedCharacter?.id === char.id ? '0 4px 12px rgba(0, 212, 255, 0.8)' : 
-                                 selectedCharacter && isCharacterRecommended(selectedCharacter, char.id) ? '0 0 8px rgba(46, 204, 113, 0.6)' : 
-                                 '0 2px 6px rgba(0, 0, 0, 0.3)',
-                      border: selectedCharacter?.id === char.id ? '2px solid #00d4ff' : 
-                              selectedCharacter && isCharacterRecommended(selectedCharacter, char.id) ? '2px solid #2ecc71' : 
-                              '2px solid transparent',
-                      filter: (selectedCharacter && !isCharacterRecommended(selectedCharacter, char.id) && selectedCharacter.id !== char.id) || 
-                              (selectedElements.length > 0 && !selectedElements.includes(char.element)) ||
-                              (selectedPaths.length > 0 && !selectedPaths.includes(char.path)) ||
-                              (selectedRarities.length > 0 && !selectedRarities.includes(char.rarity)) ? 'grayscale(70%)' : 'none'
-                    }"
-                  >
-                    <img 
-                      :src="getCharacterAvatar(char.id)" 
-                      :alt="char.name" 
-                      style="width: 100%; aspect-ratio: 1; object-fit: cover; border-radius: 50%;"
-                      @error="$event.target.src = '/images/placeholder.svg'"
-                    />
-                    <div style="position: absolute; bottom: 0; left: 0; right: 0; background: linear-gradient(transparent, rgba(0, 0, 0, 0.8)); color: white; font-size: 10px; padding: 4px 2px; text-align: center; font-weight: 500;">
-                      {{ char.name }}
-                    </div>
-                  </div>
-                </div>
+                <h3 :style="{ color: COLORS.primary, fontSize: '16px', marginBottom: '15px', padding: '8px 12px', background: 'rgba(0, 212, 255, 0.1)', borderRadius: '8px', borderLeft: `4px solid ${COLORS.primary}` }">{{ category }} ({{ chars.length }})</h3>
+                <CharacterGrid 
+                  :characters="chars"
+                  :selected-character="selectedCharacter"
+                  :is-recommended="(charId) => selectedCharacter ? isCharacterRecommended(selectedCharacter, charId) : false"
+                  :selected-elements="selectedElements"
+                  :selected-paths="selectedPaths"
+                  :selected-rarities="selectedRarities"
+                  @select="selectCharacter"
+                  @hover="showTooltip"
+                  @unhover="hideTooltip"
+                />
               </div>
             </td>
-            <td valign="top" style="vertical-align: top; padding: 20px; background: rgba(155, 89, 182, 0.05); border-right: 1px solid #333;">
+            <td valign="top" :style="{ verticalAlign: 'top', padding: '20px', background: 'rgba(155, 89, 182, 0.05)', borderRight: `1px solid ${COLORS.border}` }">
               <div v-for="(chars, category) in charactersByRole.support" :key="category" v-show="chars.length > 0" style="margin-bottom: 25px;">
-                <h3 style="color: #00d4ff; font-size: 16px; margin-bottom: 15px; padding: 8px 12px; background: rgba(0, 212, 255, 0.1); border-radius: 8px; border-left: 4px solid #00d4ff;">{{ category }} ({{ chars.length }})</h3>
-                <div style="display: grid; grid-template-columns: repeat(auto-fit, 70px); gap: 10px; padding: 0 8px; justify-content: start;">
-                  <div 
-                    v-for="char in chars" 
-                    :key="char.id" 
-                    @click="selectCharacter(char)" 
-                    @mouseenter="showTooltip(char.id, $event)"
-                    @mouseleave="hideTooltip"
-                    style="cursor: pointer; transition: all 0.3s ease; position: relative; border-radius: 8px; overflow: hidden;"
-                    :style="{
-                      opacity: (selectedCharacter && !isCharacterRecommended(selectedCharacter, char.id) && selectedCharacter.id !== char.id) || 
-                               (selectedElements.length > 0 && !selectedElements.includes(char.element)) ||
-                               (selectedPaths.length > 0 && !selectedPaths.includes(char.path)) ||
-                               (selectedRarities.length > 0 && !selectedRarities.includes(char.rarity)) ? '0.25' : '1',
-                      transform: selectedCharacter?.id === char.id ? 'scale(1.1)' : 'scale(1)',
-                      boxShadow: selectedCharacter?.id === char.id ? '0 4px 12px rgba(0, 212, 255, 0.8)' : 
-                                 selectedCharacter && isCharacterRecommended(selectedCharacter, char.id) ? '0 0 8px rgba(46, 204, 113, 0.6)' : 
-                                 '0 2px 6px rgba(0, 0, 0, 0.3)',
-                      border: selectedCharacter?.id === char.id ? '2px solid #00d4ff' : 
-                              selectedCharacter && isCharacterRecommended(selectedCharacter, char.id) ? '2px solid #2ecc71' : 
-                              '2px solid transparent',
-                      filter: (selectedCharacter && !isCharacterRecommended(selectedCharacter, char.id) && selectedCharacter.id !== char.id) || 
-                              (selectedElements.length > 0 && !selectedElements.includes(char.element)) ||
-                              (selectedPaths.length > 0 && !selectedPaths.includes(char.path)) ||
-                              (selectedRarities.length > 0 && !selectedRarities.includes(char.rarity)) ? 'grayscale(70%)' : 'none'
-                    }"
-                  >
-                    <img 
-                      :src="getCharacterAvatar(char.id)" 
-                      :alt="char.name" 
-                      style="width: 100%; aspect-ratio: 1; object-fit: cover; border-radius: 50%;"
-                      @error="$event.target.src = '/images/placeholder.svg'"
-                    />
-                    <div style="position: absolute; bottom: 0; left: 0; right: 0; background: linear-gradient(transparent, rgba(0, 0, 0, 0.8)); color: white; font-size: 10px; padding: 4px 2px; text-align: center; font-weight: 500;">
-                      {{ char.name }}
-                    </div>
-                  </div>
-                </div>
+                <h3 :style="{ color: COLORS.primary, fontSize: '16px', marginBottom: '15px', padding: '8px 12px', background: 'rgba(0, 212, 255, 0.1)', borderRadius: '8px', borderLeft: `4px solid ${COLORS.primary}` }">{{ category }} ({{ chars.length }})</h3>
+                <CharacterGrid 
+                  :characters="chars"
+                  :selected-character="selectedCharacter"
+                  :is-recommended="(charId) => selectedCharacter ? isCharacterRecommended(selectedCharacter, charId) : false"
+                  :selected-elements="selectedElements"
+                  :selected-paths="selectedPaths"
+                  :selected-rarities="selectedRarities"
+                  @select="selectCharacter"
+                  @hover="showTooltip"
+                  @unhover="hideTooltip"
+                />
               </div>
             </td>
-            <td valign="top" style="vertical-align: top; padding: 20px; background: rgba(46, 204, 113, 0.05);">
+            <td valign="top" :style="{ verticalAlign: 'top', padding: '20px', background: 'rgba(46, 204, 113, 0.05)' }">
               <div v-for="(chars, category) in charactersByRole.sustain" :key="category" v-show="chars.length > 0" style="margin-bottom: 25px;">
-                <h3 style="color: #00d4ff; font-size: 16px; margin-bottom: 15px; padding: 8px 12px; background: rgba(0, 212, 255, 0.1); border-radius: 8px; border-left: 4px solid #00d4ff;">{{ category }} ({{ chars.length }})</h3>
-                <div style="display: grid; grid-template-columns: repeat(auto-fit, 70px); gap: 10px; padding: 0 8px; justify-content: start;">
-                  <div 
-                    v-for="char in chars" 
-                    :key="char.id" 
-                    @click="selectCharacter(char)" 
-                    @mouseenter="showTooltip(char.id, $event)"
-                    @mouseleave="hideTooltip"
-                    style="cursor: pointer; transition: all 0.3s ease; position: relative; border-radius: 8px; overflow: hidden;"
-                    :style="{
-                      opacity: (selectedCharacter && !isCharacterRecommended(selectedCharacter, char.id) && selectedCharacter.id !== char.id) || 
-                               (selectedElements.length > 0 && !selectedElements.includes(char.element)) ||
-                               (selectedPaths.length > 0 && !selectedPaths.includes(char.path)) ||
-                               (selectedRarities.length > 0 && !selectedRarities.includes(char.rarity)) ? '0.25' : '1',
-                      transform: selectedCharacter?.id === char.id ? 'scale(1.1)' : 'scale(1)',
-                      boxShadow: selectedCharacter?.id === char.id ? '0 4px 12px rgba(0, 212, 255, 0.8)' : 
-                                 selectedCharacter && isCharacterRecommended(selectedCharacter, char.id) ? '0 0 8px rgba(46, 204, 113, 0.6)' : 
-                                 '0 2px 6px rgba(0, 0, 0, 0.3)',
-                      border: selectedCharacter?.id === char.id ? '2px solid #00d4ff' : 
-                              selectedCharacter && isCharacterRecommended(selectedCharacter, char.id) ? '2px solid #2ecc71' : 
-                              '2px solid transparent',
-                      filter: (selectedCharacter && !isCharacterRecommended(selectedCharacter, char.id) && selectedCharacter.id !== char.id) || 
-                              (selectedElements.length > 0 && !selectedElements.includes(char.element)) ||
-                              (selectedPaths.length > 0 && !selectedPaths.includes(char.path)) ||
-                              (selectedRarities.length > 0 && !selectedRarities.includes(char.rarity)) ? 'grayscale(70%)' : 'none'
-                    }"
-                  >
-                    <img 
-                      :src="getCharacterAvatar(char.id)" 
-                      :alt="char.name" 
-                      style="width: 100%; aspect-ratio: 1; object-fit: cover; border-radius: 50%;"
-                      @error="$event.target.src = '/images/placeholder.svg'"
-                    />
-                    <div style="position: absolute; bottom: 0; left: 0; right: 0; background: linear-gradient(transparent, rgba(0, 0, 0, 0.8)); color: white; font-size: 10px; padding: 4px 2px; text-align: center; font-weight: 500;">
-                      {{ char.name }}
-                    </div>
-                  </div>
-                </div>
+                <h3 :style="{ color: COLORS.primary, fontSize: '16px', marginBottom: '15px', padding: '8px 12px', background: 'rgba(0, 212, 255, 0.1)', borderRadius: '8px', borderLeft: `4px solid ${COLORS.primary}` }">{{ category }} ({{ chars.length }})</h3>
+                <CharacterGrid 
+                  :characters="chars"
+                  :selected-character="selectedCharacter"
+                  :is-recommended="(charId) => selectedCharacter ? isCharacterRecommended(selectedCharacter, charId) : false"
+                  :selected-elements="selectedElements"
+                  :selected-paths="selectedPaths"
+                  :selected-rarities="selectedRarities"
+                  @select="selectCharacter"
+                  @hover="showTooltip"
+                  @unhover="hideTooltip"
+                />
               </div>
             </td>
           </tr>
