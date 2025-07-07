@@ -665,7 +665,7 @@ export const characters: Character[] = [
       requiresSubDPS: true,
       subDPS: {
         bis: ['cipher'],
-        generalist: ['topaz', 'ratio'],
+        generalist: ['topaz'],
         f2p: ['hunt-march-7th', 'moze'],
       },
       bufferDebuffer: {

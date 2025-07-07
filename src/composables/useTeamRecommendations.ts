@@ -1,22 +1,29 @@
-import { ref, computed } from 'vue'
+import { ref, computed, watch, toRef } from 'vue'
 import { characters } from '@/data/characters'
 import type { Character } from '@/types/Character'
 
 export function useTeamRecommendations(character: Character) {
+  const characterRef = toRef(() => character)
+  
   const activeTab = ref<'subDPS' | 'bufferDebuffer' | 'sustain'>(
     character.teamRecommendations?.requiresSubDPS ? 'subDPS' : 'bufferDebuffer'
   )
 
+  // Reset tab when character changes
+  watch(characterRef, (newCharacter) => {
+    activeTab.value = newCharacter.teamRecommendations?.requiresSubDPS ? 'subDPS' : 'bufferDebuffer'
+  })
+
   const currentRecommendations = computed(() => {
-    if (!character.teamRecommendations) return null
+    if (!characterRef.value.teamRecommendations) return null
     
     switch (activeTab.value) {
       case 'subDPS':
-        return character.teamRecommendations.subDPS
+        return characterRef.value.teamRecommendations.subDPS
       case 'bufferDebuffer':
-        return character.teamRecommendations.bufferDebuffer
+        return characterRef.value.teamRecommendations.bufferDebuffer
       case 'sustain':
-        return character.teamRecommendations.sustain
+        return characterRef.value.teamRecommendations.sustain
       default:
         return null
     }
