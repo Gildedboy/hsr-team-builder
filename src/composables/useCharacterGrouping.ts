@@ -1,7 +1,7 @@
 import { computed } from 'vue'
 import type { Character } from '@/types/Character'
 
-export function useCharacterGrouping(filteredCharacters: any) {
+export function useCharacterGrouping(filteredCharacters: { value: Character[] }) {
   const charactersByRole = computed(() => {
     const filtered = filteredCharacters.value
     

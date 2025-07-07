@@ -29,7 +29,7 @@ export function useCharacterFilters(characters: Character[]) {
     })
   })
 
-  const toggleFilter = (filterArray: any[], value: any) => {
+  const toggleFilter = <T>(filterArray: T[], value: T) => {
     const index = filterArray.indexOf(value)
     if (index > -1) {
       filterArray.splice(index, 1)

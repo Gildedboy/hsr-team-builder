@@ -15,6 +15,7 @@ export interface Character {
   labels: CharacterLabel[]
   mainArchetype: MainArchetype
   teamRecommendations?: TeamRecommendations
+  synergies?: string[]
 }
 
 export type CharacterLabel =
@@ -66,6 +67,20 @@ export type CharacterLabel =
   | 'Implant Weakness'
   | 'Action Advance'
   | 'Blast'
+  | 'Fire'
+  | 'Wind'
+  | 'Lightning'
+  | 'Imaginary'
+  | 'Destruction'
+  | 'Debuff Synergy'
+  | 'Follow Up Attack'
+  | 'Taunt'
+  | 'HP Share'
+  | 'Freeze'
+  | 'Ice'
+  | 'Quantum'
+  | 'Basic Attack'
+  | 'Break'
 
 export type MainArchetype =
   | 'DPS'

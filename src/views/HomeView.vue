@@ -11,13 +11,13 @@ import { useSearch } from '@/composables/useSearch'
 import { useTooltip } from '@/composables/useTooltip'
 import { FILTER_OPTIONS } from '@/constants/filterOptions'
 import { COLORS } from '@/constants/design'
+import type { Character } from '@/types/Character'
 
 const {
   selectedElements,
   selectedPaths,
   selectedRarities,
   selectedArchetypes,
-  searchQuery,
   filteredCharacters,
   toggleFilter,
   clearFilters
@@ -43,7 +43,7 @@ const {
   onSearchBlur
 } = useSearch()
 
-const handleSelectFromSearch = (character: any) => {
+const handleSelectFromSearch = (character: Character) => {
   selectCharacterFromSearch(character, selectCharacter)
 }
 
