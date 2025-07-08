@@ -33,77 +33,30 @@
 
       <!-- Recommendation Tiers -->
       <div v-if="currentRecommendations" class="d-flex align-items-start w-100">
-        <!-- BiS -->
-        <div class="text-center" style="flex: 1;">
-          <h3 v-if="currentRecommendations.bis.length > 0" class="h5 fw-bold mb-2" style="color: #ffd700;">BiS - Best in Slot</h3>
-          <div v-if="currentRecommendations.bis.length > 0" class="d-flex flex-wrap gap-2 justify-content-center">
-            <div 
-              v-for="characterId in currentRecommendations.bis"
-              :key="characterId"
-              class="text-center"
-            >
-              <img 
-                :src="getCharacterAvatar(characterId)" 
-                :alt="getCharacterName(characterId)" 
-                class="rounded-circle border border-3 cursor-pointer mb-1"
-                style="width: 80px; height: 80px; border-color: #ffd700 !important;"
-                @error="$event.target.src = '/images/placeholder.svg'"
-                @mouseenter="showTooltip(characterId, $event)"
-                @mouseleave="hideTooltip"
-              />
-              <div class="text-white small fw-medium">{{ getCharacterName(characterId) }}</div>
-            </div>
-          </div>
-        </div>
-
-        <!-- Generalist -->
-        <div class="text-center" style="flex: 1;">
-          <h3 v-if="currentRecommendations.generalist.length > 0" class="h5 fw-bold mb-2" :style="{ color: COLORS.generalist }">Generalist</h3>
-          <div v-if="currentRecommendations.generalist.length > 0" class="d-flex flex-wrap gap-2 justify-content-center">
-            <div 
-              v-for="characterId in currentRecommendations.generalist"
-              :key="characterId"
-              class="text-center"
-            >
-              <img 
-                :src="getCharacterAvatar(characterId)" 
-                :alt="getCharacterName(characterId)" 
-                class="rounded-circle border border-3 cursor-pointer mb-1"
-                :style="{ width: '80px', height: '80px', borderColor: COLORS.generalist + ' !important' }"
-                @error="$event.target.src = '/images/placeholder.svg'"
-                @mouseenter="showTooltip(characterId, $event)"
-                @mouseleave="hideTooltip"
-              />
-              <div class="text-white small fw-medium">{{ getCharacterName(characterId) }}</div>
-            </div>
-          </div>
-        </div>
-
-        <!-- F2P -->
-        <div class="text-center" style="flex: 1;">
-          <h3 v-if="currentRecommendations.f2p.length > 0 || (activeTab === 'sustain' && character.teamRecommendations.anySustainAvailable === false)" class="h5 fw-bold mb-2" style="color: #2ecc71;">F2P Options</h3>
-          <div v-if="activeTab === 'sustain' && character.teamRecommendations.anySustainAvailable === false" class="text-warning small p-3">
-            No F2P sustain options available
-          </div>
-          <div v-else class="d-flex flex-wrap gap-2 justify-content-center">
-            <div 
-              v-for="characterId in currentRecommendations.f2p"
-              :key="characterId"
-              class="text-center"
-            >
-              <img 
-                :src="getCharacterAvatar(characterId)" 
-                :alt="getCharacterName(characterId)" 
-                class="rounded-circle border border-3 cursor-pointer mb-2"
-                style="width: 80px; height: 80px; border-color: #2ecc71 !important;"
-                @error="$event.target.src = '/images/placeholder.svg'"
-                @mouseenter="showTooltip(characterId, $event)"
-                @mouseleave="hideTooltip"
-              />
-              <div class="text-white small fw-medium">{{ getCharacterName(characterId) }}</div>
-            </div>
-          </div>
-        </div>
+        <RecommendationTier
+          tier="bis"
+          :character-ids="currentRecommendations.bis"
+          :active-tab="activeTab"
+          @show-tooltip="showTooltip"
+          @hide-tooltip="hideTooltip"
+        />
+        
+        <RecommendationTier
+          tier="generalist"
+          :character-ids="currentRecommendations.generalist"
+          :active-tab="activeTab"
+          @show-tooltip="showTooltip"
+          @hide-tooltip="hideTooltip"
+        />
+        
+        <RecommendationTier
+          tier="f2p"
+          :character-ids="currentRecommendations.f2p"
+          :active-tab="activeTab"
+          :no-sustain-available="character.teamRecommendations?.anySustainAvailable === false"
+          @show-tooltip="showTooltip"
+          @hide-tooltip="hideTooltip"
+        />
       </div>
     </div>
     
@@ -113,11 +66,10 @@
 
 <script setup lang="ts">
 import type { Character } from '@/types/Character'
-import { getCharacterAvatar } from '@/data/avatars'
 import { useTeamRecommendations } from '@/composables/useTeamRecommendations'
 import { useTooltip } from '@/composables/useTooltip'
-import { COLORS } from '@/constants/design'
 import CharacterTooltip from './CharacterTooltip.vue'
+import RecommendationTier from './RecommendationTier.vue'
 
 interface Props {
   character: Character
@@ -125,7 +77,7 @@ interface Props {
 
 const props = defineProps<Props>()
 
-const { activeTab, currentRecommendations, getCharacterName, getGridColumns } = useTeamRecommendations(props.character)
+const { activeTab, currentRecommendations } = useTeamRecommendations(props.character)
 const { hoveredCharacter, tooltipPosition, showTooltip, hideTooltip } = useTooltip()
 </script>
 
