@@ -71,12 +71,13 @@ const getActiveTab = () => {
     <div class="row mb-5">
       <!-- Filter Section -->
       <div class="col-lg-3 col-md-4 mb-4">
-        <div class="card bg-dark border-primary h-100">
-          <div class="card-header d-flex justify-content-between align-items-center">
+        <div class="card bg-dark border-primary" style="height: fit-content;">
+          <div class="card-header d-flex justify-content-between align-items-center px-3">
             <h3 class="h5 text-primary mb-0">Filters</h3>
             <button
               @click="handleClearFilters()"
-              class="btn btn-warning btn-sm fw-bold rounded-pill"
+              class="btn btn-warning btn-sm fw-bold rounded-pill me-2"
+              style="padding-top: 8px;"
             >
               RESET
             </button>
@@ -159,12 +160,13 @@ const getActiveTab = () => {
                   :key="element"
                   @click="toggleFilter(selectedElements, element)"
                   :title="element"
-                  class="btn p-2 border-2"
+                  class="btn p-0 border-2 d-flex align-items-center justify-content-center"
                   :class="
                     selectedElements.includes(element)
                       ? 'btn-outline-primary active border-primary'
                       : 'btn-outline-secondary border-transparent'
                   "
+                  style="width: 40px; height: 40px;"
                 >
                   <img
                     :src="`/images/element/${element}.webp`"
@@ -184,12 +186,13 @@ const getActiveTab = () => {
                   :key="path"
                   @click="toggleFilter(selectedPaths, path)"
                   :title="path"
-                  class="btn p-2 border-2"
+                  class="btn p-0 border-2 d-flex align-items-center justify-content-center"
                   :class="
                     selectedPaths.includes(path)
                       ? 'btn-outline-primary active border-primary'
                       : 'btn-outline-secondary border-transparent'
                   "
+                  style="width: 40px; height: 40px;"
                 >
                   <img
                     :src="`/images/path/${path}.webp`"
