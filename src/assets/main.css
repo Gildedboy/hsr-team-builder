@@ -205,4 +205,58 @@ body {
   background-color: rgba(0, 212, 255, 0.05) !important;
 }
 
+/* Filter button styling for elements and paths */
+.btn-outline-secondary {
+  border-color: rgba(255, 255, 255, 0.3) !important;
+  color: rgba(255, 255, 255, 0.7) !important;
+  background-color: rgba(255, 255, 255, 0.05) !important;
+}
+
+.btn-outline-secondary:hover {
+  border-color: #00d4ff !important;
+  color: #00d4ff !important;
+  background-color: rgba(0, 212, 255, 0.1) !important;
+}
+
+.btn-outline-secondary.active {
+  border-color: #00d4ff !important;
+  color: #00d4ff !important;
+  background-color: rgba(0, 212, 255, 0.2) !important;
+}
+
+/* Element and Path button specific styling */
+.element-path-button {
+  width: 40px !important;
+  height: 40px !important;
+  padding: 0 !important;
+  border-width: 2px !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  border-radius: 8px !important;
+  transition: all 0.2s ease !important;
+}
+
+.element-path-button img {
+  width: 20px !important;
+  height: 20px !important;
+  filter: brightness(0.8);
+  transition: filter 0.2s ease;
+}
+
+.element-path-button:hover img,
+.element-path-button.active img {
+  filter: brightness(1.2);
+}
+
+/* Override for non-selected state to show subtle border */
+.element-path-button.btn-outline-secondary.border-transparent {
+  border-color: rgba(255, 255, 255, 0.2) !important;
+  background-color: rgba(255, 255, 255, 0.05) !important;
+}
+
+.border-transparent {
+  border-color: transparent !important;
+}
+
 

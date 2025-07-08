@@ -144,7 +144,10 @@ const getActiveTab = () => {
                       ? 'btn-outline-primary active'
                       : 'btn-outline-secondary'
                   "
-                  :style="{ color: rarity === 5 ? COLORS.rarity5 : COLORS.rarity4 }"
+                  :style="{ 
+                    color: (rarity === 5 ? COLORS.rarity5 : COLORS.rarity4) + ' !important',
+                    borderColor: (rarity === 5 ? COLORS.rarity5 : COLORS.rarity4) + ' !important'
+                  }"
                 >
                   {{ rarity }}★
                 </button>
@@ -160,13 +163,12 @@ const getActiveTab = () => {
                   :key="element"
                   @click="toggleFilter(selectedElements, element)"
                   :title="element"
-                  class="btn p-0 border-2 d-flex align-items-center justify-content-center"
+                  class="btn element-path-button"
                   :class="
                     selectedElements.includes(element)
                       ? 'btn-outline-primary active border-primary'
-                      : 'btn-outline-secondary border-transparent'
+                      : 'btn-outline-secondary'
                   "
-                  style="width: 40px; height: 40px;"
                 >
                   <img
                     :src="`/images/element/${element}.webp`"
@@ -186,13 +188,12 @@ const getActiveTab = () => {
                   :key="path"
                   @click="toggleFilter(selectedPaths, path)"
                   :title="path"
-                  class="btn p-0 border-2 d-flex align-items-center justify-content-center"
+                  class="btn element-path-button"
                   :class="
                     selectedPaths.includes(path)
                       ? 'btn-outline-primary active border-primary'
-                      : 'btn-outline-secondary border-transparent'
+                      : 'btn-outline-secondary'
                   "
-                  style="width: 40px; height: 40px;"
                 >
                   <img
                     :src="`/images/path/${path}.webp`"
