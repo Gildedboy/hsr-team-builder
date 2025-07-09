@@ -34,7 +34,7 @@ export interface TeamVariant {
 export interface TeamRecommendations {
   mainDPS?: TeamRole
   subDPS?: TeamRole
-  bufferDebuffer: TeamRole
+  amplifier: TeamRole
   sustain: TeamRole
   requiresSubDPS: boolean // false for characters like Phainon, break DPS
   anySustainAvailable?: boolean // false when no F2P sustain options exist

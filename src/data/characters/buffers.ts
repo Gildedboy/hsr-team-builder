@@ -11,7 +11,7 @@ export const bufferCharacters: Character[] = [
     labels: ['Support', 'Buffer', 'Crit Support', 'Generalist'],
     teamRecommendations: {
       requiresSubDPS: false,
-      bufferDebuffer: { bis: [], generalist: [], f2p: [] },
+      amplifier: { bis: [], generalist: [], f2p: [] },
       sustain: { bis: [], generalist: [], f2p: [] },
     },
   },
@@ -25,7 +25,7 @@ export const bufferCharacters: Character[] = [
     labels: ['Buffer', 'Break Support', 'Super Break', 'F2P'],
     teamRecommendations: {
       requiresSubDPS: false,
-      bufferDebuffer: { bis: [], generalist: [], f2p: [] },
+      amplifier: { bis: [], generalist: [], f2p: [] },
       sustain: { bis: [], generalist: [], f2p: [] },
     },
   },
@@ -39,7 +39,7 @@ export const bufferCharacters: Character[] = [
     labels: ['Buffer', 'Follow-up Support', 'Action Advance'],
     teamRecommendations: {
       requiresSubDPS: false,
-      bufferDebuffer: { bis: [], generalist: [], f2p: [] },
+      amplifier: { bis: [], generalist: [], f2p: [] },
       sustain: { bis: [], generalist: [], f2p: [] },
     },
   },
@@ -53,7 +53,7 @@ export const bufferCharacters: Character[] = [
     labels: ['Buffer', 'Break Support', 'Generalist'],
     teamRecommendations: {
       requiresSubDPS: false,
-      bufferDebuffer: { bis: [], generalist: [], f2p: [] },
+      amplifier: { bis: [], generalist: [], f2p: [] },
       sustain: { bis: [], generalist: [], f2p: [] },
     },
   },
@@ -67,7 +67,7 @@ export const bufferCharacters: Character[] = [
     labels: ['Support', 'Buffer', 'Crit Support', 'Generalist'],
     teamRecommendations: {
       requiresSubDPS: false,
-      bufferDebuffer: { bis: [], generalist: [], f2p: [] },
+      amplifier: { bis: [], generalist: [], f2p: [] },
       sustain: { bis: [], generalist: [], f2p: [] },
     },
   },
@@ -81,7 +81,7 @@ export const bufferCharacters: Character[] = [
     labels: ['Buffer', 'Summon Support', 'Energy Support'],
     teamRecommendations: {
       requiresSubDPS: false,
-      bufferDebuffer: { bis: [], generalist: [], f2p: [] },
+      amplifier: { bis: [], generalist: [], f2p: [] },
       sustain: { bis: [], generalist: [], f2p: [] },
     },
   },
@@ -95,7 +95,7 @@ export const bufferCharacters: Character[] = [
     labels: ['Support', 'Buffer', 'Energy Support', 'Generalist', 'F2P'],
     teamRecommendations: {
       requiresSubDPS: false,
-      bufferDebuffer: { bis: [], generalist: [], f2p: [] },
+      amplifier: { bis: [], generalist: [], f2p: [] },
       sustain: { bis: [], generalist: [], f2p: [] },
     },
   },

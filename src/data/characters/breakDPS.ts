@@ -11,7 +11,7 @@ export const breakDPSCharacters: Character[] = [
     labels: ['Break DPS', 'Single Target', 'Implant Weakness'],
     teamRecommendations: {
       requiresSubDPS: false,
-      bufferDebuffer: {
+      amplifier: {
         bis: ['fugue', 'ruan-mei'],
         generalist: ['sunday'],
         f2p: ['bronya', 'harmony-trailblazer'],
@@ -33,7 +33,7 @@ export const breakDPSCharacters: Character[] = [
     labels: ['Break DPS', 'Super Break', 'Implant Weakness', 'Action Advance', 'Blast'],
     teamRecommendations: {
       requiresSubDPS: false,
-      bufferDebuffer: {
+      amplifier: {
         bis: ['ruan-mei', 'fugue'],
         generalist: [],
         f2p: ['harmony-trailblazer'],
@@ -55,7 +55,7 @@ export const breakDPSCharacters: Character[] = [
     labels: ['Break DPS', 'AoE', 'Blast', 'Super Break'],
     teamRecommendations: {
       requiresSubDPS: false,
-      bufferDebuffer: {
+      amplifier: {
         bis: ['fugue', 'ruan-mei'],
         generalist: [],
         f2p: ['harmony-trailblazer'],
