@@ -84,30 +84,6 @@ export const newCharacters: Character[] = [
       amplifier: { bis: ['jiaoqiu', 'silver-wolf'], generalist: ['bronya'], f2p: ['pela'] },
       sustain: { bis: ['aventurine'], generalist: ['fu-xuan', 'huohuo'], f2p: ['gallagher'] },
     },
-    teamSuggestions: {
-      premium: {
-        characters: ['acheron', 'cipher', 'jiaoqiu', 'aventurine'],
-        reasoning: 'BiS Acheron team - Cipher + Jiaoqiu provide optimal debuff synergy',
-        coreRole: 'Amplifier'
-      },
-      f2p: {
-        characters: ['acheron', 'cipher', 'pela', 'gallagher'],
-        reasoning: 'F2P Acheron team with accessible debuffer and sustain',
-        coreRole: 'Amplifier'
-      }
-    },
-    altTeamSuggestions: {
-      premium: {
-        characters: ['feixiao', 'cipher', 'robin', 'aventurine'],
-        reasoning: 'BiS Feixiao team - Cipher provides vulnerability while Robin amplifies follow-up damage',
-        coreRole: 'Amplifier'
-      },
-      f2p: {
-        characters: ['feixiao', 'cipher', 'bronya', 'gallagher'],
-        reasoning: 'F2P Feixiao team with action advance and sustain support',
-        coreRole: 'Amplifier'
-      }
-    },
   },
   {
     id: 'anaxa',
