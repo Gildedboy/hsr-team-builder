@@ -1,8 +1,10 @@
 <template>
   <div class="text-center" style="flex: 1;">
-    <h3 v-if="hasRecommendations" class="h5 fw-bold mb-2" :style="{ color: tierColor }">
-      {{ tierTitle }}
-    </h3>
+    <div class="title-container mb-4">
+      <h3 v-if="hasRecommendations" class="h5 fw-bold" :style="{ color: tierColor }">
+        {{ tierTitle }}
+      </h3>
+    </div>
     
     <div v-if="showNoSustainMessage" class="text-warning small p-3">
       No F2P sustain options available
@@ -86,5 +88,12 @@ const getCharacterName = (characterId: string): string => {
 <style scoped>
 .cursor-pointer {
   cursor: pointer;
+}
+
+.title-container {
+  height: 3rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 </style>
