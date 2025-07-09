@@ -1,7 +1,7 @@
 <template>
   <div v-if="character.teamRecommendations" class="card bg-dark border-primary h-100">
     <div class="card-header text-center">
-      <h2 class="h4 text-primary mb-0">Recommended Teammates for {{ character.name }}</h2>
+      <h2 class="h4 text-primary mb-0">Suggested Teammates for {{ character.name }}</h2>
     </div>
     
     <div class="card-body d-flex flex-column align-items-center p-2">
@@ -63,7 +63,7 @@
 
         <!-- Team Compositions -->
         <div class="w-100" style="margin-top: 3.5rem;">
-          <h4 class="text-center text-primary mb-2">Recommended Teams for {{ character.name }}</h4>
+          <h4 class="text-center text-primary mb-2">Suggested Teams for {{ character.name }}</h4>
           <!-- Team Role Tabs -->
           <div class="d-flex gap-2 justify-content-center mb-2">
             <button
@@ -84,10 +84,10 @@
           </div>
 
           <!-- Main DPS Teams -->
-          <div v-if="activeTeamTab === 'mainDPS'" class="d-flex justify-content-around gap-4">
+          <div v-if="activeTeamTab === 'mainDPS'" class="d-flex flex-column flex-md-row justify-content-around gap-3">
             <div class="text-center">
-              <h5 class="text-warning mb-3">BiS Team</h5>
-              <div class="d-flex gap-2 justify-content-center">
+              <h5 class="text-warning mb-2">BiS Team</h5>
+              <div class="d-flex gap-1 gap-md-2 justify-content-center">
                 <div
                   v-for="charId in getBisMainDPSTeam"
                   :key="charId"
@@ -107,8 +107,8 @@
             </div>
 
             <div class="text-center">
-              <h5 class="text-success mb-3">F2P Team</h5>
-              <div class="d-flex gap-2 justify-content-center">
+              <h5 class="text-success mb-2">F2P Team</h5>
+              <div class="d-flex gap-1 gap-md-2 justify-content-center">
                 <div
                   v-for="charId in getF2pMainDPSTeam"
                   :key="charId"
@@ -129,10 +129,10 @@
           </div>
 
           <!-- Sub-DPS Teams -->
-          <div v-if="activeTeamTab === 'subDPS' && canBeSubDPS" class="d-flex justify-content-around gap-4">
+          <div v-if="activeTeamTab === 'subDPS' && canBeSubDPS" class="d-flex flex-column flex-md-row justify-content-around gap-3">
             <div class="text-center">
-              <h5 class="text-warning mb-3">BiS Team</h5>
-              <div class="d-flex gap-2 justify-content-center">
+              <h5 class="text-warning mb-2">BiS Team</h5>
+              <div class="d-flex gap-1 gap-md-2 justify-content-center">
                 <div
                   v-for="charId in getBisSubDPSTeam"
                   :key="charId"
@@ -152,8 +152,8 @@
             </div>
 
             <div class="text-center">
-              <h5 class="text-success mb-3">F2P Team</h5>
-              <div class="d-flex gap-2 justify-content-center">
+              <h5 class="text-success mb-2">F2P Team</h5>
+              <div class="d-flex gap-1 gap-md-2 justify-content-center">
                 <div
                   v-for="charId in getF2pSubDPSTeam"
                   :key="charId"
@@ -224,10 +224,17 @@ const { hoveredCharacter, tooltipPosition, showTooltip, hideTooltip } = useToolt
 }
 
 .team-character-avatar {
-  width: 60px;
-  height: 60px;
+  width: 62px;
+  height: 62px;
   object-fit: cover;
   border-radius: 50%;
+}
+
+@media (min-width: 768px) {
+  .team-character-avatar {
+    width: 60px;
+    height: 60px;
+  }
 }
 
 .team-character-name {
