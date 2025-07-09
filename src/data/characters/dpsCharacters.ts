@@ -178,11 +178,12 @@ export const dpsCharacters: Character[] = [
     path: 'Hunt',
     rarity: 5,
     mainArchetype: 'DPS',
-    labels: ['DPS', 'Follow-up Attack', 'Debuff Synergy', 'F2P'],
+    labels: ['DPS', 'Sub-DPS', 'Follow-up Attack', 'Debuff Synergy', 'F2P'],
     teamRecommendations: {
-      requiresSubDPS: false,
-      amplifier: { bis: ['pela', 'silver-wolf'], generalist: ['bronya'], f2p: ['pela'] },
-      sustain: { bis: ['aventurine', 'fu-xuan'], generalist: ['huohuo'], f2p: ['gallagher'] },
+      requiresSubDPS: true,
+      subDPS: { bis: ['topaz'], generalist: [], f2p: ['moze'] },
+      amplifier: { bis: ['robin', 'cipher'], generalist: ['jiaoqiu', 'silver-wolf', 'tribbie', 'sunday'], f2p: ['pela', 'guinaifen'] },
+      sustain: { bis: ['aventurine'], generalist: ['huohuo', 'lingsha'], f2p: ['gallagher'] },
     },
   },
   {

@@ -55,6 +55,16 @@ export function useTeamRecommendations(character: Character) {
     return characterIds.filter(id => isF2PCharacter(id))
   }
 
+  const sortByRarity = (characterIds: string[]): string[] => {
+    return characterIds.sort((a, b) => {
+      const charA = characters.find(c => c.id === a)
+      const charB = characters.find(c => c.id === b)
+      const rarityA = charA?.rarity || 0
+      const rarityB = charB?.rarity || 0
+      return rarityB - rarityA // 5-star first, then 4-star
+    })
+  }
+
   const getBisMainDPSTeam = computed(() => {
     if (!characterRef.value.teamRecommendations) return []
     const rec = characterRef.value.teamRecommendations
@@ -67,7 +77,7 @@ export function useTeamRecommendations(character: Character) {
     
     // For main DPS: Prioritize character synergies, then hypercarry-focused amplifiers
     const dualDPSAmplifiers = ['ruan-mei', 'tribbie']
-    const allAmplifiers = [...rec.amplifier.bis, ...rec.amplifier.generalist, ...rec.amplifier.f2p]
+    const allAmplifiers = sortByRarity([...rec.amplifier.bis, ...rec.amplifier.generalist, ...rec.amplifier.f2p])
     
     let prioritizedAmplifiers
     if (isHPScaling) {
@@ -87,7 +97,7 @@ export function useTeamRecommendations(character: Character) {
     }
     
     // Add sustain with character synergy consideration
-    const allSustain = [...rec.sustain.bis, ...rec.sustain.generalist, ...rec.sustain.f2p]
+    const allSustain = sortByRarity([...rec.sustain.bis, ...rec.sustain.generalist, ...rec.sustain.f2p])
     let sustain
     if (isHPScaling) {
       // Prioritize HP synergy sustain for HP scaling characters
@@ -105,21 +115,25 @@ export function useTeamRecommendations(character: Character) {
     const rec = characterRef.value.teamRecommendations
     
     // Find a main DPS from subDPS recommendations (reverse lookup)
-    const mainDPS = rec.subDPS?.bis[0] || rec.subDPS?.generalist[0] || rec.subDPS?.f2p[0] || 'castorice'
-    const team = [mainDPS, characterRef.value.id]
+    const allMainDPSOptions = [rec.subDPS?.bis[0], rec.subDPS?.generalist[0], rec.subDPS?.f2p[0]].filter((id): id is string => Boolean(id))
+    const sortedMainDPS = sortByRarity(allMainDPSOptions)
+    const mainDPS = sortedMainDPS[0] || 'castorice'
+    const dpsTeam = sortByRarity([mainDPS, characterRef.value.id])
+    const team = [...dpsTeam]
     
     // For sub-DPS: Prioritize dual-DPS friendly amplifiers
     const dualDPSAmplifiers = ['ruan-mei', 'tribbie']
-    const allAmplifiers = [...rec.amplifier.bis, ...rec.amplifier.generalist, ...rec.amplifier.f2p]
-    const dualDPSFriendly = allAmplifiers.filter(id => dualDPSAmplifiers.includes(id))
-    const otherAmplifiers = allAmplifiers.filter(id => !dualDPSAmplifiers.includes(id))
+    const allAmplifiers = sortByRarity([...rec.amplifier.bis, ...rec.amplifier.generalist, ...rec.amplifier.f2p])
+    const dualDPSFriendly = sortByRarity(allAmplifiers.filter(id => dualDPSAmplifiers.includes(id)))
+    const otherAmplifiers = sortByRarity(allAmplifiers.filter(id => !dualDPSAmplifiers.includes(id)))
     
     // Use dual-DPS amplifiers first, then others as fallback
     const prioritizedAmplifiers = [...dualDPSFriendly, ...otherAmplifiers]
     if (prioritizedAmplifiers[0]) team.push(prioritizedAmplifiers[0])
     
     // Add sustain
-    const sustain = rec.sustain.bis[0] || rec.sustain.generalist[0] || rec.sustain.f2p[0]
+    const allSustainSorted = sortByRarity([...rec.sustain.bis, ...rec.sustain.generalist, ...rec.sustain.f2p])
+    const sustain = allSustainSorted[0]
     if (sustain) team.push(sustain)
     
     return team.slice(0, 4)
@@ -137,7 +151,7 @@ export function useTeamRecommendations(character: Character) {
     
     // Filter all amplifiers to only F2P options
     const allAmplifiers = [...rec.amplifier.f2p, ...rec.amplifier.generalist, ...rec.amplifier.bis]
-    const f2pAmplifiers = filterF2POptions(allAmplifiers)
+    const f2pAmplifiers = sortByRarity(filterF2POptions(allAmplifiers))
     
     // For main DPS: Prioritize character synergies, then hypercarry-focused amplifiers
     const dualDPSAmplifiers = ['ruan-mei', 'tribbie']
@@ -161,7 +175,7 @@ export function useTeamRecommendations(character: Character) {
     
     // Add sustain with character synergy consideration (F2P only)
     const allSustain = [...rec.sustain.f2p, ...rec.sustain.generalist, ...rec.sustain.bis]
-    const f2pSustain = filterF2POptions(allSustain)
+    const f2pSustain = sortByRarity(filterF2POptions(allSustain))
     
     let sustain
     if (isHPScaling) {
@@ -181,18 +195,19 @@ export function useTeamRecommendations(character: Character) {
     
     // Find a F2P main DPS from subDPS recommendations (reverse lookup)
     const allMainDPS = [rec.subDPS?.f2p[0], rec.subDPS?.generalist[0], rec.subDPS?.bis[0]].filter((id): id is string => Boolean(id))
-    const f2pMainDPS = filterF2POptions(allMainDPS)
+    const f2pMainDPS = sortByRarity(filterF2POptions(allMainDPS))
     const mainDPS = f2pMainDPS[0] || 'castorice' // fallback to castorice if no F2P main DPS
-    const team = [mainDPS, characterRef.value.id]
+    const dpsTeam = sortByRarity([mainDPS, characterRef.value.id])
+    const team = [...dpsTeam]
     
     // Filter amplifiers to only F2P options
     const allAmplifiers = [...rec.amplifier.f2p, ...rec.amplifier.generalist, ...rec.amplifier.bis]
-    const f2pAmplifiers = filterF2POptions(allAmplifiers)
+    const f2pAmplifiers = sortByRarity(filterF2POptions(allAmplifiers))
     
     // For sub-DPS: Prioritize dual-DPS friendly amplifiers
     const dualDPSAmplifiers = ['ruan-mei', 'tribbie']
-    const dualDPSFriendly = f2pAmplifiers.filter(id => dualDPSAmplifiers.includes(id))
-    const otherAmplifiers = f2pAmplifiers.filter(id => !dualDPSAmplifiers.includes(id))
+    const dualDPSFriendly = sortByRarity(f2pAmplifiers.filter(id => dualDPSAmplifiers.includes(id)))
+    const otherAmplifiers = sortByRarity(f2pAmplifiers.filter(id => !dualDPSAmplifiers.includes(id)))
     
     // Use dual-DPS amplifiers first, then others as fallback
     const prioritizedAmplifiers = [...dualDPSFriendly, ...otherAmplifiers]
@@ -200,7 +215,7 @@ export function useTeamRecommendations(character: Character) {
     
     // Add F2P sustain
     const allSustain = [...rec.sustain.f2p, ...rec.sustain.generalist, ...rec.sustain.bis]
-    const f2pSustain = filterF2POptions(allSustain)
+    const f2pSustain = sortByRarity(filterF2POptions(allSustain))
     const sustain = f2pSustain[0]
     if (sustain) team.push(sustain)
     
