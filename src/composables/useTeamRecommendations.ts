@@ -180,7 +180,7 @@ export function useTeamRecommendations(character: Character) {
     const rec = characterRef.value.teamRecommendations
     
     // Find a F2P main DPS from subDPS recommendations (reverse lookup)
-    const allMainDPS = [rec.subDPS?.f2p[0], rec.subDPS?.generalist[0], rec.subDPS?.bis[0]].filter(Boolean)
+    const allMainDPS = [rec.subDPS?.f2p[0], rec.subDPS?.generalist[0], rec.subDPS?.bis[0]].filter((id): id is string => Boolean(id))
     const f2pMainDPS = filterF2POptions(allMainDPS)
     const mainDPS = f2pMainDPS[0] || 'castorice' // fallback to castorice if no F2P main DPS
     const team = [mainDPS, characterRef.value.id]

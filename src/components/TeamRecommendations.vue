@@ -62,7 +62,7 @@
         </div>
 
         <!-- Team Compositions -->
-        <div class="w-100 mt-3">
+        <div class="w-100" style="margin-top: 3.5rem;">
           <h4 class="text-center text-primary mb-2">Recommended Teams for {{ character.name }}</h4>
           <!-- Team Role Tabs -->
           <div class="d-flex gap-2 justify-content-center mb-2">
