@@ -1,44 +1,82 @@
 import type { Character } from '@/types/Character'
 import { breakDPSCharacters } from './breakDPS'
+import { bufferCharacters } from './buffers'
 
-// Import other character files here as they're created
-// import { bufferCharacters } from './buffers'
-// import { dpsCharacters } from './dps'
-// import { healerCharacters } from './healers'
-// import { shielderCharacters } from './shielders'
-
-export const characters: Character[] = [
-  ...breakDPSCharacters,
-  // Add other character arrays here
-  
-  // Temporary: Keep existing characters until migration is complete
-  // Buffer - Alphabetical
+// Essential characters for functionality
+const essentialCharacters: Character[] = [
   {
-    id: 'bronya',
-    name: 'Bronya',
+    id: 'feixiao',
+    name: 'Feixiao',
     element: 'Wind',
-    path: 'Harmony',
+    path: 'Hunt',
     rarity: 5,
-    mainArchetype: 'Buffer',
-    labels: ['Support', 'Buffer', 'Crit Support', 'Generalist'],
+    mainArchetype: 'DPS',
+    labels: ['DPS', 'Follow-up Attack', 'Ultimate Based'],
     teamRecommendations: {
-      requiresSubDPS: false,
-      mainDPS: {
-        bis: [],
-        generalist: [],
-        f2p: [],
+      requiresSubDPS: true,
+      subDPS: {
+        bis: ['cipher'],
+        generalist: ['topaz'],
+        f2p: ['hunt-march-7th', 'moze'],
       },
       bufferDebuffer: {
-        bis: [],
-        generalist: [],
-        f2p: [],
+        bis: ['robin'],
+        generalist: ['tribbie'],
+        f2p: ['bronya'],
       },
       sustain: {
-        bis: [],
+        bis: ['aventurine', 'lingsha'],
         generalist: [],
-        f2p: [],
+        f2p: ['gallagher'],
       },
     },
   },
-  // ... rest of characters (truncated for brevity)
+  {
+    id: 'gallagher',
+    name: 'Gallagher',
+    element: 'Fire',
+    path: 'Abundance',
+    rarity: 4,
+    mainArchetype: 'Healer',
+    labels: ['Healer', 'Break Support', 'Debuff', 'Generalist'],
+    teamRecommendations: {
+      requiresSubDPS: false,
+      bufferDebuffer: { bis: [], generalist: [], f2p: [] },
+      sustain: { bis: [], generalist: [], f2p: [] },
+    },
+  },
+  {
+    id: 'lingsha',
+    name: 'Lingsha',
+    element: 'Fire',
+    path: 'Abundance',
+    rarity: 5,
+    mainArchetype: 'Healer',
+    labels: ['Healer', 'Break Support', 'Follow-up Attack'],
+    teamRecommendations: {
+      requiresSubDPS: false,
+      bufferDebuffer: { bis: [], generalist: [], f2p: [] },
+      sustain: { bis: [], generalist: [], f2p: [] },
+    },
+  },
+  {
+    id: 'aventurine',
+    name: 'Aventurine',
+    element: 'Imaginary',
+    path: 'Preservation',
+    rarity: 5,
+    mainArchetype: 'Shielder',
+    labels: ['Shielder', 'Follow-up Attack', 'Crit Support'],
+    teamRecommendations: {
+      requiresSubDPS: false,
+      bufferDebuffer: { bis: [], generalist: [], f2p: [] },
+      sustain: { bis: [], generalist: [], f2p: [] },
+    },
+  },
+]
+
+export const characters: Character[] = [
+  ...breakDPSCharacters,
+  ...bufferCharacters,
+  ...essentialCharacters,
 ]

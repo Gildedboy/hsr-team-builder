@@ -6,12 +6,12 @@ export function useCharacterGrouping(filteredCharacters: { value: Character[] })
     const filtered = filteredCharacters.value
     
     const dpsCharacters = filtered.filter(char => 
-      char.mainArchetype === 'DPS' || char.mainArchetype === 'Break DPS' || char.mainArchetype === 'DoT'
+      char.mainArchetype === 'DPS' || char.mainArchetype === 'Break DPS'
     )
     
     const dpsCategories = {
       'Follow-up': dpsCharacters.filter(char => char.labels.some(label => label.includes('Follow-up'))),
-      'DoT': dpsCharacters.filter(char => char.labels.some(label => label.includes('DoT')) || char.mainArchetype === 'DoT'),
+      'DoT': dpsCharacters.filter(char => char.labels.some(label => label.includes('DoT'))),
       'Counter': dpsCharacters.filter(char => char.labels.some(label => label.includes('Counter'))),
       'Break': dpsCharacters.filter(char => char.labels.some(label => label.includes('Break')) || char.mainArchetype === 'Break DPS'),
       'Hypercarry': dpsCharacters.filter(char => char.labels.some(label => label.includes('Hypercarry'))),
@@ -24,7 +24,7 @@ export function useCharacterGrouping(filteredCharacters: { value: Character[] })
           label.includes('Counter') || label.includes('Break') || 
           label.includes('Hypercarry') || label.includes('AoE') || 
           label.includes('HP Scaling') || label.includes('Debuff')
-        ) && char.mainArchetype !== 'DoT' && char.mainArchetype !== 'Break DPS'
+        ) && char.mainArchetype !== 'Break DPS'
       )
     }
     

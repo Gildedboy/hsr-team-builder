@@ -23,7 +23,7 @@
             height: '80px', 
             borderColor: tierColor + ' !important' 
           }"
-          @error="$event.target.src = '/images/placeholder.svg'"
+          @error="($event.target as HTMLImageElement).src = '/images/placeholder.svg'"
           @mouseenter="$emit('show-tooltip', characterId, $event)"
           @mouseleave="$emit('hide-tooltip')"
         />

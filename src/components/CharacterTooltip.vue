@@ -12,7 +12,7 @@
         :src="getCharacterAvatar(character.id)" 
         :alt="character.name" 
         class="tooltip-avatar"
-        @error="$event.target.src = '/images/placeholder.svg'"
+        @error="($event.target as HTMLImageElement).src = '/images/placeholder.svg'"
       />
       <div class="tooltip-info">
         <div class="tooltip-name">{{ character.name }}</div>
@@ -47,7 +47,7 @@
 <script setup lang="ts">
 import type { Character } from '@/types/Character'
 import { getCharacterAvatar } from '@/data/avatars'
-import { COLORS } from '@/constants/design'
+
 
 interface Props {
   character: Character | null
@@ -58,7 +58,7 @@ defineProps<Props>()
 </script>
 
 <style scoped>
-.tooltip {
+.character-tooltip {
   position: fixed;
   z-index: 9999;
   pointer-events: none;
@@ -68,7 +68,7 @@ defineProps<Props>()
   padding: 12px;
   color: white;
   font-size: 14px;
-  max-width: 280px;
+  width: 320px;
   backdrop-filter: blur(10px);
   box-shadow: 0 8px 32px rgba(0, 0, 0, 0.5);
 }

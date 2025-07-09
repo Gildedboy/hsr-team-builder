@@ -1,4 +1,4 @@
-import { computed } from 'vue'
+
 import { characters } from '@/data/characters'
 import { useCharacterFilters } from './useCharacterFilters'
 import { useCharacterGrouping } from './useCharacterGrouping'

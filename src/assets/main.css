@@ -98,6 +98,7 @@ body {
 .character-tooltip .tooltip-element-path {
   display: flex;
   align-items: center;
+  justify-content: center;
   gap: 8px;
   margin-bottom: 12px;
   padding: 8px 12px;

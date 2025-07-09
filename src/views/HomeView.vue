@@ -1,61 +1,33 @@
 <script setup lang="ts">
 import TeamRecommendations from '@/components/TeamRecommendations.vue'
-import CharacterGrid from '@/components/CharacterGrid.vue'
-import { characters } from '@/data/characters'
+import RoleTabsSection from '@/components/RoleTabsSection.vue'
 import { getCharacterAvatar } from '@/data/avatars'
-import { useCharacterFilters } from '@/composables/useCharacterFilters'
-import { useCharacterGrouping } from '@/composables/useCharacterGrouping'
-import { useCharacterSelection } from '@/composables/useCharacterSelection'
-import { useSearch } from '@/composables/useSearch'
+import { useHomeView } from '@/composables/useHomeView'
 import { FILTER_OPTIONS } from '@/constants/filterOptions'
 import { COLORS } from '@/constants/design'
-import type { Character } from '@/types/Character'
+
 
 const {
   selectedElements,
   selectedPaths,
   selectedRarities,
   selectedArchetypes,
-  filteredCharacters,
-  toggleFilter,
-  clearFilters,
-} = useCharacterFilters(characters)
-
-const { charactersByRole } = useCharacterGrouping(filteredCharacters)
-
-const { selectedCharacter, selectCharacter, isCharacterRecommended, getRecommendationTier } =
-  useCharacterSelection()
-
-const {
-  searchQuery: searchQueryRef,
+  charactersByRole,
+  selectedCharacter,
+  searchQueryRef,
   showSearchSuggestions,
   searchSuggestions,
-  selectCharacterFromSearch,
+  toggleFilter,
+  selectCharacter,
+  handleSelectFromSearch,
+  handleClearFilters,
   onSearchFocus,
   onSearchBlur,
-} = useSearch()
-
-const handleSelectFromSearch = (character: Character) => {
-  selectCharacterFromSearch(character, selectCharacter)
-}
-
-const handleClearFilters = () => {
-  clearFilters()
-  searchQueryRef.value = ''
-  selectedCharacter.value = null
-}
-
-const getActiveTab = () => {
-  const hasDps = Object.values(charactersByRole.value.dps).some(chars => chars.length > 0)
-  const hasSupport = Object.values(charactersByRole.value.support).some(chars => chars.length > 0)
-  const hasSustain = Object.values(charactersByRole.value.sustain).some(chars => chars.length > 0)
-  
-  // Default priority: DPS > Support > Sustain
-  if (hasDps) return 'dps'
-  if (hasSupport) return 'support'
-  if (hasSustain) return 'sustain'
-  return 'dps'
-}
+  isCharacterRecommended,
+  getRecommendationTier,
+  getActiveTab,
+  hasCharactersInRole,
+} = useHomeView()
 </script>
 
 <template>
@@ -71,13 +43,12 @@ const getActiveTab = () => {
     <div class="row mb-5">
       <!-- Filter Section -->
       <div class="col-lg-3 col-md-4 mb-4">
-        <div class="card bg-dark border-primary" style="height: fit-content;">
+        <div class="card bg-dark border-primary filter-card">
           <div class="card-header d-flex justify-content-between align-items-center px-3">
             <h3 class="h5 text-primary mb-0">Filters</h3>
             <button
               @click="handleClearFilters()"
-              class="btn btn-warning btn-sm fw-bold rounded-pill me-2"
-              style="padding-top: 8px;"
+              class="btn btn-warning btn-sm fw-bold rounded-pill me-2 reset-button"
             >
               RESET
             </button>
@@ -97,21 +68,19 @@ const getActiveTab = () => {
               <!-- Search Suggestions Dropdown -->
               <div
                 v-if="showSearchSuggestions && searchSuggestions.length > 0"
-                class="position-absolute w-100 bg-dark border border-primary border-top-0 rounded-bottom"
-                style="top: 100%; z-index: 1050; max-height: 150px; overflow-y: auto"
+                class="position-absolute w-100 bg-dark border border-primary border-top-0 rounded-bottom search-suggestions"
               >
                 <div
                   v-for="character in searchSuggestions"
                   :key="character.id"
-                  class="p-2 cursor-pointer d-flex align-items-center gap-2 hover-bg-primary"
+                  class="search-suggestion-item hover-bg-primary"
                   @click="handleSelectFromSearch(character)"
                 >
                   <img
                     :src="getCharacterAvatar(character.id)"
                     :alt="character.name"
-                    class="rounded-circle"
-                    style="width: 24px; height: 24px"
-                    @error="$event.target.src = '/images/placeholder.svg'"
+                    class="rounded-circle search-suggestion-avatar"
+                    @error="($event.target as HTMLImageElement).src = '/images/placeholder.svg'"
                   />
                   <div>
                     <div class="text-white fw-semibold small">{{ character.name }}</div>
@@ -119,9 +88,9 @@ const getActiveTab = () => {
                       <img
                         :src="`/images/element/${character.element}.webp`"
                         :alt="character.element"
-                        style="width: 12px; height: 12px"
+                        class="search-suggestion-element-icon"
                       />
-                      <span class="text-secondary" style="font-size: 10px">{{
+                      <span class="text-secondary search-suggestion-element-text">{{
                         character.element
                       }}</span>
                     </div>
@@ -244,294 +213,18 @@ const getActiveTab = () => {
 
     <!-- Characters grouped by archetype -->
     <div class="card bg-dark border-primary mb-5">
-      <!-- Desktop Table View -->
-      <div class="d-none d-lg-block">
-        <div class="table-responsive">
-          <table class="table table-dark mb-0">
-            <thead>
-              <tr class="bg-gradient">
-                <th
-                  class="text-primary text-center fw-bold border-end border-primary"
-                  style="width: 33.33%"
-                >
-                  DPS
-                </th>
-                <th
-                  class="text-primary text-center fw-bold border-end border-primary"
-                  style="width: 33.33%"
-                >
-                  Sub-DPS / Buffer / Debuffer
-                </th>
-                <th class="text-primary text-center fw-bold" style="width: 33.34%">Sustain</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr>
-                <td
-                  class="align-top p-3 border-end border-primary"
-                  style="background: rgba(0, 212, 255, 0.05)"
-                >
-                  <div
-                    v-for="(chars, category) in charactersByRole.dps"
-                    :key="category"
-                    v-show="chars.length > 0"
-                    class="mb-4"
-                  >
-                    <h3
-                      class="h5 text-primary mb-3 p-2 rounded border-start border-primary border-3"
-                      style="background: rgba(255, 255, 255, 0.1)"
-                    >
-                      {{ category }} ({{ chars.length }})
-                    </h3>
-                    <CharacterGrid
-                      :characters="chars"
-                      :selected-character="selectedCharacter"
-                      :is-recommended="
-                        (charId) =>
-                          selectedCharacter
-                            ? isCharacterRecommended(selectedCharacter, charId)
-                            : false
-                      "
-                      :get-recommendation-tier="
-                        (charId) =>
-                          selectedCharacter
-                            ? getRecommendationTier(selectedCharacter, charId)
-                            : null
-                      "
-                      :selected-elements="selectedElements"
-                      :selected-paths="selectedPaths"
-                      :selected-rarities="selectedRarities"
-                      @select="selectCharacter"
-                    />
-                  </div>
-                </td>
-                <td
-                  class="align-top p-3 border-end border-primary"
-                  style="background: rgba(155, 89, 182, 0.05)"
-                >
-                  <div
-                    v-for="(chars, category) in charactersByRole.support"
-                    :key="category"
-                    v-show="chars.length > 0"
-                    class="mb-4"
-                  >
-                    <h3
-                      class="h5 text-primary mb-3 p-2 rounded border-start border-primary border-3"
-                      style="background: rgba(255, 255, 255, 0.1)"
-                    >
-                      {{ category }} ({{ chars.length }})
-                    </h3>
-                    <CharacterGrid
-                      :characters="chars"
-                      :selected-character="selectedCharacter"
-                      :is-recommended="
-                        (charId) =>
-                          selectedCharacter
-                            ? isCharacterRecommended(selectedCharacter, charId)
-                            : false
-                      "
-                      :get-recommendation-tier="
-                        (charId) =>
-                          selectedCharacter
-                            ? getRecommendationTier(selectedCharacter, charId)
-                            : null
-                      "
-                      :selected-elements="selectedElements"
-                      :selected-paths="selectedPaths"
-                      :selected-rarities="selectedRarities"
-                      @select="selectCharacter"
-                    />
-                  </div>
-                </td>
-                <td class="align-top p-3" style="background: rgba(46, 204, 113, 0.05)">
-                  <div
-                    v-for="(chars, category) in charactersByRole.sustain"
-                    :key="category"
-                    v-show="chars.length > 0"
-                    class="mb-4"
-                  >
-                    <h3
-                      class="h5 text-primary mb-3 p-2 rounded border-start border-primary border-3"
-                      style="background: rgba(255, 255, 255, 0.1)"
-                    >
-                      {{ category }} ({{ chars.length }})
-                    </h3>
-                    <CharacterGrid
-                      :characters="chars"
-                      :selected-character="selectedCharacter"
-                      :is-recommended="
-                        (charId) =>
-                          selectedCharacter
-                            ? isCharacterRecommended(selectedCharacter, charId)
-                            : false
-                      "
-                      :get-recommendation-tier="
-                        (charId) =>
-                          selectedCharacter
-                            ? getRecommendationTier(selectedCharacter, charId)
-                            : null
-                      "
-                      :selected-elements="selectedElements"
-                      :selected-paths="selectedPaths"
-                      :selected-rarities="selectedRarities"
-                      @select="selectCharacter"
-                    />
-                  </div>
-                </td>
-              </tr>
-            </tbody>
-          </table>
-        </div>
-      </div>
-
-      <!-- Mobile Tab View -->
-      <div class="d-lg-none">
-        <ul class="nav nav-tabs nav-fill" role="tablist">
-          <li v-show="Object.values(charactersByRole.dps).some(chars => chars.length > 0)" class="nav-item" role="presentation">
-            <button
-              :class="getActiveTab() === 'dps' ? 'nav-link active fw-bold custom-tab' : 'nav-link fw-bold custom-tab'"
-              data-bs-toggle="tab"
-              data-bs-target="#dps-tab"
-              type="button"
-              role="tab"
-            >
-              DPS
-            </button>
-          </li>
-          <li v-show="Object.values(charactersByRole.support).some(chars => chars.length > 0)" class="nav-item" role="presentation">
-            <button
-              :class="getActiveTab() === 'support' ? 'nav-link active fw-bold custom-tab' : 'nav-link fw-bold custom-tab'"
-              data-bs-toggle="tab"
-              data-bs-target="#support-tab"
-              type="button"
-              role="tab"
-            >
-              Support
-            </button>
-          </li>
-          <li v-show="Object.values(charactersByRole.sustain).some(chars => chars.length > 0)" class="nav-item" role="presentation">
-            <button
-              :class="getActiveTab() === 'sustain' ? 'nav-link active fw-bold custom-tab' : 'nav-link fw-bold custom-tab'"
-              data-bs-toggle="tab"
-              data-bs-target="#sustain-tab"
-              type="button"
-              role="tab"
-            >
-              Sustain
-            </button>
-          </li>
-        </ul>
-        <div class="tab-content">
-          <div
-            :class="getActiveTab() === 'dps' ? 'tab-pane fade show active p-3' : 'tab-pane fade p-3'"
-            id="dps-tab"
-            role="tabpanel"
-            style="background: rgba(0, 212, 255, 0.05)"
-          >
-            <div
-              v-for="(chars, category) in charactersByRole.dps"
-              :key="category"
-              v-show="chars.length > 0"
-              class="mb-4"
-            >
-              <h3
-                class="h5 text-primary mb-3 p-2 rounded border-start border-primary border-3"
-                style="background: rgba(255, 255, 255, 0.1)"
-              >
-                {{ category }} ({{ chars.length }})
-              </h3>
-              <CharacterGrid
-                :characters="chars"
-                :selected-character="selectedCharacter"
-                :is-recommended="
-                  (charId) =>
-                    selectedCharacter ? isCharacterRecommended(selectedCharacter, charId) : false
-                "
-                :get-recommendation-tier="
-                  (charId) =>
-                    selectedCharacter ? getRecommendationTier(selectedCharacter, charId) : null
-                "
-                :selected-elements="selectedElements"
-                :selected-paths="selectedPaths"
-                :selected-rarities="selectedRarities"
-                @select="selectCharacter"
-              />
-            </div>
-          </div>
-          <div
-            :class="getActiveTab() === 'support' ? 'tab-pane fade show active p-3' : 'tab-pane fade p-3'"
-            id="support-tab"
-            role="tabpanel"
-            style="background: rgba(155, 89, 182, 0.05)"
-          >
-            <div
-              v-for="(chars, category) in charactersByRole.support"
-              :key="category"
-              v-show="chars.length > 0"
-              class="mb-4"
-            >
-              <h3
-                class="h5 text-primary mb-3 p-2 rounded border-start border-primary border-3"
-                style="background: rgba(255, 255, 255, 0.1)"
-              >
-                {{ category }} ({{ chars.length }})
-              </h3>
-              <CharacterGrid
-                :characters="chars"
-                :selected-character="selectedCharacter"
-                :is-recommended="
-                  (charId) =>
-                    selectedCharacter ? isCharacterRecommended(selectedCharacter, charId) : false
-                "
-                :get-recommendation-tier="
-                  (charId) =>
-                    selectedCharacter ? getRecommendationTier(selectedCharacter, charId) : null
-                "
-                :selected-elements="selectedElements"
-                :selected-paths="selectedPaths"
-                :selected-rarities="selectedRarities"
-                @select="selectCharacter"
-              />
-            </div>
-          </div>
-          <div
-            :class="getActiveTab() === 'sustain' ? 'tab-pane fade show active p-3' : 'tab-pane fade p-3'"
-            id="sustain-tab"
-            role="tabpanel"
-            style="background: rgba(46, 204, 113, 0.05)"
-          >
-            <div
-              v-for="(chars, category) in charactersByRole.sustain"
-              :key="category"
-              v-show="chars.length > 0"
-              class="mb-4"
-            >
-              <h3
-                class="h5 text-primary mb-3 p-2 rounded border-start border-primary border-3"
-                style="background: rgba(255, 255, 255, 0.1)"
-              >
-                {{ category }} ({{ chars.length }})
-              </h3>
-              <CharacterGrid
-                :characters="chars"
-                :selected-character="selectedCharacter"
-                :is-recommended="
-                  (charId) =>
-                    selectedCharacter ? isCharacterRecommended(selectedCharacter, charId) : false
-                "
-                :get-recommendation-tier="
-                  (charId) =>
-                    selectedCharacter ? getRecommendationTier(selectedCharacter, charId) : null
-                "
-                :selected-elements="selectedElements"
-                :selected-paths="selectedPaths"
-                :selected-rarities="selectedRarities"
-                @select="selectCharacter"
-              />
-            </div>
-          </div>
-        </div>
-      </div>
+      <RoleTabsSection
+        :characters-by-role="charactersByRole"
+        :selected-character="selectedCharacter"
+        :is-recommended="(charId: string) => selectedCharacter ? isCharacterRecommended(selectedCharacter, charId) : false"
+        :get-recommendation-tier="(charId: string) => selectedCharacter ? getRecommendationTier(selectedCharacter, charId) : null"
+        :selected-elements="selectedElements"
+        :selected-paths="selectedPaths"
+        :selected-rarities="selectedRarities"
+        :get-active-tab="getActiveTab"
+        :has-characters-in-role="hasCharactersInRole"
+        @select="selectCharacter"
+      />
     </div>
   </main>
 </template>
