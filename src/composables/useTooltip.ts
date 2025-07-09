@@ -6,7 +6,12 @@ export function useTooltip() {
   const hoveredCharacter = ref<Character | null>(null)
   const tooltipPosition = ref({ x: 0, y: 0 })
 
+  // Detect if device supports touch (mobile/tablet)
+  const isTouchDevice = 'ontouchstart' in window || navigator.maxTouchPoints > 0
+
   const showTooltip = (characterId: string, event: MouseEvent) => {
+    // Don't show tooltips on touch devices
+    if (isTouchDevice) return
     const character = characters.find(c => c.id === characterId)
     if (character) {
       hoveredCharacter.value = character
