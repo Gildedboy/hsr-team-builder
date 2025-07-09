@@ -16,22 +16,22 @@ const essentialCharacters: Character[] = [
     path: 'Hunt',
     rarity: 5,
     mainArchetype: 'DPS',
-    labels: ['DPS', 'Follow-up Attack', 'Ultimate Based'],
+    labels: ['DPS', 'Follow-up Attack', 'Ultimate Based', 'Multi-Hit'],
     teamRecommendations: {
       requiresSubDPS: true,
       subDPS: {
         bis: ['cipher'],
         generalist: ['topaz'],
-        f2p: ['hunt-march-7th', 'moze'],
+        f2p: ['moze'],
       },
       amplifier: {
         bis: ['robin'],
         generalist: ['tribbie'],
-        f2p: ['bronya'],
+        f2p: ['remembrance-trailblazer'],
       },
       sustain: {
-        bis: ['aventurine', 'lingsha'],
-        generalist: [],
+        bis: ['aventurine'],
+        generalist: ['lingsha', 'huohuo'],
         f2p: ['gallagher'],
       },
     },

@@ -80,10 +80,10 @@ export const dpsCharacters: Character[] = [
     mainArchetype: 'DPS',
     labels: ['DPS', 'Sub-DPS', 'Follow-up Attack', 'HP Scaling', 'Self Damage'],
     teamRecommendations: {
-      requiresSubDPS: true,
+      requiresSubDPS: false,
       subDPS: { bis: ['castorice'], generalist: ['jingliu'], f2p: [] },
-      amplifier: { bis: ['sunday', 'tribbie', 'cipher', 'silver-wolf'], generalist: ['ruan-mei', 'bronya'], f2p: ['remembrance-trailblazer'] },
-      sustain: { bis: ['hyacine'], generalist: ['huohuo', 'luocha'], f2p: ['gallagher', 'lynx'] },
+      amplifier: { bis: ['sunday', 'tribbie'], generalist: ['tribbie', 'remembrance-trailblazer'], f2p: ['bronya', 'remembrance-trailblazer'] },
+      sustain: { bis: ['hyacine'], generalist: ['huohuo', 'luocha'], f2p: ['gallagher'] },
     },
   },
   {
@@ -178,7 +178,7 @@ export const dpsCharacters: Character[] = [
     path: 'Hunt',
     rarity: 5,
     mainArchetype: 'DPS',
-    labels: ['DPS', 'Sub-DPS', 'Follow-up Attack', 'Debuff Synergy', 'F2P'],
+    labels: ['DPS', 'Sub-DPS', 'Follow-up Attack', 'Debuff Synergy'],
     teamRecommendations: {
       requiresSubDPS: true,
       subDPS: { bis: ['topaz'], generalist: [], f2p: ['moze'] },

@@ -70,41 +70,24 @@ export function useTeamRecommendations(character: Character) {
     const rec = characterRef.value.teamRecommendations
     const team = [characterRef.value.id]
     
-    // Check for character-specific synergies
-    const isHPScaling = characterRef.value.labels.some(label => label.includes('HP Scaling'))
-    const hpSynergyAmplifiers = ['tribbie'] // HP scaling synergy amplifiers
-    const hpSynergySustain = ['hyacine'] // HP scaling synergy sustain
-    
-    // For main DPS: Prioritize character synergies, then hypercarry-focused amplifiers
-    const dualDPSAmplifiers = ['ruan-mei', 'tribbie']
-    const allAmplifiers = sortByRarity([...rec.amplifier.bis, ...rec.amplifier.generalist, ...rec.amplifier.f2p])
-    
-    let prioritizedAmplifiers
-    if (isHPScaling) {
-      // For HP scaling characters: prioritize HP synergy amplifiers
-      const synergyAmplifiers = allAmplifiers.filter(id => hpSynergyAmplifiers.includes(id))
-      const otherAmplifiers = allAmplifiers.filter(id => !hpSynergyAmplifiers.includes(id))
-      prioritizedAmplifiers = [...synergyAmplifiers, ...otherAmplifiers]
+    // If character requires sub-DPS, add sub-DPS first
+    if (rec.requiresSubDPS && rec.subDPS) {
+      const subDPS = rec.subDPS.bis[0] || rec.subDPS.generalist[0] || rec.subDPS.f2p[0]
+      if (subDPS) team.push(subDPS)
+      
+      // Add 1 amplifier for dual-DPS teams
+      const amplifier = rec.amplifier.bis[0] || rec.amplifier.generalist[0] || rec.amplifier.f2p[0]
+      if (amplifier) team.push(amplifier)
     } else {
-      // For other characters: avoid dual-DPS amplifiers in hypercarry setups
-      const hypercarryAmplifiers = allAmplifiers.filter(id => !dualDPSAmplifiers.includes(id))
-      const fallbackAmplifiers = allAmplifiers.filter(id => dualDPSAmplifiers.includes(id))
-      prioritizedAmplifiers = [...hypercarryAmplifiers, ...fallbackAmplifiers]
+      // Add 2 amplifiers for hypercarry teams
+      const allAmplifiers = [...rec.amplifier.bis, ...rec.amplifier.generalist, ...rec.amplifier.f2p]
+      for (let i = 0; i < 2 && i < allAmplifiers.length; i++) {
+        if (allAmplifiers[i]) team.push(allAmplifiers[i])
+      }
     }
     
-    for (let i = 0; i < 2 && i < prioritizedAmplifiers.length; i++) {
-      if (prioritizedAmplifiers[i]) team.push(prioritizedAmplifiers[i])
-    }
-    
-    // Add sustain with character synergy consideration
-    const allSustain = sortByRarity([...rec.sustain.bis, ...rec.sustain.generalist, ...rec.sustain.f2p])
-    let sustain
-    if (isHPScaling) {
-      // Prioritize HP synergy sustain for HP scaling characters
-      sustain = allSustain.find(id => hpSynergySustain.includes(id)) || allSustain[0]
-    } else {
-      sustain = allSustain[0]
-    }
+    // Add sustain
+    const sustain = rec.sustain.bis[0] || rec.sustain.generalist[0] || rec.sustain.f2p[0]
     if (sustain) team.push(sustain)
     
     return team.slice(0, 4)
@@ -144,47 +127,30 @@ export function useTeamRecommendations(character: Character) {
     const rec = characterRef.value.teamRecommendations
     const team = [characterRef.value.id]
     
-    // Check for character-specific synergies
-    const isHPScaling = characterRef.value.labels.some(label => label.includes('HP Scaling'))
-    const hpSynergyAmplifiers = ['tribbie'] // HP scaling synergy amplifiers
-    const hpSynergySustain = ['hyacine'] // HP scaling synergy sustain
-    
-    // Filter all amplifiers to only F2P options
+    // Get F2P options for all roles
     const allAmplifiers = [...rec.amplifier.f2p, ...rec.amplifier.generalist, ...rec.amplifier.bis]
-    const f2pAmplifiers = sortByRarity(filterF2POptions(allAmplifiers))
-    
-    // For main DPS: Prioritize character synergies, then hypercarry-focused amplifiers
-    const dualDPSAmplifiers = ['ruan-mei', 'tribbie']
-    
-    let prioritizedAmplifiers
-    if (isHPScaling) {
-      // For HP scaling characters: prioritize HP synergy amplifiers
-      const synergyAmplifiers = f2pAmplifiers.filter(id => hpSynergyAmplifiers.includes(id))
-      const otherAmplifiers = f2pAmplifiers.filter(id => !hpSynergyAmplifiers.includes(id))
-      prioritizedAmplifiers = [...synergyAmplifiers, ...otherAmplifiers]
-    } else {
-      // For other characters: avoid dual-DPS amplifiers in hypercarry setups
-      const hypercarryAmplifiers = f2pAmplifiers.filter(id => !dualDPSAmplifiers.includes(id))
-      const fallbackAmplifiers = f2pAmplifiers.filter(id => dualDPSAmplifiers.includes(id))
-      prioritizedAmplifiers = [...hypercarryAmplifiers, ...fallbackAmplifiers]
-    }
-    
-    for (let i = 0; i < 2 && i < prioritizedAmplifiers.length; i++) {
-      if (prioritizedAmplifiers[i]) team.push(prioritizedAmplifiers[i])
-    }
-    
-    // Add sustain with character synergy consideration (F2P only)
+    const f2pAmplifiers = filterF2POptions(allAmplifiers)
     const allSustain = [...rec.sustain.f2p, ...rec.sustain.generalist, ...rec.sustain.bis]
-    const f2pSustain = sortByRarity(filterF2POptions(allSustain))
+    const f2pSustain = filterF2POptions(allSustain)
     
-    let sustain
-    if (isHPScaling) {
-      // Prioritize HP synergy sustain for HP scaling characters
-      sustain = f2pSustain.find(id => hpSynergySustain.includes(id)) || f2pSustain[0]
+    // If character requires sub-DPS, add F2P sub-DPS first
+    if (rec.requiresSubDPS && rec.subDPS) {
+      const allSubDPS = [...rec.subDPS.f2p, ...rec.subDPS.generalist, ...rec.subDPS.bis]
+      const f2pSubDPS = filterF2POptions(allSubDPS)
+      const subDPS = f2pSubDPS[0]
+      if (subDPS) team.push(subDPS)
+      
+      // Add 1 F2P amplifier for dual-DPS teams
+      if (f2pAmplifiers[0]) team.push(f2pAmplifiers[0])
     } else {
-      sustain = f2pSustain[0]
+      // Add 2 F2P amplifiers for hypercarry teams
+      for (let i = 0; i < 2 && i < f2pAmplifiers.length; i++) {
+        if (f2pAmplifiers[i]) team.push(f2pAmplifiers[i])
+      }
     }
-    if (sustain) team.push(sustain)
+    
+    // Add F2P sustain
+    if (f2pSustain[0]) team.push(f2pSustain[0])
     
     return team.slice(0, 4)
   })
