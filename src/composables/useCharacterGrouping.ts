@@ -6,7 +6,7 @@ export function useCharacterGrouping(filteredCharacters: { value: Character[] })
     const filtered = filteredCharacters.value
     
     const dpsCharacters = filtered.filter(char => 
-      char.mainArchetype === 'DPS' || char.mainArchetype === 'Break DPS'
+      char.mainArchetype === 'DPS' || char.mainArchetype === 'Break DPS' || char.labels.some(label => label.includes('Sub-DPS'))
     )
     
     const dpsCategories = {
@@ -14,6 +14,7 @@ export function useCharacterGrouping(filteredCharacters: { value: Character[] })
       'DoT': dpsCharacters.filter(char => char.labels.some(label => label.includes('DoT'))),
       'Counter': dpsCharacters.filter(char => char.labels.some(label => label.includes('Counter'))),
       'Break': dpsCharacters.filter(char => char.labels.some(label => label.includes('Break')) || char.mainArchetype === 'Break DPS'),
+      'Sub-DPS': dpsCharacters.filter(char => char.labels.some(label => label.includes('Sub-DPS'))),
       'Hypercarry': dpsCharacters.filter(char => char.labels.some(label => label.includes('Hypercarry'))),
       'AoE': dpsCharacters.filter(char => char.labels.some(label => label.includes('AoE'))),
       'HP Scaling': dpsCharacters.filter(char => char.labels.some(label => label.includes('HP Scaling'))),
@@ -22,20 +23,20 @@ export function useCharacterGrouping(filteredCharacters: { value: Character[] })
         !char.labels.some(label => 
           label.includes('Follow-up') || label.includes('DoT') || 
           label.includes('Counter') || label.includes('Break') || 
-          label.includes('Hypercarry') || label.includes('AoE') || 
-          label.includes('HP Scaling') || label.includes('Debuff')
+          label.includes('Sub-DPS') || label.includes('Hypercarry') || 
+          label.includes('AoE') || label.includes('HP Scaling') || label.includes('Debuff')
         ) && char.mainArchetype !== 'Break DPS'
       )
     }
     
     const supportCharacters = filtered.filter(char => 
-      char.mainArchetype === 'Buffer' || char.mainArchetype === 'Debuff' || char.mainArchetype === 'Support'
+      (char.mainArchetype === 'Buffer' || char.mainArchetype === 'Debuff' || char.mainArchetype === 'Support') && 
+      !char.labels.some(label => label.includes('Sub-DPS'))
     )
     
     const supportCategories = {
       'Buffer': supportCharacters.filter(char => char.mainArchetype === 'Buffer' || char.labels.some(label => label.includes('Buffer'))),
-      'Debuffer': supportCharacters.filter(char => char.mainArchetype === 'Debuff' || char.labels.some(label => label.includes('Debuff'))),
-      'Sub-DPS': supportCharacters.filter(char => char.labels.some(label => label.includes('Sub-DPS')) || char.mainArchetype === 'Support')
+      'Debuffer': supportCharacters.filter(char => char.mainArchetype === 'Debuff' || char.labels.some(label => label.includes('Debuff')))
     }
     
     const sustainCharacters = filtered.filter(char => 

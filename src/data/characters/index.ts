@@ -1,6 +1,11 @@
 import type { Character } from '@/types/Character'
 import { breakDPSCharacters } from './breakDPS'
 import { bufferCharacters } from './buffers'
+import { dpsCharacters } from './dpsCharacters'
+import { supportCharacters } from './supportCharacters'
+import { sustainCharacters } from './sustainCharacters'
+import { miscCharacters } from './miscCharacters'
+import { newCharacters } from './newCharacters'
 
 // Essential characters for functionality
 const essentialCharacters: Character[] = [
@@ -19,7 +24,7 @@ const essentialCharacters: Character[] = [
         generalist: ['topaz'],
         f2p: ['hunt-march-7th', 'moze'],
       },
-      bufferDebuffer: {
+      amplifier: {
         bis: ['robin'],
         generalist: ['tribbie'],
         f2p: ['bronya'],
@@ -41,7 +46,7 @@ const essentialCharacters: Character[] = [
     labels: ['Healer', 'Break Support', 'Debuff', 'Generalist'],
     teamRecommendations: {
       requiresSubDPS: false,
-      bufferDebuffer: { bis: [], generalist: [], f2p: [] },
+      amplifier: { bis: [], generalist: [], f2p: [] },
       sustain: { bis: [], generalist: [], f2p: [] },
     },
   },
@@ -55,7 +60,7 @@ const essentialCharacters: Character[] = [
     labels: ['Healer', 'Break Support', 'Follow-up Attack'],
     teamRecommendations: {
       requiresSubDPS: false,
-      bufferDebuffer: { bis: [], generalist: [], f2p: [] },
+      amplifier: { bis: [], generalist: [], f2p: [] },
       sustain: { bis: [], generalist: [], f2p: [] },
     },
   },
@@ -69,7 +74,7 @@ const essentialCharacters: Character[] = [
     labels: ['Shielder', 'Follow-up Attack', 'Crit Support'],
     teamRecommendations: {
       requiresSubDPS: false,
-      bufferDebuffer: { bis: [], generalist: [], f2p: [] },
+      amplifier: { bis: [], generalist: [], f2p: [] },
       sustain: { bis: [], generalist: [], f2p: [] },
     },
   },
@@ -78,5 +83,10 @@ const essentialCharacters: Character[] = [
 export const characters: Character[] = [
   ...breakDPSCharacters,
   ...bufferCharacters,
+  ...dpsCharacters,
+  ...supportCharacters,
+  ...sustainCharacters,
+  ...miscCharacters,
+  ...newCharacters,
   ...essentialCharacters,
 ]

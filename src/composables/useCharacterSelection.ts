@@ -24,9 +24,9 @@ export function useCharacterSelection() {
       rec.subDPS.f2p.forEach(id => allRecommended.add(id))
     }
     
-    rec.bufferDebuffer.bis.forEach(id => allRecommended.add(id))
-    rec.bufferDebuffer.generalist.forEach(id => allRecommended.add(id))
-    rec.bufferDebuffer.f2p.forEach(id => allRecommended.add(id))
+    rec.amplifier.bis.forEach(id => allRecommended.add(id))
+    rec.amplifier.generalist.forEach(id => allRecommended.add(id))
+    rec.amplifier.f2p.forEach(id => allRecommended.add(id))
     
     rec.sustain.bis.forEach(id => allRecommended.add(id))
     rec.sustain.generalist.forEach(id => allRecommended.add(id))
@@ -41,17 +41,17 @@ export function useCharacterSelection() {
     const rec = selectedChar.teamRecommendations
     
     // Check BiS first (highest priority)
-    if (rec.subDPS?.bis.includes(charId) || rec.bufferDebuffer.bis.includes(charId) || rec.sustain.bis.includes(charId)) {
+    if (rec.subDPS?.bis.includes(charId) || rec.amplifier.bis.includes(charId) || rec.sustain.bis.includes(charId)) {
       return 'bis'
     }
     
     // Check Generalist
-    if (rec.subDPS?.generalist.includes(charId) || rec.bufferDebuffer.generalist.includes(charId) || rec.sustain.generalist.includes(charId)) {
+    if (rec.subDPS?.generalist.includes(charId) || rec.amplifier.generalist.includes(charId) || rec.sustain.generalist.includes(charId)) {
       return 'generalist'
     }
     
     // Check F2P
-    if (rec.subDPS?.f2p.includes(charId) || rec.bufferDebuffer.f2p.includes(charId) || rec.sustain.f2p.includes(charId)) {
+    if (rec.subDPS?.f2p.includes(charId) || rec.amplifier.f2p.includes(charId) || rec.sustain.f2p.includes(charId)) {
       return 'f2p'
     }
     

@@ -6,10 +6,10 @@
         <thead>
           <tr class="bg-gradient">
             <th class="text-primary text-center fw-bold border-end border-primary role-column-width">
-              DPS
+              DPS / Sub-DPS
             </th>
             <th class="text-primary text-center fw-bold border-end border-primary role-column-width">
-              Sub-DPS / Buffer / Debuffer
+              Buffer / Debuffer
             </th>
             <th class="text-primary text-center fw-bold role-column-width-last">Sustain</th>
           </tr>
