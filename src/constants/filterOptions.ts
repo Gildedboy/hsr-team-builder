@@ -2,5 +2,5 @@ export const FILTER_OPTIONS = {
   elements: ['Physical', 'Fire', 'Ice', 'Lightning', 'Wind', 'Quantum', 'Imaginary'],
   paths: ['Destruction', 'Hunt', 'Erudition', 'Harmony', 'Nihility', 'Preservation', 'Abundance', 'Remembrance'],
   rarities: [5, 4],
-  archetypes: ['DPS', 'Break DPS', 'DoT', 'Buffer', 'Debuff', 'Support', 'Healer', 'Shielder']
+  archetypes: ['Break-DPS', 'Buffer', 'Counter', 'Debuffer', 'Follow-up', 'Healer', 'HP-Scaling', 'Hypercarry', 'Shielder', 'Ultimate-Based']
 } as const

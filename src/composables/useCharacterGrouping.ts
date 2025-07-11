@@ -5,47 +5,35 @@ export function useCharacterGrouping(filteredCharacters: { value: Character[] })
   const charactersByRole = computed(() => {
     const filtered = filteredCharacters.value
     
+    // DPS Column - characters with role 'DPS'
     const dpsCharacters = filtered.filter(char => 
-      char.mainArchetype === 'DPS' || char.mainArchetype === 'Break DPS' || char.labels.some(label => label.includes('Sub-DPS'))
+      char.roles.includes('DPS')
     )
     
-    const dpsCategories = {
-      'Follow-up': dpsCharacters.filter(char => char.labels.some(label => label.includes('Follow-up'))),
-      'DoT': dpsCharacters.filter(char => char.labels.some(label => label.includes('DoT'))),
-      'Counter': dpsCharacters.filter(char => char.labels.some(label => label.includes('Counter'))),
-      'Break': dpsCharacters.filter(char => char.labels.some(label => label.includes('Break')) || char.mainArchetype === 'Break DPS'),
-      'Sub-DPS': dpsCharacters.filter(char => char.labels.some(label => label.includes('Sub-DPS'))),
-      'Hypercarry': dpsCharacters.filter(char => char.labels.some(label => label.includes('Hypercarry'))),
-      'AoE': dpsCharacters.filter(char => char.labels.some(label => label.includes('AoE'))),
-      'HP Scaling': dpsCharacters.filter(char => char.labels.some(label => label.includes('HP Scaling'))),
-      'Debuffer DPS': dpsCharacters.filter(char => char.labels.some(label => label.includes('Debuff'))),
-      'Other DPS': dpsCharacters.filter(char => 
-        !char.labels.some(label => 
-          label.includes('Follow-up') || label.includes('DoT') || 
-          label.includes('Counter') || label.includes('Break') || 
-          label.includes('Sub-DPS') || label.includes('Hypercarry') || 
-          label.includes('AoE') || label.includes('HP Scaling') || label.includes('Debuff')
-        ) && char.mainArchetype !== 'Break DPS'
-      )
-    }
-    
+    // Support Column - characters with role 'SUPPORT'
     const supportCharacters = filtered.filter(char => 
-      (char.mainArchetype === 'Buffer' || char.mainArchetype === 'Debuff' || char.mainArchetype === 'Support') && 
-      !char.labels.some(label => label.includes('Sub-DPS'))
+      char.roles.includes('SUPPORT')
     )
     
-    const supportCategories = {
-      'Buffer': supportCharacters.filter(char => char.mainArchetype === 'Buffer' || char.labels.some(label => label.includes('Buffer'))),
-      'Debuffer': supportCharacters.filter(char => char.mainArchetype === 'Debuff' || char.labels.some(label => label.includes('Debuff')))
-    }
-    
+    // Sustain Column - characters with role 'SUSTAIN'
     const sustainCharacters = filtered.filter(char => 
-      char.mainArchetype === 'Healer' || char.mainArchetype === 'Shielder'
+      char.roles.includes('SUSTAIN')
     )
     
-    const sustainCategories = {
-      'Healer': sustainCharacters.filter(char => char.mainArchetype === 'Healer'),
-      'Shielder': sustainCharacters.filter(char => char.mainArchetype === 'Shielder')
+    // Group by archetype within each column
+    const groupByArchetype = (characters: Character[]) => {
+      const groups: { [key: string]: Character[] } = {}
+      
+      characters.forEach(char => {
+        let archetype = char.archetype || 'Other'
+        
+        if (!groups[archetype]) {
+          groups[archetype] = []
+        }
+        groups[archetype].push(char)
+      })
+      
+      return groups
     }
     
     const sortByRarityThenName = (a: Character, b: Character) => {
@@ -53,14 +41,35 @@ export function useCharacterGrouping(filteredCharacters: { value: Character[] })
       return a.name.localeCompare(b.name)
     }
     
+    const dpsCategories = groupByArchetype(dpsCharacters)
+    const supportCategories = groupByArchetype(supportCharacters)
+    const sustainCategories = groupByArchetype(sustainCharacters)
+    
+    // Sort each category
     Object.values(dpsCategories).forEach(chars => chars.sort(sortByRarityThenName))
     Object.values(supportCategories).forEach(chars => chars.sort(sortByRarityThenName))
     Object.values(sustainCategories).forEach(chars => chars.sort(sortByRarityThenName))
     
+    // Sort subcategories alphabetically
+    const sortedDpsCategories = Object.keys(dpsCategories).sort().reduce((obj, key) => {
+      obj[key] = dpsCategories[key]
+      return obj
+    }, {} as { [key: string]: Character[] })
+    
+    const sortedSupportCategories = Object.keys(supportCategories).sort().reduce((obj, key) => {
+      obj[key] = supportCategories[key]
+      return obj
+    }, {} as { [key: string]: Character[] })
+    
+    const sortedSustainCategories = Object.keys(sustainCategories).sort().reduce((obj, key) => {
+      obj[key] = sustainCategories[key]
+      return obj
+    }, {} as { [key: string]: Character[] })
+    
     return {
-      dps: dpsCategories,
-      support: supportCategories,
-      sustain: sustainCategories
+      dps: sortedDpsCategories,
+      support: sortedSupportCategories,
+      sustain: sortedSustainCategories
     }
   })
 

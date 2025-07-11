@@ -87,12 +87,27 @@ const submitForm = async () => {
   isSubmitting.value = true
   
   try {
-    const subject = encodeURIComponent(`HSR Team Builder - ${formData.type}`)
-    const body = encodeURIComponent(formData.message)
-    window.location.href = `mailto:contact@gilded.dev?subject=${subject}&body=${body}`
-    submitted.value = true
+    const response = await fetch('https://formspree.io/f/mqabrlor', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({
+        type: formData.type,
+        message: formData.message,
+        _subject: `HSR Team Builder - ${formData.type}`
+      })
+    })
+    
+    if (response.ok) {
+      submitted.value = true
+      formData.type = ''
+      formData.message = ''
+    } else {
+      throw new Error(`HTTP ${response.status}`)
+    }
   } catch (error) {
-    alert('Failed to open email client')
+    alert('Failed to send message. Please try again.')
   } finally {
     isSubmitting.value = false
   }

@@ -1,203 +1,513 @@
-import type { Character } from '@/types/Character'
+import { CharacterBuilder } from '@/types/Character'
 
-export const dpsCharacters: Character[] = [
-  {
-    id: 'seele',
-    name: 'Seele',
-    element: 'Quantum',
-    path: 'Hunt',
-    rarity: 5,
-    mainArchetype: 'DPS',
-    labels: ['DPS', 'Single Target', 'Quantum', 'Resurgence'],
-    teamRecommendations: {
-      requiresSubDPS: false,
-      amplifier: { bis: ['sparkle', 'bronya'], generalist: ['tingyun'], f2p: ['tingyun'] },
-      sustain: { bis: ['fu-xuan', 'luocha'], generalist: ['bailu'], f2p: ['natasha'] },
-    },
-  },
-  {
-    id: 'jing-yuan',
-    name: 'Jing Yuan',
-    element: 'Lightning',
-    path: 'Erudition',
-    rarity: 5,
-    mainArchetype: 'DPS',
-    labels: ['DPS', 'AoE', 'Lightning Lord', 'Follow-up Attack'],
-    teamRecommendations: {
-      requiresSubDPS: false,
-      amplifier: { bis: ['tingyun', 'bronya'], generalist: ['sparkle'], f2p: ['tingyun'] },
-      sustain: { bis: ['fu-xuan', 'luocha'], generalist: ['bailu'], f2p: ['natasha'] },
-    },
-  },
-  {
-    id: 'clara',
-    name: 'Clara',
-    element: 'Physical',
-    path: 'Destruction',
-    rarity: 5,
-    mainArchetype: 'DPS',
-    labels: ['DPS', 'Counter Attack', 'Physical', 'AoE'],
-    teamRecommendations: {
-      requiresSubDPS: false,
-      amplifier: { bis: ['tingyun', 'bronya'], generalist: ['sparkle'], f2p: ['tingyun'] },
-      sustain: { bis: ['fu-xuan', 'luocha'], generalist: ['bailu'], f2p: ['natasha'] },
-    },
-  },
-  {
-    id: 'himeko',
-    name: 'Himeko',
-    element: 'Fire',
-    path: 'Erudition',
-    rarity: 5,
-    mainArchetype: 'DPS',
-    labels: ['DPS', 'AoE', 'Fire', 'Follow-up Attack'],
-    teamRecommendations: {
-      requiresSubDPS: false,
-      amplifier: { bis: ['asta', 'tingyun'], generalist: ['bronya'], f2p: ['asta'] },
-      sustain: { bis: ['fu-xuan', 'luocha'], generalist: ['bailu'], f2p: ['natasha'] },
-    },
-  },
-  {
-    id: 'yanqing',
-    name: 'Yanqing',
-    element: 'Ice',
-    path: 'Hunt',
-    rarity: 5,
-    mainArchetype: 'DPS',
-    labels: ['DPS', 'Single Target', 'Ice', 'Crit'],
-    teamRecommendations: {
-      requiresSubDPS: false,
-      amplifier: { bis: ['bronya', 'sparkle'], generalist: ['tingyun'], f2p: ['tingyun'] },
-      sustain: { bis: ['gepard', 'luocha'], generalist: ['bailu'], f2p: ['natasha'] },
-    },
-  },
-  {
-    id: 'blade',
-    name: 'Blade',
-    element: 'Wind',
-    path: 'Destruction',
-    rarity: 5,
-    mainArchetype: 'DPS',
-    labels: ['DPS', 'Sub-DPS', 'Follow-up Attack', 'HP Scaling', 'Self Damage'],
-    teamRecommendations: {
-      requiresSubDPS: false,
-      subDPS: { bis: ['castorice'], generalist: ['jingliu'], f2p: [] },
-      amplifier: { bis: ['sunday', 'tribbie'], generalist: ['tribbie', 'remembrance-trailblazer'], f2p: ['bronya', 'remembrance-trailblazer'] },
-      sustain: { bis: ['hyacine'], generalist: ['huohuo', 'luocha'], f2p: ['gallagher'] },
-    },
-  },
-  {
-    id: 'dan-heng-il',
-    name: 'Dan Heng IL',
-    element: 'Imaginary',
-    path: 'Destruction',
-    rarity: 5,
-    mainArchetype: 'DPS',
-    labels: ['DPS', 'Single Target', 'Imaginary', 'Enhanced Basic'],
-    teamRecommendations: {
-      requiresSubDPS: false,
-      amplifier: { bis: ['sparkle', 'bronya'], generalist: ['tingyun'], f2p: ['tingyun'] },
-      sustain: { bis: ['fu-xuan', 'luocha'], generalist: ['bailu'], f2p: ['natasha'] },
-    },
-  },
-  {
-    id: 'jingliu',
-    name: 'Jingliu',
-    element: 'Ice',
-    path: 'Destruction',
-    rarity: 5,
-    mainArchetype: 'DPS',
-    labels: ['DPS', 'AoE', 'HP Consumption', 'Enhanced State'],
-    teamRecommendations: {
-      requiresSubDPS: false,
-      amplifier: { bis: ['bronya', 'sparkle'], generalist: ['tingyun'], f2p: ['tingyun'] },
-      sustain: { bis: ['luocha', 'bailu'], generalist: ['fu-xuan'], f2p: ['natasha'] },
-    },
-  },
-  {
-    id: 'argenti',
-    name: 'Argenti',
-    element: 'Physical',
-    path: 'Erudition',
-    rarity: 5,
-    mainArchetype: 'DPS',
-    labels: ['DPS', 'AoE', 'Ultimate Based', 'Energy Hungry'],
-    teamRecommendations: {
-      requiresSubDPS: false,
-      amplifier: { bis: ['tingyun', 'huohuo'], generalist: ['bronya'], f2p: ['tingyun'] },
-      sustain: { bis: ['huohuo', 'luocha'], generalist: ['bailu'], f2p: ['natasha'] },
-    },
-  },
-  {
-    id: 'acheron',
-    name: 'Acheron',
-    element: 'Lightning',
-    path: 'Nihility',
-    rarity: 5,
-    mainArchetype: 'DPS',
-    labels: ['DPS', 'AoE', 'Debuff Stacking', 'Ultimate Based'],
-    teamRecommendations: {
-      requiresSubDPS: true,
-      subDPS: { bis: ['jiaoqiu'], generalist: ['pela', 'silver-wolf'], f2p: ['pela'] },
-      amplifier: { bis: ['jiaoqiu', 'pela'], generalist: ['silver-wolf'], f2p: ['pela'] },
-      sustain: { bis: ['aventurine', 'fu-xuan'], generalist: ['huohuo'], f2p: ['gallagher'] },
-    },
-  },
-  {
-    id: 'yunli',
-    name: 'Yunli',
-    element: 'Physical',
-    path: 'Destruction',
-    rarity: 5,
-    mainArchetype: 'DPS',
-    labels: ['DPS', 'Counter Attack', 'Physical', 'Ultimate Based'],
-    teamRecommendations: {
-      requiresSubDPS: false,
-      amplifier: { bis: ['tingyun', 'bronya'], generalist: ['sparkle'], f2p: ['tingyun'] },
-      sustain: { bis: ['huohuo', 'aventurine'], generalist: ['fu-xuan'], f2p: ['gallagher'] },
-    },
-  },
-  {
-    id: 'topaz',
-    name: 'Topaz',
-    element: 'Fire',
-    path: 'Hunt',
-    rarity: 5,
-    mainArchetype: 'DPS',
-    labels: ['Sub-DPS', 'Follow-up Attack', 'Debt', 'Fire'],
-    teamRecommendations: {
-      requiresSubDPS: false,
-      amplifier: { bis: ['robin', 'aventurine'], generalist: ['bronya'], f2p: ['tingyun'] },
-      sustain: { bis: ['aventurine', 'huohuo'], generalist: ['fu-xuan'], f2p: ['gallagher'] },
-    },
-  },
-  {
-    id: 'ratio',
-    name: 'Dr. Ratio',
-    element: 'Imaginary',
-    path: 'Hunt',
-    rarity: 5,
-    mainArchetype: 'DPS',
-    labels: ['DPS', 'Sub-DPS', 'Follow-up Attack', 'Debuff Synergy'],
-    teamRecommendations: {
-      requiresSubDPS: true,
-      subDPS: { bis: ['topaz'], generalist: [], f2p: ['moze'] },
-      amplifier: { bis: ['robin', 'cipher'], generalist: ['jiaoqiu', 'silver-wolf', 'tribbie', 'sunday'], f2p: ['pela', 'guinaifen'] },
-      sustain: { bis: ['aventurine'], generalist: ['huohuo', 'lingsha'], f2p: ['gallagher'] },
-    },
-  },
-  {
-    id: 'jade',
-    name: 'Jade',
-    element: 'Quantum',
-    path: 'Erudition',
-    rarity: 5,
-    mainArchetype: 'DPS',
-    labels: ['DPS', 'Follow-up Attack', 'Debt', 'AoE'],
-    teamRecommendations: {
-      requiresSubDPS: false,
-      amplifier: { bis: ['sparkle', 'bronya'], generalist: ['tingyun'], f2p: ['tingyun'] },
-      sustain: { bis: ['aventurine', 'huohuo'], generalist: ['fu-xuan'], f2p: ['gallagher'] },
-    },
-  },
+export const dpsCharacters = [
+  // DPS Characters
+  new CharacterBuilder('seele', 'Seele')
+    .element('Quantum')
+    .path('Hunt')
+    .rarity(5)
+    .roles(['DPS'])
+    .archetype('Hypercarry')
+    .labels(['Single Target', 'Quantum', 'Resurgence'])
+    .addTeammateSection('Amplifiers', ['sparkle', 'bronya'], ['tingyun'], ['tingyun'])
+    .addTeammateSection('Sustain', ['fu-xuan', 'luocha'], ['bailu'], ['natasha'])
+    .addTeamComposition('Main DPS Team', 'Main DPS',
+      ['seele', 'sparkle', 'tingyun', 'fu-xuan'],
+      ['seele', 'tingyun', 'pela', 'natasha']
+    )
+    .build(),
+
+  new CharacterBuilder('jing-yuan', 'Jing Yuan')
+    .element('Lightning')
+    .path('Erudition')
+    .rarity(5)
+    .roles(['DPS'])
+    .archetype('Follow-up')
+    .labels(['AoE', 'Lightning Lord', 'Follow-up Attack'])
+    .addTeammateSection('Amplifiers', ['tingyun', 'bronya'], ['sparkle'], ['tingyun'])
+    .addTeammateSection('Sustain', ['fu-xuan', 'luocha'], ['bailu'], ['natasha'])
+    .addTeamComposition('Main DPS Team', 'Main DPS',
+      ['jing-yuan', 'tingyun', 'bronya', 'fu-xuan'],
+      ['jing-yuan', 'tingyun', 'pela', 'natasha']
+    )
+    .build(),
+
+  new CharacterBuilder('clara', 'Clara')
+    .element('Physical')
+    .path('Destruction')
+    .rarity(5)
+    .roles(['DPS'])
+    .archetype('Counter')
+    .labels(['Counter Attack', 'Physical', 'AoE'])
+    .addTeammateSection('Amplifiers', ['tingyun', 'bronya'], ['sparkle'], ['tingyun'])
+    .addTeammateSection('Sustain', ['fu-xuan', 'luocha'], ['bailu'], ['natasha'])
+    .addTeamComposition('Main DPS Team', 'Main DPS',
+      ['clara', 'tingyun', 'bronya', 'fu-xuan'],
+      ['clara', 'tingyun', 'pela', 'natasha']
+    )
+    .build(),
+
+  new CharacterBuilder('himeko', 'Himeko')
+    .element('Fire')
+    .path('Erudition')
+    .rarity(5)
+    .roles(['DPS'])
+    .archetype('Follow-up')
+    .labels(['AoE', 'Fire', 'Follow-up Attack'])
+    .addTeammateSection('Amplifiers', ['asta', 'tingyun'], ['bronya'], ['asta'])
+    .addTeammateSection('Sustain', ['fu-xuan', 'luocha'], ['bailu'], ['natasha'])
+    .addTeamComposition('Main DPS Team', 'Main DPS',
+      ['himeko', 'asta', 'tingyun', 'fu-xuan'],
+      ['himeko', 'asta', 'pela', 'natasha']
+    )
+    .build(),
+
+  new CharacterBuilder('yanqing', 'Yanqing')
+    .element('Ice')
+    .path('Hunt')
+    .rarity(5)
+    .roles(['DPS'])
+    .archetype('Hypercarry')
+    .labels(['Single Target', 'Ice', 'Crit'])
+    .addTeammateSection('Amplifiers', ['bronya', 'sparkle'], ['tingyun'], ['tingyun'])
+    .addTeammateSection('Sustain', ['gepard', 'luocha'], ['bailu'], ['natasha'])
+    .addTeamComposition('Main DPS Team', 'Main DPS',
+      ['yanqing', 'bronya', 'sparkle', 'gepard'],
+      ['yanqing', 'tingyun', 'pela', 'natasha']
+    )
+    .build(),
+
+  new CharacterBuilder('blade', 'Blade')
+    .element('Wind')
+    .path('Destruction')
+    .rarity(5)
+    .roles(['DPS', 'SUB_DPS'])
+    .archetype('HP-Scaling')
+    .labels(['Follow-up Attack', 'HP Scaling', 'Self Damage'])
+    .addTeammateSection('Sub-DPS Partners', ['castorice'], ['jingliu'], ['remembrance-trailblazer'])
+    .addTeammateSection('Amplifiers', ['sunday', 'tribbie'], ['silver-wolf', 'cipher', 'ruan-mei'], ['bronya', 'remembrance-trailblazer'])
+    .addTeammateSection('Sustain', ['hyacine'], ['huohuo', 'luocha'], ['gallagher'])
+    .addTeamComposition('Main DPS Team', 'Main DPS',
+      ['blade', 'sunday', 'jingliu', 'hyacine'],
+      ['blade', 'bronya', 'pela', 'gallagher']
+    )
+    .addTeamComposition('Sub-DPS Team', 'Sub-DPS',
+      ['castorice', 'blade', 'tribbie', 'hyacine'],
+      ['jingliu', 'blade', 'remembrance-trailblazer', 'gallagher']
+    )
+    .build(),
+
+  new CharacterBuilder('dan-heng-il', 'Dan Heng IL')
+    .element('Imaginary')
+    .path('Destruction')
+    .rarity(5)
+    .roles(['DPS'])
+    .archetype('Hypercarry')
+    .labels(['Single Target', 'Imaginary', 'Enhanced Basic'])
+    .addTeammateSection('Amplifiers', ['sparkle', 'bronya'], ['tingyun'], ['tingyun'])
+    .addTeammateSection('Sustain', ['fu-xuan', 'luocha'], ['bailu'], ['natasha'])
+    .addTeamComposition('Main DPS Team', 'Main DPS',
+      ['dan-heng-il', 'sparkle', 'bronya', 'fu-xuan'],
+      ['dan-heng-il', 'tingyun', 'pela', 'natasha']
+    )
+    .build(),
+
+  new CharacterBuilder('jingliu', 'Jingliu')
+    .element('Ice')
+    .path('Destruction')
+    .rarity(5)
+    .roles(['DPS'])
+    .archetype('HP-Scaling')
+    .labels(['AoE', 'HP Consumption', 'Enhanced State'])
+    .addTeammateSection('Amplifiers', ['bronya', 'sparkle'], ['tingyun'], ['tingyun'])
+    .addTeammateSection('Sustain', ['luocha', 'bailu'], ['fu-xuan'], ['natasha'])
+    .addTeamComposition('Main DPS Team', 'Main DPS',
+      ['jingliu', 'bronya', 'sparkle', 'luocha'],
+      ['jingliu', 'tingyun', 'pela', 'natasha']
+    )
+    .build(),
+
+  new CharacterBuilder('argenti', 'Argenti')
+    .element('Physical')
+    .path('Erudition')
+    .rarity(5)
+    .roles(['DPS'])
+    .archetype('Ultimate-Based')
+    .labels(['AoE', 'Ultimate Based', 'Energy Hungry'])
+    .addTeammateSection('Amplifiers', ['tingyun', 'huohuo'], ['bronya'], ['tingyun'])
+    .addTeammateSection('Sustain', ['huohuo', 'luocha'], ['bailu'], ['natasha'])
+    .addTeamComposition('Main DPS Team', 'Main DPS',
+      ['argenti', 'tingyun', 'huohuo', 'luocha'],
+      ['argenti', 'tingyun', 'pela', 'natasha']
+    )
+    .build(),
+
+  new CharacterBuilder('acheron', 'Acheron')
+    .element('Lightning')
+    .path('Nihility')
+    .rarity(5)
+    .roles(['DPS'])
+    .archetype('Ultimate-Based')
+    .labels(['AoE', 'Debuff Stacking', 'Ultimate Based'])
+    .addTeammateSection('Debuffers', ['jiaoqiu'], ['pela', 'silver-wolf'], ['pela'])
+    .addTeammateSection('Sustain', ['aventurine', 'fu-xuan'], ['huohuo'], ['gallagher'])
+    .addTeamComposition('Debuff Team', 'Main DPS',
+      ['acheron', 'jiaoqiu', 'pela', 'aventurine'],
+      ['acheron', 'pela', 'guinaifen', 'gallagher']
+    )
+    .build(),
+
+  new CharacterBuilder('yunli', 'Yunli')
+    .element('Physical')
+    .path('Destruction')
+    .rarity(5)
+    .roles(['DPS'])
+    .archetype('Counter')
+    .labels(['Counter Attack', 'Physical', 'Ultimate Based'])
+    .addTeammateSection('Amplifiers', ['tingyun', 'bronya'], ['sparkle'], ['tingyun'])
+    .addTeammateSection('Sustain', ['huohuo', 'aventurine'], ['fu-xuan'], ['gallagher'])
+    .addTeamComposition('Main DPS Team', 'Main DPS',
+      ['yunli', 'tingyun', 'bronya', 'huohuo'],
+      ['yunli', 'tingyun', 'pela', 'gallagher']
+    )
+    .build(),
+
+  new CharacterBuilder('topaz', 'Topaz')
+    .element('Fire')
+    .path('Hunt')
+    .rarity(5)
+    .roles(['DPS', 'SUB_DPS'])
+    .archetype('Follow-up')
+    .labels(['Follow-up Attack', 'Debt', 'Fire'])
+    .addTeammateSection('Amplifiers', ['robin', 'aventurine'], ['bronya'], ['tingyun'])
+    .addTeammateSection('Sustain', ['aventurine', 'huohuo'], ['fu-xuan'], ['gallagher'])
+    .addTeamComposition('FUA Team', 'Main DPS',
+      ['topaz', 'robin', 'aventurine', 'huohuo'],
+      ['topaz', 'tingyun', 'pela', 'gallagher']
+    )
+    .build(),
+
+  new CharacterBuilder('ratio', 'Dr. Ratio')
+    .element('Imaginary')
+    .path('Hunt')
+    .rarity(5)
+    .roles(['DPS', 'SUB_DPS'])
+    .archetype('Follow-up')
+    .labels(['Follow-up Attack', 'Debuff Synergy'])
+    .addTeammateSection('Sub-DPS Partners', ['topaz'], [], ['moze'])
+    .addTeammateSection('Debuffers', ['robin', 'cipher'], ['jiaoqiu', 'silver-wolf', 'tribbie', 'sunday'], ['pela', 'guinaifen'])
+    .addTeammateSection('Sustain', ['aventurine'], ['huohuo', 'lingsha'], ['gallagher'])
+    .addTeamComposition('FUA Team', 'Main DPS',
+      ['ratio', 'topaz', 'robin', 'aventurine'],
+      ['ratio', 'moze', 'pela', 'gallagher']
+    )
+    .build(),
+
+  new CharacterBuilder('jade', 'Jade')
+    .element('Quantum')
+    .path('Erudition')
+    .rarity(5)
+    .roles(['DPS'])
+    .archetype('Follow-up')
+    .labels(['Follow-up Attack', 'Debt', 'AoE'])
+    .addTeammateSection('Amplifiers', ['sparkle', 'bronya'], ['tingyun'], ['tingyun'])
+    .addTeammateSection('Sustain', ['aventurine', 'huohuo'], ['fu-xuan'], ['gallagher'])
+    .addTeamComposition('Main DPS Team', 'Main DPS',
+      ['jade', 'sparkle', 'bronya', 'aventurine'],
+      ['jade', 'tingyun', 'pela', 'gallagher']
+    )
+    .build(),
+
+  new CharacterBuilder('kafka', 'Kafka')
+    .element('Lightning')
+    .path('Nihility')
+    .rarity(5)
+    .roles(['DPS'])
+    .archetype('Ultimate-Based')
+    .labels(['DoT', 'Lightning', 'Shock'])
+    .addTeammateSection('Sub-DPS Partners', ['black-swan'], ['sampo'], ['sampo'])
+    .addTeammateSection('Amplifiers', ['ruan-mei', 'jiaoqiu'], ['tingyun'], ['tingyun'])
+    .addTeammateSection('Sustain', ['huohuo', 'fu-xuan'], ['bailu'], ['lynx'])
+    .addTeamComposition('DoT Team', 'Main DPS',
+      ['kafka', 'black-swan', 'ruan-mei', 'huohuo'],
+      ['kafka', 'sampo', 'tingyun', 'lynx']
+    )
+    .build(),
+
+  new CharacterBuilder('black-swan', 'Black Swan')
+    .element('Wind')
+    .path('Nihility')
+    .rarity(5)
+    .roles(['DPS', 'SUB_DPS'])
+    .archetype('Ultimate-Based')
+    .labels(['DoT', 'Wind', 'Arcana'])
+    .addTeammateSection('Amplifiers', ['ruan-mei', 'jiaoqiu'], ['tingyun'], ['tingyun'])
+    .addTeammateSection('Sustain', ['huohuo', 'fu-xuan'], ['bailu'], ['lynx'])
+    .addTeamComposition('DoT Team', 'Main DPS',
+      ['black-swan', 'kafka', 'ruan-mei', 'huohuo'],
+      ['black-swan', 'sampo', 'tingyun', 'lynx']
+    )
+    .build(),
+
+  new CharacterBuilder('sampo', 'Sampo')
+    .element('Wind')
+    .path('Nihility')
+    .rarity(4)
+    .roles(['DPS', 'SUB_DPS'])
+    .archetype('Ultimate-Based')
+    .labels(['DoT', 'Wind', 'F2P'])
+    .build(),
+
+  new CharacterBuilder('guinaifen', 'Guinaifen')
+    .element('Fire')
+    .path('Nihility')
+    .rarity(4)
+    .roles(['DPS', 'SUB_DPS'])
+    .archetype('Ultimate-Based')
+    .labels(['DoT', 'Fire', 'F2P'])
+    .build(),
+
+  new CharacterBuilder('luka', 'Luka')
+    .element('Physical')
+    .path('Nihility')
+    .rarity(4)
+    .roles(['DPS', 'SUB_DPS'])
+    .archetype('Ultimate-Based')
+    .labels(['DoT', 'Physical', 'F2P'])
+    .build(),
+
+  new CharacterBuilder('destruction-trailblazer', 'Destruction TB')
+    .element('Physical')
+    .path('Destruction')
+    .rarity(5)
+    .roles(['DPS'])
+    .archetype('Hypercarry')
+    .labels(['Physical', 'Taunt', 'F2P'])
+    .addTeammateSection('Amplifiers', ['tingyun', 'bronya'], ['asta'], ['tingyun'])
+    .addTeammateSection('Sustain', ['gepard', 'fu-xuan'], ['bailu'], ['natasha'])
+    .addTeamComposition('Main DPS Team', 'Main DPS',
+      ['destruction-trailblazer', 'tingyun', 'bronya', 'gepard'],
+      ['destruction-trailblazer', 'tingyun', 'asta', 'natasha']
+    )
+    .build(),
+
+  // Break DPS Characters
+  new CharacterBuilder('boothill', 'Boothill')
+    .element('Physical')
+    .path('Hunt')
+    .rarity(5)
+    .roles(['DPS'])
+    .archetype('Break-DPS')
+    .labels(['Break DPS', 'Single Target', 'Implant Weakness'])
+    .addTeammateSection('Amplifiers', ['fugue', 'ruan-mei'], ['sunday'], ['bronya', 'harmony-trailblazer'])
+    .addTeammateSection('Sustain', ['lingsha'], ['hyacine', 'fu-xuan', 'huohuo'], ['gallagher'])
+    .addTeamComposition('Break Team', 'Main DPS',
+      ['boothill', 'fugue', 'ruan-mei', 'lingsha'],
+      ['boothill', 'harmony-trailblazer', 'bronya', 'gallagher']
+    )
+    .build(),
+
+  new CharacterBuilder('firefly', 'Firefly')
+    .element('Fire')
+    .path('Destruction')
+    .rarity(5)
+    .roles(['DPS'])
+    .archetype('Break-DPS')
+    .labels(['Break DPS', 'Super Break', 'Implant Weakness', 'Action Advance', 'Blast'])
+    .addTeammateSection('Amplifiers', ['ruan-mei', 'fugue'], [], ['harmony-trailblazer'])
+    .addTeammateSection('Sustain', ['lingsha'], ['huohuo'], ['gallagher'])
+    .addTeamComposition('Break Team', 'Main DPS',
+      ['firefly', 'ruan-mei', 'fugue', 'lingsha'],
+      ['firefly', 'harmony-trailblazer', 'gallagher', 'natasha']
+    )
+    .build(),
+
+  new CharacterBuilder('rappa', 'Rappa')
+    .element('Imaginary')
+    .path('Erudition')
+    .rarity(5)
+    .roles(['DPS'])
+    .archetype('Break-DPS')
+    .labels(['Break DPS', 'AoE', 'Blast', 'Super Break'])
+    .addTeammateSection('Amplifiers', ['fugue', 'ruan-mei'], [], ['harmony-trailblazer'])
+    .addTeammateSection('Sustain', ['lingsha'], ['huohuo'], ['gallagher'])
+    .addTeamComposition('Break Team', 'Main DPS',
+      ['rappa', 'fugue', 'ruan-mei', 'lingsha'],
+      ['rappa', 'harmony-trailblazer', 'gallagher', 'natasha']
+    )
+    .build(),
+
+  // Misc DPS Characters
+  new CharacterBuilder('dan-heng', 'Dan Heng')
+    .element('Wind')
+    .path('Hunt')
+    .rarity(4)
+    .roles(['DPS'])
+    .archetype('Hypercarry')
+    .labels(['Single Target', 'Wind', 'F2P'])
+    .addTeammateSection('Amplifiers', ['tingyun', 'bronya'], ['asta'], ['tingyun'])
+    .addTeammateSection('Sustain', ['gepard', 'fu-xuan'], ['bailu'], ['natasha'])
+    .build(),
+
+  new CharacterBuilder('arlan', 'Arlan')
+    .element('Lightning')
+    .path('Destruction')
+    .rarity(4)
+    .roles(['DPS'])
+    .archetype('HP-Scaling')
+    .labels(['HP Scaling', 'Lightning', 'F2P'])
+    .addTeammateSection('Amplifiers', ['tingyun', 'bronya'], ['asta'], ['tingyun'])
+    .addTeammateSection('Sustain', ['gepard', 'fu-xuan'], ['bailu'], ['natasha'])
+    .build(),
+
+  new CharacterBuilder('serval', 'Serval')
+    .element('Lightning')
+    .path('Erudition')
+    .rarity(4)
+    .roles(['DPS'])
+    .archetype('Ultimate-Based')
+    .labels(['AoE', 'Lightning', 'DoT', 'F2P'])
+    .addTeammateSection('Amplifiers', ['tingyun', 'asta'], ['bronya'], ['tingyun'])
+    .addTeammateSection('Sustain', ['gepard', 'fu-xuan'], ['bailu'], ['natasha'])
+    .build(),
+
+  new CharacterBuilder('hook', 'Hook')
+    .element('Fire')
+    .path('Destruction')
+    .rarity(4)
+    .roles(['DPS'])
+    .archetype('Hypercarry')
+    .labels(['Single Target', 'Fire', 'Enhanced Basic', 'F2P'])
+    .addTeammateSection('Amplifiers', ['tingyun', 'asta'], ['bronya'], ['tingyun'])
+    .addTeammateSection('Sustain', ['gepard', 'fu-xuan'], ['bailu'], ['natasha'])
+    .build(),
+
+  new CharacterBuilder('qingque', 'Qingque')
+    .element('Quantum')
+    .path('Erudition')
+    .rarity(4)
+    .roles(['DPS'])
+    .archetype('Hypercarry')
+    .labels(['AoE', 'Quantum', 'Enhanced Basic', 'F2P'])
+    .addTeammateSection('Amplifiers', ['sparkle', 'bronya'], ['tingyun'], ['tingyun'])
+    .addTeammateSection('Sustain', ['fu-xuan', 'gepard'], ['bailu'], ['natasha'])
+    .build(),
+
+  new CharacterBuilder('sushang', 'Sushang')
+    .element('Physical')
+    .path('Hunt')
+    .rarity(4)
+    .roles(['DPS'])
+    .archetype('Hypercarry')
+    .labels(['Single Target', 'Physical', 'Action Advance', 'F2P'])
+    .addTeammateSection('Amplifiers', ['tingyun', 'bronya'], ['asta'], ['tingyun'])
+    .addTeammateSection('Sustain', ['gepard', 'fu-xuan'], ['bailu'], ['natasha'])
+    .build(),
+
+  new CharacterBuilder('herta', 'Herta')
+    .element('Ice')
+    .path('Erudition')
+    .rarity(4)
+    .roles(['DPS'])
+    .archetype('Follow-up')
+    .labels(['AoE', 'Ice', 'Follow-up Attack', 'F2P'])
+    .addTeammateSection('Amplifiers', ['tingyun', 'bronya'], ['asta'], ['tingyun'])
+    .addTeammateSection('Sustain', ['gepard', 'fu-xuan'], ['bailu'], ['natasha'])
+    .build(),
+
+  new CharacterBuilder('xueyi', 'Xueyi')
+    .element('Quantum')
+    .path('Destruction')
+    .rarity(4)
+    .roles(['DPS'])
+    .archetype('Break-DPS')
+    .labels(['Break DPS', 'Quantum', 'Toughness Damage', 'F2P'])
+    .addTeammateSection('Amplifiers', ['ruan-mei', 'harmony-trailblazer'], ['bronya'], ['harmony-trailblazer'])
+    .addTeammateSection('Sustain', ['fu-xuan', 'huohuo'], ['bailu'], ['lynx'])
+    .build(),
+
+  new CharacterBuilder('misha', 'Misha')
+    .element('Ice')
+    .path('Destruction')
+    .rarity(4)
+    .roles(['DPS'])
+    .archetype('Ultimate-Based')
+    .labels(['AoE', 'Ice', 'Ultimate Based', 'F2P'])
+    .addTeammateSection('Amplifiers', ['tingyun', 'bronya'], ['huohuo'], ['tingyun'])
+    .addTeammateSection('Sustain', ['gepard', 'huohuo'], ['bailu'], ['lynx'])
+    .build(),
+
+  new CharacterBuilder('hunt-march-7th', 'Hunt March 7th')
+    .element('Imaginary')
+    .path('Hunt')
+    .rarity(4)
+    .roles(['DPS', 'SUB_DPS'])
+    .archetype('Follow-up')
+    .labels(['Follow-up Attack', 'Imaginary', 'F2P'])
+    .build(),
+
+  new CharacterBuilder('moze', 'Moze')
+    .element('Lightning')
+    .path('Hunt')
+    .rarity(4)
+    .roles(['DPS', 'SUB_DPS'])
+    .archetype('Follow-up')
+    .labels(['Follow-up Attack', 'Lightning', 'F2P'])
+    .build(),
+
+  // New Characters
+  new CharacterBuilder('the-herta', 'The Herta')
+    .element('Ice')
+    .path('Erudition')
+    .rarity(5)
+    .roles(['DPS'])
+    .archetype('Ultimate-Based')
+    .labels(['AoE', 'Ice', 'Ultimate Based'])
+    .addTeammateSection('Amplifiers', ['sunday', 'bronya'], ['sparkle'], ['tingyun'])
+    .addTeammateSection('Sustain', ['aventurine', 'huohuo'], ['fu-xuan'], ['gallagher'])
+    .build(),
+
+  new CharacterBuilder('aglaea', 'Aglaea')
+    .element('Lightning')
+    .path('Remembrance')
+    .rarity(5)
+    .roles(['DPS'])
+    .archetype('Hypercarry')
+    .labels(['Summon', 'Lightning', 'Remembrance'])
+    .addTeammateSection('Amplifiers', ['sunday', 'remembrance-trailblazer'], ['bronya'], ['remembrance-trailblazer'])
+    .addTeammateSection('Sustain', ['aventurine', 'huohuo'], ['fu-xuan'], ['gallagher'])
+    .build(),
+
+  new CharacterBuilder('castorice', 'Castorice')
+    .element('Quantum')
+    .path('Erudition')
+    .rarity(5)
+    .roles(['DPS'])
+    .archetype('Hypercarry')
+    .labels(['AoE', 'Quantum'])
+    .addTeammateSection('Amplifiers', ['sparkle', 'bronya'], ['sunday'], ['tingyun'])
+    .addTeammateSection('Sustain', ['aventurine', 'fu-xuan'], ['huohuo'], ['gallagher'])
+    .build(),
+
+  new CharacterBuilder('mydei', 'Mydei')
+    .element('Imaginary')
+    .path('Destruction')
+    .rarity(5)
+    .roles(['DPS'])
+    .archetype('HP-Scaling')
+    .labels(['Imaginary', 'HP Scaling'])
+    .addTeammateSection('Amplifiers', ['sunday', 'bronya'], ['sparkle'], ['tingyun'])
+    .addTeammateSection('Sustain', ['aventurine', 'huohuo'], ['fu-xuan'], ['gallagher'])
+    .build(),
+
+  new CharacterBuilder('phainon', 'Phainon')
+    .element('Fire')
+    .path('Destruction')
+    .rarity(5)
+    .roles(['DPS'])
+    .archetype('Hypercarry')
+    .labels(['Fire', 'Self Sufficient'])
+    .addTeammateSection('Amplifiers', ['sunday', 'ruan-mei'], ['bronya'], ['harmony-trailblazer'])
+    .addTeammateSection('Sustain', ['aventurine', 'huohuo'], ['fu-xuan'], ['gallagher'])
+    .build(),
 ]

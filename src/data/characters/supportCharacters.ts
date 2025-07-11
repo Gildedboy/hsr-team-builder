@@ -1,173 +1,179 @@
-import type { Character } from '@/types/Character'
+import { CharacterBuilder } from '@/types/Character'
 
-export const supportCharacters: Character[] = [
-  {
-    id: 'pela',
-    name: 'Pela',
-    element: 'Ice',
-    path: 'Nihility',
-    rarity: 4,
-    mainArchetype: 'Debuff',
-    labels: ['Debuff', 'Defense Reduction', 'Ice', 'F2P'],
-    teamRecommendations: {
-      requiresSubDPS: false,
-      amplifier: { bis: [], generalist: [], f2p: [] },
-      sustain: { bis: [], generalist: [], f2p: [] },
-    },
-  },
-  {
-    id: 'silver-wolf',
-    name: 'Silver Wolf',
-    element: 'Quantum',
-    path: 'Nihility',
-    rarity: 5,
-    mainArchetype: 'Debuff',
-    labels: ['Debuff', 'Weakness Implant', 'Defense Reduction', 'Quantum'],
-    teamRecommendations: {
-      requiresSubDPS: false,
-      amplifier: { bis: [], generalist: [], f2p: [] },
-      sustain: { bis: [], generalist: [], f2p: [] },
-    },
-  },
-  {
-    id: 'welt',
-    name: 'Welt',
-    element: 'Imaginary',
-    path: 'Nihility',
-    rarity: 5,
-    mainArchetype: 'Debuff',
-    labels: ['Debuff', 'Slow', 'Imaginary', 'AoE'],
-    teamRecommendations: {
-      requiresSubDPS: false,
-      amplifier: { bis: [], generalist: [], f2p: [] },
-      sustain: { bis: [], generalist: [], f2p: [] },
-    },
-  },
-  {
-    id: 'kafka',
-    name: 'Kafka',
-    element: 'Lightning',
-    path: 'Nihility',
-    rarity: 5,
-    mainArchetype: 'DPS',
-    labels: ['DPS', 'DoT', 'Lightning', 'Shock'],
-    teamRecommendations: {
-      requiresSubDPS: true,
-      subDPS: { bis: ['black-swan'], generalist: ['sampo'], f2p: ['sampo'] },
-      amplifier: { bis: ['ruan-mei', 'jiaoqiu'], generalist: ['tingyun'], f2p: ['tingyun'] },
-      sustain: { bis: ['huohuo', 'fu-xuan'], generalist: ['bailu'], f2p: ['lynx'] },
-    },
-  },
-  {
-    id: 'black-swan',
-    name: 'Black Swan',
-    element: 'Wind',
-    path: 'Nihility',
-    rarity: 5,
-    mainArchetype: 'DPS',
-    labels: ['DPS', 'DoT', 'Wind', 'Arcana'],
-    teamRecommendations: {
-      requiresSubDPS: false,
-      amplifier: { bis: ['ruan-mei', 'jiaoqiu'], generalist: ['tingyun'], f2p: ['tingyun'] },
-      sustain: { bis: ['huohuo', 'fu-xuan'], generalist: ['bailu'], f2p: ['lynx'] },
-    },
-  },
-  {
-    id: 'jiaoqiu',
-    name: 'Jiaoqiu',
-    element: 'Fire',
-    path: 'Nihility',
-    rarity: 5,
-    mainArchetype: 'Debuff',
-    labels: ['Debuff', 'Ultimate Vulnerability', 'Fire', 'DoT Support'],
-    teamRecommendations: {
-      requiresSubDPS: false,
-      amplifier: { bis: [], generalist: [], f2p: [] },
-      sustain: { bis: [], generalist: [], f2p: [] },
-    },
-  },
-  {
-    id: 'sampo',
-    name: 'Sampo',
-    element: 'Wind',
-    path: 'Nihility',
-    rarity: 4,
-    mainArchetype: 'DPS',
-    labels: ['Sub-DPS', 'DoT', 'Wind', 'F2P'],
-    teamRecommendations: {
-      requiresSubDPS: false,
-      amplifier: { bis: [], generalist: [], f2p: [] },
-      sustain: { bis: [], generalist: [], f2p: [] },
-    },
-  },
-  {
-    id: 'guinaifen',
-    name: 'Guinaifen',
-    element: 'Fire',
-    path: 'Nihility',
-    rarity: 4,
-    mainArchetype: 'DPS',
-    labels: ['Sub-DPS', 'DoT', 'Fire', 'F2P'],
-    teamRecommendations: {
-      requiresSubDPS: false,
-      amplifier: { bis: [], generalist: [], f2p: [] },
-      sustain: { bis: [], generalist: [], f2p: [] },
-    },
-  },
-  {
-    id: 'luka',
-    name: 'Luka',
-    element: 'Physical',
-    path: 'Nihility',
-    rarity: 4,
-    mainArchetype: 'DPS',
-    labels: ['Sub-DPS', 'DoT', 'Physical', 'F2P'],
-    teamRecommendations: {
-      requiresSubDPS: false,
-      amplifier: { bis: [], generalist: [], f2p: [] },
-      sustain: { bis: [], generalist: [], f2p: [] },
-    },
-  },
-  {
-    id: 'asta',
-    name: 'Asta',
-    element: 'Fire',
-    path: 'Harmony',
-    rarity: 4,
-    mainArchetype: 'Buffer',
-    labels: ['Buffer', 'Speed Support', 'Fire', 'F2P'],
-    teamRecommendations: {
-      requiresSubDPS: false,
-      amplifier: { bis: [], generalist: [], f2p: [] },
-      sustain: { bis: [], generalist: [], f2p: [] },
-    },
-  },
-  {
-    id: 'yukong',
-    name: 'Yukong',
-    element: 'Imaginary',
-    path: 'Harmony',
-    rarity: 4,
-    mainArchetype: 'Buffer',
-    labels: ['Buffer', 'Crit Support', 'Imaginary', 'F2P'],
-    teamRecommendations: {
-      requiresSubDPS: false,
-      amplifier: { bis: [], generalist: [], f2p: [] },
-      sustain: { bis: [], generalist: [], f2p: [] },
-    },
-  },
-  {
-    id: 'hanya',
-    name: 'Hanya',
-    element: 'Physical',
-    path: 'Harmony',
-    rarity: 4,
-    mainArchetype: 'Buffer',
-    labels: ['Buffer', 'Speed Support', 'Physical', 'F2P'],
-    teamRecommendations: {
-      requiresSubDPS: false,
-      amplifier: { bis: [], generalist: [], f2p: [] },
-      sustain: { bis: [], generalist: [], f2p: [] },
-    },
-  },
+export const supportCharacters = [
+  // Support Characters
+  new CharacterBuilder('pela', 'Pela')
+    .element('Ice')
+    .path('Nihility')
+    .rarity(4)
+    .roles(['SUPPORT'])
+    .archetype('Debuffer')
+    .labels(['Debuff', 'Defense Reduction', 'Ice', 'F2P'])
+    .build(),
+
+  new CharacterBuilder('silver-wolf', 'Silver Wolf')
+    .element('Quantum')
+    .path('Nihility')
+    .rarity(5)
+    .roles(['SUPPORT'])
+    .archetype('Debuffer')
+    .labels(['Debuff', 'Weakness Implant', 'Defense Reduction', 'Quantum'])
+    .build(),
+
+  new CharacterBuilder('welt', 'Welt')
+    .element('Imaginary')
+    .path('Nihility')
+    .rarity(5)
+    .roles(['SUPPORT'])
+    .archetype('Debuffer')
+    .labels(['Debuff', 'Slow', 'Imaginary', 'AoE'])
+    .build(),
+
+  new CharacterBuilder('jiaoqiu', 'Jiaoqiu')
+    .element('Fire')
+    .path('Nihility')
+    .rarity(5)
+    .roles(['SUPPORT'])
+    .archetype('Debuffer')
+    .labels(['Debuff', 'Ultimate Vulnerability', 'Fire', 'DoT Support'])
+    .build(),
+
+  new CharacterBuilder('asta', 'Asta')
+    .element('Fire')
+    .path('Harmony')
+    .rarity(4)
+    .roles(['SUPPORT'])
+    .archetype('Buffer')
+    .labels(['Buffer', 'Speed Support', 'Fire', 'F2P'])
+    .build(),
+
+  new CharacterBuilder('yukong', 'Yukong')
+    .element('Imaginary')
+    .path('Harmony')
+    .rarity(4)
+    .roles(['SUPPORT'])
+    .archetype('Buffer')
+    .labels(['Buffer', 'Crit Support', 'Imaginary', 'F2P'])
+    .build(),
+
+  new CharacterBuilder('hanya', 'Hanya')
+    .element('Physical')
+    .path('Harmony')
+    .rarity(4)
+    .roles(['SUPPORT'])
+    .archetype('Buffer')
+    .labels(['Buffer', 'Speed Support', 'Physical', 'F2P'])
+    .build(),
+
+  // Buffer Characters
+  new CharacterBuilder('bronya', 'Bronya')
+    .element('Wind')
+    .path('Harmony')
+    .rarity(5)
+    .roles(['SUPPORT'])
+    .archetype('Buffer')
+    .labels(['Support', 'Buffer', 'Crit Support', 'Generalist'])
+    .build(),
+
+  new CharacterBuilder('harmony-trailblazer', 'Harmony TB')
+    .element('Imaginary')
+    .path('Harmony')
+    .rarity(5)
+    .roles(['SUPPORT'])
+    .archetype('Buffer')
+    .labels(['Buffer', 'Break Support', 'Super Break', 'F2P'])
+    .build(),
+
+  new CharacterBuilder('robin', 'Robin')
+    .element('Physical')
+    .path('Harmony')
+    .rarity(5)
+    .roles(['SUPPORT'])
+    .archetype('Buffer')
+    .labels(['Buffer', 'Follow-up Support', 'Action Advance'])
+    .build(),
+
+  new CharacterBuilder('ruan-mei', 'Ruan Mei')
+    .element('Ice')
+    .path('Harmony')
+    .rarity(5)
+    .roles(['SUPPORT'])
+    .archetype('Buffer')
+    .labels(['Buffer', 'Break Support', 'Generalist'])
+    .build(),
+
+  new CharacterBuilder('sparkle', 'Sparkle')
+    .element('Quantum')
+    .path('Harmony')
+    .rarity(5)
+    .roles(['SUPPORT'])
+    .archetype('Buffer')
+    .labels(['Support', 'Buffer', 'Crit Support', 'Generalist'])
+    .build(),
+
+  new CharacterBuilder('sunday', 'Sunday')
+    .element('Imaginary')
+    .path('Harmony')
+    .rarity(5)
+    .roles(['SUPPORT'])
+    .archetype('Buffer')
+    .labels(['Buffer', 'Summon Support', 'Energy Support'])
+    .build(),
+
+  new CharacterBuilder('tingyun', 'Tingyun')
+    .element('Lightning')
+    .path('Harmony')
+    .rarity(4)
+    .roles(['SUPPORT'])
+    .archetype('Buffer')
+    .labels(['Support', 'Buffer', 'Energy Support', 'Generalist', 'F2P'])
+    .build(),
+
+  // New Support Characters
+  new CharacterBuilder('fugue', 'Fugue')
+    .element('Fire')
+    .path('Nihility')
+    .rarity(5)
+    .roles(['SUPPORT'])
+    .archetype('Buffer')
+    .labels(['Buffer', 'Break Support', 'Exo-Toughness', 'Fire'])
+    .build(),
+
+  new CharacterBuilder('remembrance-trailblazer', 'Remembrance TB')
+    .element('Ice')
+    .path('Remembrance')
+    .rarity(5)
+    .roles(['SUPPORT'])
+    .archetype('Buffer')
+    .labels(['Support', 'Summon', 'Ice', 'F2P'])
+    .build(),
+
+  new CharacterBuilder('tribbie', 'Tribbie')
+    .element('Quantum')
+    .path('Harmony')
+    .rarity(5)
+    .roles(['SUPPORT'])
+    .archetype('Buffer')
+    .labels(['Buffer', 'Quantum', 'Follow-up Support'])
+    .build(),
+
+  new CharacterBuilder('cipher', 'Cipher')
+    .element('Quantum')
+    .path('Hunt')
+    .rarity(5)
+    .roles(['SUPPORT'])
+    .archetype('Buffer')
+    .labels(['Amplifier', 'Follow-up Attack', 'Debuff', 'Vulnerability', 'True Damage', 'Generalist'])
+    .addTeammateSection('Debuffers', ['jiaoqiu', 'silver-wolf'], ['bronya'], ['pela'])
+    .addTeammateSection('Sustain', ['aventurine'], ['fu-xuan', 'huohuo'], ['gallagher'])
+    .build(),
+
+  new CharacterBuilder('anaxa', 'Anaxa')
+    .element('Fire')
+    .path('Nihility')
+    .rarity(5)
+    .roles(['SUPPORT'])
+    .archetype('Debuffer')
+    .labels(['Debuff', 'Fire', 'DoT'])
+    .build(),
 ]
