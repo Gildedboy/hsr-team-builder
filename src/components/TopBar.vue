@@ -37,10 +37,12 @@
           <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
         </div>
         <div class="modal-body">
-          <form @submit.prevent="submitForm" v-if="!submitted">
+          <form action="https://formspree.io/f/mqabrlor" method="POST">
+            <input type="hidden" name="_subject" value="HSR Team Builder Contact" />
+            
             <div class="mb-3">
               <label class="form-label text-white small">Type:</label>
-              <select v-model="formData.type" class="form-select bg-dark text-white border-primary" required>
+              <select name="type" class="form-select bg-dark text-white border-primary" required>
                 <option value="">Select...</option>
                 <option value="team-suggestion">Team/Teammate Suggestion</option>
                 <option value="bug-report">Bug Report</option>
@@ -51,25 +53,19 @@
             <div class="mb-3">
               <label class="form-label text-white small">Message:</label>
               <textarea 
-                v-model="formData.message" 
+                name="message"
                 class="form-control bg-dark text-white border-primary" 
                 rows="4" 
                 placeholder="Describe your suggestion, bug report, or feedback..."
                 required
                 maxlength="500"
               ></textarea>
-              <small class="text-muted">{{ formData.message.length }}/500</small>
             </div>
 
-            <button type="submit" class="btn btn-primary" :disabled="isSubmitting">
-              {{ isSubmitting ? 'Sending...' : 'Send Message' }}
+            <button type="submit" class="btn btn-primary">
+              Send Message
             </button>
           </form>
-
-          <div v-else class="text-center text-success">
-            <i class="fas fa-check-circle fa-2x mb-2"></i>
-            <p>Thank you for your feedback!</p>
-          </div>
         </div>
       </div>
     </div>
@@ -77,32 +73,7 @@
 </template>
 
 <script setup lang="ts">
-import { ref, reactive, onMounted } from 'vue'
-
-const formData = reactive({
-  type: '',
-  message: ''
-})
-
-const isSubmitting = ref(false)
-const submitted = ref(false)
-
-const submitForm = async () => {
-  isSubmitting.value = true
-  
-  try {
-    const subject = encodeURIComponent(`HSR Team Builder - ${formData.type}`)
-    const body = encodeURIComponent(formData.message)
-    window.location.href = `mailto:contact@gilded.dev?subject=${subject}&body=${body}`
-    submitted.value = true
-  } catch (error) {
-    alert('Failed to open email client')
-  } finally {
-    isSubmitting.value = false
-  }
-}
-
-// Ko-fi widget script no longer needed
+// Contact form uses HTML submission to Formspree
 </script>
 
 <style scoped>
