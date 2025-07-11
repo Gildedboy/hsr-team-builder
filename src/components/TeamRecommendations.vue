@@ -84,10 +84,10 @@
           </div>
 
           <!-- Main DPS Teams -->
-          <div v-if="activeTeamTab === 'mainDPS'" class="d-flex flex-column flex-md-row justify-content-around gap-3">
+          <div v-if="activeTeamTab === 'mainDPS'" class="d-flex flex-column flex-lg-row justify-content-around gap-3">
             <div class="text-center">
               <h5 class="text-warning mb-2">BiS Team</h5>
-              <div class="d-flex gap-1 gap-md-2 justify-content-center">
+              <div class="d-flex gap-1 gap-sm-2 justify-content-center flex-wrap">
                 <div
                   v-for="charId in getBisMainDPSTeam"
                   :key="charId"
@@ -101,14 +101,13 @@
                     class="team-character-avatar"
                     @error="($event.target as HTMLImageElement).src = '/images/placeholder.svg'"
                   />
-                  <div class="team-character-name">{{ getCharacterName(charId) }}</div>
                 </div>
               </div>
             </div>
 
             <div class="text-center">
               <h5 class="text-success mb-2">F2P Team</h5>
-              <div class="d-flex gap-1 gap-md-2 justify-content-center">
+              <div class="d-flex gap-1 gap-sm-2 justify-content-center flex-wrap">
                 <div
                   v-for="charId in getF2pMainDPSTeam"
                   :key="charId"
@@ -122,17 +121,16 @@
                     class="team-character-avatar"
                     @error="($event.target as HTMLImageElement).src = '/images/placeholder.svg'"
                   />
-                  <div class="team-character-name">{{ getCharacterName(charId) }}</div>
                 </div>
               </div>
             </div>
           </div>
 
           <!-- Sub-DPS Teams -->
-          <div v-if="activeTeamTab === 'subDPS' && canBeSubDPS" class="d-flex flex-column flex-md-row justify-content-around gap-3">
+          <div v-if="activeTeamTab === 'subDPS' && canBeSubDPS" class="d-flex flex-column flex-lg-row justify-content-around gap-3">
             <div class="text-center">
               <h5 class="text-warning mb-2">BiS Team</h5>
-              <div class="d-flex gap-1 gap-md-2 justify-content-center">
+              <div class="d-flex gap-1 gap-sm-2 justify-content-center flex-wrap">
                 <div
                   v-for="charId in getBisSubDPSTeam"
                   :key="charId"
@@ -146,14 +144,13 @@
                     class="team-character-avatar"
                     @error="($event.target as HTMLImageElement).src = '/images/placeholder.svg'"
                   />
-                  <div class="team-character-name">{{ getCharacterName(charId) }}</div>
                 </div>
               </div>
             </div>
 
             <div class="text-center">
               <h5 class="text-success mb-2">F2P Team</h5>
-              <div class="d-flex gap-1 gap-md-2 justify-content-center">
+              <div class="d-flex gap-1 gap-sm-2 justify-content-center flex-wrap">
                 <div
                   v-for="charId in getF2pSubDPSTeam"
                   :key="charId"
@@ -167,7 +164,6 @@
                     class="team-character-avatar"
                     @error="($event.target as HTMLImageElement).src = '/images/placeholder.svg'"
                   />
-                  <div class="team-character-name">{{ getCharacterName(charId) }}</div>
                 </div>
               </div>
             </div>
@@ -218,35 +214,14 @@ const { hoveredCharacter, tooltipPosition, showTooltip, hideTooltip } = useToolt
 .team-character-item {
   cursor: pointer;
   transition: all 0.3s ease;
-  position: relative;
   border-radius: 8px;
-  overflow: hidden;
 }
 
 .team-character-avatar {
-  width: 62px;
-  height: 62px;
+  width: 70px;
+  height: 70px;
   object-fit: cover;
   border-radius: 50%;
-}
-
-@media (min-width: 768px) {
-  .team-character-avatar {
-    width: 60px;
-    height: 60px;
-  }
-}
-
-.team-character-name {
-  position: absolute;
-  bottom: 0;
-  left: 0;
-  right: 0;
-  background: linear-gradient(transparent, rgba(0, 0, 0, 0.8));
-  color: white;
-  font-size: 9px;
-  padding: 2px;
-  text-align: center;
-  font-weight: 500;
+  border: 2px solid rgba(255, 255, 255, 0.3);
 }
 </style>

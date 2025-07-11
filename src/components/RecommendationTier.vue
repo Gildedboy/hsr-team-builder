@@ -29,7 +29,7 @@
           @mouseenter="$emit('show-tooltip', characterId, $event)"
           @mouseleave="$emit('hide-tooltip')"
         />
-        <div class="text-white small fw-medium">{{ getCharacterName(characterId) }}</div>
+
       </div>
     </div>
   </div>
