@@ -96,12 +96,12 @@
 }
 
 .contact-btn {
-  background-color: #ff5e5b;
+  background-color: #dc3545;
   color: white;
 }
 
 .contact-btn:hover {
-  background-color: #e54b47;
+  background-color: #bb2d3b;
   color: white;
 }
 
