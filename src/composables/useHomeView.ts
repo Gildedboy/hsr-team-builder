@@ -42,6 +42,15 @@ export function useHomeView() {
   }
 
   const getActiveTab = () => {
+    // If a character is selected, switch to their role's tab
+    if (selectedCharacter.value) {
+      const char = selectedCharacter.value
+      if (char.roles.includes('DPS') && hasCharactersInRole('dps')) return 'dps'
+      if (char.roles.includes('SUPPORT') && hasCharactersInRole('support')) return 'support'
+      if (char.roles.includes('SUSTAIN') && hasCharactersInRole('sustain')) return 'sustain'
+    }
+    
+    // Default behavior: return first available tab
     const hasDps = Object.values(charactersByRole.value.dps).some(chars => chars.length > 0)
     const hasSupport = Object.values(charactersByRole.value.support).some(chars => chars.length > 0)
     const hasSustain = Object.values(charactersByRole.value.sustain).some(chars => chars.length > 0)
