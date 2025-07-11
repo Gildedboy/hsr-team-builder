@@ -60,10 +60,10 @@ const getNewFormatCharacter = (characterId: string) => {
       <div class="col-lg-3 col-md-4 mb-4">
         <div class="card bg-dark border-primary filter-card">
           <div class="card-header d-flex justify-content-between align-items-center px-3">
-            <h3 class="h5 text-primary mb-0">Filters</h3>
+            <h2 class="h5 text-primary mb-0">Filters</h2>
             <button
               @click="handleClearFilters()"
-              class="btn btn-warning btn-sm fw-bold rounded-pill me-2 reset-button"
+              class="btn btn-warning btn-sm fw-bold rounded-pill me-2 reset-button text-dark"
             >
               RESET
             </button>
