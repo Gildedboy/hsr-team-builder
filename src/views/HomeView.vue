@@ -238,6 +238,28 @@ const getNewFormatCharacter = (characterId: string) => {
       </div>
     </div>
 
+    <!-- Color Legend -->
+    <div class="d-flex justify-content-center mb-3">
+      <div class="d-flex gap-4 flex-wrap justify-content-center">
+        <div class="d-flex align-items-center gap-2">
+          <div class="legend-color" style="background-color: #ff00ff;"></div>
+          <span class="text-white legend-text">Selected</span>
+        </div>
+        <div class="d-flex align-items-center gap-2">
+          <div class="legend-color" style="background-color: #ffd700;"></div>
+          <span class="text-white legend-text">BiS</span>
+        </div>
+        <div class="d-flex align-items-center gap-2">
+          <div class="legend-color" style="background-color: #00d4ff;"></div>
+          <span class="text-white legend-text">Generalist</span>
+        </div>
+        <div class="d-flex align-items-center gap-2">
+          <div class="legend-color" style="background-color: #2ecc71;"></div>
+          <span class="text-white legend-text">F2P</span>
+        </div>
+      </div>
+    </div>
+
     <!-- Characters grouped by archetype -->
     <div class="card bg-dark border-primary mb-5">
       <RoleTabsSection
@@ -267,5 +289,16 @@ const getNewFormatCharacter = (characterId: string) => {
   align-items: center;
   cursor: pointer;
   transition: all 0.2s ease;
+}
+
+.legend-color {
+  width: 12px;
+  height: 12px;
+  border-radius: 2px;
+  border: 1px solid rgba(255, 255, 255, 0.3);
+}
+
+.legend-text {
+  font-size: 12px;
 }
 </style>

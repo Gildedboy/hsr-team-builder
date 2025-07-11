@@ -30,6 +30,14 @@ body {
   min-height: 100vh;
 }
 
+/* Desktop padding - 50px left and right on screens >= 768px */
+@media (min-width: 768px) {
+  .container-fluid {
+    padding-left: 50px !important;
+    padding-right: 50px !important;
+  }
+}
+
 /* Enhanced Character Tooltip Styling */
 .character-tooltip {
   position: fixed;
