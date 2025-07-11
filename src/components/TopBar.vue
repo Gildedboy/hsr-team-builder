@@ -1,11 +1,11 @@
 <template>
   <div class="top-bar py-2 mb-4">
-    <div class="container-fluid d-flex justify-content-between align-items-center">
+    <div class="container-fluid d-flex flex-column flex-md-row justify-content-between align-items-center gap-2">
       <!-- Title -->
-      <h1 class="h4 mb-0 text-primary fw-bold ps-3">Honkai Star Rail Team Builder</h1>
+      <h1 class="h4 mb-0 text-primary fw-bold ps-3 text-center text-md-start">Honkai Star Rail Team Builder</h1>
       
       <!-- Buttons -->
-      <div class="d-flex gap-2 align-items-center">
+      <div class="d-flex gap-2 align-items-center flex-wrap justify-content-center">
         <!-- Contact Modal Button -->
         <button 
           class="contact-btn"
