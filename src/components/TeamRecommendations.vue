@@ -121,7 +121,7 @@
 
 <script setup lang="ts">
 import { ref, computed } from 'vue'
-import type { Character } from '@/types/NewCharacter'
+import type { Character } from '@/types/Character'
 import { useTooltip } from '@/composables/useTooltip'
 import { getCharacterAvatar } from '@/data/avatars'
 import { characters } from '@/data/characters'
