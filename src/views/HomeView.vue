@@ -1,6 +1,9 @@
 <script setup lang="ts">
 import TopBar from '@/components/TopBar.vue'
 import TeamRecommendations from '@/components/TeamRecommendations.vue'
+import { dpsCharacters } from '@/data/characters/dpsCharacters'
+import { supportCharacters } from '@/data/characters/supportCharacters'
+import { sustainCharacters } from '@/data/characters/sustainCharacters'
 import RoleTabsSection from '@/components/RoleTabsSection.vue'
 import { getCharacterAvatar } from '@/data/avatars'
 import { useHomeView } from '@/composables/useHomeView'
@@ -29,6 +32,17 @@ const {
   getActiveTab,
   hasCharactersInRole,
 } = useHomeView()
+
+// Helper functions for new character system
+const allCharacters = [...dpsCharacters, ...supportCharacters, ...sustainCharacters]
+
+const isNewFormatCharacter = (characterId: string) => {
+  return allCharacters.some(char => char.id === characterId)
+}
+
+const getNewFormatCharacter = (characterId: string) => {
+  return allCharacters.find(char => char.id === characterId)
+}
 </script>
 
 <template>
@@ -200,10 +214,15 @@ const {
       <!-- Team Recommendations -->
       <div class="col-lg-9 col-md-8">
         <TeamRecommendations
-          v-if="selectedCharacter"
+          v-if="selectedCharacter && isNewFormatCharacter(selectedCharacter.id)"
           :key="selectedCharacter.id"
-          :character="selectedCharacter"
+          :character="getNewFormatCharacter(selectedCharacter.id)"
         />
+        <div v-else-if="selectedCharacter" class="card bg-dark border-primary text-center py-5">
+          <div class="card-body">
+            <p class="text-secondary mb-0">Character recommendations not available in new format</p>
+          </div>
+        </div>
         <div v-else class="card bg-dark border-primary text-center py-5">
           <div class="card-body">
             <p class="text-secondary mb-0">Select a character to see team recommendations</p>
