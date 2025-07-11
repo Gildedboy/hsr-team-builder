@@ -32,7 +32,7 @@ export function useHomeView() {
   } = useSearch()
 
   const handleSelectFromSearch = (character: Character) => {
-    selectCharacterFromSearch(character, selectCharacter)
+    selectCharacterFromSearch(character, (char) => selectCharacter(char, false))
   }
 
   const handleClearFilters = () => {
