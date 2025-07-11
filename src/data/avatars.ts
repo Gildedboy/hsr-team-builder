@@ -82,3 +82,14 @@ export const getCharacterAvatar = (characterId: string): string => {
   }
   return '/images/placeholder.svg' // fallback
 }
+
+// Handle image loading errors silently
+export const handleImageError = (event: Event) => {
+  const img = event.target as HTMLImageElement
+  if (img.src !== '/images/placeholder.svg') {
+    img.src = '/images/placeholder.svg'
+  }
+  // Prevent console error logging
+  event.preventDefault()
+  event.stopPropagation()
+}
