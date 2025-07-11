@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import TopBar from '@/components/TopBar.vue'
 import TeamRecommendations from '@/components/TeamRecommendations.vue'
 import RoleTabsSection from '@/components/RoleTabsSection.vue'
 import { getCharacterAvatar } from '@/data/avatars'
@@ -31,9 +32,9 @@ const {
 </script>
 
 <template>
+  <TopBar />
   <main class="container-fluid py-4">
-    <div class="text-center mb-5">
-      <h1 class="display-3 fw-bold mb-3 gradient-text">Honkai Star Rail Team Builder</h1>
+    <div class="text-center mb-4">
       <p class="lead text-secondary px-3">
         Select a character to see team recommendations or use filters and archetypes
       </p>
@@ -226,5 +227,6 @@ const {
         @select="selectCharacter"
       />
     </div>
+
   </main>
 </template>
