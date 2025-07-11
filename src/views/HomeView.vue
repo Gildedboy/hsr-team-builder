@@ -5,7 +5,7 @@ import { dpsCharacters } from '@/data/characters/dpsCharacters'
 import { supportCharacters } from '@/data/characters/supportCharacters'
 import { sustainCharacters } from '@/data/characters/sustainCharacters'
 import RoleTabsSection from '@/components/RoleTabsSection.vue'
-import { getCharacterAvatar } from '@/data/avatars'
+import { getCharacterAvatar, handleImageError } from '@/data/avatars'
 import { useHomeView } from '@/composables/useHomeView'
 import { FILTER_OPTIONS } from '@/constants/filterOptions'
 import { COLORS } from '@/constants/design'
@@ -63,9 +63,9 @@ const getNewFormatCharacter = (characterId: string) => {
             <h2 class="h5 text-primary mb-0">Filters</h2>
             <button
               @click="handleClearFilters()"
-              class="btn btn-warning btn-sm fw-bold rounded-pill me-2 reset-button text-dark"
+              class="btn btn-danger btn-sm fw-bold rounded-pill me-2 reset-button"
             >
-              RESET
+              Reset
             </button>
           </div>
           <div class="card-body">
@@ -95,7 +95,7 @@ const getNewFormatCharacter = (characterId: string) => {
                     :src="getCharacterAvatar(character.id)"
                     :alt="character.name"
                     class="rounded-circle search-suggestion-avatar"
-                    @error="($event.target as HTMLImageElement).src = '/images/placeholder.svg'"
+                    @error="handleImageError"
                   />
                   <div>
                     <div class="text-white fw-semibold small">{{ character.name }}</div>
@@ -249,3 +249,16 @@ const getNewFormatCharacter = (characterId: string) => {
 
   </main>
 </template>
+<style scoped>
+.reset-button {
+  height: 36px;
+  padding: 8px 16px;
+  border-radius: 18px;
+  font-weight: 600;
+  font-size: 14px;
+  display: flex;
+  align-items: center;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+</style>
