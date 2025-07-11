@@ -214,9 +214,9 @@ const getNewFormatCharacter = (characterId: string) => {
       <!-- Team Recommendations -->
       <div class="col-lg-9 col-md-8">
         <TeamRecommendations
-          v-if="selectedCharacter && isNewFormatCharacter(selectedCharacter.id)"
+          v-if="selectedCharacter && isNewFormatCharacter(selectedCharacter.id) && getNewFormatCharacter(selectedCharacter.id)"
           :key="selectedCharacter.id"
-          :character="getNewFormatCharacter(selectedCharacter.id)"
+          :character="getNewFormatCharacter(selectedCharacter.id)!"
         />
         <div v-else-if="selectedCharacter" class="card bg-dark border-primary text-center py-5">
           <div class="card-body">
