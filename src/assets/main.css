@@ -239,8 +239,6 @@ body {
 }
 
 .element-path-button img {
-  width: 20px !important;
-  height: 20px !important;
   filter: brightness(0.8);
   transition: filter 0.2s ease;
 }
