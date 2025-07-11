@@ -10,7 +10,6 @@
           class="btn btn-outline-primary btn-sm" 
           data-bs-toggle="modal" 
           data-bs-target="#contactModal"
-          @click="resetForm"
         >
           <i class="fas fa-envelope me-1"></i> Contact
         </button>
@@ -34,10 +33,12 @@
           <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
         </div>
         <div class="modal-body">
-          <form @submit="submitForm" v-if="!submitted">
+          <form action="https://formspree.io/f/mqabrlor" method="POST">
+            <input type="hidden" name="_subject" value="HSR Team Builder Contact" />
+            
             <div class="mb-3">
               <label class="form-label text-white small">Type:</label>
-              <select v-model="formData.type" class="form-select bg-dark text-white border-primary" required>
+              <select name="type" class="form-select bg-dark text-white border-primary" required>
                 <option value="">Select...</option>
                 <option value="team-suggestion">Team/Teammate Suggestion</option>
                 <option value="bug-report">Bug Report</option>
@@ -48,25 +49,21 @@
             <div class="mb-3">
               <label class="form-label text-white small">Message:</label>
               <textarea 
-                v-model="formData.message" 
+                name="message"
                 class="form-control bg-dark text-white border-primary" 
                 rows="4" 
                 placeholder="Describe your suggestion, bug report, or feedback..."
                 required
                 maxlength="500"
               ></textarea>
-              <small class="text-muted">{{ formData.message.length }}/500</small>
             </div>
 
-            <button type="submit" class="btn btn-primary" :disabled="isSubmitting">
-              {{ isSubmitting ? 'Sending...' : 'Send Message' }}
+            <button type="submit" class="btn btn-primary">
+              Send Message
             </button>
           </form>
 
-          <div v-else class="text-center text-success">
-            <i class="fas fa-check-circle fa-2x mb-2"></i>
-            <p>Thank you for your feedback!</p>
-          </div>
+
         </div>
       </div>
     </div>
@@ -76,53 +73,5 @@
 <script setup lang="ts">
 import { ref, reactive } from 'vue'
 
-const formData = reactive({
-  type: '',
-  message: ''
-})
-
-const isSubmitting = ref(false)
-const submitted = ref(false)
-
-const resetForm = () => {
-  submitted.value = false
-  formData.type = ''
-  formData.message = ''
-  isSubmitting.value = false
-}
-
-const submitForm = async (event: Event) => {
-  event.preventDefault()
-  isSubmitting.value = true
-  
-  try {
-    const response = await fetch('https://formspree.io/f/mqabrlor', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-        'Accept': 'application/json'
-      },
-      body: JSON.stringify({
-        type: formData.type,
-        message: formData.message,
-        _subject: `HSR Team Builder - ${formData.type}`,
-        _replyto: 'noreply@example.com'
-      })
-    })
-    
-    if (response.ok) {
-      submitted.value = true
-      formData.type = ''
-      formData.message = ''
-    } else {
-      const errorText = await response.text()
-      throw new Error(`Failed to send: ${response.status} - ${errorText}`)
-    }
-  } catch (error) {
-    console.error('Form submission error:', error)
-    alert(`Failed to send message: ${error}. Please try again or contact us directly.`)
-  } finally {
-    isSubmitting.value = false
-  }
-}
+// Simple HTML form submission - no JavaScript needed
 </script>
