@@ -10,6 +10,7 @@
           class="btn btn-outline-primary btn-sm" 
           data-bs-toggle="modal" 
           data-bs-target="#contactModal"
+          @click="resetForm"
         >
           <i class="fas fa-envelope me-1"></i> Contact
         </button>
@@ -33,7 +34,7 @@
           <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
         </div>
         <div class="modal-body">
-          <form @submit.prevent="submitForm" v-if="!submitted">
+          <form @submit="submitForm" v-if="!submitted">
             <div class="mb-3">
               <label class="form-label text-white small">Type:</label>
               <select v-model="formData.type" class="form-select bg-dark text-white border-primary" required>
@@ -83,19 +84,29 @@ const formData = reactive({
 const isSubmitting = ref(false)
 const submitted = ref(false)
 
-const submitForm = async () => {
+const resetForm = () => {
+  submitted.value = false
+  formData.type = ''
+  formData.message = ''
+  isSubmitting.value = false
+}
+
+const submitForm = async (event: Event) => {
+  event.preventDefault()
   isSubmitting.value = true
   
   try {
     const response = await fetch('https://formspree.io/f/mqabrlor', {
       method: 'POST',
       headers: {
-        'Content-Type': 'application/json'
+        'Content-Type': 'application/json',
+        'Accept': 'application/json'
       },
       body: JSON.stringify({
         type: formData.type,
         message: formData.message,
-        _subject: `HSR Team Builder - ${formData.type}`
+        _subject: `HSR Team Builder - ${formData.type}`,
+        _replyto: 'noreply@example.com'
       })
     })
     
@@ -104,10 +115,12 @@ const submitForm = async () => {
       formData.type = ''
       formData.message = ''
     } else {
-      throw new Error(`HTTP ${response.status}`)
+      const errorText = await response.text()
+      throw new Error(`Failed to send: ${response.status} - ${errorText}`)
     }
   } catch (error) {
-    alert('Failed to send message. Please try again.')
+    console.error('Form submission error:', error)
+    alert(`Failed to send message: ${error}. Please try again or contact us directly.`)
   } finally {
     isSubmitting.value = false
   }
