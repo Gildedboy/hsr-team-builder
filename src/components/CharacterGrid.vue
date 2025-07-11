@@ -20,6 +20,9 @@
         :src="getCharacterAvatar(char.id)" 
         :alt="char.name" 
         class="character-avatar"
+        width="66"
+        height="66"
+        loading="lazy"
         @error="($event.target as HTMLImageElement).src = '/images/placeholder.svg'"
       />
       <div class="character-name">{{ char.name }}</div>

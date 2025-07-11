@@ -95,6 +95,9 @@ const getNewFormatCharacter = (characterId: string) => {
                     :src="getCharacterAvatar(character.id)"
                     :alt="character.name"
                     class="rounded-circle search-suggestion-avatar"
+                    width="24"
+                    height="24"
+                    loading="lazy"
                     @error="handleImageError"
                   />
                   <div>
@@ -157,7 +160,9 @@ const getNewFormatCharacter = (characterId: string) => {
                   <img
                     :src="`/images/element/${element}.webp`"
                     :alt="element"
-                    style="width: 20px; height: 20px"
+                    width="20"
+                    height="20"
+                    loading="lazy"
                   />
                 </button>
               </div>
@@ -182,7 +187,9 @@ const getNewFormatCharacter = (characterId: string) => {
                   <img
                     :src="`/images/path/${path}.webp`"
                     :alt="path"
-                    style="width: 20px; height: 20px"
+                    width="20"
+                    height="20"
+                    loading="lazy"
                   />
                 </button>
               </div>
