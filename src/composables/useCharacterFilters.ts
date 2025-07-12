@@ -23,7 +23,7 @@ export function useCharacterFilters(characters: Character[]) {
         selectedRarities.value.includes(character.rarity)
       
       const archetypeMatch = selectedArchetypes.value.length === 0 || 
-        selectedArchetypes.value.some(archetype => character.archetype.includes(archetype))
+        selectedArchetypes.value.some(archetype => character.archetype.includes(archetype as any))
       
       return searchMatch && elementMatch && pathMatch && rarityMatch && archetypeMatch
     })
