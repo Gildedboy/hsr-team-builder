@@ -8,7 +8,7 @@ export interface Character {
   path: Path
   rarity: Rarity
   roles: Role[]           // Multiple roles: ['DPS', 'SUB_DPS']
-  archetype: Archetype    // How they play: 'Hypercarry', 'HP-Scaling', etc.
+  archetype: Archetype[]  // How they play: ['Hypercarry'], ['Follow-up', 'Summon'], etc.
   labels: string[]        // Descriptive tags
   
   // Flexible teammate recommendations
@@ -32,6 +32,7 @@ export type Archetype =
   | 'Counter'
   | 'Ultimate-Based'
   | 'Energy-Hungry'
+  | 'Summon'
 
 // Flexible teammate section - you can name it whatever you want
 export interface TeammateSection {
@@ -83,8 +84,8 @@ export class CharacterBuilder {
     return this
   }
 
-  archetype(archetype: Archetype) {
-    this.character.archetype = archetype
+  archetype(...archetypes: Archetype[]) {
+    this.character.archetype = archetypes
     return this
   }
 

@@ -12,7 +12,7 @@
     
     <div v-else-if="hasRecommendations" class="d-flex flex-wrap gap-2 justify-content-center">
       <div 
-        v-for="characterId in characterIds"
+        v-for="characterId in sortedCharacterIds"
         :key="characterId"
         class="text-center"
       >
@@ -78,6 +78,21 @@ const showNoSustainMessage = computed(() =>
   props.activeTab === 'sustain' && 
   props.noSustainAvailable
 )
+
+const sortedCharacterIds = computed(() => {
+  return [...props.characterIds].sort((a, b) => {
+    const charA = characters.find(c => c.id === a)
+    const charB = characters.find(c => c.id === b)
+    
+    // Sort by rarity (5-star first, then 4-star)
+    if (charA?.rarity !== charB?.rarity) {
+      return (charB?.rarity || 0) - (charA?.rarity || 0)
+    }
+    
+    // If same rarity, sort alphabetically by name
+    return (charA?.name || a).localeCompare(charB?.name || b)
+  })
+})
 
 const getCharacterName = (characterId: string): string => {
   const char = characters.find(c => c.id === characterId)

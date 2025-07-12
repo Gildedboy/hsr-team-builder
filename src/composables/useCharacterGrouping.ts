@@ -5,9 +5,9 @@ export function useCharacterGrouping(filteredCharacters: { value: Character[] })
   const charactersByRole = computed(() => {
     const filtered = filteredCharacters.value
     
-    // DPS Column - characters with role 'DPS'
+    // DPS Column - characters with role 'DPS' or 'SUB_DPS'
     const dpsCharacters = filtered.filter(char => 
-      char.roles.includes('DPS')
+      char.roles.includes('DPS') || char.roles.includes('SUB_DPS')
     )
     
     // Support Column - characters with role 'SUPPORT'
@@ -25,12 +25,15 @@ export function useCharacterGrouping(filteredCharacters: { value: Character[] })
       const groups: { [key: string]: Character[] } = {}
       
       characters.forEach(char => {
-        let archetype = char.archetype || 'Other'
+        const archetypes = char.archetype || ['Other']
         
-        if (!groups[archetype]) {
-          groups[archetype] = []
-        }
-        groups[archetype].push(char)
+        // Add character to each of their archetype groups
+        archetypes.forEach(archetype => {
+          if (!groups[archetype]) {
+            groups[archetype] = []
+          }
+          groups[archetype].push(char)
+        })
       })
       
       return groups
