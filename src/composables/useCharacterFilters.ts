@@ -1,5 +1,5 @@
 import { ref, computed } from 'vue'
-import type { Character } from '@/types/Character'
+import type { Character, Archetype } from '@/types/Character'
 
 export function useCharacterFilters(characters: Character[]) {
   const selectedElements = ref<string[]>([])
@@ -23,7 +23,7 @@ export function useCharacterFilters(characters: Character[]) {
         selectedRarities.value.includes(character.rarity)
       
       const archetypeMatch = selectedArchetypes.value.length === 0 || 
-        selectedArchetypes.value.some(archetype => character.archetype.includes(archetype as any))
+        selectedArchetypes.value.some(archetype => character.archetype.includes(archetype as Archetype))
       
       return searchMatch && elementMatch && pathMatch && rarityMatch && archetypeMatch
     })
