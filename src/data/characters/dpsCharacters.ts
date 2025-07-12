@@ -8,12 +8,19 @@ export const dpsCharacters = [
     .rarity(5)
     .roles(['DPS'])
     .archetype('Hypercarry')
-    .labels(['Single Target', 'Quantum', 'Resurgence'])
-    .addTeammateSection('Amplifiers', ['sparkle', 'bronya'], ['tingyun'], ['tingyun'])
-    .addTeammateSection('Sustain', ['fu-xuan', 'luocha'], ['bailu'], ['natasha'])
-    .addTeamComposition('Main DPS Team', 'Main DPS',
-      ['seele', 'sparkle', 'tingyun', 'fu-xuan'],
-      ['seele', 'tingyun', 'pela', 'natasha']
+    .labels(['Single Target', 'Extra Turn', 'Buffed State', 'SP Unfriendly'])
+    .addTeammateSection(
+      'Amplifiers',
+      ['sparkle', 'silver-wolf'],
+      ['sunday', 'robin', 'cipher'],
+      ['remembrance-trailblazer', 'bronya', 'tingyun', 'hanya', 'pela'],
+    )
+    .addTeammateSection('Sustain', ['fu-xuan'], ['huohuo'], ['gallagher'])
+    .addTeamComposition(
+      'Main DPS Team',
+      'Main DPS',
+      ['seele', 'sparkle', 'silver-wolf', 'fu-xuan'],
+      ['seele', 'tingyun', 'hanya', 'gallagher'],
     )
     .build(),
 
@@ -22,13 +29,20 @@ export const dpsCharacters = [
     .path('Erudition')
     .rarity(5)
     .roles(['DPS'])
-    .archetype('Follow-up')
-    .labels(['AoE', 'Lightning Lord', 'Follow-up Attack'])
-    .addTeammateSection('Amplifiers', ['tingyun', 'bronya'], ['sparkle'], ['tingyun'])
-    .addTeammateSection('Sustain', ['fu-xuan', 'luocha'], ['bailu'], ['natasha'])
-    .addTeamComposition('Main DPS Team', 'Main DPS',
-      ['jing-yuan', 'tingyun', 'bronya', 'fu-xuan'],
-      ['jing-yuan', 'tingyun', 'pela', 'natasha']
+    .archetype('Follow-up', 'Summon')
+    .labels(['AoE', 'Summon', 'Follow-up Attack'])
+    .addTeammateSection(
+      'Amplifiers',
+      ['robin', 'sunday'],
+      ['tribbie', 'cipher', 'sparkle', 'ruan-mei'],
+      ['bronya', 'tingyun', 'pela'],
+    )
+    .addTeammateSection('Sustain', ['aventurine', 'huohuo'], ['hyacine'], ['gallagher'])
+    .addTeamComposition(
+      'Main DPS Team',
+      'Main DPS',
+      ['jing-yuan', 'robin', 'sunday', 'aventurine'],
+      ['jing-yuan', 'tingyun', 'pela', 'gallagher'],
     )
     .build(),
 
@@ -38,12 +52,26 @@ export const dpsCharacters = [
     .rarity(5)
     .roles(['DPS'])
     .archetype('Counter')
-    .labels(['Counter Attack', 'Physical', 'AoE'])
-    .addTeammateSection('Amplifiers', ['tingyun', 'bronya'], ['sparkle'], ['tingyun'])
-    .addTeammateSection('Sustain', ['fu-xuan', 'luocha'], ['bailu'], ['natasha'])
-    .addTeamComposition('Main DPS Team', 'Main DPS',
-      ['clara', 'tingyun', 'bronya', 'fu-xuan'],
-      ['clara', 'tingyun', 'pela', 'natasha']
+    .labels(['Counter Attack', 'Blast', 'AoE', 'F2P'])
+    .addTeammateSection('Dual DPS', ['yunli'], ['cipher', 'topaz'], [])
+    .addTeammateSection(
+      'Amplifiers',
+      ['robin'],
+      ['tribbie', 'silver-wolf', 'sunday', 'sparkle'],
+      ['remembrance-trailblazer', 'pela'],
+    )
+    .addTeammateSection('Sustain', ['aventurine', 'huohuo'], ['luocha'], ['gallagher', 'lynx'])
+    .addTeamComposition(
+      'Main DPS Team',
+      'Main DPS',
+      ['clara', 'robin', 'sunday', 'huohuo'],
+      ['clara', 'tingyun', 'remembrance-trailblazer', 'gallagher'],
+    )
+    .addTeamComposition(
+      'Counter Duo',
+      'Sub DPS',
+      ['yunli', 'clara', 'robin', 'aventurine'],
+      ['yunli', 'clara', 'pela', 'gallagher'],
     )
     .build(),
 
@@ -51,15 +79,36 @@ export const dpsCharacters = [
     .element('Fire')
     .path('Erudition')
     .rarity(5)
-    .roles(['DPS'])
-    .archetype('Follow-up')
-    .labels(['AoE', 'Fire', 'Follow-up Attack'])
-    .addTeammateSection('Amplifiers', ['asta', 'tingyun'], ['bronya'], ['asta'])
-    .addTeammateSection('Sustain', ['fu-xuan', 'luocha'], ['bailu'], ['natasha'])
-    .addTeamComposition('Main DPS Team', 'Main DPS',
-      ['himeko', 'asta', 'tingyun', 'fu-xuan'],
-      ['himeko', 'asta', 'pela', 'natasha']
+    .roles(['SUB_DPS'])
+    .archetype('Follow-up', 'Break-DPS')
+    .labels(['AoE', 'Blast', 'Follow-up Attack', 'F2P'])
+    .addTeammateSection('Dual DPS', ['the-herta'], ['anaxa'], ['herta'])
+    .addTeammateSection(
+      'Dual Amplifiers',
+      ['tribbie'],
+      ['robin', 'ruan-mei', 'silver-wolf'],
+      ['pela'],
     )
+    .addTeammateSection(
+      'Break Amplifiers',
+      ['fugue', 'ruan-mei'],
+      ['cipher'],
+      ['harmony-trailblazer'],
+    )
+    .addTeammateSection('Sustain', ['lingsha'], ['hyacine', 'huohuo'], ['gallagher'])
+    .addTeamComposition(
+      'Dual DPS',
+      'Sub DPS',
+      ['himeko', 'the-herta', 'tribbie', 'lingsha'],
+      ['himeko', 'herta', 'pela', 'gallagher'],
+    )
+    .addTeamComposition(
+      'Break Team',
+      'Main DPS',
+      ['himeko', 'fugue', 'ruan-mei', 'lingsha'],
+      ['himeko', 'harmony-trailblazer', 'pela', 'gallagher'],
+    )
+
     .build(),
 
   new CharacterBuilder('yanqing', 'Yanqing')
@@ -68,12 +117,14 @@ export const dpsCharacters = [
     .rarity(5)
     .roles(['DPS'])
     .archetype('Hypercarry')
-    .labels(['Single Target', 'Ice', 'Crit'])
+    .labels(['Single Target', 'Follow-up Attack', 'F2P'])
     .addTeammateSection('Amplifiers', ['bronya', 'sparkle'], ['tingyun'], ['tingyun'])
     .addTeammateSection('Sustain', ['gepard', 'luocha'], ['bailu'], ['natasha'])
-    .addTeamComposition('Main DPS Team', 'Main DPS',
+    .addTeamComposition(
+      'Main DPS Team',
+      'Main DPS',
       ['yanqing', 'bronya', 'sparkle', 'gepard'],
-      ['yanqing', 'tingyun', 'pela', 'natasha']
+      ['yanqing', 'tingyun', 'pela', 'natasha'],
     )
     .build(),
 
@@ -85,15 +136,24 @@ export const dpsCharacters = [
     .archetype('HP-Scaling')
     .labels(['Follow-up Attack', 'HP Scaling', 'Self Damage'])
     .addTeammateSection('Sub-DPS Partners', ['castorice'], ['jingliu'], ['remembrance-trailblazer'])
-    .addTeammateSection('Amplifiers', ['sunday', 'tribbie'], ['silver-wolf', 'cipher', 'ruan-mei'], ['bronya', 'remembrance-trailblazer'])
-    .addTeammateSection('Sustain', ['hyacine'], ['huohuo', 'luocha'], ['gallagher'])
-    .addTeamComposition('Main DPS Team', 'Main DPS',
-      ['blade', 'sunday', 'jingliu', 'hyacine'],
-      ['blade', 'bronya', 'pela', 'gallagher']
+    .addTeammateSection(
+      'Amplifiers',
+      ['sunday', 'tribbie'],
+      ['silver-wolf', 'cipher', 'ruan-mei'],
+      ['bronya', 'remembrance-trailblazer'],
     )
-    .addTeamComposition('Sub-DPS Team', 'Sub-DPS',
+    .addTeammateSection('Sustain', ['hyacine'], ['huohuo', 'luocha'], ['gallagher'])
+    .addTeamComposition(
+      'Main DPS Team',
+      'Main DPS',
+      ['blade', 'sunday', 'jingliu', 'hyacine'],
+      ['blade', 'bronya', 'pela', 'gallagher'],
+    )
+    .addTeamComposition(
+      'Sub-DPS Team',
+      'Sub-DPS',
       ['castorice', 'blade', 'tribbie', 'hyacine'],
-      ['jingliu', 'blade', 'remembrance-trailblazer', 'gallagher']
+      ['jingliu', 'blade', 'remembrance-trailblazer', 'gallagher'],
     )
     .build(),
 
@@ -106,9 +166,11 @@ export const dpsCharacters = [
     .labels(['Single Target', 'Imaginary', 'Enhanced Basic'])
     .addTeammateSection('Amplifiers', ['sparkle', 'bronya'], ['tingyun'], ['tingyun'])
     .addTeammateSection('Sustain', ['fu-xuan', 'luocha'], ['bailu'], ['natasha'])
-    .addTeamComposition('Main DPS Team', 'Main DPS',
+    .addTeamComposition(
+      'Main DPS Team',
+      'Main DPS',
       ['dan-heng-il', 'sparkle', 'bronya', 'fu-xuan'],
-      ['dan-heng-il', 'tingyun', 'pela', 'natasha']
+      ['dan-heng-il', 'tingyun', 'pela', 'natasha'],
     )
     .build(),
 
@@ -121,9 +183,11 @@ export const dpsCharacters = [
     .labels(['AoE', 'HP Consumption', 'Enhanced State'])
     .addTeammateSection('Amplifiers', ['bronya', 'sparkle'], ['tingyun'], ['tingyun'])
     .addTeammateSection('Sustain', ['luocha', 'bailu'], ['fu-xuan'], ['natasha'])
-    .addTeamComposition('Main DPS Team', 'Main DPS',
+    .addTeamComposition(
+      'Main DPS Team',
+      'Main DPS',
       ['jingliu', 'bronya', 'sparkle', 'luocha'],
-      ['jingliu', 'tingyun', 'pela', 'natasha']
+      ['jingliu', 'tingyun', 'pela', 'natasha'],
     )
     .build(),
 
@@ -136,9 +200,11 @@ export const dpsCharacters = [
     .labels(['AoE', 'Ultimate Based', 'Energy Hungry'])
     .addTeammateSection('Amplifiers', ['tingyun', 'huohuo'], ['bronya'], ['tingyun'])
     .addTeammateSection('Sustain', ['huohuo', 'luocha'], ['bailu'], ['natasha'])
-    .addTeamComposition('Main DPS Team', 'Main DPS',
+    .addTeamComposition(
+      'Main DPS Team',
+      'Main DPS',
       ['argenti', 'tingyun', 'huohuo', 'luocha'],
-      ['argenti', 'tingyun', 'pela', 'natasha']
+      ['argenti', 'tingyun', 'pela', 'natasha'],
     )
     .build(),
 
@@ -151,9 +217,11 @@ export const dpsCharacters = [
     .labels(['AoE', 'Debuff Stacking', 'Ultimate Based'])
     .addTeammateSection('Debuffers', ['jiaoqiu'], ['pela', 'silver-wolf'], ['pela'])
     .addTeammateSection('Sustain', ['aventurine', 'fu-xuan'], ['huohuo'], ['gallagher'])
-    .addTeamComposition('Debuff Team', 'Main DPS',
+    .addTeamComposition(
+      'Debuff Team',
+      'Main DPS',
       ['acheron', 'jiaoqiu', 'pela', 'aventurine'],
-      ['acheron', 'pela', 'guinaifen', 'gallagher']
+      ['acheron', 'pela', 'guinaifen', 'gallagher'],
     )
     .build(),
 
@@ -166,9 +234,11 @@ export const dpsCharacters = [
     .labels(['Counter Attack', 'Physical', 'Ultimate Based'])
     .addTeammateSection('Amplifiers', ['tingyun', 'bronya'], ['sparkle'], ['tingyun'])
     .addTeammateSection('Sustain', ['huohuo', 'aventurine'], ['fu-xuan'], ['gallagher'])
-    .addTeamComposition('Main DPS Team', 'Main DPS',
+    .addTeamComposition(
+      'Main DPS Team',
+      'Main DPS',
       ['yunli', 'tingyun', 'bronya', 'huohuo'],
-      ['yunli', 'tingyun', 'pela', 'gallagher']
+      ['yunli', 'tingyun', 'pela', 'gallagher'],
     )
     .build(),
 
@@ -181,9 +251,11 @@ export const dpsCharacters = [
     .labels(['Follow-up Attack', 'Debt', 'Fire'])
     .addTeammateSection('Amplifiers', ['robin', 'aventurine'], ['bronya'], ['tingyun'])
     .addTeammateSection('Sustain', ['aventurine', 'huohuo'], ['fu-xuan'], ['gallagher'])
-    .addTeamComposition('FUA Team', 'Main DPS',
+    .addTeamComposition(
+      'FUA Team',
+      'Main DPS',
       ['topaz', 'robin', 'aventurine', 'huohuo'],
-      ['topaz', 'tingyun', 'pela', 'gallagher']
+      ['topaz', 'tingyun', 'pela', 'gallagher'],
     )
     .build(),
 
@@ -195,11 +267,18 @@ export const dpsCharacters = [
     .archetype('Follow-up')
     .labels(['Follow-up Attack', 'Debuff Synergy'])
     .addTeammateSection('Sub-DPS Partners', ['topaz'], [], ['moze'])
-    .addTeammateSection('Debuffers', ['robin', 'cipher'], ['jiaoqiu', 'silver-wolf', 'tribbie', 'sunday'], ['pela', 'guinaifen'])
+    .addTeammateSection(
+      'Debuffers',
+      ['robin', 'cipher'],
+      ['jiaoqiu', 'silver-wolf', 'tribbie', 'sunday'],
+      ['pela', 'guinaifen'],
+    )
     .addTeammateSection('Sustain', ['aventurine'], ['huohuo', 'lingsha'], ['gallagher'])
-    .addTeamComposition('FUA Team', 'Main DPS',
+    .addTeamComposition(
+      'FUA Team',
+      'Main DPS',
       ['ratio', 'topaz', 'robin', 'aventurine'],
-      ['ratio', 'moze', 'pela', 'gallagher']
+      ['ratio', 'moze', 'pela', 'gallagher'],
     )
     .build(),
 
@@ -212,9 +291,11 @@ export const dpsCharacters = [
     .labels(['Follow-up Attack', 'Debt', 'AoE'])
     .addTeammateSection('Amplifiers', ['sparkle', 'bronya'], ['tingyun'], ['tingyun'])
     .addTeammateSection('Sustain', ['aventurine', 'huohuo'], ['fu-xuan'], ['gallagher'])
-    .addTeamComposition('Main DPS Team', 'Main DPS',
+    .addTeamComposition(
+      'Main DPS Team',
+      'Main DPS',
       ['jade', 'sparkle', 'bronya', 'aventurine'],
-      ['jade', 'tingyun', 'pela', 'gallagher']
+      ['jade', 'tingyun', 'pela', 'gallagher'],
     )
     .build(),
 
@@ -228,9 +309,11 @@ export const dpsCharacters = [
     .addTeammateSection('Sub-DPS Partners', ['black-swan'], ['sampo'], ['sampo'])
     .addTeammateSection('Amplifiers', ['ruan-mei', 'jiaoqiu'], ['tingyun'], ['tingyun'])
     .addTeammateSection('Sustain', ['huohuo', 'fu-xuan'], ['bailu'], ['lynx'])
-    .addTeamComposition('DoT Team', 'Main DPS',
+    .addTeamComposition(
+      'DoT Team',
+      'Main DPS',
       ['kafka', 'black-swan', 'ruan-mei', 'huohuo'],
-      ['kafka', 'sampo', 'tingyun', 'lynx']
+      ['kafka', 'sampo', 'tingyun', 'lynx'],
     )
     .build(),
 
@@ -243,9 +326,11 @@ export const dpsCharacters = [
     .labels(['DoT', 'Wind', 'Arcana'])
     .addTeammateSection('Amplifiers', ['ruan-mei', 'jiaoqiu'], ['tingyun'], ['tingyun'])
     .addTeammateSection('Sustain', ['huohuo', 'fu-xuan'], ['bailu'], ['lynx'])
-    .addTeamComposition('DoT Team', 'Main DPS',
+    .addTeamComposition(
+      'DoT Team',
+      'Main DPS',
       ['black-swan', 'kafka', 'ruan-mei', 'huohuo'],
-      ['black-swan', 'sampo', 'tingyun', 'lynx']
+      ['black-swan', 'sampo', 'tingyun', 'lynx'],
     )
     .build(),
 
@@ -285,9 +370,11 @@ export const dpsCharacters = [
     .labels(['Physical', 'Taunt', 'F2P'])
     .addTeammateSection('Amplifiers', ['tingyun', 'bronya'], ['asta'], ['tingyun'])
     .addTeammateSection('Sustain', ['gepard', 'fu-xuan'], ['bailu'], ['natasha'])
-    .addTeamComposition('Main DPS Team', 'Main DPS',
+    .addTeamComposition(
+      'Main DPS Team',
+      'Main DPS',
       ['destruction-trailblazer', 'tingyun', 'bronya', 'gepard'],
-      ['destruction-trailblazer', 'tingyun', 'asta', 'natasha']
+      ['destruction-trailblazer', 'tingyun', 'asta', 'natasha'],
     )
     .build(),
 
@@ -299,11 +386,18 @@ export const dpsCharacters = [
     .roles(['DPS'])
     .archetype('Break-DPS')
     .labels(['Break DPS', 'Single Target', 'Implant Weakness'])
-    .addTeammateSection('Amplifiers', ['fugue', 'ruan-mei'], ['sunday'], ['bronya', 'harmony-trailblazer'])
+    .addTeammateSection(
+      'Amplifiers',
+      ['fugue', 'ruan-mei'],
+      ['sunday'],
+      ['bronya', 'harmony-trailblazer'],
+    )
     .addTeammateSection('Sustain', ['lingsha'], ['hyacine', 'fu-xuan', 'huohuo'], ['gallagher'])
-    .addTeamComposition('Break Team', 'Main DPS',
+    .addTeamComposition(
+      'Break Team',
+      'Main DPS',
       ['boothill', 'fugue', 'ruan-mei', 'lingsha'],
-      ['boothill', 'harmony-trailblazer', 'bronya', 'gallagher']
+      ['boothill', 'harmony-trailblazer', 'bronya', 'gallagher'],
     )
     .build(),
 
@@ -313,12 +407,21 @@ export const dpsCharacters = [
     .rarity(5)
     .roles(['DPS'])
     .archetype('Break-DPS')
-    .labels(['Break DPS', 'Super Break', 'Implant Weakness', 'Action Advance', 'Blast'])
-    .addTeammateSection('Amplifiers', ['ruan-mei', 'fugue'], [], ['harmony-trailblazer'])
-    .addTeammateSection('Sustain', ['lingsha'], ['huohuo'], ['gallagher'])
-    .addTeamComposition('Break Team', 'Main DPS',
-      ['firefly', 'ruan-mei', 'fugue', 'lingsha'],
-      ['firefly', 'harmony-trailblazer', 'gallagher', 'natasha']
+    .labels([
+      'Break DPS',
+      'Super Break',
+      'Implant Weakness',
+      'Action Advance',
+      'Blast',
+      'Buffed State',
+    ])
+    .addTeammateSection('Amplifiers', ['fugue', 'ruan-mei'], ['cipher'], ['harmony-trailblazer'])
+    .addTeammateSection('Sustain', ['lingsha'], ['huohuo', 'aventurine'], ['gallagher'])
+    .addTeamComposition(
+      'Break Team',
+      'Main DPS',
+      ['firefly', 'fugue', 'ruan-mei', 'lingsha'],
+      ['firefly', 'harmony-trailblazer', 'bronya', 'gallagher'],
     )
     .build(),
 
@@ -329,11 +432,13 @@ export const dpsCharacters = [
     .roles(['DPS'])
     .archetype('Break-DPS')
     .labels(['Break DPS', 'AoE', 'Blast', 'Super Break'])
-    .addTeammateSection('Amplifiers', ['fugue', 'ruan-mei'], [], ['harmony-trailblazer'])
+    .addTeammateSection('Amplifiers', ['fugue', 'ruan-mei'], ['tribbie'], ['harmony-trailblazer'])
     .addTeammateSection('Sustain', ['lingsha'], ['huohuo'], ['gallagher'])
-    .addTeamComposition('Break Team', 'Main DPS',
+    .addTeamComposition(
+      'Break Team',
+      'Main DPS',
       ['rappa', 'fugue', 'ruan-mei', 'lingsha'],
-      ['rappa', 'harmony-trailblazer', 'gallagher', 'natasha']
+      ['rappa', 'harmony-trailblazer', 'bronya', 'gallagher'],
     )
     .build(),
 
@@ -422,7 +527,12 @@ export const dpsCharacters = [
     .roles(['DPS'])
     .archetype('Break-DPS')
     .labels(['Break DPS', 'Quantum', 'Toughness Damage', 'F2P'])
-    .addTeammateSection('Amplifiers', ['ruan-mei', 'harmony-trailblazer'], ['bronya'], ['harmony-trailblazer'])
+    .addTeammateSection(
+      'Amplifiers',
+      ['ruan-mei', 'harmony-trailblazer'],
+      ['bronya'],
+      ['harmony-trailblazer'],
+    )
     .addTeammateSection('Sustain', ['fu-xuan', 'huohuo'], ['bailu'], ['lynx'])
     .build(),
 
@@ -474,7 +584,12 @@ export const dpsCharacters = [
     .roles(['DPS'])
     .archetype('Hypercarry')
     .labels(['Summon', 'Lightning', 'Remembrance'])
-    .addTeammateSection('Amplifiers', ['sunday', 'remembrance-trailblazer'], ['bronya'], ['remembrance-trailblazer'])
+    .addTeammateSection(
+      'Amplifiers',
+      ['sunday', 'remembrance-trailblazer'],
+      ['bronya'],
+      ['remembrance-trailblazer'],
+    )
     .addTeammateSection('Sustain', ['aventurine', 'huohuo'], ['fu-xuan'], ['gallagher'])
     .build(),
 
