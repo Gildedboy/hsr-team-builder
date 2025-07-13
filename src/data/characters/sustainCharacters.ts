@@ -112,7 +112,7 @@ export const sustainCharacters = [
 
   new CharacterBuilder('hyacine', 'Hyacine')
     .element('Wind')
-    .path('Abundance')
+    .path('Remembrance')
     .rarity(5)
     .roles(['SUSTAIN'])
     .archetype('Healer')

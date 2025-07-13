@@ -1,6 +1,6 @@
 <template>
   <div class="top-bar py-2 mb-4">
-    <div class="container-fluid d-flex flex-column flex-md-row justify-content-between align-items-center gap-2">
+    <div class="container-fluid d-flex flex-column flex-md-row justify-content-between align-items-center gap-2" style="max-width: 1900px; margin: 0 auto;">
       <!-- Title -->
       <div class="d-flex align-items-center justify-content-center justify-content-md-start">
         <h1 class="h4 mb-0 text-primary fw-bold">Honkai Star Rail Team Builder</h1>

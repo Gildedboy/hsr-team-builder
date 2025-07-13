@@ -1,7 +1,7 @@
 import { computed } from 'vue'
 import type { Character } from '@/types/Character'
 
-export function useCharacterGrouping(filteredCharacters: { value: Character[] }) {
+export function useCharacterGrouping(filteredCharacters: { value: Character[] }, selectedArchetypes?: { value: string[] }) {
   const charactersByRole = computed(() => {
     const filtered = filteredCharacters.value
     
@@ -27,8 +27,13 @@ export function useCharacterGrouping(filteredCharacters: { value: Character[] })
       characters.forEach(char => {
         const archetypes = char.archetype || ['Other']
         
-        // Add character to each of their archetype groups
-        archetypes.forEach(archetype => {
+        // If archetype filters are active, only show characters in those subcategories
+        const relevantArchetypes = selectedArchetypes?.value.length 
+          ? archetypes.filter(archetype => selectedArchetypes.value.includes(archetype))
+          : archetypes
+        
+        // Add character to each of their relevant archetype groups
+        relevantArchetypes.forEach(archetype => {
           if (!groups[archetype]) {
             groups[archetype] = []
           }

@@ -163,7 +163,14 @@ export const supportCharacters = [
     .rarity(5)
     .roles(['SUPPORT'])
     .archetype('Buffer')
-    .labels(['Amplifier', 'Follow-up Attack', 'Debuff', 'Vulnerability', 'True Damage', 'Generalist'])
+    .labels([
+      'Amplifier',
+      'Follow-up Attack',
+      'Debuff',
+      'Vulnerability',
+      'True Damage',
+      'Generalist',
+    ])
     .addTeammateSection('Debuffers', ['jiaoqiu', 'silver-wolf'], ['bronya'], ['pela'])
     .addTeammateSection('Sustain', ['aventurine'], ['fu-xuan', 'huohuo'], ['gallagher'])
     .build(),
@@ -175,5 +182,14 @@ export const supportCharacters = [
     .roles(['SUPPORT'])
     .archetype('Debuffer')
     .labels(['Debuff', 'Fire', 'DoT'])
+    .build(),
+
+  new CharacterBuilder('guinaifen', 'Guinaifen')
+    .element('Fire')
+    .path('Nihility')
+    .rarity(4)
+    .roles(['SUPPORT'])
+    .archetype('DoT')
+    .labels(['DoT', 'Fire', 'F2P'])
     .build(),
 ]

@@ -10,7 +10,6 @@ import { useHomeView } from '@/composables/useHomeView'
 import { FILTER_OPTIONS } from '@/constants/filterOptions'
 import { COLORS } from '@/constants/design'
 
-
 const {
   selectedElements,
   selectedPaths,
@@ -37,17 +36,17 @@ const {
 const allCharacters = [...dpsCharacters, ...supportCharacters, ...sustainCharacters]
 
 const isNewFormatCharacter = (characterId: string) => {
-  return allCharacters.some(char => char.id === characterId)
+  return allCharacters.some((char) => char.id === characterId)
 }
 
 const getNewFormatCharacter = (characterId: string) => {
-  return allCharacters.find(char => char.id === characterId)
+  return allCharacters.find((char) => char.id === characterId)
 }
 </script>
 
 <template>
   <TopBar />
-  <main class="container-fluid py-4">
+  <main class="container-fluid py-4" style="max-width: 1900px; margin: 0 auto">
     <div class="text-center mb-4">
       <p class="lead text-secondary px-3">
         Select a character to see team recommendations or use filters and archetypes
@@ -131,9 +130,9 @@ const getNewFormatCharacter = (characterId: string) => {
                       ? 'btn-outline-primary active'
                       : 'btn-outline-secondary'
                   "
-                  :style="{ 
+                  :style="{
                     color: (rarity === 5 ? COLORS.rarity5 : COLORS.rarity4) + ' !important',
-                    borderColor: (rarity === 5 ? COLORS.rarity5 : COLORS.rarity4) + ' !important'
+                    borderColor: (rarity === 5 ? COLORS.rarity5 : COLORS.rarity4) + ' !important',
                   }"
                 >
                   {{ rarity }}★
@@ -221,7 +220,11 @@ const getNewFormatCharacter = (characterId: string) => {
       <!-- Team Recommendations -->
       <div class="col-lg-9 col-md-8">
         <TeamRecommendations
-          v-if="selectedCharacter && isNewFormatCharacter(selectedCharacter.id) && getNewFormatCharacter(selectedCharacter.id)"
+          v-if="
+            selectedCharacter &&
+            isNewFormatCharacter(selectedCharacter.id) &&
+            getNewFormatCharacter(selectedCharacter.id)
+          "
           :key="selectedCharacter.id"
           :character="getNewFormatCharacter(selectedCharacter.id)!"
         />
@@ -242,19 +245,19 @@ const getNewFormatCharacter = (characterId: string) => {
     <div class="d-flex justify-content-center mb-3">
       <div class="d-flex gap-4 flex-wrap justify-content-center">
         <div class="d-flex align-items-center gap-2">
-          <div class="legend-color" style="background-color: #ff00ff;"></div>
+          <div class="legend-color" style="background-color: #ff00ff"></div>
           <span class="text-white legend-text">Selected</span>
         </div>
         <div class="d-flex align-items-center gap-2">
-          <div class="legend-color" style="background-color: #ffd700;"></div>
+          <div class="legend-color" style="background-color: #ffd700"></div>
           <span class="text-white legend-text">BiS</span>
         </div>
         <div class="d-flex align-items-center gap-2">
-          <div class="legend-color" style="background-color: #00d4ff;"></div>
+          <div class="legend-color" style="background-color: #00d4ff"></div>
           <span class="text-white legend-text">Generalist</span>
         </div>
         <div class="d-flex align-items-center gap-2">
-          <div class="legend-color" style="background-color: #2ecc71;"></div>
+          <div class="legend-color" style="background-color: #2ecc71"></div>
           <span class="text-white legend-text">F2P</span>
         </div>
       </div>
@@ -265,8 +268,14 @@ const getNewFormatCharacter = (characterId: string) => {
       <RoleTabsSection
         :characters-by-role="charactersByRole"
         :selected-character="selectedCharacter"
-        :is-recommended="(charId: string) => selectedCharacter ? isCharacterRecommended(selectedCharacter, charId) : false"
-        :get-recommendation-tier="(charId: string) => selectedCharacter ? getRecommendationTier(selectedCharacter, charId) : null"
+        :is-recommended="
+          (charId: string) =>
+            selectedCharacter ? isCharacterRecommended(selectedCharacter, charId) : false
+        "
+        :get-recommendation-tier="
+          (charId: string) =>
+            selectedCharacter ? getRecommendationTier(selectedCharacter, charId) : null
+        "
         :selected-elements="selectedElements"
         :selected-paths="selectedPaths"
         :selected-rarities="selectedRarities"
@@ -275,7 +284,6 @@ const getNewFormatCharacter = (characterId: string) => {
         @select="selectCharacter"
       />
     </div>
-
   </main>
 </template>
 <style scoped>
