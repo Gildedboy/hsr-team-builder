@@ -59,7 +59,7 @@ export interface TeamVariant {
 
 // Helper class for easy character creation
 export class CharacterBuilder {
-  private character: Partial<Character> = {}
+  private readonly character: Partial<Character> = {}
 
   constructor(id: string, name: string) {
     this.character.id = id

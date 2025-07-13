@@ -20,15 +20,6 @@ export const supportCharacters = [
     .labels(['Debuff', 'Weakness Implant', 'Defense Reduction', 'Quantum'])
     .build(),
 
-  new CharacterBuilder('welt', 'Welt')
-    .element('Imaginary')
-    .path('Nihility')
-    .rarity(5)
-    .roles(['SUPPORT'])
-    .archetype('Debuffer')
-    .labels(['Debuff', 'Slow', 'Imaginary', 'AoE'])
-    .build(),
-
   new CharacterBuilder('jiaoqiu', 'Jiaoqiu')
     .element('Fire')
     .path('Nihility')
@@ -173,15 +164,6 @@ export const supportCharacters = [
     ])
     .addTeammateSection('Debuffers', ['jiaoqiu', 'silver-wolf'], ['bronya'], ['pela'])
     .addTeammateSection('Sustain', ['aventurine'], ['fu-xuan', 'huohuo'], ['gallagher'])
-    .build(),
-
-  new CharacterBuilder('anaxa', 'Anaxa')
-    .element('Fire')
-    .path('Nihility')
-    .rarity(5)
-    .roles(['SUPPORT'])
-    .archetype('Debuffer')
-    .labels(['Debuff', 'Fire', 'DoT'])
     .build(),
 
   new CharacterBuilder('guinaifen', 'Guinaifen')
