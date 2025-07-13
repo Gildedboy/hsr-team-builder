@@ -49,7 +49,7 @@ const getNewFormatCharacter = (characterId: string) => {
   <main class="container-fluid py-4" style="max-width: 1900px; margin: 0 auto">
     <div class="text-center mb-4">
       <p class="lead text-secondary px-3">
-        Select a character to see team recommendations or use filters and archetypes
+        Select a character to see team recommendations or you can use filters and/or archetypes
       </p>
     </div>
 
