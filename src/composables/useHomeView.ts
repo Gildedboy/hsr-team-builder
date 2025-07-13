@@ -17,7 +17,7 @@ export function useHomeView() {
     clearFilters,
   } = useCharacterFilters(characters)
 
-  const { charactersByRole } = useCharacterGrouping(filteredCharacters)
+  const { charactersByRole } = useCharacterGrouping(filteredCharacters, selectedArchetypes)
 
   const { selectedCharacter, selectCharacter, isCharacterRecommended, getRecommendationTier } =
     useCharacterSelection()

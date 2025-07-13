@@ -7,22 +7,22 @@ export interface Character {
   element: Element
   path: Path
   rarity: Rarity
-  roles: Role[]           // Multiple roles: ['DPS', 'SUB_DPS']
-  archetype: Archetype[]  // How they play: ['Hypercarry'], ['Follow-up', 'Summon'], etc.
-  labels: string[]        // Descriptive tags
-  
+  roles: Role[] // Multiple roles: ['DPS', 'SUB_DPS']
+  archetype: Archetype[] // How they play: ['Hypercarry'], ['Follow-up', 'Summon'], etc.
+  labels: string[] // Descriptive tags
+
   // Flexible teammate recommendations
   teammateRecommendations?: TeammateSection[]
-  
+
   // Flexible team compositions
   teamCompositions?: TeamComposition[]
 }
 
 export type Role = 'DPS' | 'SUB_DPS' | 'SUPPORT' | 'SUSTAIN' | 'AMPLIFIER'
 
-export type Archetype = 
+export type Archetype =
   | 'Hypercarry'
-  | 'HP-Scaling' 
+  | 'HP-Scaling'
   | 'Follow-up'
   | 'Break-DPS'
   | 'Debuffer'
@@ -33,26 +33,28 @@ export type Archetype =
   | 'Ultimate-Based'
   | 'Energy-Hungry'
   | 'Summon'
+  | 'Debuff DPS'
+  | 'DoT'
 
 // Flexible teammate section - you can name it whatever you want
 export interface TeammateSection {
-  name: string              // Custom name: "Amplifiers", "Debuffers", "Sustain", etc.
-  bis: string[]            // Character IDs
-  generalist: string[]     // Character IDs  
-  f2p: string[]           // Character IDs
+  name: string // Custom name: "Amplifiers", "Debuffers", "Sustain", etc.
+  bis: string[] // Character IDs
+  generalist: string[] // Character IDs
+  f2p: string[] // Character IDs
 }
 
 // Flexible team composition
 export interface TeamComposition {
-  name: string              // Custom name: "Hypercarry Team", "FUA Team", etc.
-  role: string             // "Main DPS", "Sub-DPS", etc.
+  name: string // Custom name: "Hypercarry Team", "FUA Team", etc.
+  role: string // "Main DPS", "Sub-DPS", etc.
   bis: TeamVariant
   f2p: TeamVariant
 }
 
 export interface TeamVariant {
-  characters: string[]      // 4 character IDs
-  description?: string      // Optional description
+  characters: string[] // 4 character IDs
+  description?: string // Optional description
 }
 
 // Helper class for easy character creation
@@ -104,7 +106,14 @@ export class CharacterBuilder {
   }
 
   // Add a custom team composition
-  addTeamComposition(name: string, role: string, bisTeam: string[], f2pTeam: string[], bisDesc?: string, f2pDesc?: string) {
+  addTeamComposition(
+    name: string,
+    role: string,
+    bisTeam: string[],
+    f2pTeam: string[],
+    bisDesc?: string,
+    f2pDesc?: string,
+  ) {
     if (!this.character.teamCompositions) {
       this.character.teamCompositions = []
     }
@@ -112,7 +121,7 @@ export class CharacterBuilder {
       name,
       role,
       bis: { characters: bisTeam, description: bisDesc },
-      f2p: { characters: f2pTeam, description: f2pDesc }
+      f2p: { characters: f2pTeam, description: f2pDesc },
     })
     return this
   }

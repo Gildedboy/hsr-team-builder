@@ -9,7 +9,7 @@
               DPS / Sub-DPS
             </th>
             <th class="text-primary text-center fw-bold border-end border-primary role-column-width">
-              Buffer / Debuffer
+              Amplifier
             </th>
             <th class="text-primary text-center fw-bold role-column-width-last">Sustain</th>
           </tr>
