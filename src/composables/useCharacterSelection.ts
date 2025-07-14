@@ -5,8 +5,8 @@ export function useCharacterSelection() {
   const selectedCharacter = ref<Character | null>(null)
 
   const selectCharacter = (character: Character, shouldToggle: boolean = true) => {
-    if (shouldToggle) {
-      selectedCharacter.value = selectedCharacter.value?.id === character.id ? null : character
+    if (shouldToggle && selectedCharacter.value?.id === character.id) {
+      selectedCharacter.value = null
     } else {
       selectedCharacter.value = character
     }

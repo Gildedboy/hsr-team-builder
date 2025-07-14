@@ -79,7 +79,7 @@ const getNewFormatCharacter = (characterId: string) => {
                 class="form-control bg-dark text-white border-primary"
                 @focus="onSearchFocus"
                 @blur="onSearchBlur"
-                @keydown="onKeyDown($event, selectCharacter)"
+                @keydown="onKeyDown($event, (char) => handleSelectFromSearch(char))"
               />
 
               <!-- Search Suggestions Dropdown -->
