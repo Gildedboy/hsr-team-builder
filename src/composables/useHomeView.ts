@@ -26,9 +26,11 @@ export function useHomeView() {
     searchQuery: searchQueryRef,
     showSearchSuggestions,
     searchSuggestions,
+    selectedIndex,
     selectCharacterFromSearch,
     onSearchFocus,
     onSearchBlur,
+    onKeyDown,
   } = useSearch()
 
   const handleSelectFromSearch = (character: Character) => {
@@ -80,6 +82,7 @@ export function useHomeView() {
     searchQueryRef,
     showSearchSuggestions,
     searchSuggestions,
+    selectedIndex,
     
     // Actions
     toggleFilter,
@@ -88,6 +91,7 @@ export function useHomeView() {
     handleClearFilters,
     onSearchFocus,
     onSearchBlur,
+    onKeyDown,
     
     // Computed helpers
     isCharacterRecommended,

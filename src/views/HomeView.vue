@@ -20,6 +20,8 @@ const {
   searchQueryRef,
   showSearchSuggestions,
   searchSuggestions,
+  selectedIndex,
+  onKeyDown,
   toggleFilter,
   selectCharacter,
   handleSelectFromSearch,
@@ -77,6 +79,7 @@ const getNewFormatCharacter = (characterId: string) => {
                 class="form-control bg-dark text-white border-primary"
                 @focus="onSearchFocus"
                 @blur="onSearchBlur"
+                @keydown="onKeyDown($event, selectCharacter)"
               />
 
               <!-- Search Suggestions Dropdown -->
@@ -85,9 +88,10 @@ const getNewFormatCharacter = (characterId: string) => {
                 class="position-absolute w-100 bg-dark border border-primary border-top-0 rounded-bottom search-suggestions"
               >
                 <div
-                  v-for="character in searchSuggestions"
+                  v-for="(character, index) in searchSuggestions"
                   :key="character.id"
                   class="search-suggestion-item hover-bg-primary"
+                  :class="{ 'bg-primary': selectedIndex === index }"
                   @click="handleSelectFromSearch(character)"
                 >
                   <img
