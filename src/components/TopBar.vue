@@ -133,82 +133,11 @@
               <div class="text-white">
                 <h6 class="text-primary mb-3">Characters Missing Updates</h6>
                 
-                <div class="mb-4">
-                  <strong class="text-warning">DPS Characters:</strong>
-                  <ul class="list-unstyled ms-3 small mt-2">
-                    <li>• Jade - Incomplete team compositions</li>
-                    <li>• Kafka - Missing teammate sections</li>
-                    <li>• Boothill - No data</li>
-                    <li>• Firefly - No data</li>
-                    <li>• Feixiao - No data</li>
-                    <li>• Rappa - No data</li>
-                    <li>• Destruction Trailblazer - No data</li>
-                    <li>• Xueyi - No data</li>
-                    <li>• Dan Heng - No data</li>
-                    <li>• Arlan - No data</li>
-                    <li>• Serval - No data</li>
-                    <li>• Hook - No data</li>
-                    <li>• Qingque - No data</li>
-                    <li>• Sushang - No data</li>
-                    <li>• Herta - No data</li>
-                    <li>• Misha - No data</li>
-                    <li>• Hunt March 7th - No data</li>
-                    <li>• Moze - No data</li>
-                    <li>• Aglaea - No data</li>
-                    <li>• Castorice - No data</li>
-                    <li>• Mydei - No data</li>
-                    <li>• Phainon - No data</li>
-                    <li>• Saber - No data</li>
-                    <li>• Archer - No data</li>
-                    <li>• Anaxa - No data</li>
-                    <li>• The Herta - No data</li>
-                  </ul>
-                </div>
+
                 
                 <div class="mb-4">
-                  <strong class="text-warning">Support Characters:</strong>
-                  <ul class="list-unstyled ms-3 small mt-2">
-                    <li>• Bronya - No data</li>
-                    <li>• Sparkle - No data</li>
-                    <li>• Robin - No data</li>
-                    <li>• Ruan Mei - No data</li>
-                    <li>• Sunday - No data</li>
-                    <li>• Tingyun - No data</li>
-                    <li>• Asta - No data</li>
-                    <li>• Hanya - No data</li>
-                    <li>• Yukong - No data</li>
-                    <li>• Pela - No data</li>
-                    <li>• Silver Wolf - No data</li>
-                    <li>• Jiaoqiu - No data</li>
-                    <li>• Guinaifen - No data</li>
-                    <li>• Sampo - No data</li>
-                    <li>• Luka - No data</li>
-                    <li>• Welt - No data</li>
-                    <li>• Harmony Trailblazer - No data</li>
-                    <li>• Remembrance Trailblazer - No data</li>
-                    <li>• Tribbie - No data</li>
-                    <li>• Cipher - No data</li>
-                    <li>• Fugue - No data</li>
-                  </ul>
-                </div>
-                
-                <div class="mb-4">
-                  <strong class="text-warning">Sustain Characters:</strong>
-                  <ul class="list-unstyled ms-3 small mt-2">
-                    <li>• Aventurine - No data</li>
-                    <li>• Fu Xuan - No data</li>
-                    <li>• Gepard - No data</li>
-                    <li>• March 7th - No data</li>
-                    <li>• Fire Trailblazer - No data</li>
-                    <li>• Huohuo - No data</li>
-                    <li>• Bailu - No data</li>
-                    <li>• Luocha - No data</li>
-                    <li>• Lingsha - No data</li>
-                    <li>• Gallagher - No data</li>
-                    <li>• Lynx - No data</li>
-                    <li>• Natasha - No data</li>
-                    <li>• Hyacine - No data</li>
-                  </ul>
+                  <p class="text-warning mb-2"><strong>Support Characters:</strong> Missing teammate recommendations and team compositions</p>
+                  <p class="text-warning mb-0"><strong>Sustain Characters:</strong> Missing teammate recommendations and team compositions</p>
                 </div>
               </div>
             </div>
@@ -226,6 +155,16 @@
                 <div class="mb-3">
                   <strong class="text-warning">v1.2.0</strong> - Latest
                   <ul class="list-unstyled mt-2 ms-3">
+                    <li>• Completed all DPS character data</li>
+                    <li>• Added keyboard navigation to search</li>
+                    <li>• Improved UI layout and centering</li>
+                    <li>• Added optional F2P team compositions</li>
+                    <li>• Fixed archetype filtering behavior</li>
+                  </ul>
+                </div>
+                <div class="mb-3">
+                  <strong class="text-warning">v1.1.0</strong>
+                  <ul class="list-unstyled mt-2 ms-3">
                     <li>• Added desktop padding for better layout</li>
                     <li>• Added color legend for character recommendations</li>
                     <li>• Fixed mobile tab switching bug</li>
@@ -234,11 +173,12 @@
                   </ul>
                 </div>
                 <div class="mb-3">
-                  <strong class="text-warning">v1.1.0</strong>
+                  <strong class="text-warning">v1.0.0</strong>
                   <ul class="list-unstyled mt-2 ms-3">
-                    <li>• Enhanced character tooltip system</li>
-                    <li>• Improved team recommendation display</li>
-                    <li>• Added archetype filtering</li>
+                    <li>• Initial release with character grid</li>
+                    <li>• Team recommendations system</li>
+                    <li>• Advanced filtering and search</li>
+                    <li>• Responsive design</li>
                   </ul>
                 </div>
               </div>

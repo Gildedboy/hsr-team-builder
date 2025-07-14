@@ -55,6 +55,7 @@ npm run lint
 ## Character Data
 
 The app includes comprehensive character data with:
+
 - Character stats and rarities
 - Element and path classifications
 - Role-based categorization (DPS, Support, Sustain)
@@ -65,7 +66,9 @@ The app includes comprehensive character data with:
 ## Adding/Updating Characters
 
 ### File Structure
+
 Characters are organized by their primary role:
+
 - **DPS Characters**: `src/data/characters/dpsCharacters.ts`
 - **Support Characters**: `src/data/characters/supportCharacters.ts`
 - **Sustain Characters**: `src/data/characters/sustainCharacters.ts`
@@ -93,7 +96,9 @@ new CharacterBuilder('character-id', 'Character Name')
 ```
 
 ### Teammate Sections
+
 Create custom teammate sections with descriptive names:
+
 - **'Amplifiers'** - Buffers and supports
 - **'Sub-DPS Partners'** - Characters that work as sub-DPS
 - **'Debuffers'** - Characters that apply debuffs
@@ -102,20 +107,25 @@ Create custom teammate sections with descriptive names:
 Each section has three tiers: `bis`, `generalist`, `f2p`
 
 ### Team Compositions
+
 Create custom team compositions:
+
 - **First parameter**: Display name (e.g., 'Main DPS Team', 'DoT Team', 'FUA Team')
 - **Second parameter**: Role description (e.g., 'Main DPS', 'Sub-DPS')
 - **Third parameter**: BiS team (4 character IDs)
 - **Fourth parameter**: F2P team (4 character IDs)
 
 ### Character Roles & Grid Placement
+
 - **`roles: ['DPS']`** → Appears in DPS column
 - **`roles: ['SUPPORT']`** → Appears in Support column
 - **`roles: ['SUSTAIN']`** → Appears in Sustain column
 - **`roles: ['DPS', 'SUB_DPS']`** → Appears in DPS column (first role determines placement)
 
 ### Archetypes & Subcategories
+
 Archetypes determine subcategories within each column:
+
 - **DPS**: Break-DPS, Counter, Follow-up, HP-Scaling, Hypercarry, Ultimate-Based
 - **Support**: Buffer, Debuffer
 - **Sustain**: Healer, Shielder
@@ -141,13 +151,23 @@ new CharacterBuilder('new-dps', 'New DPS')
 ```
 
 ### Character Avatar
+
 Add character avatar image to `public/images/characters/[character-id].webp`
 
 ## Contributing
 
 Feel free to contribute by:
+
 - Adding new characters using the guide above
 - Updating team recommendations and teammate sections
 - Adding new archetypes or roles
 - Improving the UI/UX
 - Reporting bugs or suggesting features through the in-app contact form
+
+## Credits
+
+- **Character Images & Game Data**: [mar-7th/starrailres](https://github.com/mar-7th/starrailres) GitHub repository
+- **Team Building Data**: Gouba https://www.youtube.com/@guobacertified and Prydwen https://www.prydwen.gg/star-rail/
+- **UI Framework**: Bootstrap 5
+- **Development**: Vue 3 + TypeScript + Vite
+- **Special Thanks**: To all community members who contribute character data and team recommendations
