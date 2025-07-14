@@ -1,5 +1,14 @@
 <template>
-  <div v-if="character.teammateRecommendations || character.teamCompositions" class="card bg-dark border-primary h-100">
+  <div class="card bg-dark border-primary h-100">
+    <!-- No Data Message -->
+    <div v-if="!character.teammateRecommendations && !character.teamCompositions" class="card-body d-flex flex-column justify-content-center align-items-center text-center py-5">
+      <h3 class="text-primary mb-3">{{ character.name }}</h3>
+      <p class="text-secondary mb-0">This character doesn't have enough data yet.</p>
+      <p class="text-secondary small mt-2">Teammate recommendations and team compositions are being worked on.</p>
+    </div>
+    
+    <!-- Regular Content -->
+    <div v-else>
     <div class="card-header text-center">
       <h2 class="h4 text-primary mb-0">Suggested Teammates for {{ character.name }}</h2>
     </div>
@@ -116,6 +125,7 @@
     </div>
     
     <CharacterTooltip :character="hoveredCharacter" :position="tooltipPosition" />
+    </div>
   </div>
 </template>
 
