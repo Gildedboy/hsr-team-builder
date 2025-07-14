@@ -49,7 +49,7 @@ export interface TeamComposition {
   name: string // Custom name: "Hypercarry Team", "FUA Team", etc.
   role: string // "Main DPS", "Sub-DPS", etc.
   bis: TeamVariant
-  f2p: TeamVariant
+  f2p?: TeamVariant
 }
 
 export interface TeamVariant {
@@ -110,19 +110,22 @@ export class CharacterBuilder {
     name: string,
     role: string,
     bisTeam: string[],
-    f2pTeam: string[],
+    f2pTeam?: string[],
     bisDesc?: string,
     f2pDesc?: string,
   ) {
     if (!this.character.teamCompositions) {
       this.character.teamCompositions = []
     }
-    this.character.teamCompositions.push({
+    const composition: TeamComposition = {
       name,
       role,
       bis: { characters: bisTeam, description: bisDesc },
-      f2p: { characters: f2pTeam, description: f2pDesc },
-    })
+    }
+    if (f2pTeam) {
+      composition.f2p = { characters: f2pTeam, description: f2pDesc }
+    }
+    this.character.teamCompositions.push(composition)
     return this
   }
 

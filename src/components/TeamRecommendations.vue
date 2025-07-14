@@ -89,7 +89,7 @@
             </p>
           </div>
 
-          <div class="text-center">
+          <div v-if="currentTeamComposition.f2p" class="text-center">
             <h5 class="text-success mb-2">F2P Team</h5>
             <div class="d-flex gap-1 gap-sm-2 justify-content-center flex-wrap">
               <div
