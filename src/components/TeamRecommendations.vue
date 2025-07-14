@@ -30,8 +30,9 @@
 
       <!-- Teammate Recommendations -->
       <div v-if="currentTeammateSection" class="w-100 mb-3">
-        <div class="d-flex align-items-start w-100">
+        <div class="d-flex align-items-start justify-content-center gap-4 w-100">
           <RecommendationTier
+            v-if="currentTeammateSection.bis.length > 0"
             tier="bis"
             :character-ids="currentTeammateSection.bis"
             :active-tab="activeTeammateTab"
@@ -40,6 +41,7 @@
           />
           
           <RecommendationTier
+            v-if="currentTeammateSection.generalist.length > 0"
             tier="generalist"
             :character-ids="currentTeammateSection.generalist"
             :active-tab="activeTeammateTab"
@@ -48,6 +50,7 @@
           />
           
           <RecommendationTier
+            v-if="currentTeammateSection.f2p.length > 0"
             tier="f2p"
             :character-ids="currentTeammateSection.f2p"
             :active-tab="activeTeammateTab"
