@@ -2,6 +2,7 @@
   <div class="card bg-dark border-primary h-100">
     <!-- No Data Message -->
     <div v-if="!character.teammateRecommendations && !character.teamCompositions" class="card-body d-flex flex-column justify-content-center align-items-center text-center py-5">
+      <img src="/images/anime-satania.gif" alt="No data" class="mb-3" style="width: 120px; height: auto; border-radius: 8px;" />
       <h3 class="text-primary mb-3">{{ character.name }}</h3>
       <p class="text-secondary mb-0">This character doesn't have enough data yet.</p>
       <p class="text-secondary small mt-2">Teammate recommendations and team compositions are being worked on.</p>
