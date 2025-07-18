@@ -110,6 +110,9 @@ const getNewFormatCharacter = (characterId: string) => {
                         :src="`/images/element/${character.element}.webp`"
                         :alt="character.element"
                         class="search-suggestion-element-icon"
+                        loading="lazy"
+                        style="object-fit: contain"
+                        sizes="12px"
                       />
                       <span class="text-secondary search-suggestion-element-text">{{
                         character.element
@@ -166,6 +169,8 @@ const getNewFormatCharacter = (characterId: string) => {
                     width="20"
                     height="20"
                     loading="lazy"
+                    style="max-width: 20px; max-height: 20px; object-fit: contain"
+                    sizes="20px"
                   />
                 </button>
               </div>
@@ -193,6 +198,8 @@ const getNewFormatCharacter = (characterId: string) => {
                     width="20"
                     height="20"
                     loading="lazy"
+                    style="max-width: 20px; max-height: 20px; object-fit: contain"
+                    sizes="20px"
                   />
                 </button>
               </div>
