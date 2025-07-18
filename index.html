@@ -51,9 +51,14 @@
         min-height: 100vh;
         overflow-x: hidden;
         overscroll-behavior: none;
+        position: relative;
       }
       #app {
         min-height: 100vh;
+      }
+      /* Ensure good contrast for all text elements */
+      body, p, div, span, h1, h2, h3, h4, h5, h6 {
+        color: white;
       }
       .bg-dark {
         background-color: rgba(15, 15, 35, 0.9) !important;
@@ -63,6 +68,19 @@
       }
       .text-primary {
         color: #00d4ff !important;
+      }
+      /* Specific high contrast for buttons and interactive elements */
+      .btn {
+        color: white !important;
+      }
+      .btn-primary {
+        background-color: #00d4ff !important;
+        border-color: #00d4ff !important;
+        color: #0f0f23 !important; /* Dark text on bright background */
+      }
+      .btn-outline-primary {
+        color: #00d4ff !important;
+        border-color: #00d4ff !important;
       }
       /* Font Awesome will be loaded asynchronously - no need for @font-face here */
     </style>
