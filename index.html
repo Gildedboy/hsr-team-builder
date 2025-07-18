@@ -6,6 +6,18 @@
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    
+    <!-- Preload Google Fonts with swap for better performance -->
+    <link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" onload="this.onload=null;this.rel='stylesheet'">
+    <noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap"></noscript>
+    
+    <!-- Additional font optimization -->
+    <style>
+      /* Apply Poppins font when loaded */
+      .fonts-loaded body {
+        font-family: 'Poppins', system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
+      }
+    </style>
     <meta
       name="description"
       content="Build optimal Honkai Star Rail teams with our comprehensive team builder. Discover character synergies, get BiS and F2P team recommendations, and find the perfect teammates for your favorite characters."
@@ -29,14 +41,16 @@
         background: #0f0f23;
         height: 100%;
         overflow-x: hidden;
+        overscroll-behavior: none;
       }
       body {
         background: linear-gradient(135deg, #0f0f23, #1a1a2e, #16213e);
         background-attachment: fixed;
         color: white;
-        font-family: system-ui, sans-serif;
+        font-family: system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
         min-height: 100vh;
         overflow-x: hidden;
+        overscroll-behavior: none;
       }
       #app {
         min-height: 100vh;
@@ -50,22 +64,29 @@
       .text-primary {
         color: #00d4ff !important;
       }
-      @font-face {
-        font-family: 'Font Awesome 6 Free';
-        font-display: swap;
-      }
-      @font-face {
-        font-family: 'Font Awesome 6 Brands';
-        font-display: swap;
-      }
+      /* Font Awesome will be loaded asynchronously - no need for @font-face here */
     </style>
+    
+    <!-- Load Font Awesome asynchronously -->
     <script>
-      window.addEventListener('load', function () {
-        var link = document.createElement('link')
-        link.rel = 'stylesheet'
-        link.href = 'https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css'
-        document.head.appendChild(link)
-      })
+      // Load Font Awesome non-blocking after DOM is ready
+      function loadFontAwesome() {
+        const fontAwesome = document.createElement('link');
+        fontAwesome.rel = 'stylesheet';
+        fontAwesome.href = 'https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css';
+        fontAwesome.media = 'print';
+        fontAwesome.onload = function() { 
+          this.media = 'all'; 
+          this.onload = null;
+        };
+        document.head.appendChild(fontAwesome);
+      }
+      
+      if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', loadFontAwesome);
+      } else {
+        loadFontAwesome();
+      }
     </script>
   </head>
   <body>
