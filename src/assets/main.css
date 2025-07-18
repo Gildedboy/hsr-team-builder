@@ -1,3 +1,12 @@
+/* Bootstrap variable overrides */
+:root {
+  --bs-primary: #00d4ff;
+  --bs-primary-rgb: 0, 212, 255;
+  --bs-primary-text-emphasis: #00d4ff;
+  --bs-primary-bg-subtle: rgba(0, 212, 255, 0.1);
+  --bs-primary-border-subtle: rgba(0, 212, 255, 0.2);
+}
+
 /* Reset and base styles */
 
 * {
@@ -177,6 +186,44 @@ body {
 
 .text-primary {
   color: #00d4ff !important;
+}
+
+/* Ensure all Bootstrap primary variations use your color */
+.btn-primary {
+  background-color: #00d4ff !important;
+  border-color: #00d4ff !important;
+  color: #ffffff !important;
+}
+
+.btn-primary:hover,
+.btn-primary:focus,
+.btn-primary:active {
+  background-color: rgba(0, 212, 255, 0.8) !important;
+  border-color: #00d4ff !important;
+}
+
+.btn-outline-primary {
+  color: #00d4ff !important;
+  border-color: #00d4ff !important;
+}
+
+.btn-outline-primary:hover,
+.btn-outline-primary:focus,
+.btn-outline-primary:active {
+  background-color: #00d4ff !important;
+  border-color: #00d4ff !important;
+  color: #ffffff !important;
+}
+
+.alert-primary {
+  background-color: rgba(0, 212, 255, 0.1) !important;
+  border-color: rgba(0, 212, 255, 0.2) !important;
+  color: #00d4ff !important;
+}
+
+.badge-primary {
+  background-color: #00d4ff !important;
+  color: #ffffff !important;
 }
 
 .btn-warning {
