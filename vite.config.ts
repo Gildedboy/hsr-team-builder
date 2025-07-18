@@ -37,7 +37,7 @@ export default defineConfig({
     sourcemap: false,
     // Set target for better browser support
     target: 'esnext',
-    // Minify for smaller bundles
+    // Minify for smaller bundles (using terser for best compression)
     minify: 'terser',
   },
   // Add cache headers hints
