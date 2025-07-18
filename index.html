@@ -15,9 +15,8 @@
     <meta http-equiv="Cache-Control" content="public, max-age=31536000" />
     <meta http-equiv="Expires" content="31536000" />
 
-    <!-- Preload critical resources -->
-    <link rel="preload" href="/images/element/" as="fetch" crossorigin="anonymous" />
-    <link rel="preload" href="/images/path/" as="fetch" crossorigin="anonymous" />
+    <!-- Remove invalid preload directives - directories can't be preloaded -->
+    <!-- Images will be lazy loaded and cached by service worker -->
 
     <title>Honkai Star Rail Team Builder</title>
     <style>
