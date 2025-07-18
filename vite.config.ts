@@ -33,8 +33,15 @@ export default defineConfig({
           }
           return `assets/[name]-[hash].${extType}`
         },
+        // Split CSS into smaller chunks
+        manualChunks: {
+          // Separate vendor CSS
+          'vendor-css': ['bootstrap/dist/css/bootstrap.min.css'],
+        },
       },
     },
+    // CSS optimization
+    cssCodeSplit: true,
     // Enable source maps for debugging but smaller ones for production
     sourcemap: false,
     // Set target for better browser support
