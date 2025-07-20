@@ -1,7 +1,6 @@
 import { CharacterBuilder } from '@/types/Character'
 
 export const supportCharacters = [
-  // Support Characters
   new CharacterBuilder('pela', 'Pela')
     .element('Ice')
     .path('Nihility')
@@ -34,9 +33,6 @@ export const supportCharacters = [
       'Weakness Implant',
       'Weakness RES Reduction',
       'Defense Reduction',
-      'Single Target',
-      'AoE',
-      'Generalist Debuffer',
     ])
     .addTeammateSection('DPS', ['acheron'], ['ratio'], ['archer'])
     .addTeamComposition('Acheron Team', 'Debuffer', [
@@ -62,7 +58,7 @@ export const supportCharacters = [
     .labels(['Ashen Roast', 'Vulnerability', 'Ultimate Vulnerability', 'Blast', 'AoE'])
     .addTeammateSection('DPS', ['acheron'], ['ratio', 'kafka', 'black-swan'], [])
     .addTeamComposition('Acheron Team', 'Debuffer', ['acheron', 'jiaoqiu', 'cipher', 'aventurine'])
-    .addTeamComposition('Dr. Ratio Team', 'Main DPS', ['ratio', 'jiaoqiu', 'robin', 'aventurine'])
+    .addTeamComposition('Dr. Ratio Team', 'Debuffer', ['ratio', 'jiaoqiu', 'robin', 'aventurine'])
     .build(),
 
   new CharacterBuilder('asta', 'Asta')
@@ -71,7 +67,15 @@ export const supportCharacters = [
     .rarity(4)
     .roles(['SUPPORT'])
     .archetype('Buffer')
-    .labels(['Speed Amplifier', 'Burn', 'F2P', 'Attack Amplifier', 'Bounce'])
+    .labels(['SPD Amplifier', 'Burn', 'F2P', 'ATK Amplifier'])
+    .addTeammateSection(
+      'DPS',
+      ['kafka', 'aglaea'],
+      ['Any DPS as long as they can benefit from the SPD and ATK buffs'],
+      [],
+    )
+    .addTeamComposition('Kafka Team', 'Buffer', ['kafka', 'black-swan', 'asta', 'huohuo'])
+    .addTeamComposition('Aglaea Team', 'Buffer', ['aglaea', 'sunday', 'asta', 'huohuo'])
     .build(),
 
   new CharacterBuilder('yukong', 'Yukong')
@@ -81,11 +85,23 @@ export const supportCharacters = [
     .roles(['SUPPORT'])
     .archetype('Buffer')
     .labels([
-      'Attack Amplifier',
+      'ATK Amplifier',
       'Crit Rate Amplifier',
       'Crit DMG Amplifier ',
+      'Imaginary DMG Amplifier',
       'F2P',
-      'Single Target',
+    ])
+    .addTeammateSection(
+      'DPS',
+      ['dan-heng-il'],
+      ['Any DPS as long as they can benefit from the ATK and Crit buffs'],
+      [],
+    )
+    .addTeamComposition('Dan Heng IL Team', 'Buffer', [
+      'dan-heng-il',
+      'sparkle',
+      'yukong',
+      'huohuo',
     ])
     .build(),
 
@@ -95,18 +111,17 @@ export const supportCharacters = [
     .rarity(4)
     .roles(['SUPPORT'])
     .archetype('Buffer')
-    .labels(['Attack Amplifier', 'Speed Amplifier', 'Recover Skill Points', 'Burden', 'F2P'])
-    .addTeammateSection('DPS', ['dan-heng-il'], ['archer'], [])
-    .addTeamComposition('Dan Heng IL Team', 'Debuffer', [
-      'dan-heng-il',
-      'hanya',
-      'tingyun',
-      'gallagher',
-    ])
-    .addTeamComposition('Archer Team', 'Main DPS', ['archer', 'hanya', 'tingyun', 'gallagher'])
+    .labels(['ATK Amplifier', 'SPD Amplifier', 'Recover Skill Points', 'Burden', 'F2P'])
+    .addTeammateSection(
+      'DPS',
+      ['dan-heng-il', 'archer'],
+      ['Any DPS as long as they can benefit from the ATK, SPD buffs and SP Recovery'],
+      [],
+    )
+    .addTeamComposition('Dan Heng IL Team', 'Buffer', ['dan-heng-il', 'sunday', 'hanya', 'huohuo'])
+    .addTeamComposition('Archer Team', 'Buffer', ['archer', 'silver-wolf', 'hanya', 'gallagher'])
     .build(),
 
-  // Buffer Characters
   new CharacterBuilder('bronya', 'Bronya')
     .element('Wind')
     .path('Harmony')
@@ -114,22 +129,25 @@ export const supportCharacters = [
     .roles(['SUPPORT'])
     .archetype('Buffer')
     .labels([
-      'Action Advancer',
+      'Self Action Advance',
       'Action Advance',
       'F2P',
       'Crit DMG Amplifier',
-      'Attack Amplifier',
-      'Generalist',
+      'ATK Amplifier',
       'Cleanse on Skill',
       'DMG Amplifier',
     ])
-    .addTeammateSection('DPS', ['phainon'], ['boothill'], [])
-    .addTeamComposition('Phainon Team', 'Support', ['phainon', 'sunday', 'bronya', 'tribbie'])
-    .addTeamComposition('Boothill Team', 'Support', [
+    .addTeammateSection(
+      'DPS',
+      ['phainon', 'boothill'],
+      ['Any DPS as long as they can benefit from the ATK, Crit, DMG buffs and Action Advance'],
+    )
+    .addTeamComposition('Phainon Team', 'Buffer', ['phainon', 'sunday', 'bronya', 'tribbie'])
+    .addTeamComposition('Boothill Team', 'Buffer', [
       'boothill',
       'harmony-trailblazer',
       'bronya',
-      'gallagher',
+      'lingsha',
     ])
     .build(),
 
@@ -139,8 +157,30 @@ export const supportCharacters = [
     .rarity(5)
     .roles(['SUPPORT'])
     .archetype('Buffer')
-    .labels(['Break Amplifier', 'Super Break', 'F2P'])
-    .addTeammateSection('DPS', ['boothill', 'firefly', 'rappa'], [], [])
+    .labels(['Break Effect Amplifier', 'Super Break', 'F2P'])
+    .addTeammateSection(
+      'DPS',
+      ['boothill', 'firefly', 'rappa'],
+      ['Any DPS as long as they can benefit from the Super Break buffs'],
+    )
+    .addTeamComposition('Boothill Team', 'Buffer', [
+      'boothill',
+      'harmony-trailblazer',
+      'fugue',
+      'lingsha',
+    ])
+    .addTeamComposition('Firefly Team', 'Buffer', [
+      'firefly',
+      'harmony-trailblazer',
+      'fugue',
+      'lingsha',
+    ])
+    .addTeamComposition('Rappa Team', 'Buffer', [
+      'rappa',
+      'harmony-trailblazer',
+      'fugue',
+      'lingsha',
+    ])
     .build(),
 
   new CharacterBuilder('robin', 'Robin')
@@ -149,7 +189,20 @@ export const supportCharacters = [
     .rarity(5)
     .roles(['SUPPORT'])
     .archetype('Buffer')
-    .labels(['Buffer', 'Follow-up Support', 'Action Advance'])
+    .labels([
+      'Follow-up Amplifier',
+      'Action Advance',
+      'DMG Amplifier',
+      'ATK Amplifier',
+      'Immune to Crowd Control on Concerto',
+    ])
+    .addTeammateSection(
+      'DPS',
+      ['feixiao', 'aglaea'],
+      ['Any DPS as long as they can benefit from the ATK, DMG and Follow-up buffs'],
+    )
+    .addTeamComposition('Feixiao Team', 'Buffer', ['feixiao', 'cipher', 'robin', 'aventurine'])
+    .addTeamComposition('Aglaea', 'Buffer', ['aglaea', 'sunday', 'robin', 'huohuo'])
     .build(),
 
   new CharacterBuilder('ruan-mei', 'Ruan Mei')
@@ -158,7 +211,21 @@ export const supportCharacters = [
     .rarity(5)
     .roles(['SUPPORT'])
     .archetype('Buffer')
-    .labels(['Buffer', 'Break Support', 'Generalist'])
+    .labels([
+      'DMG Amplifier',
+      'All-Type RES PEN Amplifier',
+      'Weakness Break Efficiency',
+      'SPD Amplifier',
+      'Break Amplifier',
+    ])
+    .addTeammateSection(
+      'DPS',
+      ['boothill', 'firefly', 'rappa'],
+      ['Any DPS as long as they can benefit from the DMG, SPD, and Break buffs'],
+    )
+    .addTeamComposition('Boothill Team', 'Buffer', ['boothill', 'ruan-mei', 'fugue', 'lingsha'])
+    .addTeamComposition('Firefly Team', 'Buffer', ['firefly', 'ruan-mei', 'fugue', 'lingsha'])
+    .addTeamComposition('Rappa Team', 'Buffer', ['rappa', 'ruan-mei', 'fugue', 'lingsha'])
     .build(),
 
   new CharacterBuilder('sparkle', 'Sparkle')
@@ -167,7 +234,27 @@ export const supportCharacters = [
     .rarity(5)
     .roles(['SUPPORT'])
     .archetype('Buffer')
-    .labels(['Support', 'Buffer', 'Crit Support', 'Generalist'])
+    .labels([
+      'Crit DMG Amplifier',
+      'Action Advance',
+      'Recover Skill Points',
+      'DMG Amplifier',
+      'ATK Amplifier',
+      'Quantum ATK Amplifier',
+    ])
+    .addTeammateSection(
+      'DPS',
+      ['dan-heng-il', 'archer'],
+      ['Any DPS as long as they can benefit from the DMG, ATK, Crit DMG buffs and SP Recovery'],
+      [],
+    )
+    .addTeamComposition('Dan Heng IL Team', 'Buffer', [
+      'dan-heng-il',
+      'sparkle',
+      'sunday',
+      'huohuo',
+    ])
+    .addTeamComposition('Archer Team', 'Buffer', ['archer', 'sparkle', 'silver-wolf', 'gallagher'])
     .build(),
 
   new CharacterBuilder('sunday', 'Sunday')
@@ -176,7 +263,25 @@ export const supportCharacters = [
     .rarity(5)
     .roles(['SUPPORT'])
     .archetype('Buffer')
-    .labels(['Buffer', 'Summon Support', 'Energy Support'])
+    .labels([
+      'Action Advance',
+      'Summon DMG Amplifier',
+      'Crit DMG Amplifier',
+      'Crit Rate Amplifier',
+      'DMG Amplifier',
+      'SP Recovery',
+      'Gives Energy',
+      'Cleanse on Skill',
+    ])
+    .addTeammateSection(
+      'DPS',
+      ['phainon', 'aglaea'],
+      [
+        'Any DPS as long as they can benefit from the DMG, Summon DMG, Crit Rate, Crit DMG buffs, Energy Recovery and SP Recovery',
+      ],
+    )
+    .addTeamComposition('Phainon', 'Buffer', ['phainon', 'sunday', 'bronya', 'tribbie'])
+    .addTeamComposition('Aglaea Team', 'Buffer', ['aglaea', 'sunday', 'robin', 'huohuo'])
     .build(),
 
   new CharacterBuilder('tingyun', 'Tingyun')
@@ -185,17 +290,30 @@ export const supportCharacters = [
     .rarity(4)
     .roles(['SUPPORT'])
     .archetype('Buffer')
-    .labels(['Support', 'Buffer', 'Energy Support', 'Generalist', 'F2P'])
+    .labels(['ATK Amplifier', 'Gives Energy', 'DMG Amplifier', 'F2P'])
+    .addTeammateSection(
+      'DPS',
+      ['phainon', 'yunli'],
+      ['Any DPS as long as they can benefit from the DMG, Attack buffs and Energy Recovery'],
+    )
+    .addTeamComposition('Phainon', 'Buffer', ['phainon', 'sunday', 'bronya', 'tingyun'])
+    .addTeamComposition('Yunli Team', 'Buffer', ['yunli', 'sunday', 'tingyun', 'huohuo'])
     .build(),
 
-  // New Support Characters
   new CharacterBuilder('fugue', 'Fugue')
     .element('Fire')
     .path('Nihility')
     .rarity(5)
     .roles(['SUPPORT'])
-    .archetype('Buffer')
-    .labels(['Buffer', 'Break Support', 'Exo-Toughness', 'Fire'])
+    .archetype('Debuffer')
+    .labels([
+      'Foxian Prayer',
+      'Break Effect Amplifier',
+      'Exo-Toughness',
+      'Reduce enemy DEF',
+      'Ultimate ignores weakness',
+      'Super Break',
+    ])
     .build(),
 
   new CharacterBuilder('remembrance-trailblazer', 'Remembrance TB')
@@ -221,15 +339,8 @@ export const supportCharacters = [
     .path('Hunt')
     .rarity(5)
     .roles(['SUPPORT'])
-    .archetype('Buffer')
-    .labels([
-      'Amplifier',
-      'Follow-up Attack',
-      'Debuff',
-      'Vulnerability',
-      'True Damage',
-      'Generalist',
-    ])
+    .archetype('Debuffer')
+    .labels(['Amplifier', 'Follow-up Attack', 'Debuff', 'Vulnerability', 'True Damage'])
     .addTeammateSection('Debuffers', ['jiaoqiu', 'silver-wolf'], ['bronya'], ['pela'])
     .addTeammateSection('Sustain', ['aventurine'], ['fu-xuan', 'huohuo'], ['gallagher'])
     .build(),
@@ -239,7 +350,7 @@ export const supportCharacters = [
     .path('Nihility')
     .rarity(4)
     .roles(['SUPPORT'])
-    .archetype('DoT')
+    .archetype('DoT', 'Debuffer')
     .labels(['DoT', 'Fire', 'F2P'])
     .build(),
 ]

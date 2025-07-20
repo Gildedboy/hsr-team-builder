@@ -1,7 +1,6 @@
 import { CharacterBuilder } from '@/types/Character'
 
 export const dpsCharacters = [
-  // DPS Characters
   new CharacterBuilder('seele', 'Seele')
     .element('Quantum')
     .path('Hunt')
@@ -459,7 +458,6 @@ export const dpsCharacters = [
     )
     .build(),
 
-  // Break DPS Characters
   new CharacterBuilder('boothill', 'Boothill')
     .element('Physical')
     .path('Hunt')
@@ -523,7 +521,6 @@ export const dpsCharacters = [
     )
     .build(),
 
-  // Misc DPS Characters
   new CharacterBuilder('dan-heng', 'Dan Heng')
     .element('Wind')
     .path('Hunt')

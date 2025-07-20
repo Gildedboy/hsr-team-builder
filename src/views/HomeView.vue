@@ -50,8 +50,9 @@ const getNewFormatCharacter = (characterId: string) => {
   <TopBar />
   <main class="container-fluid py-4" style="max-width: 1900px; margin: 0 auto">
     <div class="text-center mb-4">
-      <p class="lead text-secondary px-3">
-        Select a character to see team recommendations or you can use filters and/or archetypes
+      <p class="lead text-white fw-bold px-3">
+        Select a character on the main grid to see team recommendations or you can also use the
+        filter section
       </p>
     </div>
 
@@ -246,7 +247,7 @@ const getNewFormatCharacter = (characterId: string) => {
         </div>
         <div v-else class="card bg-dark border-primary text-center py-5">
           <div class="card-body">
-            <p class="text-secondary mb-0">Select a character to see team recommendations</p>
+            <p class="text-white fw-bold mb-0">Select a character to see team recommendations</p>
           </div>
         </div>
       </div>
