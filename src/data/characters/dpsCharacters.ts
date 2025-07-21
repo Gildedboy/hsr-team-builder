@@ -59,7 +59,12 @@ export const dpsCharacters = [
       ['cipher', 'tribbie', 'silver-wolf', 'sunday', 'sparkle'],
       ['remembrance-trailblazer', 'pela'],
     )
-    .addTeammateSection('Sustain', ['huohuo'], ['aventurine', 'luocha'], ['gallagher', 'lynx'])
+    .addTeammateSection(
+      'Sustain',
+      ['huohuo'],
+      ['aventurine', 'luocha', 'fu-xuan'],
+      ['gallagher', 'lynx'],
+    )
     .addTeamComposition(
       'Main DPS Team',
       'Main DPS',
@@ -275,7 +280,7 @@ export const dpsCharacters = [
       ['cipher', 'silver-wolf', 'tribbie', 'sparkle'],
       ['tingyun', 'remembrance-trailblazer'],
     )
-    .addTeammateSection('Sustain', ['huohuo'], ['aventurine', 'luocha'], ['gallagher'])
+    .addTeammateSection('Sustain', ['huohuo'], ['aventurine', 'luocha', 'fu-xuan'], ['gallagher'])
     .addTeamComposition(
       'Main DPS Team',
       'Main DPS',
@@ -900,7 +905,7 @@ export const dpsCharacters = [
     .rarity(5)
     .roles(['DPS'])
     .archetype('HP-Scaling', 'Summon', 'Hypercarry')
-    .labels(['AoE', 'Self Damage', 'Memosprite', 'Action Advance', 'Global Passive'])
+    .labels(['AoE', 'Self Damage', 'Memosprite', 'Action Advance', 'Global Revive Passive'])
     .addTeammateSection(
       'Amplifiers',
       ['tribbie', 'remembrance-trailblazer'],
