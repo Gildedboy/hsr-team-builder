@@ -35,6 +35,7 @@ export type Archetype =
   | 'Summon'
   | 'Debuff DPS'
   | 'DoT'
+  | 'Damage Distribution'
 
 // Flexible teammate section - you can name it whatever you want
 export interface TeammateSection {

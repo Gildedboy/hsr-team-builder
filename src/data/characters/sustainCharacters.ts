@@ -1,14 +1,22 @@
 import { CharacterBuilder } from '@/types/Character'
 
 export const sustainCharacters = [
-  // Sustain Characters
   new CharacterBuilder('gepard', 'Gepard')
     .element('Ice')
     .path('Preservation')
     .rarity(5)
     .roles(['SUSTAIN'])
     .archetype('Shielder')
-    .labels(['Shielder', 'Ice', 'Freeze', 'Taunt'])
+    .labels(['AoE Shield', 'Freeze', 'Self Revive', 'Self Taunt', 'F2P'])
+    .addTeammateSection(
+      'DPS',
+      ['acheron', 'yanqing'],
+      [
+        'Any DPS as long as they can benefit from Shields, Evade Aggro and constant Debuffs Application with Trend of the Universal Market Lightcone',
+      ],
+      [],
+    )
+    .addTeamComposition('Acheron Team', 'Sustain', ['acheron', 'jiaoqiu', 'cipher', 'gepard'])
     .build(),
 
   new CharacterBuilder('fu-xuan', 'Fu Xuan')
@@ -16,8 +24,27 @@ export const sustainCharacters = [
     .path('Preservation')
     .rarity(5)
     .roles(['SUSTAIN'])
-    .archetype('Shielder')
-    .labels(['Shielder', 'HP Redistribution', 'Quantum', 'Crit Support'])
+    .archetype('Damage Distribution')
+    .labels([
+      'Heal Allies on Ultimate',
+      'Damage Distribution',
+      'HP Scaling',
+      'Crit Rate Amplifier',
+      'Self Heal',
+      'Crowd Control Immunity on Skill',
+      'Allies Damage Reduction',
+    ])
+    .addTeammateSection(
+      'DPS',
+      ['acheron', 'archer', 'yunli'],
+      [
+        'Any DPS as long as they can benefit from Crit Rate Buffs,DMG Reduction and constant Debuffs Application with Trend of the Universal Market Lightcone',
+      ],
+      [],
+    )
+    .addTeamComposition('Acheron Team', 'Sustain', ['acheron', 'jiaoqiu', 'cipher', 'fu-xuan'])
+    .addTeamComposition('Archer Team', 'Sustain', ['archer', 'sparkle', 'silver-wolf', 'fu-xuan'])
+    .addTeamComposition('Yunli Team', 'Sustain', ['yunli', 'sunday', 'robin', 'fu-xuan'])
     .build(),
 
   new CharacterBuilder('march-7th', 'March 7th')
@@ -26,7 +53,17 @@ export const sustainCharacters = [
     .rarity(4)
     .roles(['SUSTAIN'])
     .archetype('Shielder')
-    .labels(['Shielder', 'Ice', 'Counter', 'F2P'])
+    .labels(['Single Target Shield', 'Freeze', 'Counter', 'F2P', 'Taunt on Skill'])
+    .addTeammateSection(
+      'DPS',
+      ['acheron'],
+      [
+        'Any DPS as long as they can benefit from Shields, Follow-ups and constant Debuffs Application with Trend of the Universal Market Lightcone',
+      ],
+      [],
+    )
+    .addTeamComposition('Acheron Team', 'Sustain', ['acheron', 'jiaoqiu', 'cipher', 'march-7th'])
+    .addTeamComposition('Feixiao Team', 'Sustain', ['feixiao', 'cipher', 'robin', 'march-7th'])
     .build(),
 
   new CharacterBuilder('fire-trailblazer', 'Fire TB')

@@ -7,15 +7,15 @@ export const supportCharacters = [
     .rarity(4)
     .roles(['SUPPORT'])
     .archetype('Debuffer')
-    .labels([
-      'Exposed',
-      'Defense Reduction',
-      'F2P',
-      'Remove Buffs on Skill',
-      'Single Target',
-      'AoE',
-    ])
-    .addTeammateSection('DPS', ['acheron'], ['castorice', 'ratio'], ['yanqing'])
+    .labels(['Exposed', 'Defense Reduction', 'F2P', 'Remove Enemy Buffs on Skill'])
+    .addTeammateSection(
+      'DPS',
+      ['acheron'],
+      [
+        'Any DPS as long as they can benefit from Enemy Reduced DEF and constant Debuffs Applications',
+      ],
+      [],
+    )
     .addTeamComposition('Acheron Team', 'Debuffer', ['acheron', 'pela', 'cipher', 'aventurine'])
     .addTeamComposition('Castorice Team', 'Debuffer', ['castorice', 'pela', 'tribbie', 'hyacine'])
     .build(),
@@ -32,9 +32,15 @@ export const supportCharacters = [
       'Defense Reduction',
       'Weakness Implant',
       'Weakness RES Reduction',
-      'Defense Reduction',
     ])
-    .addTeammateSection('DPS', ['acheron'], ['ratio'], ['archer'])
+    .addTeammateSection(
+      'DPS',
+      ['acheron', 'archer'],
+      [
+        'Any DPS as long as they can benefit from Enemy Reduced DEF, SPD, ATK, Weakness RES and constant Debuffs Applications',
+      ],
+      [],
+    )
     .addTeamComposition('Acheron Team', 'Debuffer', [
       'acheron',
       'silver-wolf',
@@ -54,9 +60,16 @@ export const supportCharacters = [
     .path('Nihility')
     .rarity(5)
     .roles(['SUPPORT'])
-    .archetype('Debuffer')
-    .labels(['Ashen Roast', 'Vulnerability', 'Ultimate Vulnerability', 'Blast', 'AoE'])
-    .addTeammateSection('DPS', ['acheron'], ['ratio', 'kafka', 'black-swan'], [])
+    .archetype('DoT', 'Debuffer')
+    .labels(['Ashen Roast', 'Vulnerability', 'Ultimate Vulnerability', 'DoT'])
+    .addTeammateSection(
+      'DPS',
+      ['acheron'],
+      [
+        'Any DPS as long as they can benefit from Enemy Increased DMG Taken, Ultimate DMG Taken and constant Debuffs Applications',
+      ],
+      [],
+    )
     .addTeamComposition('Acheron Team', 'Debuffer', ['acheron', 'jiaoqiu', 'cipher', 'aventurine'])
     .addTeamComposition('Dr. Ratio Team', 'Debuffer', ['ratio', 'jiaoqiu', 'robin', 'aventurine'])
     .build(),
@@ -245,7 +258,9 @@ export const supportCharacters = [
     .addTeammateSection(
       'DPS',
       ['dan-heng-il', 'archer'],
-      ['Any DPS as long as they can benefit from the DMG, ATK, Crit DMG buffs and SP Recovery'],
+      [
+        'Any DPS as long as they can benefit from the DMG, ATK, Crit DMG buffs, Action Advance and SP Recovery',
+      ],
       [],
     )
     .addTeamComposition('Dan Heng IL Team', 'Buffer', [
@@ -277,7 +292,7 @@ export const supportCharacters = [
       'DPS',
       ['phainon', 'aglaea'],
       [
-        'Any DPS as long as they can benefit from the DMG, Summon DMG, Crit Rate, Crit DMG buffs, Energy Recovery and SP Recovery',
+        'Any DPS as long as they can benefit from the DMG, Summon DMG, Crit Rate, Crit DMG buffs, Energy Recovery, Action Advance and SP Recovery',
       ],
     )
     .addTeamComposition('Phainon', 'Buffer', ['phainon', 'sunday', 'bronya', 'tribbie'])
@@ -290,7 +305,7 @@ export const supportCharacters = [
     .rarity(4)
     .roles(['SUPPORT'])
     .archetype('Buffer')
-    .labels(['ATK Amplifier', 'Gives Energy', 'DMG Amplifier', 'F2P'])
+    .labels(['ATK Amplifier', 'Gives Energy', 'DMG Amplifier', 'F2P', 'Self Taunt'])
     .addTeammateSection(
       'DPS',
       ['phainon', 'yunli'],
@@ -313,7 +328,16 @@ export const supportCharacters = [
       'Reduce enemy DEF',
       'Ultimate ignores weakness',
       'Super Break',
+      'Self Taunt',
     ])
+    .addTeammateSection(
+      'DPS',
+      ['boothill', 'firefly', 'rappa'],
+      ['Any DPS as long as they can benefit from the Super Break buffs and Exo-Toughness'],
+    )
+    .addTeamComposition('Boothill Team', 'Buffer', ['boothill', 'fugue', 'ruan-mei', 'lingsha'])
+    .addTeamComposition('Firefly Team', 'Buffer', ['firefly', 'fugue', 'ruan-mei', 'lingsha'])
+    .addTeamComposition('Rappa Team', 'Buffer', ['rappa', 'fugue', 'ruan-mei', 'lingsha'])
     .build(),
 
   new CharacterBuilder('remembrance-trailblazer', 'Remembrance TB')
@@ -322,7 +346,18 @@ export const supportCharacters = [
     .rarity(5)
     .roles(['SUPPORT'])
     .archetype('Buffer')
-    .labels(['Support', 'Summon', 'Ice', 'F2P'])
+    .labels(['True DMG Amplifier', 'Summon', 'Crit Rate Amplifier', 'Crit DMG Amplifier', 'F2P'])
+    .addTeammateSection(
+      'DPS',
+      ['castorice'],
+      ['Any DPS as long as they can benefit from the True DMG, Crit Rate and Crit DMG buffs'],
+    )
+    .addTeamComposition('Castorice Team', 'Buffer', [
+      'castorice',
+      'remembrance-trailblazer',
+      'tribbie',
+      'hyacine',
+    ])
     .build(),
 
   new CharacterBuilder('tribbie', 'Tribbie')
@@ -331,7 +366,26 @@ export const supportCharacters = [
     .rarity(5)
     .roles(['SUPPORT'])
     .archetype('Buffer')
-    .labels(['Buffer', 'Quantum', 'Follow-up Support'])
+    .labels([
+      'All-Type RES PEN Amplifier',
+      'Increase DMG Taken by enemies',
+      'Follow-up ATK',
+      'HP Scaling ',
+    ])
+    .addTeammateSection(
+      'DPS',
+      ['the-herta', 'castorice'],
+      [
+        'Any DPS as long as they can benefit from the All-Type RES PEN Amplifier buffs and Follow-up attacks',
+      ],
+    )
+    .addTeamComposition('Castorice Team', 'Buffer', [
+      'castorice',
+      'remembrance-trailblazer',
+      'tribbie',
+      'hyacine',
+    ])
+    .addTeamComposition('The Herta Team', 'Buffer', ['the-herta', 'anaxa', 'tribbie', 'huohuo'])
     .build(),
 
   new CharacterBuilder('cipher', 'Cipher')
@@ -340,9 +394,17 @@ export const supportCharacters = [
     .rarity(5)
     .roles(['SUPPORT'])
     .archetype('Debuffer')
-    .labels(['Amplifier', 'Follow-up Attack', 'Debuff', 'Vulnerability', 'True Damage'])
-    .addTeammateSection('Debuffers', ['jiaoqiu', 'silver-wolf'], ['bronya'], ['pela'])
-    .addTeammateSection('Sustain', ['aventurine'], ['fu-xuan', 'huohuo'], ['gallagher'])
+    .labels(['Follow-up Attack', 'Reduce Enemy DMG Done', 'Vulnerability', 'True Damage'])
+    .addTeammateSection(
+      'DPS',
+      ['feixiao', 'acheron'],
+      [
+        'Any DPS as long as they can benefit from follow-up attacks and constant Debuffs Application',
+      ],
+      [],
+    )
+    .addTeamComposition('Acheron Team', 'Debuffer', ['acheron', 'cipher', 'jiaoqiu', 'aventurine'])
+    .addTeamComposition('Feixiao Team', 'Debuffer', ['feixiao', 'cipher', 'robin', 'aventurine'])
     .build(),
 
   new CharacterBuilder('guinaifen', 'Guinaifen')
@@ -351,6 +413,19 @@ export const supportCharacters = [
     .rarity(4)
     .roles(['SUPPORT'])
     .archetype('DoT', 'Debuffer')
-    .labels(['DoT', 'Fire', 'F2P'])
+    .labels(['DoT', 'Burn', 'F2P', 'Firekiss', 'Increase DMG to Burned Enemies'])
+    .addTeammateSection(
+      'DPS',
+      ['acheron', 'kafka'],
+      ['Any DPS as long as they can benefit from DoT and constant Debuffs Application'],
+      [],
+    )
+    .addTeamComposition('Acheron Team', 'Debuffer', [
+      'acheron',
+      'jiaoqiu',
+      'guinaifen',
+      'aventurine',
+    ])
+    .addTeamComposition('Kafka Team', 'Debuffer', ['kafka', 'black-swan', 'guinaifen', 'huohuo'])
     .build(),
 ]
