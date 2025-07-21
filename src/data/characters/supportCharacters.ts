@@ -346,7 +346,14 @@ export const supportCharacters = [
     .rarity(5)
     .roles(['SUPPORT'])
     .archetype('Buffer')
-    .labels(['True DMG Amplifier', 'Summon', 'Crit Rate Amplifier', 'Crit DMG Amplifier', 'F2P'])
+    .labels([
+      'Memosprite',
+      'True DMG Amplifier',
+      'Crit Rate Amplifier',
+      'Crit DMG Amplifier',
+      'Mem',
+      'F2P',
+    ])
     .addTeammateSection(
       'DPS',
       ['castorice'],

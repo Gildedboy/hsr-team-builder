@@ -32,7 +32,7 @@ export const sustainCharacters = [
       'Crit Rate Amplifier',
       'Self Heal',
       'Crowd Control Immunity on Skill',
-      'Allies Damage Reduction',
+      'Allies DMG Reduction',
     ])
     .addTeammateSection(
       'DPS',
@@ -72,7 +72,24 @@ export const sustainCharacters = [
     .rarity(5)
     .roles(['SUSTAIN'])
     .archetype('Shielder')
-    .labels(['Shielder', 'Fire', 'Taunt', 'F2P'])
+    .labels([
+      'AoE Shield',
+      'Allies DMG Reduction',
+      'Self Taunt',
+      'Self Heal',
+      'Self Shield',
+      'Enhanced Basic Attack',
+      'F2P',
+    ])
+    .addTeammateSection(
+      'DPS',
+      ['acheron'],
+      [
+        'Any DPS as long as they can benefit from Shields and constant Debuffs Application with Trend of the Universal Market Lightcone',
+      ],
+      [],
+    )
+    .addTeamComposition('Acheron Team', 'Sustain', ['acheron', 'jiaoqiu', 'cipher', 'march-7th'])
     .build(),
 
   new CharacterBuilder('natasha', 'Natasha')
@@ -81,7 +98,14 @@ export const sustainCharacters = [
     .rarity(4)
     .roles(['SUSTAIN'])
     .archetype('Healer')
-    .labels(['Healer', 'Physical', 'Cleanse', 'F2P'])
+    .labels(['Heal on Skill and Ultimate', 'Cleanse on Skill', 'F2P'])
+    .addTeammateSection(
+      'DPS',
+      [],
+      ['Any DPS as long as they can benefit from Healing and Cleanse'],
+      [],
+    )
+    .addTeamComposition('Aglaea Team', 'Sustain', ['aglaea', 'sunday', 'robin', 'natasha'])
     .build(),
 
   new CharacterBuilder('bailu', 'Bailu')
@@ -90,7 +114,9 @@ export const sustainCharacters = [
     .rarity(5)
     .roles(['SUSTAIN'])
     .archetype('Healer')
-    .labels(['Healer', 'Lightning', 'Revive', 'Damage Reduction'])
+    .labels(['Bounce Heal', 'Heal on Ultimate', 'Revive', 'Invigoration', 'Allies DMG Reduction'])
+    .addTeammateSection('DPS', [], ['Any DPS as long as they can benefit from Healing'], [])
+    .addTeamComposition('Phainon Team', 'Sustain', ['phainon', 'sunday', 'bronya', 'bailu'])
     .build(),
 
   new CharacterBuilder('luocha', 'Luocha')
@@ -99,7 +125,24 @@ export const sustainCharacters = [
     .rarity(5)
     .roles(['SUSTAIN'])
     .archetype('Healer')
-    .labels(['Healer', 'Imaginary', 'Auto Heal', 'Cleanse'])
+    .labels([
+      'Auto Heal',
+      'Cleanse on Direct Heal',
+      'Remove Enemy Buffs on Ultimate',
+      'Deploys Heal Field',
+    ])
+    .addTeammateSection(
+      'DPS',
+      ['castorice'],
+      ['Any DPS as long as they can benefit from Healing and Auto Heals when HP is low'],
+      [],
+    )
+    .addTeamComposition('Castorice Team', 'Sustain', [
+      'castorice',
+      'remembrance-trailblazer',
+      'tribbie',
+      'luocha',
+    ])
     .build(),
 
   new CharacterBuilder('huohuo', 'Huohuo')
@@ -108,7 +151,24 @@ export const sustainCharacters = [
     .rarity(5)
     .roles(['SUSTAIN'])
     .archetype('Healer')
-    .labels(['Healer', 'Energy Support', 'Wind', 'Cleanse'])
+    .labels([
+      'Energy Recovery',
+      'Cleanse on Heal',
+      'Blast Heal',
+      'Attack Amplifier',
+      'Cleanse on Skill',
+    ])
+    .addTeammateSection(
+      'DPS',
+      ['aglaea'],
+      ['Any DPS as long as they can benefit from Energy Recovery and ATK Buffs'],
+    )
+    .addTeamComposition('Aglaea Team', 'Sustain', [
+      'aglaea',
+      'sunday',
+      'remembrance-trailblazer',
+      'huohuo',
+    ])
     .build(),
 
   new CharacterBuilder('lynx', 'Lynx')
@@ -117,7 +177,24 @@ export const sustainCharacters = [
     .rarity(4)
     .roles(['SUSTAIN'])
     .archetype('Healer')
-    .labels(['Healer', 'Quantum', 'Cleanse', 'F2P'])
+    .labels([
+      'Taunt on Skill (Destruction & Preservation)',
+      'Healing over time',
+      'Cleanse on Ultimate',
+      'F2P',
+    ])
+    .addTeammateSection(
+      'DPS',
+      ['castorice', 'blade'],
+      ['Any DPS as long as they can benefit from Self Taunt and HP Scaling DPS'],
+    )
+    .addTeamComposition('Castorice Team', 'Sustain', [
+      'castorice',
+      'tribbie',
+      'remembrance-trailblazer',
+      'lynx',
+    ])
+    .addTeamComposition('Blade Team', 'Sustain', ['blade', 'sunday', 'tribbie', 'lynx'])
     .build(),
 
   new CharacterBuilder('gallagher', 'Gallagher')
@@ -126,7 +203,23 @@ export const sustainCharacters = [
     .rarity(4)
     .roles(['SUSTAIN'])
     .archetype('Healer')
-    .labels(['Healer', 'Break Support', 'Debuff', 'Generalist'])
+    .labels([
+      'Self Action Advance',
+      'Break DMG Amplifier',
+      'Reduce Enemies Attack',
+      'Besotted',
+      'Enchanced Basic Attack',
+      'Cleanse on Skill',
+      'F2P',
+      'Best 4 Star',
+    ])
+    .addTeammateSection(
+      'DPS',
+      ['acheron', 'Any Break DPS'],
+      ['Any DPS as long as they can benefit from Break and constant Debuffs application'],
+    )
+    .addTeamComposition('Acheron Team', 'Sustain', ['acheron', 'cipher', 'jiaoqiu', 'gallagher'])
+    .addTeamComposition('Firefly Team', 'Sustain', ['firefly', 'fugue', 'ruan-mei', 'gallagher'])
     .build(),
 
   new CharacterBuilder('lingsha', 'Lingsha')
@@ -135,7 +228,21 @@ export const sustainCharacters = [
     .rarity(5)
     .roles(['SUSTAIN'])
     .archetype('Healer')
-    .labels(['Healer', 'Break Support', 'Follow-up Attack'])
+    .labels([
+      'Action Advance Pet',
+      'Break DMG Amplifier',
+      'Pet',
+      'Follow-up Attack',
+      ' Heal on Follow-up Attack',
+    ])
+    .addTeammateSection(
+      'DPS',
+      ['the-herta', 'feixiao', 'Any Break DPS'],
+      ['Any DPS as long as they can benefit from Break and constant Follow-up Attacks'],
+    )
+    .addTeamComposition('The Herta Team', 'Sustain', ['the-herta', 'anaxa', 'tribbie', 'lingsha'])
+    .addTeamComposition('Feixiao Team', 'Sustain', ['feixiao', 'cipher', 'robin', 'lingsha'])
+    .addTeamComposition('Firefly Team', 'Sustain', ['firefly', 'fugue', 'ruan-mei', 'lingsha'])
     .build(),
 
   new CharacterBuilder('aventurine', 'Aventurine')
@@ -144,7 +251,29 @@ export const sustainCharacters = [
     .rarity(5)
     .roles(['SUSTAIN'])
     .archetype('Shielder')
-    .labels(['Shielder', 'Follow-up Attack', 'Crit Support'])
+    .labels([
+      'Shield on Skill',
+      'Shield on Follow-up Attack',
+      'Effect RES Amplifier',
+      'Unnerved - Enemies take Increased Crit DMG on Ultimate',
+      'Stackable Shield',
+      'Self Crit Rate Buff',
+    ])
+    .addTeammateSection(
+      'DPS',
+      ['feixiao', 'the-herta', 'acheron'],
+      [
+        'Any DPS as long as they can benefit from Shields, Debuff Applications and constant Follow-up Attacks',
+      ],
+    )
+    .addTeamComposition('Feixiao Team', 'Sustain', ['feixiao', 'cipher', 'robin', 'aventurine'])
+    .addTeamComposition('The Herta Team', 'Sustain', [
+      'the-herta',
+      'anaxa',
+      'tribbie',
+      'aventurine',
+    ])
+    .addTeamComposition('Acheron Team', 'Sustain', ['acheron', 'jiaoqiu', 'cipher', 'aventurine'])
     .build(),
 
   new CharacterBuilder('hyacine', 'Hyacine')
@@ -153,6 +282,24 @@ export const sustainCharacters = [
     .rarity(5)
     .roles(['SUSTAIN'])
     .archetype('Healer')
-    .labels(['Healer', 'Wind', 'Energy Support'])
+    .labels([
+      'Fat Fuck',
+      'HP Scaling',
+      'Memosprite',
+      'Memosprite Immune to Crowd Control',
+      'Cleanse on Skill and Ultimate',
+    ])
+    .addTeammateSection(
+      'DPS',
+      ['castorice', 'the-herta'],
+      ['Any DPS as long as they can benefit from HP Scaling and Constant AoE Attacks'],
+    )
+    .addTeamComposition('Castorice Team', 'Sustain', [
+      'castorice',
+      'remembrance-trailblazer',
+      'tribbie',
+      'hyacine',
+    ])
+    .addTeamComposition('The Herta Team', 'Sustain', ['the-herta', 'anaxa', 'tribbie', 'hyacine'])
     .build(),
 ]

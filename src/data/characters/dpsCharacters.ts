@@ -877,6 +877,7 @@ export const dpsCharacters = [
     .roles(['DPS'])
     .archetype('Summon', 'Hypercarry')
     .labels([
+      'Garmentmaker',
       'Action Advance',
       'Enhanced State',
       'Enhanced Basic Attack',
@@ -905,7 +906,14 @@ export const dpsCharacters = [
     .rarity(5)
     .roles(['DPS'])
     .archetype('HP-Scaling', 'Summon', 'Hypercarry')
-    .labels(['AoE', 'Self Damage', 'Memosprite', 'Action Advance', 'Global Revive Passive'])
+    .labels([
+      'Netherwing',
+      'AoE',
+      'Self Damage',
+      'Memosprite',
+      'Action Advance',
+      'Global Revive Passive',
+    ])
     .addTeammateSection(
       'Amplifiers',
       ['tribbie', 'remembrance-trailblazer'],
