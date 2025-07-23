@@ -26,10 +26,15 @@ export function useHomeView(characters: ComputedRef<Character[]>) {
     showSearchSuggestions,
     searchSuggestions,
     selectedIndex,
+    searchError,
+    isSearching,
+    isRateLimited,
+    triggerSearch,
     selectCharacterFromSearch,
     onSearchFocus,
     onSearchBlur,
     onKeyDown,
+    MIN_SEARCH_LENGTH,
   } = useSearch()
 
   const handleSelectFromSearch = (character: Character) => {
@@ -86,12 +91,17 @@ export function useHomeView(characters: ComputedRef<Character[]>) {
     showSearchSuggestions,
     searchSuggestions,
     selectedIndex,
+    searchError,
+    isSearching,
+    isRateLimited,
+    MIN_SEARCH_LENGTH,
 
     // Actions
     toggleFilter,
     selectCharacter,
     handleSelectFromSearch,
     handleClearFilters,
+    triggerSearch,
     onSearchFocus,
     onSearchBlur,
     onKeyDown,

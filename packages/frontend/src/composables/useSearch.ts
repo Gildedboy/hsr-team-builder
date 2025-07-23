@@ -2,19 +2,23 @@ import { ref, watch, onUnmounted } from 'vue'
 import type { Character } from '@hsr-team-builder/shared'
 import { CharacterService } from '../services/characterService'
 
+// Constants
+const MIN_SEARCH_LENGTH = 3
+const MIN_SEARCH_INTERVAL = 300 // Minimum time between API calls in milliseconds
+
 export function useSearch() {
   const searchQuery = ref<string>('')
   const showSearchSuggestions = ref<boolean>(false)
   const selectedIndex = ref<number>(-1)
   const searchSuggestions = ref<Character[]>([])
   const searchError = ref<string>('')
-  let searchTimeout: ReturnType<typeof setTimeout> | null = null
+  const isSearching = ref<boolean>(false)
+  const isRateLimited = ref<boolean>(false)
   let blurTimeout: ReturnType<typeof setTimeout> | null = null
   let lastSearchTime = 0
-  const MIN_SEARCH_INTERVAL = 300 // Minimum time between API calls in milliseconds
 
   // Helper function to check rate limiting
-  const isRateLimited = (lastTime: number, interval: number): boolean => {
+  const checkRateLimit = (lastTime: number, interval: number): boolean => {
     const now = Date.now()
     return now - lastTime < interval
   }
@@ -30,8 +34,30 @@ export function useSearch() {
 
   // Function to perform API search
   const performSearch = async (query: string) => {
+    if (!query || query.length < MIN_SEARCH_LENGTH) {
+      searchSuggestions.value = []
+      showSearchSuggestions.value = false
+      return
+    }
+
+    // Rate limiting check with user feedback
+    if (checkRateLimit(lastSearchTime, MIN_SEARCH_INTERVAL)) {
+      console.log('🚦 Search rate limited, please wait...')
+      isRateLimited.value = true
+      searchError.value = 'Please wait a moment before searching again.'
+      
+      // Clear rate limit feedback after interval
+      setTimeout(() => {
+        isRateLimited.value = false
+        searchError.value = ''
+      }, MIN_SEARCH_INTERVAL)
+      return
+    }
+
     try {
       console.log('🔍 Searching for:', query)
+      isSearching.value = true
+      isRateLimited.value = false
       searchError.value = '' // Clear any previous errors
       
       // Update lastSearchTime when API call actually happens
@@ -56,30 +82,22 @@ export function useSearch() {
       
       // Set user-friendly error message
       searchError.value = 'Search temporarily unavailable. Please try again.'
+    } finally {
+      isSearching.value = false
     }
   }
 
-  // Watch search query changes with debouncing
-  watch(searchQuery, (newQuery) => {
-    // Clear existing timeout
-    if (searchTimeout) {
-      clearTimeout(searchTimeout)
-    }
+  // Manual search trigger function
+  const triggerSearch = () => {
+    const sanitizedQuery = sanitizeSearchInput(searchQuery.value)
+    performSearch(sanitizedQuery)
+  }
 
+  // Handle input changes (just hide suggestions if query is too short)
+  watch(searchQuery, (newQuery) => {
     const sanitizedQuery = sanitizeSearchInput(newQuery)
     
-    if (sanitizedQuery.length >= 3) { // Require at least 3 characters
-      // Rate limiting check
-      if (isRateLimited(lastSearchTime, MIN_SEARCH_INTERVAL)) {
-        return
-      }
-
-      // Debounce API calls to avoid excessive requests
-      searchTimeout = setTimeout(() => {
-        performSearch(sanitizedQuery)
-        selectedIndex.value = -1
-      }, 300) // 300ms debounce for API calls
-    } else {
+    if (sanitizedQuery.length < MIN_SEARCH_LENGTH) {
       showSearchSuggestions.value = false
       searchSuggestions.value = []
       selectedIndex.value = -1
@@ -144,9 +162,14 @@ export function useSearch() {
       case 'Enter':
         event.preventDefault()
         if (selectedIndex.value >= 0 && selectedIndex.value < searchSuggestions.value.length) {
+          // Select highlighted suggestion
           selectCharacterFromSearch(searchSuggestions.value[selectedIndex.value], onSelect)
         } else if (searchSuggestions.value.length > 0) {
+          // Select first suggestion if available
           selectCharacterFromSearch(searchSuggestions.value[0], onSelect)
+        } else {
+          // No suggestions visible, trigger search
+          triggerSearch()
         }
         break
       case 'Escape':
@@ -168,9 +191,6 @@ export function useSearch() {
 
   // Cleanup timeouts on component unmount
   onUnmounted(() => {
-    if (searchTimeout) {
-      clearTimeout(searchTimeout)
-    }
     if (blurTimeout) {
       clearTimeout(blurTimeout)
     }
@@ -182,10 +202,14 @@ export function useSearch() {
     searchSuggestions,
     selectedIndex,
     searchError,
+    isSearching,
+    isRateLimited,
+    triggerSearch,
     selectCharacterFromSearch,
     onSearchFocus,
     onSearchBlur,
     onKeyDown,
     setSearchQuery,
+    MIN_SEARCH_LENGTH,
   }
 }
