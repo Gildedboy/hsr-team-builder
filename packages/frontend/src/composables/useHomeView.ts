@@ -26,6 +26,8 @@ export function useHomeView(characters: ComputedRef<Character[]>) {
     showSearchSuggestions,
     searchSuggestions,
     selectedIndex,
+    isSearching,
+    triggerSearch,
     selectCharacterFromSearch,
     onSearchFocus,
     onSearchBlur,
@@ -86,12 +88,14 @@ export function useHomeView(characters: ComputedRef<Character[]>) {
     showSearchSuggestions,
     searchSuggestions,
     selectedIndex,
+    isSearching,
 
     // Actions
     toggleFilter,
     selectCharacter,
     handleSelectFromSearch,
     handleClearFilters,
+    triggerSearch,
     onSearchFocus,
     onSearchBlur,
     onKeyDown,

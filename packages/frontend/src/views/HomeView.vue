@@ -28,11 +28,13 @@ const {
   showSearchSuggestions,
   searchSuggestions,
   selectedIndex,
+  isSearching,
   onKeyDown,
   toggleFilter,
   selectCharacter,
   handleSelectFromSearch,
   handleClearFilters,
+  triggerSearch,
   onSearchFocus,
   onSearchBlur,
   isCharacterRecommended,
@@ -97,15 +99,26 @@ const getNewFormatCharacter = (characterId: string) => {
             <div class="card-body">
               <!-- Search Bar -->
               <div class="mb-3 position-relative">
-                <input
-                  v-model="searchQueryRef"
-                  type="text"
-                  placeholder="Search..."
-                  class="form-control bg-dark text-white border-primary"
-                  @focus="onSearchFocus"
-                  @blur="onSearchBlur"
-                  @keydown="onKeyDown($event, (char) => handleSelectFromSearch(char))"
-                />
+                <div class="input-group">
+                  <input
+                    v-model="searchQueryRef"
+                    type="text"
+                    placeholder="Search characters... (Press Enter or click search)"
+                    class="form-control bg-dark text-white border-primary"
+                    @focus="onSearchFocus"
+                    @blur="onSearchBlur"
+                    @keydown="onKeyDown($event, (char) => handleSelectFromSearch(char))"
+                  />
+                  <button
+                    class="btn btn-primary"
+                    type="button"
+                    :disabled="searchQueryRef.length < 3 || isSearching"
+                    @click="triggerSearch"
+                  >
+                    <i v-if="isSearching" class="fas fa-spinner fa-spin"></i>
+                    <i v-else class="fas fa-search"></i>
+                  </button>
+                </div>
 
                 <!-- Search Suggestions Dropdown -->
                 <div
