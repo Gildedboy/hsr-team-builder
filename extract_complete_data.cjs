@@ -86,11 +86,17 @@ function extractTeammateRecommendations(chain) {
 
 function extractTeamCompositions(chain) {
   const compositions = [];
+  
   // Match addTeamComposition with 4 parameters: name, role, bisTeam, f2pTeam
-  const pattern = /\.addTeamComposition\(\s*'([^']+)',\s*'([^']+)',\s*\[([\s\S]*?)\],\s*\[([\s\S]*?)\],?\s*\)/g;
+  const pattern4 = /\.addTeamComposition\(\s*'([^']+)',\s*'([^']+)',\s*\[([\s\S]*?)\],\s*\[([\s\S]*?)\],?\s*\)/g;
+  
+  // Match addTeamComposition with 3 parameters: name, role, team (sustain characters format)
+  const pattern3 = /\.addTeamComposition\(\s*'([^']+)',\s*'([^']+)',\s*\[([\s\S]*?)\]\s*\)/g;
 
   let match;
-  while ((match = pattern.exec(chain)) !== null) {
+  
+  // Try 4-parameter format first
+  while ((match = pattern4.exec(chain)) !== null) {
     const [, teamName, role, bisTeam] = match;
 
     compositions.push({
@@ -98,6 +104,20 @@ function extractTeamCompositions(chain) {
       role: role,
       bis: {
         characters: parseArrayContent(bisTeam)
+      }
+    });
+  }
+  
+  // Then try 3-parameter format (sustain characters)
+  chain.replace(pattern4, ''); // Remove already matched 4-parameter patterns
+  while ((match = pattern3.exec(chain)) !== null) {
+    const [, teamName, role, team] = match;
+
+    compositions.push({
+      name: teamName,
+      role: role,
+      bis: {
+        characters: parseArrayContent(team)
       }
     });
   }
