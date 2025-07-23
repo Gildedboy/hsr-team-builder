@@ -32,13 +32,11 @@ jobs:
         uses: actions/setup-node@v4
         with:
           node-version: '20'
-          cache: 'npm'
-          cache-dependency-path: 'packages/frontend/package.json'
 
       - name: Install dependencies
         run: |
           cd packages/frontend
-          npm ci
+          npm install
 
       - name: Determine API URL
         id: api-config
