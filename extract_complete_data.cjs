@@ -62,7 +62,8 @@ function extractArchetype(chain) {
 
 function extractTeammateRecommendations(chain) {
   const recommendations = [];
-  const pattern = /\.addTeammateSection\(\s*'([^']+)',\s*\[([\s\S]*?)\],\s*\[([\s\S]*?)\],\s*\[([\s\S]*?)\]\s*\)/g;
+  // Match multiline addTeammateSection with proper array parsing
+  const pattern = /\.addTeammateSection\(\s*'([^']+)',\s*\[([\s\S]*?)\],\s*\[([\s\S]*?)\],\s*\[([\s\S]*?)\],?\s*\)/g;
   
   let match;
   while ((match = pattern.exec(chain)) !== null) {
@@ -70,9 +71,9 @@ function extractTeammateRecommendations(chain) {
     
     recommendations.push({
       name,
-      bis: parseItemArray(bisStr),
-      generalist: parseItemArray(genStr),
-      f2p: parseItemArray(f2pStr)
+      bis: parseArrayContent(bisStr),
+      generalist: parseArrayContent(genStr),
+      f2p: parseArrayContent(f2pStr)
     });
   }
   
@@ -81,7 +82,8 @@ function extractTeammateRecommendations(chain) {
 
 function extractTeamCompositions(chain) {
   const compositions = [];
-  const pattern = /\.addTeamComposition\(\s*'([^']+)',\s*'([^']+)',\s*\[([\s\S]*?)\]/g;
+  // Match addTeamComposition with 4 parameters: name, role, bisTeam, f2pTeam
+  const pattern = /\.addTeamComposition\(\s*'([^']+)',\s*'([^']+)',\s*\[([\s\S]*?)\],\s*\[([\s\S]*?)\],?\s*\)/g;
   
   let match;
   while ((match = pattern.exec(chain)) !== null) {
@@ -91,7 +93,7 @@ function extractTeamCompositions(chain) {
       name: teamName,
       role: role,
       bis: {
-        characters: parseItemArray(bisTeam)
+        characters: parseArrayContent(bisTeam)
       }
     });
   }
@@ -99,42 +101,15 @@ function extractTeamCompositions(chain) {
   return compositions;
 }
 
-function parseItemArray(str) {
+function parseArrayContent(str) {
   if (!str || str.trim() === '') return [];
   
-  const items = [];
-  let current = '';
-  let inQuotes = false;
-  
-  for (const char of str) {
-    if ((char === '"' || char === "'") && !inQuotes) {
-      inQuotes = true;
-    } else if ((char === '"' || char === "'") && inQuotes) {
-      inQuotes = false;
-      if (current.trim()) {
-        items.push(current.trim());
-        current = '';
-      }
-    } else if (inQuotes) {
-      current += char;
-    } else if (char === ',' && !inQuotes && current.trim()) {
-      // Handle non-quoted items
-      const item = current.trim().replace(/['"]/g, '');
-      if (item) items.push(item);
-      current = '';
-    } else if (!inQuotes && char !== ',' && char !== ' ') {
-      current += char;
-    }
-  }
-  
-  // Add last item
-  if (current.trim()) {
-    const item = current.trim().replace(/['"]/g, '');
-    if (item) items.push(item);
-  }
-  
-  return items;
+  return str
+    .split(',')
+    .map(item => item.trim().replace(/['"]/g, ''))
+    .filter(item => item.length > 0 && item !== '');
 }
+
 
 // Extract all characters
 console.log('🔄 Extracting enhanced character data...');

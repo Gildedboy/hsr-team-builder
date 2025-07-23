@@ -1,5 +1,5 @@
 // Enhanced character data with complete teammate recommendations and team compositions
-// Extracted from main branch on 2025-07-23T07:23:24.837Z
+// Extracted from main branch on 2025-07-23T07:31:33.992Z
 
 export const allCharactersSeedData = [
   {
@@ -37,14 +37,19 @@ export const allCharactersSeedData = [
           "bronya",
           "tingyun",
           "hanya",
-          "pela",
-          "]",
-          ")\n.addTeammateSection(Sustain",
-          "[fu-xuan",
-          "]",
-          "[huohuo",
-          "]",
-          "[gallagher"
+          "pela"
+        ]
+      },
+      {
+        "name": "Sustain",
+        "bis": [
+          "fu-xuan"
+        ],
+        "generalist": [
+          "huohuo"
+        ],
+        "f2p": [
+          "gallagher"
         ]
       }
     ],
@@ -96,15 +101,20 @@ export const allCharactersSeedData = [
         "f2p": [
           "bronya",
           "tingyun",
-          "pela",
-          "]",
-          ")\n.addTeammateSection(Sustain",
-          "[aventurine",
-          "huohuo",
-          "]",
-          "[hyacine",
-          "]",
-          "[gallagher"
+          "pela"
+        ]
+      },
+      {
+        "name": "Sustain",
+        "bis": [
+          "aventurine",
+          "huohuo"
+        ],
+        "generalist": [
+          "hyacine"
+        ],
+        "f2p": [
+          "gallagher"
         ]
       }
     ],
@@ -151,6 +161,38 @@ export const allCharactersSeedData = [
           "topaz"
         ],
         "f2p": []
+      },
+      {
+        "name": "Amplifiers",
+        "bis": [
+          "robin"
+        ],
+        "generalist": [
+          "cipher",
+          "tribbie",
+          "silver-wolf",
+          "sunday",
+          "sparkle"
+        ],
+        "f2p": [
+          "remembrance-trailblazer",
+          "pela"
+        ]
+      },
+      {
+        "name": "Sustain",
+        "bis": [
+          "huohuo"
+        ],
+        "generalist": [
+          "aventurine",
+          "luocha",
+          "fu-xuan"
+        ],
+        "f2p": [
+          "gallagher",
+          "lynx"
+        ]
       }
     ],
     "teamCompositions": [
@@ -222,23 +264,33 @@ export const allCharactersSeedData = [
           "silver-wolf"
         ],
         "f2p": [
-          "pela",
-          "]",
-          ")\n.addTeammateSection(\nBreak Amplifiers",
-          "[fugue",
-          "ruan-mei",
-          "]",
-          "[cipher",
-          "]",
-          "[harmony-trailblazer",
-          "]",
-          ")\n.addTeammateSection(Sustain",
-          "[lingsha",
-          "]",
-          "[hyacine",
-          "huohuo",
-          "]",
-          "[gallagher"
+          "pela"
+        ]
+      },
+      {
+        "name": "Break Amplifiers",
+        "bis": [
+          "fugue",
+          "ruan-mei"
+        ],
+        "generalist": [
+          "cipher"
+        ],
+        "f2p": [
+          "harmony-trailblazer"
+        ]
+      },
+      {
+        "name": "Sustain",
+        "bis": [
+          "lingsha"
+        ],
+        "generalist": [
+          "hyacine",
+          "huohuo"
+        ],
+        "f2p": [
+          "gallagher"
         ]
       }
     ],
@@ -302,13 +354,17 @@ export const allCharactersSeedData = [
           "bronya",
           "tingyun",
           "pela",
-          "remembrance-trailblazer",
-          "]",
-          ")\n.addTeammateSection(Sustain",
-          "[aventurine",
-          "]",
-          "[]",
-          "[gepard",
+          "remembrance-trailblazer"
+        ]
+      },
+      {
+        "name": "Sustain",
+        "bis": [
+          "aventurine"
+        ],
+        "generalist": [],
+        "f2p": [
+          "gepard",
           "march-7th"
         ]
       }
@@ -371,15 +427,20 @@ export const allCharactersSeedData = [
         ],
         "f2p": [
           "bronya",
-          "remembrance-trailblazer",
-          "]",
-          ")\n.addTeammateSection(Sustain",
-          "[hyacine",
-          "]",
-          "[huohuo",
-          "luocha",
-          "]",
-          "[gallagher"
+          "remembrance-trailblazer"
+        ]
+      },
+      {
+        "name": "Sustain",
+        "bis": [
+          "hyacine"
+        ],
+        "generalist": [
+          "huohuo",
+          "luocha"
+        ],
+        "f2p": [
+          "gallagher"
         ]
       }
     ],
@@ -443,14 +504,19 @@ export const allCharactersSeedData = [
         ],
         "f2p": [
           "tingyun",
-          "hanya",
-          "]",
-          ")\n.addTeammateSection(Sustain",
-          "[huohuo",
-          "]",
-          "[luocha",
-          "]",
-          "[gallagher"
+          "hanya"
+        ]
+      },
+      {
+        "name": "Sustain",
+        "bis": [
+          "huohuo"
+        ],
+        "generalist": [
+          "luocha"
+        ],
+        "f2p": [
+          "gallagher"
         ]
       }
     ],
@@ -502,15 +568,20 @@ export const allCharactersSeedData = [
         ],
         "f2p": [
           "bronya",
-          "remembrance-trailblazer",
-          "]",
-          ")\n.addTeammateSection(Sustain",
-          "[hyacine",
-          "]",
-          "[huohuo",
-          "luocha",
-          "]",
-          "[gallagher"
+          "remembrance-trailblazer"
+        ]
+      },
+      {
+        "name": "Sustain",
+        "bis": [
+          "hyacine"
+        ],
+        "generalist": [
+          "huohuo",
+          "luocha"
+        ],
+        "f2p": [
+          "gallagher"
         ]
       }
     ],
@@ -570,14 +641,19 @@ export const allCharactersSeedData = [
           "ruan-mei"
         ],
         "f2p": [
-          "remembrance-trailblazer",
-          "]",
-          ")\n.addTeammateSection(Sustain",
-          "[huohuo",
-          "]",
-          "[aventurine",
-          "]",
-          "[gallagher"
+          "remembrance-trailblazer"
+        ]
+      },
+      {
+        "name": "Sustain",
+        "bis": [
+          "huohuo"
+        ],
+        "generalist": [
+          "aventurine"
+        ],
+        "f2p": [
+          "gallagher"
         ]
       }
     ],
@@ -640,15 +716,20 @@ export const allCharactersSeedData = [
         ],
         "f2p": [
           "pela",
-          "guinaifen",
-          "]",
-          ")\n.addTeammateSection(Sustain",
-          "[aventurine",
-          "]",
-          "[fu-xuan",
-          "hyacine",
-          "]",
-          "[gallagher"
+          "guinaifen"
+        ]
+      },
+      {
+        "name": "Sustain",
+        "bis": [
+          "aventurine"
+        ],
+        "generalist": [
+          "fu-xuan",
+          "hyacine"
+        ],
+        "f2p": [
+          "gallagher"
         ]
       }
     ],
@@ -712,16 +793,21 @@ export const allCharactersSeedData = [
         ],
         "f2p": [
           "tingyun",
-          "remembrance-trailblazer",
-          "]",
-          ")\n.addTeammateSection(Sustain",
-          "[huohuo",
-          "]",
-          "[aventurine",
+          "remembrance-trailblazer"
+        ]
+      },
+      {
+        "name": "Sustain",
+        "bis": [
+          "huohuo"
+        ],
+        "generalist": [
+          "aventurine",
           "luocha",
-          "fu-xuan",
-          "]",
-          "[gallagher"
+          "fu-xuan"
+        ],
+        "f2p": [
+          "gallagher"
         ]
       }
     ],
@@ -797,16 +883,21 @@ export const allCharactersSeedData = [
           "ruan-mei"
         ],
         "f2p": [
-          "pela",
-          "]",
-          ")\n.addTeammateSection(Sustain",
-          "[aventurine",
-          "huohuo",
-          "]",
-          "[hyacine",
-          "fu-xuan",
-          "]",
-          "[gallagher"
+          "pela"
+        ]
+      },
+      {
+        "name": "Sustain",
+        "bis": [
+          "aventurine",
+          "huohuo"
+        ],
+        "generalist": [
+          "hyacine",
+          "fu-xuan"
+        ],
+        "f2p": [
+          "gallagher"
         ]
       }
     ],
@@ -867,15 +958,20 @@ export const allCharactersSeedData = [
         ],
         "f2p": [
           "pela",
-          "guinaifen",
-          "]",
-          ")\n.addTeammateSection(Sustain",
-          "[aventurine",
-          "]",
-          "[huohuo",
-          "lingsha",
-          "]",
-          "[gallagher"
+          "guinaifen"
+        ]
+      },
+      {
+        "name": "Sustain",
+        "bis": [
+          "aventurine"
+        ],
+        "generalist": [
+          "huohuo",
+          "lingsha"
+        ],
+        "f2p": [
+          "gallagher"
         ]
       }
     ],
@@ -937,6 +1033,21 @@ export const allCharactersSeedData = [
         ],
         "f2p": [
           "remembrance-trailblazer"
+        ]
+      },
+      {
+        "name": "Sustain",
+        "bis": [
+          "aventurine",
+          "huohuo"
+        ],
+        "generalist": [
+          "fu-xuan",
+          "hyacine",
+          "lingsha"
+        ],
+        "f2p": [
+          "gallagher"
         ]
       }
     ],
@@ -1219,14 +1330,19 @@ export const allCharactersSeedData = [
         ],
         "f2p": [
           "tingyun",
-          "guinaifen",
-          "]",
-          ")\n.addTeammateSection(Sustain",
-          "[huohuo",
-          "]",
-          "[hyacine",
-          "]",
-          "[gallagher"
+          "guinaifen"
+        ]
+      },
+      {
+        "name": "Sustain",
+        "bis": [
+          "huohuo"
+        ],
+        "generalist": [
+          "hyacine"
+        ],
+        "f2p": [
+          "gallagher"
         ]
       }
     ],
@@ -1278,16 +1394,21 @@ export const allCharactersSeedData = [
         "f2p": [
           "pela",
           "tingyun",
-          "bronya",
-          "]",
-          ")\n.addTeammateSection(Sustain",
-          "[lingsha",
-          "]",
-          "[hyacine",
+          "bronya"
+        ]
+      },
+      {
+        "name": "Sustain",
+        "bis": [
+          "lingsha"
+        ],
+        "generalist": [
+          "hyacine",
           "fu-xuan",
-          "huohuo",
-          "]",
-          "[gallagher"
+          "huohuo"
+        ],
+        "f2p": [
+          "gallagher"
         ]
       }
     ],
@@ -1335,16 +1456,21 @@ export const allCharactersSeedData = [
         ],
         "f2p": [
           "bronya",
-          "harmony-trailblazer",
-          "]",
-          ")\n.addTeammateSection(Sustain",
-          "[lingsha",
-          "]",
-          "[hyacine",
+          "harmony-trailblazer"
+        ]
+      },
+      {
+        "name": "Sustain",
+        "bis": [
+          "lingsha"
+        ],
+        "generalist": [
+          "hyacine",
           "fu-xuan",
-          "huohuo",
-          "]",
-          "[gallagher"
+          "huohuo"
+        ],
+        "f2p": [
+          "gallagher"
         ]
       }
     ],
@@ -1519,15 +1645,20 @@ export const allCharactersSeedData = [
         "f2p": [
           "bronya",
           "remembrance-trailblazer",
-          "tingyun",
-          "]",
-          ")\n.addTeammateSection(Sustain",
-          "[huohuo",
-          "hyacine",
-          "]",
-          "[fu-xuan",
-          "]",
-          "[gallagher"
+          "tingyun"
+        ]
+      },
+      {
+        "name": "Sustain",
+        "bis": [
+          "huohuo",
+          "hyacine"
+        ],
+        "generalist": [
+          "fu-xuan"
+        ],
+        "f2p": [
+          "gallagher"
         ]
       }
     ],
@@ -1579,15 +1710,20 @@ export const allCharactersSeedData = [
         "f2p": [
           "bronya",
           "remembrance-trailblazer",
-          "tingyun",
-          "]",
-          ")\n.addTeammateSection(Sustain",
-          "[hyacine",
-          "aventurine",
-          "]",
-          "[gepard",
-          "]",
-          "[gallagher"
+          "tingyun"
+        ]
+      },
+      {
+        "name": "Sustain",
+        "bis": [
+          "hyacine",
+          "aventurine"
+        ],
+        "generalist": [
+          "gepard"
+        ],
+        "f2p": [
+          "gallagher"
         ]
       }
     ],
@@ -1651,16 +1787,21 @@ export const allCharactersSeedData = [
         "f2p": [
           "bronya",
           "tingyun",
-          "remembrance-trailblazer",
-          "]",
-          ")\n.addTeammateSection(Sustain",
-          "[huohuo",
-          "hyacine",
-          "]",
-          "[fu-xuan",
-          "luocha",
-          "]",
-          "[gallagher"
+          "remembrance-trailblazer"
+        ]
+      },
+      {
+        "name": "Sustain",
+        "bis": [
+          "huohuo",
+          "hyacine"
+        ],
+        "generalist": [
+          "fu-xuan",
+          "luocha"
+        ],
+        "f2p": [
+          "gallagher"
         ]
       }
     ],
@@ -1711,15 +1852,20 @@ export const allCharactersSeedData = [
         "f2p": [
           "bronya",
           "tingyun",
-          "remembrance-trailblazer",
-          "]",
-          ")\n.addTeammateSection(Sustain",
-          "[huohuo",
-          "]",
-          "[fu-xuan",
-          "luocha",
-          "]",
-          "[gallagher"
+          "remembrance-trailblazer"
+        ]
+      },
+      {
+        "name": "Sustain",
+        "bis": [
+          "huohuo"
+        ],
+        "generalist": [
+          "fu-xuan",
+          "luocha"
+        ],
+        "f2p": [
+          "gallagher"
         ]
       }
     ],
@@ -1771,15 +1917,20 @@ export const allCharactersSeedData = [
         ],
         "f2p": [
           "tingyun",
-          "hanya",
-          "]",
-          ")\n.addTeammateSection(Sustain",
-          "[fu-xuan",
-          "huohuo",
-          "]",
-          "[aventurine",
-          "]",
-          "[gallagher"
+          "hanya"
+        ]
+      },
+      {
+        "name": "Sustain",
+        "bis": [
+          "fu-xuan",
+          "huohuo"
+        ],
+        "generalist": [
+          "aventurine"
+        ],
+        "f2p": [
+          "gallagher"
         ]
       }
     ],
@@ -1829,14 +1980,19 @@ export const allCharactersSeedData = [
         ],
         "f2p": [
           "bronya",
-          "harmony-trailblazer",
-          "]",
-          ")\n.addTeammateSection(Sustain",
-          "[lingsha",
-          "]",
-          "[huohuo",
-          "]",
-          "[gallagher"
+          "harmony-trailblazer"
+        ]
+      },
+      {
+        "name": "Sustain",
+        "bis": [
+          "lingsha"
+        ],
+        "generalist": [
+          "huohuo"
+        ],
+        "f2p": [
+          "gallagher"
         ]
       }
     ],
@@ -1883,6 +2039,38 @@ export const allCharactersSeedData = [
         ],
         "f2p": [
           "himeko"
+        ]
+      },
+      {
+        "name": "Amplifiers",
+        "bis": [
+          "robin",
+          "tribbie"
+        ],
+        "generalist": [
+          "cipher",
+          "silver-wolf",
+          "ruan-mei"
+        ],
+        "f2p": [
+          "bronya",
+          "tingyun",
+          "remembrance-trailblazer"
+        ]
+      },
+      {
+        "name": "Sustain",
+        "bis": [
+          "huohuo",
+          "aventurine"
+        ],
+        "generalist": [
+          "hyacine",
+          "lingsha",
+          "fu-xuan"
+        ],
+        "f2p": [
+          "gallagher"
         ]
       }
     ],
@@ -1949,14 +2137,19 @@ export const allCharactersSeedData = [
           "tribbie"
         ],
         "f2p": [
-          "harmony-trailblazer",
-          "]",
-          ")\n.addTeammateSection(Sustain",
-          "[lingsha",
-          "]",
-          "[huohuo",
-          "]",
-          "[gallagher"
+          "harmony-trailblazer"
+        ]
+      },
+      {
+        "name": "Sustain",
+        "bis": [
+          "lingsha"
+        ],
+        "generalist": [
+          "huohuo"
+        ],
+        "f2p": [
+          "gallagher"
         ]
       }
     ],
@@ -2010,14 +2203,19 @@ export const allCharactersSeedData = [
         "f2p": [
           "bronya",
           "remembrance-trailblazer",
-          "pela",
-          "]",
-          ")\n.addTeammateSection(Sustain",
-          "[huohuo",
-          "]",
-          "[luocha",
-          "]",
-          "[gallagher"
+          "pela"
+        ]
+      },
+      {
+        "name": "Sustain",
+        "bis": [
+          "huohuo"
+        ],
+        "generalist": [
+          "luocha"
+        ],
+        "f2p": [
+          "gallagher"
         ]
       }
     ],
@@ -2066,24 +2264,34 @@ export const allCharactersSeedData = [
         ],
         "f2p": [
           "moze",
-          "hunt-march-7th",
-          "]",
-          ")\n.addTeammateSection(\nAmplifiers",
-          "[robin",
-          "]",
-          "[sunday",
-          "silver-wolf",
-          "]",
-          "[bronya",
-          "remembrance-trailblazer",
-          "]",
-          ")\n.addTeammateSection(Sustain",
-          "[aventurine",
-          "]",
-          "[lingsha",
-          "hyacine",
-          "]",
-          "[gallagher"
+          "hunt-march-7th"
+        ]
+      },
+      {
+        "name": "Amplifiers",
+        "bis": [
+          "robin"
+        ],
+        "generalist": [
+          "sunday",
+          "silver-wolf"
+        ],
+        "f2p": [
+          "bronya",
+          "remembrance-trailblazer"
+        ]
+      },
+      {
+        "name": "Sustain",
+        "bis": [
+          "aventurine"
+        ],
+        "generalist": [
+          "lingsha",
+          "hyacine"
+        ],
+        "f2p": [
+          "gallagher"
         ]
       }
     ],
@@ -2131,6 +2339,38 @@ export const allCharactersSeedData = [
         ],
         "f2p": [
           "clara"
+        ]
+      },
+      {
+        "name": "Amplifiers",
+        "bis": [
+          "robin",
+          "fugue"
+        ],
+        "generalist": [
+          "sunday",
+          "silver-wolf",
+          "ruan-mei",
+          "tribbie"
+        ],
+        "f2p": [
+          "harmony-trailblazer",
+          "remembrance-trailblazer"
+        ]
+      },
+      {
+        "name": "Sustain",
+        "bis": [
+          "aventurine",
+          "huohuo"
+        ],
+        "generalist": [
+          "lingsha",
+          "hyacine",
+          "luocha"
+        ],
+        "f2p": [
+          "gallagher"
         ]
       }
     ],
@@ -2203,15 +2443,20 @@ export const allCharactersSeedData = [
           "cipher"
         ],
         "f2p": [
-          "remembrance-trailblazer",
-          "]",
-          ")\n.addTeammateSection(Sustain",
-          "[aventurine",
-          "]",
-          "[luocha",
-          "hyacine",
-          "]",
-          "[gallagher"
+          "remembrance-trailblazer"
+        ]
+      },
+      {
+        "name": "Sustain",
+        "bis": [
+          "aventurine"
+        ],
+        "generalist": [
+          "luocha",
+          "hyacine"
+        ],
+        "f2p": [
+          "gallagher"
         ]
       }
     ],
@@ -2261,6 +2506,35 @@ export const allCharactersSeedData = [
         "f2p": [
           "herta",
           "serval"
+        ]
+      },
+      {
+        "name": "Amplifiers",
+        "bis": [
+          "tribbie"
+        ],
+        "generalist": [
+          "robin",
+          "ruan-mei",
+          "sunday"
+        ],
+        "f2p": [
+          "remembrance-trailblazer"
+        ]
+      },
+      {
+        "name": "Sustain",
+        "bis": [
+          "hyacine",
+          "huohuo"
+        ],
+        "generalist": [
+          "lingsha",
+          "aventurine",
+          "fu-xuan"
+        ],
+        "f2p": [
+          "gallagher"
         ]
       }
     ],
@@ -2313,14 +2587,19 @@ export const allCharactersSeedData = [
         ],
         "f2p": [
           "bronya",
-          "remembrance-trailblazer",
-          "]",
-          ")\n.addTeammateSection(Sustain",
-          "[huohuo",
-          "]",
-          "[fu-xuan",
-          "]",
-          "[gallagher"
+          "remembrance-trailblazer"
+        ]
+      },
+      {
+        "name": "Sustain",
+        "bis": [
+          "huohuo"
+        ],
+        "generalist": [
+          "fu-xuan"
+        ],
+        "f2p": [
+          "gallagher"
         ]
       }
     ],
@@ -2372,14 +2651,18 @@ export const allCharactersSeedData = [
           "cipher",
           "silver-wolf"
         ],
+        "f2p": []
+      },
+      {
+        "name": "Sustain",
+        "bis": [
+          "hyacine"
+        ],
+        "generalist": [
+          "luocha"
+        ],
         "f2p": [
-          "]",
-          ")\n.addTeammateSection(Sustain",
-          "[hyacine",
-          "]",
-          "[luocha",
-          "]",
-          "[gallagher"
+          "gallagher"
         ]
       }
     ],
@@ -2432,15 +2715,20 @@ export const allCharactersSeedData = [
         ],
         "f2p": [
           "remembrance-trailblazer",
-          "tingyun",
-          "]",
-          ")\n.addTeammateSection(Sustain",
-          "[hyacine",
-          "huohuo",
-          "]",
-          "[luocha",
-          "]",
-          "[gallagher"
+          "tingyun"
+        ]
+      },
+      {
+        "name": "Sustain",
+        "bis": [
+          "hyacine",
+          "huohuo"
+        ],
+        "generalist": [
+          "luocha"
+        ],
+        "f2p": [
+          "gallagher"
         ]
       }
     ],
@@ -2496,15 +2784,20 @@ export const allCharactersSeedData = [
         ],
         "f2p": [
           "remembrance-trailblazer",
-          "tingyun",
-          "]",
-          ")\n.addTeammateSection(Sustain",
-          "[huohuo",
-          "]",
-          "[aventurine",
-          "luocha",
-          "]",
-          "[gallagher"
+          "tingyun"
+        ]
+      },
+      {
+        "name": "Sustain",
+        "bis": [
+          "huohuo"
+        ],
+        "generalist": [
+          "aventurine",
+          "luocha"
+        ],
+        "f2p": [
+          "gallagher"
         ]
       }
     ],
@@ -2567,14 +2860,19 @@ export const allCharactersSeedData = [
         ],
         "f2p": [
           "bronya",
-          "tingyun",
-          "]",
-          ")\n.addTeammateSection(Sustain",
-          "[huohuo",
-          "]",
-          "[hyacine",
-          "]",
-          "[gallagher"
+          "tingyun"
+        ]
+      },
+      {
+        "name": "Sustain",
+        "bis": [
+          "huohuo"
+        ],
+        "generalist": [
+          "hyacine"
+        ],
+        "f2p": [
+          "gallagher"
         ]
       }
     ],
@@ -2624,16 +2922,19 @@ export const allCharactersSeedData = [
         ],
         "f2p": [
           "hanya",
-          "tingyun",
-          "]",
-          ")\n.addTeammateSection(Sustain",
-          "[gallagher",
-          "]",
-          "[luocha",
-          "aventurine",
-          "]",
-          "["
+          "tingyun"
         ]
+      },
+      {
+        "name": "Sustain",
+        "bis": [
+          "gallagher"
+        ],
+        "generalist": [
+          "luocha",
+          "aventurine"
+        ],
+        "f2p": []
       }
     ],
     "teamCompositions": [
@@ -2698,15 +2999,20 @@ export const allCharactersSeedData = [
           "bronya",
           "tingyun",
           "remembrance-trailblazer",
-          "pela",
-          "]",
-          ")\n.addTeammateSection(Sustain",
-          "[hyacine",
-          "huohuo",
-          "]",
-          "[aventurine",
-          "]",
-          "[gallagher"
+          "pela"
+        ]
+      },
+      {
+        "name": "Sustain",
+        "bis": [
+          "hyacine",
+          "huohuo"
+        ],
+        "generalist": [
+          "aventurine"
+        ],
+        "f2p": [
+          "gallagher"
         ]
       }
     ],
@@ -2771,14 +3077,19 @@ export const allCharactersSeedData = [
           "bronya",
           "tingyun",
           "remembrance-trailblazer",
-          "pela",
-          "]",
-          ")\n.addTeammateSection(Sustain",
-          "[huohuo",
-          "]",
-          "[hyacine",
-          "]",
-          "[gallagher"
+          "pela"
+        ]
+      },
+      {
+        "name": "Sustain",
+        "bis": [
+          "huohuo"
+        ],
+        "generalist": [
+          "hyacine"
+        ],
+        "f2p": [
+          "gallagher"
         ]
       }
     ],
@@ -2824,43 +3135,10 @@ export const allCharactersSeedData = [
         "generalist": [
           "Any DPS as long as they can benefit from Enemy Reduced DEF and constant Debuffs Applications"
         ],
-        "f2p": [
-          "]",
-          ")\n.addTeamComposition(Acheron Team",
-          "Debuffer",
-          "[acheron",
-          "pela",
-          "cipher",
-          "aventurine"
-        ]
+        "f2p": []
       }
     ],
-    "teamCompositions": [
-      {
-        "name": "Acheron Team",
-        "role": "Debuffer",
-        "bis": {
-          "characters": [
-            "acheron",
-            "pela",
-            "cipher",
-            "aventurine"
-          ]
-        }
-      },
-      {
-        "name": "Castorice Team",
-        "role": "Debuffer",
-        "bis": {
-          "characters": [
-            "castorice",
-            "pela",
-            "tribbie",
-            "hyacine"
-          ]
-        }
-      }
-    ]
+    "teamCompositions": []
   },
   {
     "id": "silver-wolf",
@@ -2889,45 +3167,15 @@ export const allCharactersSeedData = [
           "archer"
         ],
         "generalist": [
-          "Any DPS as long as they can benefit from Enemy Reduced DEF, SPD, ATK, Weakness RES and constant Debuffs Applications"
+          "Any DPS as long as they can benefit from Enemy Reduced DEF",
+          "SPD",
+          "ATK",
+          "Weakness RES and constant Debuffs Applications"
         ],
-        "f2p": [
-          "]",
-          ")\n.addTeamComposition(Acheron Team",
-          "Debuffer",
-          "[\nacheron",
-          "silver-wolf",
-          "cipher",
-          "aventurine"
-        ]
+        "f2p": []
       }
     ],
-    "teamCompositions": [
-      {
-        "name": "Acheron Team",
-        "role": "Debuffer",
-        "bis": {
-          "characters": [
-            "acheron",
-            "silver-wolf",
-            "cipher",
-            "aventurine"
-          ]
-        }
-      },
-      {
-        "name": "Archer Team",
-        "role": "Debuffer",
-        "bis": {
-          "characters": [
-            "archer",
-            "silver-wolf",
-            "sparkle",
-            "gallagher"
-          ]
-        }
-      }
-    ]
+    "teamCompositions": []
   },
   {
     "id": "jiaoqiu",
@@ -2954,45 +3202,13 @@ export const allCharactersSeedData = [
           "acheron"
         ],
         "generalist": [
-          "Any DPS as long as they can benefit from Enemy Increased DMG Taken, Ultimate DMG Taken and constant Debuffs Applications"
+          "Any DPS as long as they can benefit from Enemy Increased DMG Taken",
+          "Ultimate DMG Taken and constant Debuffs Applications"
         ],
-        "f2p": [
-          "]",
-          ")\n.addTeamComposition(Acheron Team",
-          "Debuffer",
-          "[acheron",
-          "jiaoqiu",
-          "cipher",
-          "aventurine"
-        ]
+        "f2p": []
       }
     ],
-    "teamCompositions": [
-      {
-        "name": "Acheron Team",
-        "role": "Debuffer",
-        "bis": {
-          "characters": [
-            "acheron",
-            "jiaoqiu",
-            "cipher",
-            "aventurine"
-          ]
-        }
-      },
-      {
-        "name": "Dr. Ratio Team",
-        "role": "Debuffer",
-        "bis": {
-          "characters": [
-            "ratio",
-            "jiaoqiu",
-            "robin",
-            "aventurine"
-          ]
-        }
-      }
-    ]
+    "teamCompositions": []
   },
   {
     "id": "asta",
@@ -3022,43 +3238,10 @@ export const allCharactersSeedData = [
         "generalist": [
           "Any DPS as long as they can benefit from the SPD and ATK buffs"
         ],
-        "f2p": [
-          "]",
-          ")\n.addTeamComposition(Kafka Team",
-          "Buffer",
-          "[kafka",
-          "black-swan",
-          "asta",
-          "huohuo"
-        ]
+        "f2p": []
       }
     ],
-    "teamCompositions": [
-      {
-        "name": "Kafka Team",
-        "role": "Buffer",
-        "bis": {
-          "characters": [
-            "kafka",
-            "black-swan",
-            "asta",
-            "huohuo"
-          ]
-        }
-      },
-      {
-        "name": "Aglaea Team",
-        "role": "Buffer",
-        "bis": {
-          "characters": [
-            "aglaea",
-            "sunday",
-            "asta",
-            "huohuo"
-          ]
-        }
-      }
-    ]
+    "teamCompositions": []
   },
   {
     "id": "yukong",
@@ -3088,31 +3271,10 @@ export const allCharactersSeedData = [
         "generalist": [
           "Any DPS as long as they can benefit from the ATK and Crit buffs"
         ],
-        "f2p": [
-          "]",
-          ")\n.addTeamComposition(Dan Heng IL Team",
-          "Buffer",
-          "[\ndan-heng-il",
-          "sparkle",
-          "yukong",
-          "huohuo"
-        ]
+        "f2p": []
       }
     ],
-    "teamCompositions": [
-      {
-        "name": "Dan Heng IL Team",
-        "role": "Buffer",
-        "bis": {
-          "characters": [
-            "dan-heng-il",
-            "sparkle",
-            "yukong",
-            "huohuo"
-          ]
-        }
-      }
-    ]
+    "teamCompositions": []
   },
   {
     "id": "hanya",
@@ -3141,45 +3303,13 @@ export const allCharactersSeedData = [
           "archer"
         ],
         "generalist": [
-          "Any DPS as long as they can benefit from the ATK, SPD buffs and SP Recovery"
+          "Any DPS as long as they can benefit from the ATK",
+          "SPD buffs and SP Recovery"
         ],
-        "f2p": [
-          "]",
-          ")\n.addTeamComposition(Dan Heng IL Team",
-          "Buffer",
-          "[dan-heng-il",
-          "sunday",
-          "hanya",
-          "huohuo"
-        ]
+        "f2p": []
       }
     ],
-    "teamCompositions": [
-      {
-        "name": "Dan Heng IL Team",
-        "role": "Buffer",
-        "bis": {
-          "characters": [
-            "dan-heng-il",
-            "sunday",
-            "hanya",
-            "huohuo"
-          ]
-        }
-      },
-      {
-        "name": "Archer Team",
-        "role": "Buffer",
-        "bis": {
-          "characters": [
-            "archer",
-            "silver-wolf",
-            "hanya",
-            "gallagher"
-          ]
-        }
-      }
-    ]
+    "teamCompositions": []
   },
   {
     "id": "bronya",
@@ -3203,32 +3333,7 @@ export const allCharactersSeedData = [
       "DMG Amplifier"
     ],
     "teammateRecommendations": [],
-    "teamCompositions": [
-      {
-        "name": "Phainon Team",
-        "role": "Buffer",
-        "bis": {
-          "characters": [
-            "phainon",
-            "sunday",
-            "bronya",
-            "tribbie"
-          ]
-        }
-      },
-      {
-        "name": "Boothill Team",
-        "role": "Buffer",
-        "bis": {
-          "characters": [
-            "boothill",
-            "harmony-trailblazer",
-            "bronya",
-            "lingsha"
-          ]
-        }
-      }
-    ]
+    "teamCompositions": []
   },
   {
     "id": "harmony-trailblazer",
@@ -3248,44 +3353,7 @@ export const allCharactersSeedData = [
       "F2P"
     ],
     "teammateRecommendations": [],
-    "teamCompositions": [
-      {
-        "name": "Boothill Team",
-        "role": "Buffer",
-        "bis": {
-          "characters": [
-            "boothill",
-            "harmony-trailblazer",
-            "fugue",
-            "lingsha"
-          ]
-        }
-      },
-      {
-        "name": "Firefly Team",
-        "role": "Buffer",
-        "bis": {
-          "characters": [
-            "firefly",
-            "harmony-trailblazer",
-            "fugue",
-            "lingsha"
-          ]
-        }
-      },
-      {
-        "name": "Rappa Team",
-        "role": "Buffer",
-        "bis": {
-          "characters": [
-            "rappa",
-            "harmony-trailblazer",
-            "fugue",
-            "lingsha"
-          ]
-        }
-      }
-    ]
+    "teamCompositions": []
   },
   {
     "id": "robin",
@@ -3307,32 +3375,7 @@ export const allCharactersSeedData = [
       "Immune to Crowd Control on Concerto"
     ],
     "teammateRecommendations": [],
-    "teamCompositions": [
-      {
-        "name": "Feixiao Team",
-        "role": "Buffer",
-        "bis": {
-          "characters": [
-            "feixiao",
-            "cipher",
-            "robin",
-            "aventurine"
-          ]
-        }
-      },
-      {
-        "name": "Aglaea",
-        "role": "Buffer",
-        "bis": {
-          "characters": [
-            "aglaea",
-            "sunday",
-            "robin",
-            "huohuo"
-          ]
-        }
-      }
-    ]
+    "teamCompositions": []
   },
   {
     "id": "ruan-mei",
@@ -3354,44 +3397,7 @@ export const allCharactersSeedData = [
       "Break Amplifier"
     ],
     "teammateRecommendations": [],
-    "teamCompositions": [
-      {
-        "name": "Boothill Team",
-        "role": "Buffer",
-        "bis": {
-          "characters": [
-            "boothill",
-            "ruan-mei",
-            "fugue",
-            "lingsha"
-          ]
-        }
-      },
-      {
-        "name": "Firefly Team",
-        "role": "Buffer",
-        "bis": {
-          "characters": [
-            "firefly",
-            "ruan-mei",
-            "fugue",
-            "lingsha"
-          ]
-        }
-      },
-      {
-        "name": "Rappa Team",
-        "role": "Buffer",
-        "bis": {
-          "characters": [
-            "rappa",
-            "ruan-mei",
-            "fugue",
-            "lingsha"
-          ]
-        }
-      }
-    ]
+    "teamCompositions": []
   },
   {
     "id": "sparkle",
@@ -3421,45 +3427,15 @@ export const allCharactersSeedData = [
           "archer"
         ],
         "generalist": [
-          "Any DPS as long as they can benefit from the DMG, ATK, Crit DMG buffs, Action Advance and SP Recovery"
+          "Any DPS as long as they can benefit from the DMG",
+          "ATK",
+          "Crit DMG buffs",
+          "Action Advance and SP Recovery"
         ],
-        "f2p": [
-          "]",
-          ")\n.addTeamComposition(Dan Heng IL Team",
-          "Buffer",
-          "[\ndan-heng-il",
-          "sparkle",
-          "sunday",
-          "huohuo"
-        ]
+        "f2p": []
       }
     ],
-    "teamCompositions": [
-      {
-        "name": "Dan Heng IL Team",
-        "role": "Buffer",
-        "bis": {
-          "characters": [
-            "dan-heng-il",
-            "sparkle",
-            "sunday",
-            "huohuo"
-          ]
-        }
-      },
-      {
-        "name": "Archer Team",
-        "role": "Buffer",
-        "bis": {
-          "characters": [
-            "archer",
-            "sparkle",
-            "silver-wolf",
-            "gallagher"
-          ]
-        }
-      }
-    ]
+    "teamCompositions": []
   },
   {
     "id": "sunday",
@@ -3484,32 +3460,7 @@ export const allCharactersSeedData = [
       "Cleanse on Skill"
     ],
     "teammateRecommendations": [],
-    "teamCompositions": [
-      {
-        "name": "Phainon",
-        "role": "Buffer",
-        "bis": {
-          "characters": [
-            "phainon",
-            "sunday",
-            "bronya",
-            "tribbie"
-          ]
-        }
-      },
-      {
-        "name": "Aglaea Team",
-        "role": "Buffer",
-        "bis": {
-          "characters": [
-            "aglaea",
-            "sunday",
-            "robin",
-            "huohuo"
-          ]
-        }
-      }
-    ]
+    "teamCompositions": []
   },
   {
     "id": "tingyun",
@@ -3531,32 +3482,7 @@ export const allCharactersSeedData = [
       "Self Taunt"
     ],
     "teammateRecommendations": [],
-    "teamCompositions": [
-      {
-        "name": "Phainon",
-        "role": "Buffer",
-        "bis": {
-          "characters": [
-            "phainon",
-            "sunday",
-            "bronya",
-            "tingyun"
-          ]
-        }
-      },
-      {
-        "name": "Yunli Team",
-        "role": "Buffer",
-        "bis": {
-          "characters": [
-            "yunli",
-            "sunday",
-            "tingyun",
-            "huohuo"
-          ]
-        }
-      }
-    ]
+    "teamCompositions": []
   },
   {
     "id": "fugue",
@@ -3580,44 +3506,7 @@ export const allCharactersSeedData = [
       "Self Taunt"
     ],
     "teammateRecommendations": [],
-    "teamCompositions": [
-      {
-        "name": "Boothill Team",
-        "role": "Buffer",
-        "bis": {
-          "characters": [
-            "boothill",
-            "fugue",
-            "ruan-mei",
-            "lingsha"
-          ]
-        }
-      },
-      {
-        "name": "Firefly Team",
-        "role": "Buffer",
-        "bis": {
-          "characters": [
-            "firefly",
-            "fugue",
-            "ruan-mei",
-            "lingsha"
-          ]
-        }
-      },
-      {
-        "name": "Rappa Team",
-        "role": "Buffer",
-        "bis": {
-          "characters": [
-            "rappa",
-            "fugue",
-            "ruan-mei",
-            "lingsha"
-          ]
-        }
-      }
-    ]
+    "teamCompositions": []
   },
   {
     "id": "remembrance-trailblazer",
@@ -3640,20 +3529,7 @@ export const allCharactersSeedData = [
       "F2P"
     ],
     "teammateRecommendations": [],
-    "teamCompositions": [
-      {
-        "name": "Castorice Team",
-        "role": "Buffer",
-        "bis": {
-          "characters": [
-            "castorice",
-            "remembrance-trailblazer",
-            "tribbie",
-            "hyacine"
-          ]
-        }
-      }
-    ]
+    "teamCompositions": []
   },
   {
     "id": "tribbie",
@@ -3674,32 +3550,7 @@ export const allCharactersSeedData = [
       "HP Scaling "
     ],
     "teammateRecommendations": [],
-    "teamCompositions": [
-      {
-        "name": "Castorice Team",
-        "role": "Buffer",
-        "bis": {
-          "characters": [
-            "castorice",
-            "remembrance-trailblazer",
-            "tribbie",
-            "hyacine"
-          ]
-        }
-      },
-      {
-        "name": "The Herta Team",
-        "role": "Buffer",
-        "bis": {
-          "characters": [
-            "the-herta",
-            "anaxa",
-            "tribbie",
-            "huohuo"
-          ]
-        }
-      }
-    ]
+    "teamCompositions": []
   },
   {
     "id": "cipher",
@@ -3729,43 +3580,10 @@ export const allCharactersSeedData = [
         "generalist": [
           "Any DPS as long as they can benefit from follow-up attacks and constant Debuffs Application"
         ],
-        "f2p": [
-          "]",
-          ")\n.addTeamComposition(Acheron Team",
-          "Debuffer",
-          "[acheron",
-          "cipher",
-          "jiaoqiu",
-          "aventurine"
-        ]
+        "f2p": []
       }
     ],
-    "teamCompositions": [
-      {
-        "name": "Acheron Team",
-        "role": "Debuffer",
-        "bis": {
-          "characters": [
-            "acheron",
-            "cipher",
-            "jiaoqiu",
-            "aventurine"
-          ]
-        }
-      },
-      {
-        "name": "Feixiao Team",
-        "role": "Debuffer",
-        "bis": {
-          "characters": [
-            "feixiao",
-            "cipher",
-            "robin",
-            "aventurine"
-          ]
-        }
-      }
-    ]
+    "teamCompositions": []
   },
   {
     "id": "guinaifen",
@@ -3796,43 +3614,10 @@ export const allCharactersSeedData = [
         "generalist": [
           "Any DPS as long as they can benefit from DoT and constant Debuffs Application"
         ],
-        "f2p": [
-          "]",
-          ")\n.addTeamComposition(Acheron Team",
-          "Debuffer",
-          "[\nacheron",
-          "jiaoqiu",
-          "guinaifen",
-          "aventurine"
-        ]
+        "f2p": []
       }
     ],
-    "teamCompositions": [
-      {
-        "name": "Acheron Team",
-        "role": "Debuffer",
-        "bis": {
-          "characters": [
-            "acheron",
-            "jiaoqiu",
-            "guinaifen",
-            "aventurine"
-          ]
-        }
-      },
-      {
-        "name": "Kafka Team",
-        "role": "Debuffer",
-        "bis": {
-          "characters": [
-            "kafka",
-            "black-swan",
-            "guinaifen",
-            "huohuo"
-          ]
-        }
-      }
-    ]
+    "teamCompositions": []
   },
   {
     "id": "gepard",
@@ -3861,33 +3646,13 @@ export const allCharactersSeedData = [
           "yanqing"
         ],
         "generalist": [
-          "Any DPS as long as they can benefit from Shields, Evade Aggro and constant Debuffs Application with Trend of the Universal Market Lightcone"
+          "Any DPS as long as they can benefit from Shields",
+          "Evade Aggro and constant Debuffs Application with Trend of the Universal Market Lightcone"
         ],
-        "f2p": [
-          "]",
-          ")\n.addTeamComposition(Acheron Team",
-          "Sustain",
-          "[acheron",
-          "jiaoqiu",
-          "cipher",
-          "gepard"
-        ]
+        "f2p": []
       }
     ],
-    "teamCompositions": [
-      {
-        "name": "Acheron Team",
-        "role": "Sustain",
-        "bis": {
-          "characters": [
-            "acheron",
-            "jiaoqiu",
-            "cipher",
-            "gepard"
-          ]
-        }
-      }
-    ]
+    "teamCompositions": []
   },
   {
     "id": "fu-xuan",
@@ -3919,57 +3684,13 @@ export const allCharactersSeedData = [
           "yunli"
         ],
         "generalist": [
-          "Any DPS as long as they can benefit from Crit Rate Buffs,DMG Reduction and constant Debuffs Application with Trend of the Universal Market Lightcone"
+          "Any DPS as long as they can benefit from Crit Rate Buffs",
+          "DMG Reduction and constant Debuffs Application with Trend of the Universal Market Lightcone"
         ],
-        "f2p": [
-          "]",
-          ")\n.addTeamComposition(Acheron Team",
-          "Sustain",
-          "[acheron",
-          "jiaoqiu",
-          "cipher",
-          "fu-xuan"
-        ]
+        "f2p": []
       }
     ],
-    "teamCompositions": [
-      {
-        "name": "Acheron Team",
-        "role": "Sustain",
-        "bis": {
-          "characters": [
-            "acheron",
-            "jiaoqiu",
-            "cipher",
-            "fu-xuan"
-          ]
-        }
-      },
-      {
-        "name": "Archer Team",
-        "role": "Sustain",
-        "bis": {
-          "characters": [
-            "archer",
-            "sparkle",
-            "silver-wolf",
-            "fu-xuan"
-          ]
-        }
-      },
-      {
-        "name": "Yunli Team",
-        "role": "Sustain",
-        "bis": {
-          "characters": [
-            "yunli",
-            "sunday",
-            "robin",
-            "fu-xuan"
-          ]
-        }
-      }
-    ]
+    "teamCompositions": []
   },
   {
     "id": "march-7th",
@@ -3997,45 +3718,13 @@ export const allCharactersSeedData = [
           "acheron"
         ],
         "generalist": [
-          "Any DPS as long as they can benefit from Shields, Follow-ups and constant Debuffs Application with Trend of the Universal Market Lightcone"
+          "Any DPS as long as they can benefit from Shields",
+          "Follow-ups and constant Debuffs Application with Trend of the Universal Market Lightcone"
         ],
-        "f2p": [
-          "]",
-          ")\n.addTeamComposition(Acheron Team",
-          "Sustain",
-          "[acheron",
-          "jiaoqiu",
-          "cipher",
-          "march-7th"
-        ]
+        "f2p": []
       }
     ],
-    "teamCompositions": [
-      {
-        "name": "Acheron Team",
-        "role": "Sustain",
-        "bis": {
-          "characters": [
-            "acheron",
-            "jiaoqiu",
-            "cipher",
-            "march-7th"
-          ]
-        }
-      },
-      {
-        "name": "Feixiao Team",
-        "role": "Sustain",
-        "bis": {
-          "characters": [
-            "feixiao",
-            "cipher",
-            "robin",
-            "march-7th"
-          ]
-        }
-      }
-    ]
+    "teamCompositions": []
   },
   {
     "id": "fire-trailblazer",
@@ -4067,31 +3756,10 @@ export const allCharactersSeedData = [
         "generalist": [
           "Any DPS as long as they can benefit from Shields and constant Debuffs Application with Trend of the Universal Market Lightcone"
         ],
-        "f2p": [
-          "]",
-          ")\n.addTeamComposition(Acheron Team",
-          "Sustain",
-          "[acheron",
-          "jiaoqiu",
-          "cipher",
-          "march-7th"
-        ]
+        "f2p": []
       }
     ],
-    "teamCompositions": [
-      {
-        "name": "Acheron Team",
-        "role": "Sustain",
-        "bis": {
-          "characters": [
-            "acheron",
-            "jiaoqiu",
-            "cipher",
-            "march-7th"
-          ]
-        }
-      }
-    ]
+    "teamCompositions": []
   },
   {
     "id": "natasha",
@@ -4117,31 +3785,10 @@ export const allCharactersSeedData = [
         "generalist": [
           "Any DPS as long as they can benefit from Healing and Cleanse"
         ],
-        "f2p": [
-          "]",
-          ")\n.addTeamComposition(Aglaea Team",
-          "Sustain",
-          "[aglaea",
-          "sunday",
-          "robin",
-          "natasha"
-        ]
+        "f2p": []
       }
     ],
-    "teamCompositions": [
-      {
-        "name": "Aglaea Team",
-        "role": "Sustain",
-        "bis": {
-          "characters": [
-            "aglaea",
-            "sunday",
-            "robin",
-            "natasha"
-          ]
-        }
-      }
-    ]
+    "teamCompositions": []
   },
   {
     "id": "bailu",
@@ -4172,20 +3819,7 @@ export const allCharactersSeedData = [
         "f2p": []
       }
     ],
-    "teamCompositions": [
-      {
-        "name": "Phainon Team",
-        "role": "Sustain",
-        "bis": {
-          "characters": [
-            "phainon",
-            "sunday",
-            "bronya",
-            "bailu"
-          ]
-        }
-      }
-    ]
+    "teamCompositions": []
   },
   {
     "id": "luocha",
@@ -4214,31 +3848,10 @@ export const allCharactersSeedData = [
         "generalist": [
           "Any DPS as long as they can benefit from Healing and Auto Heals when HP is low"
         ],
-        "f2p": [
-          "]",
-          ")\n.addTeamComposition(Castorice Team",
-          "Sustain",
-          "[\ncastorice",
-          "remembrance-trailblazer",
-          "tribbie",
-          "luocha"
-        ]
+        "f2p": []
       }
     ],
-    "teamCompositions": [
-      {
-        "name": "Castorice Team",
-        "role": "Sustain",
-        "bis": {
-          "characters": [
-            "castorice",
-            "remembrance-trailblazer",
-            "tribbie",
-            "luocha"
-          ]
-        }
-      }
-    ]
+    "teamCompositions": []
   },
   {
     "id": "huohuo",
@@ -4260,20 +3873,7 @@ export const allCharactersSeedData = [
       "Cleanse on Skill"
     ],
     "teammateRecommendations": [],
-    "teamCompositions": [
-      {
-        "name": "Aglaea Team",
-        "role": "Sustain",
-        "bis": {
-          "characters": [
-            "aglaea",
-            "sunday",
-            "remembrance-trailblazer",
-            "huohuo"
-          ]
-        }
-      }
-    ]
+    "teamCompositions": []
   },
   {
     "id": "lynx",
@@ -4294,32 +3894,7 @@ export const allCharactersSeedData = [
       "F2P"
     ],
     "teammateRecommendations": [],
-    "teamCompositions": [
-      {
-        "name": "Castorice Team",
-        "role": "Sustain",
-        "bis": {
-          "characters": [
-            "castorice",
-            "tribbie",
-            "remembrance-trailblazer",
-            "lynx"
-          ]
-        }
-      },
-      {
-        "name": "Blade Team",
-        "role": "Sustain",
-        "bis": {
-          "characters": [
-            "blade",
-            "sunday",
-            "tribbie",
-            "lynx"
-          ]
-        }
-      }
-    ]
+    "teamCompositions": []
   },
   {
     "id": "gallagher",
@@ -4344,32 +3919,7 @@ export const allCharactersSeedData = [
       "Best 4 Star"
     ],
     "teammateRecommendations": [],
-    "teamCompositions": [
-      {
-        "name": "Acheron Team",
-        "role": "Sustain",
-        "bis": {
-          "characters": [
-            "acheron",
-            "cipher",
-            "jiaoqiu",
-            "gallagher"
-          ]
-        }
-      },
-      {
-        "name": "Firefly Team",
-        "role": "Sustain",
-        "bis": {
-          "characters": [
-            "firefly",
-            "fugue",
-            "ruan-mei",
-            "gallagher"
-          ]
-        }
-      }
-    ]
+    "teamCompositions": []
   },
   {
     "id": "lingsha",
@@ -4391,44 +3941,7 @@ export const allCharactersSeedData = [
       " Heal on Follow-up Attack"
     ],
     "teammateRecommendations": [],
-    "teamCompositions": [
-      {
-        "name": "The Herta Team",
-        "role": "Sustain",
-        "bis": {
-          "characters": [
-            "the-herta",
-            "anaxa",
-            "tribbie",
-            "lingsha"
-          ]
-        }
-      },
-      {
-        "name": "Feixiao Team",
-        "role": "Sustain",
-        "bis": {
-          "characters": [
-            "feixiao",
-            "cipher",
-            "robin",
-            "lingsha"
-          ]
-        }
-      },
-      {
-        "name": "Firefly Team",
-        "role": "Sustain",
-        "bis": {
-          "characters": [
-            "firefly",
-            "fugue",
-            "ruan-mei",
-            "lingsha"
-          ]
-        }
-      }
-    ]
+    "teamCompositions": []
   },
   {
     "id": "aventurine",
@@ -4451,44 +3964,7 @@ export const allCharactersSeedData = [
       "Self Crit Rate Buff"
     ],
     "teammateRecommendations": [],
-    "teamCompositions": [
-      {
-        "name": "Feixiao Team",
-        "role": "Sustain",
-        "bis": {
-          "characters": [
-            "feixiao",
-            "cipher",
-            "robin",
-            "aventurine"
-          ]
-        }
-      },
-      {
-        "name": "The Herta Team",
-        "role": "Sustain",
-        "bis": {
-          "characters": [
-            "the-herta",
-            "anaxa",
-            "tribbie",
-            "aventurine"
-          ]
-        }
-      },
-      {
-        "name": "Acheron Team",
-        "role": "Sustain",
-        "bis": {
-          "characters": [
-            "acheron",
-            "jiaoqiu",
-            "cipher",
-            "aventurine"
-          ]
-        }
-      }
-    ]
+    "teamCompositions": []
   },
   {
     "id": "hyacine",
@@ -4510,31 +3986,6 @@ export const allCharactersSeedData = [
       "Cleanse on Skill and Ultimate"
     ],
     "teammateRecommendations": [],
-    "teamCompositions": [
-      {
-        "name": "Castorice Team",
-        "role": "Sustain",
-        "bis": {
-          "characters": [
-            "castorice",
-            "remembrance-trailblazer",
-            "tribbie",
-            "hyacine"
-          ]
-        }
-      },
-      {
-        "name": "The Herta Team",
-        "role": "Sustain",
-        "bis": {
-          "characters": [
-            "the-herta",
-            "anaxa",
-            "tribbie",
-            "hyacine"
-          ]
-        }
-      }
-    ]
+    "teamCompositions": []
   }
 ];
