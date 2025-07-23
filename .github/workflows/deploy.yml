@@ -2,7 +2,7 @@ name: Deploy Frontend to GitHub Pages
 
 on:
   push:
-    branches: [main]
+    branches: [main, feature/nestjs-backend]
     paths:
       - 'packages/frontend/**'
       - '.github/workflows/deploy.yml'
@@ -12,7 +12,7 @@ on:
 
 jobs:
   build-and-deploy:
-    if: github.ref == 'refs/heads/main'
+    if: github.ref == 'refs/heads/main' || github.ref == 'refs/heads/feature/nestjs-backend'
     runs-on: ubuntu-latest
 
     environment:
@@ -40,12 +40,34 @@ jobs:
           cd packages/frontend
           npm ci
 
+      - name: Determine API URL
+        id: api-config
+        run: |
+          if [ "${{ github.ref }}" == "refs/heads/main" ]; then
+            echo "api_url=" >> $GITHUB_OUTPUT
+            echo "branch_name=main" >> $GITHUB_OUTPUT
+            echo "deployment_type=static" >> $GITHUB_OUTPUT
+          elif [ "${{ github.ref }}" == "refs/heads/feature/nestjs-backend" ]; then
+            echo "api_url=https://api.hsr-team-builder.gilded.dev" >> $GITHUB_OUTPUT
+            echo "branch_name=feature-backend" >> $GITHUB_OUTPUT
+            echo "deployment_type=api-enabled" >> $GITHUB_OUTPUT
+          fi
+
       - name: Build frontend
         run: |
           cd packages/frontend
+          echo "Building frontend for branch: ${{ steps.api-config.outputs.branch_name }}"
+          echo "API URL: ${{ steps.api-config.outputs.api_url }}"
+          echo "Deployment type: ${{ steps.api-config.outputs.deployment_type }}"
           npm run build
         env:
-          VITE_API_URL: ${{ secrets.VITE_API_URL }}
+          VITE_API_URL: ${{ steps.api-config.outputs.api_url }}
+          
+      - name: Add branch info to build
+        run: |
+          echo "<!-- Deployed from branch: ${{ github.ref_name }} -->" >> packages/frontend/dist/index.html
+          echo "<!-- API URL: ${{ steps.api-config.outputs.api_url }} -->" >> packages/frontend/dist/index.html
+          echo "<!-- Deployment type: ${{ steps.api-config.outputs.deployment_type }} -->" >> packages/frontend/dist/index.html
 
       - name: Add cache headers via .htaccess
         run: |
