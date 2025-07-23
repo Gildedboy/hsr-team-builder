@@ -6,7 +6,17 @@ import { AppModule } from './app.module'
 async function bootstrap() {
   const app = await NestFactory.create(AppModule)
 
-  // Enable global validation
+  // Security headers
+  app.use((req, res, next) => {
+    res.setHeader('X-Content-Type-Options', 'nosniff')
+    res.setHeader('X-Frame-Options', 'DENY')
+    res.setHeader('X-XSS-Protection', '1; mode=block')
+    res.setHeader('Referrer-Policy', 'strict-origin-when-cross-origin')
+    res.setHeader('Content-Security-Policy', "default-src 'self'")
+    next()
+  })
+
+  // Enable global validation with strict security settings
   app.useGlobalPipes(
     new ValidationPipe({
       transform: true, // Automatically transform payloads to DTO instances
@@ -15,14 +25,32 @@ async function bootstrap() {
       transformOptions: {
         enableImplicitConversion: true, // Convert string numbers to actual numbers
       },
+      forbidUnknownValues: true, // Disallow unknown objects
+      disableErrorMessages: process.env.NODE_ENV === 'production', // Hide detailed errors in production
     }),
   )
 
-  // Enable CORS for the frontend
+  // Enable CORS with more restrictive settings
+  const allowedOrigins = process.env.ALLOWED_ORIGINS?.split(',') || [
+    'http://localhost:5173',
+    'http://localhost:3000',
+    'http://localhost:4173'
+  ]
+  
   app.enableCors({
-    origin: true, // Allow all origins in production for now (can restrict later)
+    origin: (origin, callback) => {
+      // Allow requests with no origin (mobile apps, etc.)
+      if (!origin) return callback(null, true)
+      
+      if (allowedOrigins.includes(origin)) {
+        return callback(null, true)
+      }
+      
+      return callback(new Error('Not allowed by CORS'), false)
+    },
     methods: ['GET', 'POST', 'PUT', 'DELETE'],
     credentials: true,
+    maxAge: 86400, // Cache preflight response for 24 hours
   })
 
   // Setup Swagger documentation
