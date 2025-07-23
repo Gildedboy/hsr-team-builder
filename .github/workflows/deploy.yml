@@ -1,17 +1,22 @@
-name: Deploy to GitHub Pages
+name: Deploy Frontend to GitHub Pages
 
 on:
   push:
-    branches: [main]
+    tags:
+      - 'v*'  # Deploy on any version tag
+  
+  # Allows you to run this workflow manually from the Actions tab
+  workflow_dispatch:
+    inputs:
+      deploy_version:
+        description: 'Version tag to deploy (e.g., v1.2.0-static, v2.0.0-api)'
+        required: true
+        default: 'v2.0.0-api'
+        type: string
 
 jobs:
   build-and-deploy:
-    if: github.ref == 'refs/heads/main'
     runs-on: ubuntu-latest
-
-    environment:
-      name: github-pages
-      url: ${{ steps.deployment.outputs.page_url }}
 
     permissions:
       contents: read
@@ -21,6 +26,9 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v4
+        with:
+          # If manual dispatch, checkout the specified tag
+          ref: ${{ github.event.inputs.deploy_version || github.ref }}
 
       - name: Setup Node.js
         uses: actions/setup-node@v4
@@ -28,14 +36,68 @@ jobs:
           node-version: '20'
 
       - name: Install dependencies
-        run: npm install
+        run: |
+          # Install root dependencies first
+          npm install
+          # Install shared package dependencies and build it
+          cd packages/shared
+          npm install
+          npm run build
+          # Install frontend dependencies
+          cd ../frontend
+          npm install
 
-      - name: Build
-        run: npm run build
+      - name: Determine deployment configuration
+        id: config
+        run: |
+          # Get version from tag or manual input
+          if [ "${{ github.event_name }}" == "workflow_dispatch" ]; then
+            VERSION="${{ github.event.inputs.deploy_version }}"
+          elif [ "${{ github.ref_type }}" == "tag" ]; then
+            VERSION="${{ github.ref_name }}"
+          else
+            # Fallback for branch deployments
+            if [ "${{ github.ref }}" == "refs/heads/main" ]; then
+              VERSION="v1.2.0-static"
+            else
+              VERSION="v2.0.0-api"
+            fi
+          fi
+          
+          echo "version=$VERSION" >> $GITHUB_OUTPUT
+          
+          # Determine deployment type based on version tag
+          if [[ "$VERSION" == *"-static" ]] || [[ "$VERSION" =~ ^v1\. ]]; then
+            echo "api_url=" >> $GITHUB_OUTPUT
+            echo "deployment_type=static" >> $GITHUB_OUTPUT
+            echo "display_version=${VERSION%-static}" >> $GITHUB_OUTPUT
+          else
+            echo "api_url=https://api.hsr-team-builder.gilded.dev" >> $GITHUB_OUTPUT
+            echo "deployment_type=api-enabled" >> $GITHUB_OUTPUT
+            echo "display_version=${VERSION%-api}" >> $GITHUB_OUTPUT
+          fi
+
+      - name: Build frontend
+        run: |
+          cd packages/frontend
+          echo "Building frontend for version: ${{ steps.config.outputs.display_version }}"
+          echo "API URL: ${{ steps.config.outputs.api_url }}"
+          echo "Deployment type: ${{ steps.config.outputs.deployment_type }}"
+          npm run build
+        env:
+          VITE_API_URL: ${{ steps.config.outputs.api_url }}
+          VITE_APP_VERSION: ${{ steps.config.outputs.display_version }}
+          
+      - name: Add deployment info to build
+        run: |
+          echo "<!-- Deployed version: ${{ steps.config.outputs.version }} -->" >> packages/frontend/dist/index.html
+          echo "<!-- Display version: ${{ steps.config.outputs.display_version }} -->" >> packages/frontend/dist/index.html
+          echo "<!-- API URL: ${{ steps.config.outputs.api_url }} -->" >> packages/frontend/dist/index.html
+          echo "<!-- Deployment type: ${{ steps.config.outputs.deployment_type }} -->" >> packages/frontend/dist/index.html
 
       - name: Add cache headers via .htaccess
         run: |
-          cat > dist/.htaccess << 'EOF'
+          cat > packages/frontend/dist/.htaccess << 'EOF'
           # Cache static assets for 1 year
           <FilesMatch "\.(js|css|png|jpg|jpeg|gif|ico|svg|webp|woff|woff2|ttf|eot)$">
             Header set Cache-Control "public, max-age=31536000, immutable"
@@ -81,7 +143,7 @@ jobs:
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
         with:
-          path: './dist'
+          path: './packages/frontend/dist'
 
       - name: Deploy to GitHub Pages
         id: deployment
