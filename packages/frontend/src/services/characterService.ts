@@ -1,6 +1,5 @@
 import type { Character } from '@hsr-team-builder/shared'
-
-const API_BASE_URL = 'http://localhost:3001'
+import { API_BASE_URL } from '../config/api'
 
 export class CharacterService {
   static async getAllCharacters(): Promise<Character[]> {

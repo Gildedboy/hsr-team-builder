@@ -9,8 +9,7 @@ export interface TeamRecommendation {
 }
 
 import type { Character } from '@hsr-team-builder/shared'
-
-const API_BASE_URL = 'http://localhost:3000'
+import { API_BASE_URL } from '../config/api'
 
 export class TeamService {
   static async getPopularTeams(): Promise<TeamRecommendation[]> {

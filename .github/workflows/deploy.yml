@@ -1,8 +1,14 @@
-name: Deploy to GitHub Pages
+name: Deploy Frontend to GitHub Pages
 
 on:
   push:
     branches: [main]
+    paths:
+      - 'packages/frontend/**'
+      - '.github/workflows/deploy.yml'
+  
+  # Allows you to run this workflow manually from the Actions tab
+  workflow_dispatch:
 
 jobs:
   build-and-deploy:
@@ -26,16 +32,24 @@ jobs:
         uses: actions/setup-node@v4
         with:
           node-version: '20'
+          cache: 'npm'
+          cache-dependency-path: 'packages/frontend/package-lock.json'
 
       - name: Install dependencies
-        run: npm install
+        run: |
+          cd packages/frontend
+          npm ci
 
-      - name: Build
-        run: npm run build
+      - name: Build frontend
+        run: |
+          cd packages/frontend
+          npm run build
+        env:
+          VITE_API_URL: ${{ secrets.VITE_API_URL }}
 
       - name: Add cache headers via .htaccess
         run: |
-          cat > dist/.htaccess << 'EOF'
+          cat > packages/frontend/dist/.htaccess << 'EOF'
           # Cache static assets for 1 year
           <FilesMatch "\.(js|css|png|jpg|jpeg|gif|ico|svg|webp|woff|woff2|ttf|eot)$">
             Header set Cache-Control "public, max-age=31536000, immutable"
@@ -81,7 +95,7 @@ jobs:
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
         with:
-          path: './dist'
+          path: './packages/frontend/dist'
 
       - name: Deploy to GitHub Pages
         id: deployment
