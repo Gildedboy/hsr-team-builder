@@ -1,5 +1,5 @@
 // Enhanced character data with complete teammate recommendations and team compositions
-// Extracted from main branch on 2025-07-23T08:03:54.137Z
+// Extracted from main branch on 2025-07-23T08:05:11.280Z
 
 export const allCharactersSeedData = [
   {
@@ -3548,7 +3548,7 @@ export const allCharactersSeedData = [
     "id": "cipher",
     "name": "Cipher",
     "element": "Quantum",
-    "path": "Nihility",
+    "path": "Hunt",
     "rarity": 5,
     "roles": [
       "SUPPORT"
