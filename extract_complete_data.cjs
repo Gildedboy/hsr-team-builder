@@ -35,7 +35,11 @@ function extractCharacters(fileContent) {
 }
 
 function extractProperty(chain, propName) {
-  const match = chain.match(new RegExp(`\\.${propName}\\('([^']+)'\\)`));
+  // Handle both quoted and unquoted values
+  let match = chain.match(new RegExp(`\\.${propName}\\('([^']+)'\\)`)); // quoted
+  if (match) return match[1];
+  
+  match = chain.match(new RegExp(`\\.${propName}\\(([^)]+)\\)`)); // unquoted
   return match ? match[1] : '';
 }
 
@@ -104,10 +108,43 @@ function extractTeamCompositions(chain) {
 function parseArrayContent(str) {
   if (!str || str.trim() === '') return [];
 
-  return str
-    .split(',')
-    .map(item => item.trim().replace(/['"]/g, ''))
-    .filter(item => item.length > 0 && item !== '');
+  const items = [];
+  let current = '';
+  let inQuotes = false;
+  let quoteChar = null;
+  
+  for (let i = 0; i < str.length; i++) {
+    const char = str[i];
+    
+    if ((char === '"' || char === "'") && !inQuotes) {
+      inQuotes = true;
+      quoteChar = char;
+    } else if (char === quoteChar && inQuotes) {
+      inQuotes = false;
+      if (current.trim()) {
+        items.push(current.trim());
+        current = '';
+      }
+      quoteChar = null;
+    } else if (inQuotes) {
+      current += char;
+    } else if (char === ',' && !inQuotes) {
+      if (current.trim() && !current.includes('"') && !current.includes("'")) {
+        // This is a non-quoted item
+        items.push(current.trim());
+        current = '';
+      }
+    } else if (!inQuotes && char !== ' ' && char !== '\n' && char !== '\r') {
+      current += char;
+    }
+  }
+  
+  // Add last item if any
+  if (current.trim()) {
+    items.push(current.trim());
+  }
+
+  return items.filter(item => item.length > 0);
 }
 
 

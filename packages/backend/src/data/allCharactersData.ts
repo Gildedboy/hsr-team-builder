@@ -1,5 +1,5 @@
 // Enhanced character data with complete teammate recommendations and team compositions
-// Extracted from main branch on 2025-07-23T07:31:33.992Z
+// Extracted from main branch on 2025-07-23T08:03:54.137Z
 
 export const allCharactersSeedData = [
   {
@@ -7,7 +7,7 @@ export const allCharactersSeedData = [
     "name": "Seele",
     "element": "Quantum",
     "path": "Hunt",
-    "rarity": 0,
+    "rarity": 5,
     "roles": [
       "DPS"
     ],
@@ -73,7 +73,7 @@ export const allCharactersSeedData = [
     "name": "Jing Yuan",
     "element": "Lightning",
     "path": "Erudition",
-    "rarity": 0,
+    "rarity": 5,
     "roles": [
       "DPS"
     ],
@@ -138,7 +138,7 @@ export const allCharactersSeedData = [
     "name": "Clara",
     "element": "Physical",
     "path": "Destruction",
-    "rarity": 0,
+    "rarity": 5,
     "roles": [
       "DPS"
     ],
@@ -227,7 +227,7 @@ export const allCharactersSeedData = [
     "name": "Himeko",
     "element": "Fire",
     "path": "Erudition",
-    "rarity": 0,
+    "rarity": 5,
     "roles": [
       "SUB_DPS"
     ],
@@ -326,7 +326,7 @@ export const allCharactersSeedData = [
     "name": "Yanqing",
     "element": "Ice",
     "path": "Hunt",
-    "rarity": 0,
+    "rarity": 5,
     "roles": [
       "DPS"
     ],
@@ -389,7 +389,7 @@ export const allCharactersSeedData = [
     "name": "Blade",
     "element": "Wind",
     "path": "Destruction",
-    "rarity": 0,
+    "rarity": 5,
     "roles": [
       "DPS",
       "SUB_DPS"
@@ -476,7 +476,7 @@ export const allCharactersSeedData = [
     "name": "Dan Heng IL",
     "element": "Imaginary",
     "path": "Destruction",
-    "rarity": 0,
+    "rarity": 5,
     "roles": [
       "DPS"
     ],
@@ -540,7 +540,7 @@ export const allCharactersSeedData = [
     "name": "Jingliu",
     "element": "Ice",
     "path": "Destruction",
-    "rarity": 0,
+    "rarity": 5,
     "roles": [
       "DPS"
     ],
@@ -605,7 +605,7 @@ export const allCharactersSeedData = [
     "name": "Argenti",
     "element": "Physical",
     "path": "Erudition",
-    "rarity": 0,
+    "rarity": 5,
     "roles": [
       "DPS"
     ],
@@ -689,7 +689,7 @@ export const allCharactersSeedData = [
     "name": "Acheron",
     "element": "Lightning",
     "path": "Nihility",
-    "rarity": 0,
+    "rarity": 5,
     "roles": [
       "DPS"
     ],
@@ -765,7 +765,7 @@ export const allCharactersSeedData = [
     "name": "Yunli",
     "element": "Physical",
     "path": "Destruction",
-    "rarity": 0,
+    "rarity": 5,
     "roles": [
       "DPS"
     ],
@@ -843,7 +843,7 @@ export const allCharactersSeedData = [
     "name": "Topaz",
     "element": "Fire",
     "path": "Hunt",
-    "rarity": 0,
+    "rarity": 5,
     "roles": [
       "SUB_DPS"
     ],
@@ -921,7 +921,7 @@ export const allCharactersSeedData = [
     "name": "Dr. Ratio",
     "element": "Imaginary",
     "path": "Hunt",
-    "rarity": 0,
+    "rarity": 5,
     "roles": [
       "DPS"
     ],
@@ -995,7 +995,7 @@ export const allCharactersSeedData = [
     "name": "Jade",
     "element": "Quantum",
     "path": "Erudition",
-    "rarity": 0,
+    "rarity": 5,
     "roles": [
       "DPS"
     ],
@@ -1071,7 +1071,7 @@ export const allCharactersSeedData = [
     "name": "Kafka",
     "element": "Lightning",
     "path": "Nihility",
-    "rarity": 0,
+    "rarity": 5,
     "roles": [
       "DPS",
       "SUPPORT"
@@ -1144,7 +1144,7 @@ export const allCharactersSeedData = [
     "name": "Black Swan",
     "element": "Wind",
     "path": "Nihility",
-    "rarity": 0,
+    "rarity": 5,
     "roles": [
       "DPS",
       "SUPPORT"
@@ -1219,7 +1219,7 @@ export const allCharactersSeedData = [
     "name": "Sampo",
     "element": "Wind",
     "path": "Nihility",
-    "rarity": 0,
+    "rarity": 4,
     "roles": [
       "SUB_DPS"
     ],
@@ -1292,7 +1292,7 @@ export const allCharactersSeedData = [
     "name": "Luka",
     "element": "Physical",
     "path": "Nihility",
-    "rarity": 0,
+    "rarity": 4,
     "roles": [
       "DPS"
     ],
@@ -1366,7 +1366,7 @@ export const allCharactersSeedData = [
     "name": "Destruction TB",
     "element": "Physical",
     "path": "Destruction",
-    "rarity": 0,
+    "rarity": 5,
     "roles": [
       "DPS"
     ],
@@ -1432,7 +1432,7 @@ export const allCharactersSeedData = [
     "name": "Boothill",
     "element": "Physical",
     "path": "Hunt",
-    "rarity": 0,
+    "rarity": 5,
     "roles": [
       "DPS"
     ],
@@ -1494,7 +1494,7 @@ export const allCharactersSeedData = [
     "name": "Firefly",
     "element": "Fire",
     "path": "Destruction",
-    "rarity": 0,
+    "rarity": 5,
     "roles": [
       "DPS"
     ],
@@ -1557,7 +1557,7 @@ export const allCharactersSeedData = [
     "name": "Rappa",
     "element": "Imaginary",
     "path": "Erudition",
-    "rarity": 0,
+    "rarity": 5,
     "roles": [
       "DPS"
     ],
@@ -1617,7 +1617,7 @@ export const allCharactersSeedData = [
     "name": "Dan Heng",
     "element": "Wind",
     "path": "Hunt",
-    "rarity": 0,
+    "rarity": 4,
     "roles": [
       "DPS"
     ],
@@ -1682,7 +1682,7 @@ export const allCharactersSeedData = [
     "name": "Arlan",
     "element": "Lightning",
     "path": "Destruction",
-    "rarity": 0,
+    "rarity": 4,
     "roles": [
       "DPS"
     ],
@@ -1759,7 +1759,7 @@ export const allCharactersSeedData = [
     "name": "Serval",
     "element": "Lightning",
     "path": "Erudition",
-    "rarity": 0,
+    "rarity": 4,
     "roles": [
       "DPS"
     ],
@@ -1825,7 +1825,7 @@ export const allCharactersSeedData = [
     "name": "Hook",
     "element": "Fire",
     "path": "Destruction",
-    "rarity": 0,
+    "rarity": 4,
     "roles": [
       "DPS"
     ],
@@ -1889,7 +1889,7 @@ export const allCharactersSeedData = [
     "name": "Qingque",
     "element": "Quantum",
     "path": "Erudition",
-    "rarity": 0,
+    "rarity": 4,
     "roles": [
       "DPS"
     ],
@@ -1954,7 +1954,7 @@ export const allCharactersSeedData = [
     "name": "Sushang",
     "element": "Physical",
     "path": "Hunt",
-    "rarity": 0,
+    "rarity": 4,
     "roles": [
       "DPS"
     ],
@@ -2016,7 +2016,7 @@ export const allCharactersSeedData = [
     "name": "Herta",
     "element": "Ice",
     "path": "Erudition",
-    "rarity": 0,
+    "rarity": 4,
     "roles": [
       "DPS"
     ],
@@ -2106,7 +2106,7 @@ export const allCharactersSeedData = [
     "name": "Xueyi",
     "element": "Quantum",
     "path": "Destruction",
-    "rarity": 0,
+    "rarity": 4,
     "roles": [
       "DPS"
     ],
@@ -2173,7 +2173,7 @@ export const allCharactersSeedData = [
     "name": "Misha",
     "element": "Ice",
     "path": "Destruction",
-    "rarity": 0,
+    "rarity": 4,
     "roles": [
       "DPS"
     ],
@@ -2239,7 +2239,7 @@ export const allCharactersSeedData = [
     "name": "Feixiao",
     "element": "Wind",
     "path": "Hunt",
-    "rarity": 0,
+    "rarity": 4,
     "roles": [
       "DPS"
     ],
@@ -2315,7 +2315,7 @@ export const allCharactersSeedData = [
     "name": "Hunt March 7th",
     "element": "Imaginary",
     "path": "Hunt",
-    "rarity": 0,
+    "rarity": 4,
     "roles": [
       "SUB_DPS"
     ],
@@ -2406,7 +2406,7 @@ export const allCharactersSeedData = [
     "name": "Moze",
     "element": "Lightning",
     "path": "Hunt",
-    "rarity": 0,
+    "rarity": 4,
     "roles": [
       "SUB_DPS"
     ],
@@ -2480,7 +2480,7 @@ export const allCharactersSeedData = [
     "name": "The Herta",
     "element": "Ice",
     "path": "Erudition",
-    "rarity": 0,
+    "rarity": 5,
     "roles": [
       "DPS"
     ],
@@ -2558,7 +2558,7 @@ export const allCharactersSeedData = [
     "name": "Aglaea",
     "element": "Lightning",
     "path": "Remembrance",
-    "rarity": 0,
+    "rarity": 5,
     "roles": [
       "DPS"
     ],
@@ -2623,7 +2623,7 @@ export const allCharactersSeedData = [
     "name": "Castorice",
     "element": "Quantum",
     "path": "Remembrance",
-    "rarity": 0,
+    "rarity": 5,
     "roles": [
       "DPS"
     ],
@@ -2686,7 +2686,7 @@ export const allCharactersSeedData = [
     "name": "Mydei",
     "element": "Imaginary",
     "path": "Destruction",
-    "rarity": 0,
+    "rarity": 5,
     "roles": [
       "DPS"
     ],
@@ -2752,7 +2752,7 @@ export const allCharactersSeedData = [
     "name": "Phainon",
     "element": "Physical",
     "path": "Destruction",
-    "rarity": 0,
+    "rarity": 5,
     "roles": [
       "DPS"
     ],
@@ -2833,7 +2833,7 @@ export const allCharactersSeedData = [
     "name": "Saber",
     "element": "Wind",
     "path": "Destruction",
-    "rarity": 0,
+    "rarity": 5,
     "roles": [
       "DPS"
     ],
@@ -2896,7 +2896,7 @@ export const allCharactersSeedData = [
     "name": "Archer",
     "element": "Quantum",
     "path": "Hunt",
-    "rarity": 0,
+    "rarity": 5,
     "roles": [
       "DPS"
     ],
@@ -2957,7 +2957,7 @@ export const allCharactersSeedData = [
     "name": "Anaxa",
     "element": "Wind",
     "path": "Erudition",
-    "rarity": 0,
+    "rarity": 5,
     "roles": [
       "DPS"
     ],
@@ -3048,7 +3048,7 @@ export const allCharactersSeedData = [
     "name": "Welt",
     "element": "Imaginary",
     "path": "Nihility",
-    "rarity": 0,
+    "rarity": 5,
     "roles": [
       "DPS"
     ],
@@ -3113,7 +3113,7 @@ export const allCharactersSeedData = [
     "name": "Pela",
     "element": "Ice",
     "path": "Nihility",
-    "rarity": 0,
+    "rarity": 4,
     "roles": [
       "SUPPORT"
     ],
@@ -3145,7 +3145,7 @@ export const allCharactersSeedData = [
     "name": "Silver Wolf",
     "element": "Quantum",
     "path": "Nihility",
-    "rarity": 0,
+    "rarity": 5,
     "roles": [
       "SUPPORT"
     ],
@@ -3167,10 +3167,7 @@ export const allCharactersSeedData = [
           "archer"
         ],
         "generalist": [
-          "Any DPS as long as they can benefit from Enemy Reduced DEF",
-          "SPD",
-          "ATK",
-          "Weakness RES and constant Debuffs Applications"
+          "Any DPS as long as they can benefit from Enemy Reduced DEF, SPD, ATK, Weakness RES and constant Debuffs Applications"
         ],
         "f2p": []
       }
@@ -3182,7 +3179,7 @@ export const allCharactersSeedData = [
     "name": "Jiaoqiu",
     "element": "Fire",
     "path": "Nihility",
-    "rarity": 0,
+    "rarity": 5,
     "roles": [
       "SUPPORT"
     ],
@@ -3202,8 +3199,7 @@ export const allCharactersSeedData = [
           "acheron"
         ],
         "generalist": [
-          "Any DPS as long as they can benefit from Enemy Increased DMG Taken",
-          "Ultimate DMG Taken and constant Debuffs Applications"
+          "Any DPS as long as they can benefit from Enemy Increased DMG Taken, Ultimate DMG Taken and constant Debuffs Applications"
         ],
         "f2p": []
       }
@@ -3215,7 +3211,7 @@ export const allCharactersSeedData = [
     "name": "Asta",
     "element": "Fire",
     "path": "Harmony",
-    "rarity": 0,
+    "rarity": 4,
     "roles": [
       "SUPPORT"
     ],
@@ -3248,7 +3244,7 @@ export const allCharactersSeedData = [
     "name": "Yukong",
     "element": "Imaginary",
     "path": "Harmony",
-    "rarity": 0,
+    "rarity": 4,
     "roles": [
       "SUPPORT"
     ],
@@ -3281,7 +3277,7 @@ export const allCharactersSeedData = [
     "name": "Hanya",
     "element": "Physical",
     "path": "Harmony",
-    "rarity": 0,
+    "rarity": 4,
     "roles": [
       "SUPPORT"
     ],
@@ -3303,8 +3299,7 @@ export const allCharactersSeedData = [
           "archer"
         ],
         "generalist": [
-          "Any DPS as long as they can benefit from the ATK",
-          "SPD buffs and SP Recovery"
+          "Any DPS as long as they can benefit from the ATK, SPD buffs and SP Recovery"
         ],
         "f2p": []
       }
@@ -3316,7 +3311,7 @@ export const allCharactersSeedData = [
     "name": "Bronya",
     "element": "Wind",
     "path": "Harmony",
-    "rarity": 0,
+    "rarity": 5,
     "roles": [
       "SUPPORT"
     ],
@@ -3340,7 +3335,7 @@ export const allCharactersSeedData = [
     "name": "Harmony TB",
     "element": "Imaginary",
     "path": "Harmony",
-    "rarity": 0,
+    "rarity": 5,
     "roles": [
       "SUPPORT"
     ],
@@ -3360,7 +3355,7 @@ export const allCharactersSeedData = [
     "name": "Robin",
     "element": "Physical",
     "path": "Harmony",
-    "rarity": 0,
+    "rarity": 5,
     "roles": [
       "SUPPORT"
     ],
@@ -3382,7 +3377,7 @@ export const allCharactersSeedData = [
     "name": "Ruan Mei",
     "element": "Ice",
     "path": "Harmony",
-    "rarity": 0,
+    "rarity": 5,
     "roles": [
       "SUPPORT"
     ],
@@ -3404,7 +3399,7 @@ export const allCharactersSeedData = [
     "name": "Sparkle",
     "element": "Quantum",
     "path": "Harmony",
-    "rarity": 0,
+    "rarity": 5,
     "roles": [
       "SUPPORT"
     ],
@@ -3427,10 +3422,7 @@ export const allCharactersSeedData = [
           "archer"
         ],
         "generalist": [
-          "Any DPS as long as they can benefit from the DMG",
-          "ATK",
-          "Crit DMG buffs",
-          "Action Advance and SP Recovery"
+          "Any DPS as long as they can benefit from the DMG, ATK, Crit DMG buffs, Action Advance and SP Recovery"
         ],
         "f2p": []
       }
@@ -3442,7 +3434,7 @@ export const allCharactersSeedData = [
     "name": "Sunday",
     "element": "Imaginary",
     "path": "Harmony",
-    "rarity": 0,
+    "rarity": 5,
     "roles": [
       "SUPPORT"
     ],
@@ -3467,7 +3459,7 @@ export const allCharactersSeedData = [
     "name": "Tingyun",
     "element": "Lightning",
     "path": "Harmony",
-    "rarity": 0,
+    "rarity": 4,
     "roles": [
       "SUPPORT"
     ],
@@ -3489,7 +3481,7 @@ export const allCharactersSeedData = [
     "name": "Fugue",
     "element": "Fire",
     "path": "Nihility",
-    "rarity": 0,
+    "rarity": 5,
     "roles": [
       "SUPPORT"
     ],
@@ -3513,7 +3505,7 @@ export const allCharactersSeedData = [
     "name": "Remembrance TB",
     "element": "Ice",
     "path": "Remembrance",
-    "rarity": 0,
+    "rarity": 5,
     "roles": [
       "SUPPORT"
     ],
@@ -3536,7 +3528,7 @@ export const allCharactersSeedData = [
     "name": "Tribbie",
     "element": "Quantum",
     "path": "Harmony",
-    "rarity": 0,
+    "rarity": 5,
     "roles": [
       "SUPPORT"
     ],
@@ -3556,8 +3548,8 @@ export const allCharactersSeedData = [
     "id": "cipher",
     "name": "Cipher",
     "element": "Quantum",
-    "path": "Hunt",
-    "rarity": 0,
+    "path": "Nihility",
+    "rarity": 5,
     "roles": [
       "SUPPORT"
     ],
@@ -3590,7 +3582,7 @@ export const allCharactersSeedData = [
     "name": "Guinaifen",
     "element": "Fire",
     "path": "Nihility",
-    "rarity": 0,
+    "rarity": 4,
     "roles": [
       "SUPPORT"
     ],
@@ -3624,7 +3616,7 @@ export const allCharactersSeedData = [
     "name": "Gepard",
     "element": "Ice",
     "path": "Preservation",
-    "rarity": 0,
+    "rarity": 5,
     "roles": [
       "SUSTAIN"
     ],
@@ -3646,8 +3638,7 @@ export const allCharactersSeedData = [
           "yanqing"
         ],
         "generalist": [
-          "Any DPS as long as they can benefit from Shields",
-          "Evade Aggro and constant Debuffs Application with Trend of the Universal Market Lightcone"
+          "Any DPS as long as they can benefit from Shields, Evade Aggro and constant Debuffs Application with Trend of the Universal Market Lightcone"
         ],
         "f2p": []
       }
@@ -3659,7 +3650,7 @@ export const allCharactersSeedData = [
     "name": "Fu Xuan",
     "element": "Quantum",
     "path": "Preservation",
-    "rarity": 0,
+    "rarity": 5,
     "roles": [
       "SUSTAIN"
     ],
@@ -3684,8 +3675,7 @@ export const allCharactersSeedData = [
           "yunli"
         ],
         "generalist": [
-          "Any DPS as long as they can benefit from Crit Rate Buffs",
-          "DMG Reduction and constant Debuffs Application with Trend of the Universal Market Lightcone"
+          "Any DPS as long as they can benefit from Crit Rate Buffs,DMG Reduction and constant Debuffs Application with Trend of the Universal Market Lightcone"
         ],
         "f2p": []
       }
@@ -3697,7 +3687,7 @@ export const allCharactersSeedData = [
     "name": "March 7th",
     "element": "Ice",
     "path": "Preservation",
-    "rarity": 0,
+    "rarity": 4,
     "roles": [
       "SUSTAIN"
     ],
@@ -3718,8 +3708,7 @@ export const allCharactersSeedData = [
           "acheron"
         ],
         "generalist": [
-          "Any DPS as long as they can benefit from Shields",
-          "Follow-ups and constant Debuffs Application with Trend of the Universal Market Lightcone"
+          "Any DPS as long as they can benefit from Shields, Follow-ups and constant Debuffs Application with Trend of the Universal Market Lightcone"
         ],
         "f2p": []
       }
@@ -3731,7 +3720,7 @@ export const allCharactersSeedData = [
     "name": "Fire TB",
     "element": "Fire",
     "path": "Preservation",
-    "rarity": 0,
+    "rarity": 5,
     "roles": [
       "SUSTAIN"
     ],
@@ -3766,7 +3755,7 @@ export const allCharactersSeedData = [
     "name": "Natasha",
     "element": "Physical",
     "path": "Abundance",
-    "rarity": 0,
+    "rarity": 4,
     "roles": [
       "SUSTAIN"
     ],
@@ -3795,7 +3784,7 @@ export const allCharactersSeedData = [
     "name": "Bailu",
     "element": "Lightning",
     "path": "Abundance",
-    "rarity": 0,
+    "rarity": 5,
     "roles": [
       "SUSTAIN"
     ],
@@ -3826,7 +3815,7 @@ export const allCharactersSeedData = [
     "name": "Luocha",
     "element": "Imaginary",
     "path": "Abundance",
-    "rarity": 0,
+    "rarity": 5,
     "roles": [
       "SUSTAIN"
     ],
@@ -3858,7 +3847,7 @@ export const allCharactersSeedData = [
     "name": "Huohuo",
     "element": "Wind",
     "path": "Abundance",
-    "rarity": 0,
+    "rarity": 5,
     "roles": [
       "SUSTAIN"
     ],
@@ -3880,7 +3869,7 @@ export const allCharactersSeedData = [
     "name": "Lynx",
     "element": "Quantum",
     "path": "Abundance",
-    "rarity": 0,
+    "rarity": 4,
     "roles": [
       "SUSTAIN"
     ],
@@ -3901,7 +3890,7 @@ export const allCharactersSeedData = [
     "name": "Gallagher",
     "element": "Fire",
     "path": "Abundance",
-    "rarity": 0,
+    "rarity": 4,
     "roles": [
       "SUSTAIN"
     ],
@@ -3926,7 +3915,7 @@ export const allCharactersSeedData = [
     "name": "Lingsha",
     "element": "Fire",
     "path": "Abundance",
-    "rarity": 0,
+    "rarity": 5,
     "roles": [
       "SUSTAIN"
     ],
@@ -3948,7 +3937,7 @@ export const allCharactersSeedData = [
     "name": "Aventurine",
     "element": "Imaginary",
     "path": "Preservation",
-    "rarity": 0,
+    "rarity": 5,
     "roles": [
       "SUSTAIN"
     ],
@@ -3971,7 +3960,7 @@ export const allCharactersSeedData = [
     "name": "Hyacine",
     "element": "Wind",
     "path": "Remembrance",
-    "rarity": 0,
+    "rarity": 5,
     "roles": [
       "SUSTAIN"
     ],
