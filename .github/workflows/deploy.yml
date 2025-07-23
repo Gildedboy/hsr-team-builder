@@ -45,13 +45,21 @@ jobs:
         run: |
           # Install root dependencies first
           npm install
-          # Install shared package dependencies and build it
-          cd packages/shared
-          npm install
-          npm run build
-          # Install frontend dependencies
-          cd ../frontend
-          npm install
+          
+          # Check if this is the new monorepo structure or old single-repo
+          if [ -d "packages/shared" ]; then
+            echo "Detected monorepo structure (v2.x.x)"
+            # Install shared package dependencies and build it
+            cd packages/shared
+            npm install
+            npm run build
+            # Install frontend dependencies
+            cd ../frontend
+            npm install
+          else
+            echo "Detected single-repo structure (v1.x.x)"
+            # For old structure, dependencies are already installed at root
+          fi
 
       - name: Determine deployment configuration
         id: config
@@ -85,7 +93,12 @@ jobs:
 
       - name: Build frontend
         run: |
-          cd packages/frontend
+          if [ -d "packages/frontend" ]; then
+            echo "Building monorepo frontend (v2.x.x)"
+            cd packages/frontend
+          else
+            echo "Building single-repo frontend (v1.x.x)"
+          fi
           echo "Building frontend for version: ${{ steps.config.outputs.display_version }}"
           echo "API URL: ${{ steps.config.outputs.api_url }}"
           echo "Deployment type: ${{ steps.config.outputs.deployment_type }}"
@@ -96,14 +109,26 @@ jobs:
           
       - name: Add deployment info to build
         run: |
-          echo "<!-- Deployed version: ${{ steps.config.outputs.version }} -->" >> packages/frontend/dist/index.html
-          echo "<!-- Display version: ${{ steps.config.outputs.display_version }} -->" >> packages/frontend/dist/index.html
-          echo "<!-- API URL: ${{ steps.config.outputs.api_url }} -->" >> packages/frontend/dist/index.html
-          echo "<!-- Deployment type: ${{ steps.config.outputs.deployment_type }} -->" >> packages/frontend/dist/index.html
+          # Determine dist directory based on structure
+          if [ -d "packages/frontend/dist" ]; then
+            DIST_DIR="packages/frontend/dist"
+          else
+            DIST_DIR="dist"
+          fi
+          echo "<!-- Deployed version: ${{ steps.config.outputs.version }} -->" >> $DIST_DIR/index.html
+          echo "<!-- Display version: ${{ steps.config.outputs.display_version }} -->" >> $DIST_DIR/index.html
+          echo "<!-- API URL: ${{ steps.config.outputs.api_url }} -->" >> $DIST_DIR/index.html
+          echo "<!-- Deployment type: ${{ steps.config.outputs.deployment_type }} -->" >> $DIST_DIR/index.html
 
       - name: Add cache headers via .htaccess
         run: |
-          cat > packages/frontend/dist/.htaccess << 'EOF'
+          # Determine dist directory based on structure
+          if [ -d "packages/frontend/dist" ]; then
+            DIST_DIR="packages/frontend/dist"
+          else
+            DIST_DIR="dist"
+          fi
+          cat > $DIST_DIR/.htaccess << 'EOF'
           # Cache static assets for 1 year
           <FilesMatch "\.(js|css|png|jpg|jpeg|gif|ico|svg|webp|woff|woff2|ttf|eot)$">
             Header set Cache-Control "public, max-age=31536000, immutable"
@@ -149,7 +174,7 @@ jobs:
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
         with:
-          path: './packages/frontend/dist'
+          path: ${{ contains(github.event.inputs.deploy_version || github.ref, 'v1.') && './dist' || './packages/frontend/dist' }}
 
       - name: Deploy to GitHub Pages
         id: deployment
