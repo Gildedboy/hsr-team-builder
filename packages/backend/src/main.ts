@@ -20,9 +20,7 @@ async function bootstrap() {
 
   // Enable CORS for the frontend
   app.enableCors({
-    origin: process.env.NODE_ENV === 'production' 
-      ? ['https://hsr-team-builder.gilded.dev'] // Your custom domain
-      : ['http://localhost:5173', 'http://localhost:5174', 'http://localhost:3000'],
+    origin: true, // Allow all origins in production for now (can restrict later)
     methods: ['GET', 'POST', 'PUT', 'DELETE'],
     credentials: true,
   })
