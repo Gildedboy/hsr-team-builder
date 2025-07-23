@@ -1,12 +1,19 @@
 {
   "extends": "@vue/tsconfig/tsconfig.dom.json",
-  "include": ["env.d.ts", "src/**/*", "src/**/*.vue"],
-  "exclude": ["src/**/__tests__/*"],
+  "include": [
+    "env.d.ts",
+    "packages/frontend/src/**/*",
+    "packages/frontend/src/**/*.vue",
+    "packages/shared/src/**/*"
+  ],
+  "exclude": ["packages/frontend/src/**/__tests__/*"],
   "compilerOptions": {
+    "composite": true,
     "tsBuildInfoFile": "./node_modules/.tmp/tsconfig.app.tsbuildinfo",
-
+    "baseUrl": ".",
     "paths": {
-      "@/*": ["./src/*"]
+      "@/*": ["./packages/frontend/src/*"],
+      "@hsr-team-builder/shared": ["./packages/shared/src/index"]
     }
   }
 }
