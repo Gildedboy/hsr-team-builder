@@ -20,6 +20,17 @@ import { CreateCharacterDto, UpdateCharacterDto } from '../dto/character.dto'
 export class CharactersController {
   constructor(private readonly charactersService: CharactersService) {}
 
+  @Post('seed')
+  @ApiOperation({ summary: 'Seed database with initial character data' })
+  @ApiResponse({ status: 201, description: 'Database seeded successfully' })
+  async seedDatabase(): Promise<{ message: string; count: number }> {
+    const result = await this.charactersService.seedCharacters()
+    return {
+      message: 'Database seeded successfully',
+      count: result.length
+    }
+  }
+
   @Get()
   @ApiOperation({ summary: 'Get all characters' })
   @ApiQuery({ name: 'role', required: false, description: 'Filter by role' })

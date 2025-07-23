@@ -5,6 +5,7 @@ import { CACHE_MANAGER } from '@nestjs/cache-manager'
 import { Cache } from 'cache-manager'
 import { Character } from '../types/Character'
 import { CharacterEntity } from '../entities/character.entity'
+import { characterSeedData } from '../data/characterSeedData'
 
 @Injectable()
 export class CharactersService {
@@ -159,5 +160,26 @@ export class CharactersService {
       teammateRecommendations: entity.teammateRecommendations || [],
       teamCompositions: entity.teamCompositions || [],
     }
+  }
+
+  async seedCharacters(): Promise<Character[]> {
+    // Check if characters already exist
+    const existingCount = await this.characterRepository.count()
+    if (existingCount > 0) {
+      console.log('Database already seeded, skipping...')
+      return this.findAll()
+    }
+
+    console.log('🌱 Seeding database with character data...')
+    
+    // Use the comprehensive character seed data
+    const entities = characterSeedData.map(char => this.characterRepository.create(char))
+    const savedEntities = await this.characterRepository.save(entities)
+    
+    console.log(`🌱 Seeded ${savedEntities.length} characters`)
+    
+    // Clear cache and return seeded characters
+    await this.cacheManager.del('all-characters')
+    return savedEntities.map(this.entityToCharacter)
   }
 }

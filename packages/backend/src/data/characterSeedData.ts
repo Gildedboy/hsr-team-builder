@@ -1,0 +1,156 @@
+// Sample characters for database seeding
+// This is a simplified version of the full character dataset
+
+export const characterSeedData = [
+  // DPS Characters
+  {
+    id: 'seele',
+    name: 'Seele',
+    element: 'Quantum',
+    path: 'Hunt',
+    rarity: 5,
+    roles: ['DPS'],
+    archetype: ['Hypercarry'],
+    labels: ['Single Target', 'Extra Turn', 'Enhanced State', 'SP Unfriendly'],
+    teammateRecommendations: [
+      {
+        name: 'Amplifiers',
+        bis: ['sparkle', 'silver-wolf'],
+        generalist: ['sunday', 'robin', 'cipher'],
+        f2p: ['remembrance-trailblazer', 'bronya', 'tingyun', 'hanya', 'pela']
+      },
+      {
+        name: 'Sustain',
+        bis: ['fu-xuan'],
+        generalist: ['huohuo'],
+        f2p: ['gallagher']
+      }
+    ],
+    teamCompositions: [
+      {
+        name: 'Main DPS Team',
+        role: 'Main DPS',
+        bis: { characters: ['seele', 'sparkle', 'silver-wolf', 'fu-xuan'] },
+        f2p: { characters: ['seele', 'tingyun', 'hanya', 'gallagher'] }
+      }
+    ]
+  },
+  {
+    id: 'jing-yuan',
+    name: 'Jing Yuan',
+    element: 'Lightning',
+    path: 'Erudition',
+    rarity: 5,
+    roles: ['DPS'],
+    archetype: ['Follow-up', 'Summon', 'Hypercarry'],
+    labels: ['AoE', 'Summon', 'Follow-up Attack'],
+    teammateRecommendations: [
+      {
+        name: 'Amplifiers',
+        bis: ['robin', 'sunday'],
+        generalist: ['tribbie', 'cipher', 'sparkle', 'ruan-mei'],
+        f2p: ['bronya', 'tingyun', 'pela']
+      }
+    ],
+    teamCompositions: []
+  },
+  {
+    id: 'clara',
+    name: 'Clara',
+    element: 'Physical',
+    path: 'Destruction',
+    rarity: 5,
+    roles: ['DPS'],
+    archetype: ['Counter'],
+    labels: ['Counter Attack', 'Blast', 'AoE', 'F2P'],
+    teammateRecommendations: [],
+    teamCompositions: []
+  },
+  // Support Characters
+  {
+    id: 'sparkle',
+    name: 'Sparkle',
+    element: 'Quantum',
+    path: 'Harmony',
+    rarity: 5,
+    roles: ['SUPPORT'],
+    archetype: ['Buffer'],
+    labels: ['SP Positive', 'CRIT DMG', 'Action Advance', 'Premium'],
+    teammateRecommendations: [],
+    teamCompositions: []
+  },
+  {
+    id: 'robin',
+    name: 'Robin',
+    element: 'Physical',
+    path: 'Harmony',
+    rarity: 5,
+    roles: ['SUPPORT'],
+    archetype: ['Buffer'],
+    labels: ['FUA', 'ATK Buff', 'Energy Support', 'Premium'],
+    teammateRecommendations: [],
+    teamCompositions: []
+  },
+  // Sustain Characters
+  {
+    id: 'fu-xuan',
+    name: 'Fu Xuan',
+    element: 'Quantum',
+    path: 'Preservation',
+    rarity: 5,
+    roles: ['SUSTAIN'],
+    archetype: ['HP-Scaling'],
+    labels: ['Redirect', 'Crit Rate', 'Damage Reduction', 'Premium'],
+    teammateRecommendations: [],
+    teamCompositions: []
+  },
+  {
+    id: 'aventurine',
+    name: 'Aventurine',
+    element: 'Imaginary',
+    path: 'Preservation',
+    rarity: 5,
+    roles: ['SUSTAIN'],
+    archetype: ['Follow-up', 'Shielder'],
+    labels: ['Shield', 'Follow-up Attack', 'Debuff RES', 'Premium'],
+    teammateRecommendations: [],
+    teamCompositions: []
+  },
+  // F2P Characters
+  {
+    id: '1001',
+    name: 'March 7th',
+    element: 'Ice',
+    path: 'Preservation',
+    rarity: 4,
+    roles: ['SUSTAIN'],
+    archetype: ['Shielder'],
+    labels: ['Shield', 'Freeze', 'Counter', 'F2P'],
+    teammateRecommendations: [],
+    teamCompositions: []
+  },
+  {
+    id: '1002',
+    name: 'Dan Heng',
+    element: 'Wind',
+    path: 'Hunt',
+    rarity: 4,
+    roles: ['DPS'],
+    archetype: ['Hypercarry'],
+    labels: ['Single Target', 'Wind Shear', 'F2P'],
+    teammateRecommendations: [],
+    teamCompositions: []
+  },
+  {
+    id: '1003',
+    name: 'Himeko',
+    element: 'Fire',
+    path: 'Erudition',
+    rarity: 5,
+    roles: ['SUB_DPS'],
+    archetype: ['Follow-up', 'Break-DPS'],
+    labels: ['AoE', 'Blast', 'Follow-up Attack', 'F2P'],
+    teammateRecommendations: [],
+    teamCompositions: []
+  }
+]
