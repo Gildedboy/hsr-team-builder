@@ -42,8 +42,8 @@ export function useSearch() {
       searchSuggestions.value = []
       showSearchSuggestions.value = false
       
-      // Show user-friendly error (optional)
-      console.warn('Search temporarily unavailable. Please try again.')
+      // Set user-friendly error message
+      searchError.value = 'Search temporarily unavailable. Please try again.'
     }
   }
 
