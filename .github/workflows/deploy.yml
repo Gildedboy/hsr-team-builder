@@ -35,7 +35,14 @@ jobs:
 
       - name: Install dependencies
         run: |
-          cd packages/frontend
+          # Install root dependencies first
+          npm install
+          # Install shared package dependencies and build it
+          cd packages/shared
+          npm install
+          npm run build
+          # Install frontend dependencies
+          cd ../frontend
           npm install
 
       - name: Determine API URL
