@@ -33,6 +33,10 @@ export function useSearch() {
     try {
       console.log('🔍 Searching for:', query)
       searchError.value = '' // Clear any previous errors
+      
+      // Update lastSearchTime when API call actually happens
+      lastSearchTime = Date.now()
+      
       const results = await CharacterService.searchCharacters(query)
       console.log('✅ Search results:', results)
       
@@ -69,7 +73,6 @@ export function useSearch() {
       if (isRateLimited(lastSearchTime, MIN_SEARCH_INTERVAL)) {
         return
       }
-      lastSearchTime = Date.now()
 
       // Debounce API calls to avoid excessive requests
       searchTimeout = setTimeout(() => {
