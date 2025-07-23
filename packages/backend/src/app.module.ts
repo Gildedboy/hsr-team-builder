@@ -10,20 +10,16 @@ import { CharacterEntity } from './entities/character.entity'
   imports: [
     TypeOrmModule.forRoot({
       type: 'postgres',
-      host: 'localhost',
-      port: 5432,
-      username: 'postgres',
-      password: 'password',
-      database: 'hsr_team_builder',
+      url: process.env.DATABASE_URL || 'postgresql://postgres:password@localhost:5432/hsr_team_builder',
       entities: [CharacterEntity],
-      synchronize: true, // Set to false in production
-      logging: true, // Enable SQL logging for development
+      synchronize: process.env.NODE_ENV !== 'production', // Only sync in development
+      logging: process.env.NODE_ENV === 'development',
+      ssl: process.env.NODE_ENV === 'production' ? { rejectUnauthorized: false } : false,
     }),
     CacheModule.register({
       // @ts-ignore
       store: redisStore,
-      host: 'localhost',
-      port: 6379,
+      url: process.env.REDIS_URL || 'redis://localhost:6379',
       ttl: 300, // 5 minutes cache
       max: 100, // maximum number of items in cache
       isGlobal: true, // Make cache available globally

@@ -20,7 +20,9 @@ async function bootstrap() {
 
   // Enable CORS for the frontend
   app.enableCors({
-    origin: ['http://localhost:5173', 'http://localhost:5174', 'http://localhost:3000'],
+    origin: process.env.NODE_ENV === 'production' 
+      ? ['https://your-frontend-domain.com'] // Update this with your actual frontend domain
+      : ['http://localhost:5173', 'http://localhost:5174', 'http://localhost:3000'],
     methods: ['GET', 'POST', 'PUT', 'DELETE'],
     credentials: true,
   })
@@ -34,8 +36,9 @@ async function bootstrap() {
   const document = SwaggerModule.createDocument(app, config)
   SwaggerModule.setup('swagger', app, document)
 
-  await app.listen(3001) // Changed to port 3001 temporarily
-  console.log('🚀 Backend server running on http://localhost:3001')
-  console.log('📚 API Documentation available at http://localhost:3001/swagger')
+  const port = process.env.PORT || 3001
+  await app.listen(port)
+  console.log(`🚀 Backend server running on port ${port}`)
+  console.log(`📚 API Documentation available at /swagger`)
 }
 bootstrap()
