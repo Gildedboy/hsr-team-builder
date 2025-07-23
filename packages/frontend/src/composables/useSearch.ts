@@ -7,10 +7,17 @@ export function useSearch() {
   const showSearchSuggestions = ref<boolean>(false)
   const selectedIndex = ref<number>(-1)
   const searchSuggestions = ref<Character[]>([])
+  const searchError = ref<string>('')
   let searchTimeout: ReturnType<typeof setTimeout> | null = null
   let blurTimeout: ReturnType<typeof setTimeout> | null = null
   let lastSearchTime = 0
   const MIN_SEARCH_INTERVAL = 300 // Minimum time between API calls in milliseconds
+
+  // Helper function to check rate limiting
+  const isRateLimited = (lastTime: number, interval: number): boolean => {
+    const now = Date.now()
+    return now - lastTime < interval
+  }
 
   // Helper function to sanitize search input
   const sanitizeSearchInput = (input: string): string => {
@@ -25,6 +32,11 @@ export function useSearch() {
   const performSearch = async (query: string) => {
     try {
       console.log('🔍 Searching for:', query)
+      searchError.value = '' // Clear any previous errors
+      
+      // Update lastSearchTime when API call actually happens
+      lastSearchTime = Date.now()
+      
       const results = await CharacterService.searchCharacters(query)
       console.log('✅ Search results:', results)
       
@@ -169,6 +181,7 @@ export function useSearch() {
     showSearchSuggestions,
     searchSuggestions,
     selectedIndex,
+    searchError,
     selectCharacterFromSearch,
     onSearchFocus,
     onSearchBlur,
