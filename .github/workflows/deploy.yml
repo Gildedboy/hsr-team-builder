@@ -1,4 +1,9 @@
-name: Deploy Frontend to GitHub Pages
+Run actions/setup-node@v4
+Found in cache @ /opt/hostedtoolcache/node/20.19.4/x64
+Environment details
+/opt/hostedtoolcache/node/20.19.4/x64/bin/npm config get cache
+/home/runner/.npm
+Error: Some specified paths were not resolved, unable to cache dependencies.name: Deploy Frontend to GitHub Pages
 
 on:
   push:
@@ -33,7 +38,7 @@ jobs:
         with:
           node-version: '20'
           cache: 'npm'
-          cache-dependency-path: 'packages/frontend/package-lock.json'
+          cache-dependency-path: 'packages/frontend/package.json'
 
       - name: Install dependencies
         run: |
