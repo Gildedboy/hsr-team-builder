@@ -5,6 +5,7 @@ import { CACHE_MANAGER } from '@nestjs/cache-manager'
 import { Cache } from 'cache-manager'
 import { Character } from '../types/Character'
 import { CharacterEntity } from '../entities/character.entity'
+import { allCharactersSeedData } from '../data/allCharactersData'
 
 @Injectable()
 export class CharactersService {
@@ -172,83 +173,8 @@ export class CharactersService {
         return { message: 'Database already seeded', count: existingCount }
       }
 
-      // Complete character dataset converted from main branch data (44 key characters)
-      const seedData = [
-        {
-          "id": "seele",
-          "name": "Seele",
-          "element": "Quantum",
-          "path": "Hunt",
-          "rarity": 5,
-          "roles": [
-            "DPS"
-          ],
-          "archetype": [
-            "Hypercarry"
-          ],
-          "labels": [
-            "Single Target",
-            "Extra Turn",
-            "Enhanced State",
-            "SP Unfriendly"
-          ],
-          "teammateRecommendations": [
-            {
-              "name": "Amplifiers",
-              "bis": [
-                "sparkle",
-                "silver-wolf"
-              ],
-              "generalist": [
-                "sunday",
-                "robin",
-                "cipher"
-              ],
-              "f2p": [
-                "remembrance-trailblazer",
-                "bronya",
-                "tingyun",
-                "hanya",
-                "pela"
-              ]
-            },
-            {
-              "name": "Sustain",
-              "bis": [
-                "fu-xuan"
-              ],
-              "generalist": [
-                "huohuo"
-              ],
-              "f2p": [
-                "gallagher"
-              ]
-            }
-          ],
-          "teamCompositions": [
-            {
-              "name": "Main DPS Team",
-              "role": "Main DPS",
-              "bis": {
-                "characters": [
-                  "seele",
-                  "sparkle",
-                  "silver-wolf",
-                  "fu-xuan"
-                ]
-              },
-              "f2p": {
-                "characters": [
-                  "seele",
-                  "tingyun",
-                  "hanya",
-                  "gallagher"
-                ]
-              }
-            }
-          ]
-        }
-      ]
+      // Complete character dataset (15+ key characters from main branch data)
+      const seedData = allCharactersSeedData
 
       const characters: CharacterEntity[] = []
 
