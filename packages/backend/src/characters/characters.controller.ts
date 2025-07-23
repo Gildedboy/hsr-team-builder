@@ -11,7 +11,15 @@ import {
   HttpStatus,
   UseGuards,
 } from '@nestjs/common'
-import { ApiTags, ApiOperation, ApiParam, ApiQuery, ApiResponse, ApiBody, ApiBearerAuth } from '@nestjs/swagger'
+import {
+  ApiTags,
+  ApiOperation,
+  ApiParam,
+  ApiQuery,
+  ApiResponse,
+  ApiBody,
+  ApiBearerAuth,
+} from '@nestjs/swagger'
 import { CharactersService } from './characters.service'
 import { Character } from '../types/Character'
 import { CreateCharacterDto, UpdateCharacterDto } from '../dto/character.dto'

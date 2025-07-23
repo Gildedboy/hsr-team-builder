@@ -207,10 +207,10 @@ export class CharactersService {
     try {
       const count = await this.characterRepository.count()
       await this.characterRepository.clear()
-      
+
       // Clear cache as well
       await this.cacheManager.del('all-characters')
-      
+
       this.logger.log(`Successfully cleared ${count} characters from database`)
       return { message: 'Database cleared successfully', cleared: count }
     } catch (error) {

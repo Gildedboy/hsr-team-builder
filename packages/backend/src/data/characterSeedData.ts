@@ -17,23 +17,23 @@ export const characterSeedData = [
         name: 'Amplifiers',
         bis: ['sparkle', 'silver-wolf'],
         generalist: ['sunday', 'robin', 'cipher'],
-        f2p: ['remembrance-trailblazer', 'bronya', 'tingyun', 'hanya', 'pela']
+        f2p: ['remembrance-trailblazer', 'bronya', 'tingyun', 'hanya', 'pela'],
       },
       {
         name: 'Sustain',
         bis: ['fu-xuan'],
         generalist: ['huohuo'],
-        f2p: ['gallagher']
-      }
+        f2p: ['gallagher'],
+      },
     ],
     teamCompositions: [
       {
         name: 'Main DPS Team',
         role: 'Main DPS',
         bis: { characters: ['seele', 'sparkle', 'silver-wolf', 'fu-xuan'] },
-        f2p: { characters: ['seele', 'tingyun', 'hanya', 'gallagher'] }
-      }
-    ]
+        f2p: { characters: ['seele', 'tingyun', 'hanya', 'gallagher'] },
+      },
+    ],
   },
   {
     id: 'jing-yuan',
@@ -49,10 +49,10 @@ export const characterSeedData = [
         name: 'Amplifiers',
         bis: ['robin', 'sunday'],
         generalist: ['tribbie', 'cipher', 'sparkle', 'ruan-mei'],
-        f2p: ['bronya', 'tingyun', 'pela']
-      }
+        f2p: ['bronya', 'tingyun', 'pela'],
+      },
     ],
-    teamCompositions: []
+    teamCompositions: [],
   },
   {
     id: 'clara',
@@ -64,7 +64,7 @@ export const characterSeedData = [
     archetype: ['Counter'],
     labels: ['Counter Attack', 'Blast', 'AoE', 'F2P'],
     teammateRecommendations: [],
-    teamCompositions: []
+    teamCompositions: [],
   },
   // Support Characters
   {
@@ -77,7 +77,7 @@ export const characterSeedData = [
     archetype: ['Buffer'],
     labels: ['SP Positive', 'CRIT DMG', 'Action Advance', 'Premium'],
     teammateRecommendations: [],
-    teamCompositions: []
+    teamCompositions: [],
   },
   {
     id: 'robin',
@@ -89,7 +89,7 @@ export const characterSeedData = [
     archetype: ['Buffer'],
     labels: ['FUA', 'ATK Buff', 'Energy Support', 'Premium'],
     teammateRecommendations: [],
-    teamCompositions: []
+    teamCompositions: [],
   },
   // Sustain Characters
   {
@@ -102,7 +102,7 @@ export const characterSeedData = [
     archetype: ['HP-Scaling'],
     labels: ['Redirect', 'Crit Rate', 'Damage Reduction', 'Premium'],
     teammateRecommendations: [],
-    teamCompositions: []
+    teamCompositions: [],
   },
   {
     id: 'aventurine',
@@ -114,7 +114,7 @@ export const characterSeedData = [
     archetype: ['Follow-up', 'Shielder'],
     labels: ['Shield', 'Follow-up Attack', 'Debuff RES', 'Premium'],
     teammateRecommendations: [],
-    teamCompositions: []
+    teamCompositions: [],
   },
   // F2P Characters
   {
@@ -127,7 +127,7 @@ export const characterSeedData = [
     archetype: ['Shielder'],
     labels: ['Shield', 'Freeze', 'Counter', 'F2P'],
     teammateRecommendations: [],
-    teamCompositions: []
+    teamCompositions: [],
   },
   {
     id: '1002',
@@ -139,7 +139,7 @@ export const characterSeedData = [
     archetype: ['Hypercarry'],
     labels: ['Single Target', 'Wind Shear', 'F2P'],
     teammateRecommendations: [],
-    teamCompositions: []
+    teamCompositions: [],
   },
   {
     id: '1003',
@@ -151,6 +151,6 @@ export const characterSeedData = [
     archetype: ['Follow-up', 'Break-DPS'],
     labels: ['AoE', 'Blast', 'Follow-up Attack', 'F2P'],
     teammateRecommendations: [],
-    teamCompositions: []
-  }
+    teamCompositions: [],
+  },
 ]
