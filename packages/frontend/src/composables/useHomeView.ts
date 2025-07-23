@@ -2,8 +2,8 @@ import { useCharacterFilters } from './useCharacterFilters'
 import { useCharacterGrouping } from './useCharacterGrouping'
 import { useCharacterSelection } from './useCharacterSelection'
 import { useSearch } from './useSearch'
+import { type ComputedRef } from 'vue'
 import type { Character } from '@hsr-team-builder/shared'
-import { computed, type ComputedRef } from 'vue'
 
 export function useHomeView(characters: ComputedRef<Character[]>) {
   const {
@@ -30,7 +30,7 @@ export function useHomeView(characters: ComputedRef<Character[]>) {
     onSearchFocus,
     onSearchBlur,
     onKeyDown,
-  } = useSearch()
+  } = useSearch(() => characters.value)
 
   const handleSelectFromSearch = (character: Character) => {
     selectCharacterFromSearch(character, (char) => selectCharacter(char, false))

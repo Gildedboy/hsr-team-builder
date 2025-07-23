@@ -1,6 +1,8 @@
 import { Module } from '@nestjs/common'
 import { CacheModule } from '@nestjs/cache-manager'
 import { TypeOrmModule } from '@nestjs/typeorm'
+import { ThrottlerModule, ThrottlerGuard } from '@nestjs/throttler'
+import { APP_GUARD } from '@nestjs/core'
 import { redisStore } from 'cache-manager-redis-store'
 import { CharactersModule } from './characters/characters.module'
 import { TeamsModule } from './teams/teams.module'
@@ -19,6 +21,23 @@ import { CharacterEntity } from './entities/character.entity'
       logging: process.env.NODE_ENV === 'development',
       ssl: process.env.NODE_ENV === 'production' ? { rejectUnauthorized: false } : false,
     }),
+    ThrottlerModule.forRoot([
+      {
+        name: 'short',
+        ttl: 1000, // 1 second
+        limit: 10, // 10 requests per second
+      },
+      {
+        name: 'medium',
+        ttl: 60000, // 1 minute
+        limit: 100, // 100 requests per minute
+      },
+      {
+        name: 'long',
+        ttl: 900000, // 15 minutes
+        limit: 1000, // 1000 requests per 15 minutes
+      },
+    ]),
     CacheModule.register({
       // @ts-ignore
       store: redisStore,
@@ -32,6 +51,11 @@ import { CharacterEntity } from './entities/character.entity'
     AuthModule,
   ],
   controllers: [],
-  providers: [],
+  providers: [
+    {
+      provide: APP_GUARD,
+      useClass: ThrottlerGuard,
+    },
+  ],
 })
 export class AppModule {}
