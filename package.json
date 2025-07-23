@@ -1,40 +1,30 @@
 {
-  "name": "my-vue-ts-app",
+  "name": "hsr-team-builder-monorepo",
   "version": "0.0.0",
   "private": true,
   "type": "module",
+  "workspaces": [
+    "packages/*"
+  ],
   "scripts": {
-    "dev": "vite",
-    "build": "run-p type-check \"build-only {@}\" --",
-    "preview": "vite preview",
-    "build-only": "vite build",
-    "type-check": "vue-tsc --build",
-    "lint": "eslint . --fix",
-    "format": "prettier --write src/",
-    "deploy": "npm run build && gh-pages -d dist"
+    "dev": "npm run dev -w @hsr-team-builder/frontend",
+    "dev:frontend": "npm run dev -w @hsr-team-builder/frontend",
+    "dev:backend": "npm run dev -w @hsr-team-builder/backend",
+    "dev:all": "concurrently \"npm run dev:frontend\" \"npm run dev:backend\"",
+    "build": "npm run build -w @hsr-team-builder/frontend",
+    "build:frontend": "npm run build -w @hsr-team-builder/frontend",
+    "build:backend": "npm run build -w @hsr-team-builder/backend",
+    "build:all": "npm run build:backend && npm run build:frontend",
+    "preview": "npm run preview -w @hsr-team-builder/frontend",
+    "type-check": "npm run type-check -w @hsr-team-builder/frontend && npm run type-check -w @hsr-team-builder/backend",
+    "lint": "npm run lint -w @hsr-team-builder/frontend && npm run lint -w @hsr-team-builder/backend",
+    "format": "npm run format -w @hsr-team-builder/frontend && npm run format -w @hsr-team-builder/backend",
+    "deploy": "npm run build:all && gh-pages -d packages/frontend/dist"
   },
   "dependencies": {
-    "@popperjs/core": "^2.11.8",
-    "bootstrap": "^5.3.7",
-    "vue": "^3.5.17",
-    "vue-router": "^4.5.1"
+    "concurrently": "^8.2.2"
   },
   "devDependencies": {
-    "@tsconfig/node22": "^22.0.2",
-    "@types/node": "^22.15.32",
-    "@vitejs/plugin-vue": "^6.0.0",
-    "@vue/eslint-config-prettier": "^10.2.0",
-    "@vue/eslint-config-typescript": "^14.5.1",
-    "@vue/tsconfig": "^0.7.0",
-    "eslint": "^9.29.0",
-    "eslint-plugin-vue": "~10.2.0",
-    "gh-pages": "^6.3.0",
-    "jiti": "^2.4.2",
-    "npm-run-all2": "^8.0.4",
-    "prettier": "3.5.3",
-    "terser": "^5.36.0",
-    "typescript": "~5.8.0",
-    "vite": "^7.0.0",
-    "vue-tsc": "^2.2.10"
+    "gh-pages": "^6.3.0"
   }
 }
