@@ -24,11 +24,7 @@ export class CharactersController {
   @ApiOperation({ summary: 'Seed database with initial character data' })
   @ApiResponse({ status: 201, description: 'Database seeded successfully' })
   async seedDatabase(): Promise<{ message: string; count: number }> {
-    const result = await this.charactersService.seedCharacters()
-    return {
-      message: 'Database seeded successfully',
-      count: result.length
-    }
+    return await this.charactersService.seedCharacters()
   }
 
   @Get()
