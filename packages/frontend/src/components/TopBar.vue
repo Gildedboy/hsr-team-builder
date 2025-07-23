@@ -10,7 +10,7 @@
           data-bs-target="#infoModal"
           style="font-size: 10px;"
         >
-          v1.2.0
+          {{ appVersion }} {{ deploymentType }}
         </span>
       </div>
       
@@ -153,7 +153,8 @@
               <div class="text-white">
                 <h6 class="text-primary mb-3">Recent Updates</h6>
                 <div class="mb-3">
-                  <strong class="text-warning">v1.2.0</strong> - Latest
+                  <strong class="text-warning">{{ appVersion }}</strong> - Latest 
+                  <span class="badge bg-primary ms-2">{{ deploymentType }}</span>
                   <ul class="list-unstyled mt-2 ms-3">
                     <li>• Completed all DPS character data</li>
                     <li>• Added keyboard navigation to search</li>
@@ -191,7 +192,10 @@
 </template>
 
 <script setup lang="ts">
-// Contact form uses HTML submission to Formspree
+// Get version from environment variable, fallback to default
+const appVersion = import.meta.env.VITE_APP_VERSION || 'v1.2.0'
+const apiUrl = import.meta.env.VITE_API_URL
+const deploymentType = apiUrl ? 'API-Enabled' : 'Static'
 </script>
 
 <style scoped>

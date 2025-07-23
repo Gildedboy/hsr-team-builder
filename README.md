@@ -15,21 +15,44 @@ A comprehensive team building tool for Honkai: Star Rail that helps players disc
 
 ## Architecture
 
-This project supports two deployment modes:
+This project supports version-controlled deployments using GitHub tags:
 
-### 🔸 **Static Version (Main Branch)**
+### 🏷️ **Version-Based Deployment**
+
+- **v1.x.x** → Static version (frontend-only with static character data)
+- **v2.x.x** → API-enabled version (full-stack with NestJS backend)
+- **Easy rollbacks** → Deploy any previous version via GitHub Actions
+
+### 🔸 **Static Version (v1.x.x tags)**
 
 - Frontend-only deployment with static character data
-- Deployed to GitHub Pages from `main` branch
-- URL: [hsr-team-builder.gilded.dev](https://hsr-team-builder.gilded.dev)
+- Deployed via GitHub Actions from version tags
+- URL: [gildedboy.github.io/hsr-team-builder](https://gildedboy.github.io/hsr-team-builder)
+- Custom domain: [hsr-team-builder.gilded.dev](https://hsr-team-builder.gilded.dev)
 
-### 🔸 **API-Powered Version (Feature Branch)**
+### 🔸 **API-Powered Version (v2.x.x tags)**
 
 - Full-stack application with NestJS backend
 - Real-time data updates via REST API
-- Deployed from `feature/nestjs-backend` branch
+- Deployed via GitHub Actions from version tags
 - Frontend: [gildedboy.github.io/hsr-team-builder](https://gildedboy.github.io/hsr-team-builder)
 - Backend API: [api.hsr-team-builder.gilded.dev](https://api.hsr-team-builder.gilded.dev)
+
+### 🔄 **Version Management**
+
+Deploy any version instantly:
+
+```bash
+# Deploy static version
+git tag v1.2.1
+git push origin v1.2.1
+
+# Deploy API version  
+git tag v2.0.1
+git push origin v2.0.1
+
+# Or use manual deployment in GitHub Actions
+```
 
 ## Tech Stack
 

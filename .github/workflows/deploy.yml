@@ -2,17 +2,24 @@ name: Deploy Frontend to GitHub Pages
 
 on:
   push:
-    branches: [main, feature/nestjs-backend]
+    tags:
+      - 'v*'  # Deploy on any version tag
+    branches: [main, feature/nestjs-backend]  # Keep branch deployments for development
     paths:
       - 'packages/frontend/**'
       - '.github/workflows/deploy.yml'
   
   # Allows you to run this workflow manually from the Actions tab
   workflow_dispatch:
+    inputs:
+      deploy_version:
+        description: 'Version tag to deploy (e.g., v1.2.0-static, v2.0.0-api)'
+        required: true
+        default: 'v2.0.0-api'
+        type: string
 
 jobs:
   build-and-deploy:
-    if: github.ref == 'refs/heads/main' || github.ref == 'refs/heads/feature/nestjs-backend'
     runs-on: ubuntu-latest
 
     environment:
@@ -27,6 +34,9 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v4
+        with:
+          # If manual dispatch, checkout the specified tag
+          ref: ${{ github.event.inputs.deploy_version || github.ref }}
 
       - name: Setup Node.js
         uses: actions/setup-node@v4
@@ -45,34 +55,53 @@ jobs:
           cd ../frontend
           npm install
 
-      - name: Determine API URL
-        id: api-config
+      - name: Determine deployment configuration
+        id: config
         run: |
-          if [ "${{ github.ref }}" == "refs/heads/main" ]; then
+          # Get version from tag or manual input
+          if [ "${{ github.event_name }}" == "workflow_dispatch" ]; then
+            VERSION="${{ github.event.inputs.deploy_version }}"
+          elif [ "${{ github.ref_type }}" == "tag" ]; then
+            VERSION="${{ github.ref_name }}"
+          else
+            # Fallback for branch deployments
+            if [ "${{ github.ref }}" == "refs/heads/main" ]; then
+              VERSION="v1.2.0-static"
+            else
+              VERSION="v2.0.0-api"
+            fi
+          fi
+          
+          echo "version=$VERSION" >> $GITHUB_OUTPUT
+          
+          # Determine deployment type based on version tag
+          if [[ "$VERSION" == *"-static" ]] || [[ "$VERSION" =~ ^v1\. ]]; then
             echo "api_url=" >> $GITHUB_OUTPUT
-            echo "branch_name=main" >> $GITHUB_OUTPUT
             echo "deployment_type=static" >> $GITHUB_OUTPUT
-          elif [ "${{ github.ref }}" == "refs/heads/feature/nestjs-backend" ]; then
+            echo "display_version=${VERSION%-static}" >> $GITHUB_OUTPUT
+          else
             echo "api_url=https://api.hsr-team-builder.gilded.dev" >> $GITHUB_OUTPUT
-            echo "branch_name=feature-backend" >> $GITHUB_OUTPUT
             echo "deployment_type=api-enabled" >> $GITHUB_OUTPUT
+            echo "display_version=${VERSION%-api}" >> $GITHUB_OUTPUT
           fi
 
       - name: Build frontend
         run: |
           cd packages/frontend
-          echo "Building frontend for branch: ${{ steps.api-config.outputs.branch_name }}"
-          echo "API URL: ${{ steps.api-config.outputs.api_url }}"
-          echo "Deployment type: ${{ steps.api-config.outputs.deployment_type }}"
+          echo "Building frontend for version: ${{ steps.config.outputs.display_version }}"
+          echo "API URL: ${{ steps.config.outputs.api_url }}"
+          echo "Deployment type: ${{ steps.config.outputs.deployment_type }}"
           npm run build
         env:
-          VITE_API_URL: ${{ steps.api-config.outputs.api_url }}
+          VITE_API_URL: ${{ steps.config.outputs.api_url }}
+          VITE_APP_VERSION: ${{ steps.config.outputs.display_version }}
           
-      - name: Add branch info to build
+      - name: Add deployment info to build
         run: |
-          echo "<!-- Deployed from branch: ${{ github.ref_name }} -->" >> packages/frontend/dist/index.html
-          echo "<!-- API URL: ${{ steps.api-config.outputs.api_url }} -->" >> packages/frontend/dist/index.html
-          echo "<!-- Deployment type: ${{ steps.api-config.outputs.deployment_type }} -->" >> packages/frontend/dist/index.html
+          echo "<!-- Deployed version: ${{ steps.config.outputs.version }} -->" >> packages/frontend/dist/index.html
+          echo "<!-- Display version: ${{ steps.config.outputs.display_version }} -->" >> packages/frontend/dist/index.html
+          echo "<!-- API URL: ${{ steps.config.outputs.api_url }} -->" >> packages/frontend/dist/index.html
+          echo "<!-- Deployment type: ${{ steps.config.outputs.deployment_type }} -->" >> packages/frontend/dist/index.html
 
       - name: Add cache headers via .htaccess
         run: |
