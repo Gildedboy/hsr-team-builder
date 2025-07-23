@@ -10,15 +10,7 @@ import { COLORS } from '@/constants/design'
 import { onMounted } from 'vue'
 
 // Use API-based characters
-const {
-  characters,
-  loading,
-  error,
-  dpsCharacters,
-  supportCharacters,
-  sustainCharacters,
-  loadCharacters,
-} = useCharactersApi()
+const { characters, loading, error, loadCharacters } = useCharactersApi()
 
 // Load characters when component mounts
 onMounted(async () => {
