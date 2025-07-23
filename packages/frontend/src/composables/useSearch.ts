@@ -58,11 +58,9 @@ export function useSearch() {
     
     if (sanitizedQuery.length >= 3) { // Require at least 3 characters
       // Rate limiting check
-      const now = Date.now()
-      if (now - lastSearchTime < MIN_SEARCH_INTERVAL) {
+      if (isRateLimited(lastSearchTime, MIN_SEARCH_INTERVAL)) {
         return
       }
-      lastSearchTime = now
 
       // Debounce API calls to avoid excessive requests
       searchTimeout = setTimeout(() => {
