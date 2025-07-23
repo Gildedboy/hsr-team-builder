@@ -27,6 +27,13 @@ export class CharactersController {
     return await this.charactersService.seedCharacters()
   }
 
+  @Delete('clear')
+  @ApiOperation({ summary: 'Clear all characters from database (for testing)' })
+  @ApiResponse({ status: 200, description: 'Database cleared successfully' })
+  async clearDatabase(): Promise<{ message: string; cleared: number }> {
+    return await this.charactersService.clearCharacters()
+  }
+
   @Get()
   @ApiOperation({ summary: 'Get all characters' })
   @ApiQuery({ name: 'role', required: false, description: 'Filter by role' })

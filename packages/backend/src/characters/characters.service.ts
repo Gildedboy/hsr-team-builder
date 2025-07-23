@@ -579,4 +579,20 @@ export class CharactersService {
       throw new InternalServerErrorException('Failed to seed database')
     }
   }
+
+  async clearCharacters(): Promise<{ message: string; cleared: number }> {
+    try {
+      const count = await this.characterRepository.count()
+      await this.characterRepository.clear()
+      
+      // Clear cache as well
+      await this.cacheManager.del('all-characters')
+      
+      this.logger.log(`Successfully cleared ${count} characters from database`)
+      return { message: 'Database cleared successfully', cleared: count }
+    } catch (error) {
+      this.logger.error('Failed to clear characters:', error)
+      throw new InternalServerErrorException('Failed to clear database')
+    }
+  }
 }
