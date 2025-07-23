@@ -28,7 +28,10 @@ const {
   showSearchSuggestions,
   searchSuggestions,
   selectedIndex,
+  searchError,
   isSearching,
+  isRateLimited,
+  MIN_SEARCH_LENGTH,
   onKeyDown,
   toggleFilter,
   selectCharacter,
@@ -112,12 +115,22 @@ const getNewFormatCharacter = (characterId: string) => {
                   <button
                     class="btn btn-primary"
                     type="button"
-                    :disabled="searchQueryRef.length < 3 || isSearching"
+                    :disabled="searchQueryRef.length < MIN_SEARCH_LENGTH || isSearching"
                     @click="triggerSearch"
                   >
                     <i v-if="isSearching" class="fas fa-spinner fa-spin"></i>
                     <i v-else class="fas fa-search"></i>
                   </button>
+                </div>
+
+                <!-- Rate Limiting Feedback -->
+                <div v-if="isRateLimited" class="text-warning small mt-1">
+                  <i class="fas fa-clock"></i> Please wait a moment before searching again...
+                </div>
+
+                <!-- Search Error Feedback -->
+                <div v-if="searchError" class="text-danger small mt-1">
+                  <i class="fas fa-exclamation-triangle"></i> {{ searchError }}
                 </div>
 
                 <!-- Search Suggestions Dropdown -->

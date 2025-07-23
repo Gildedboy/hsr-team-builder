@@ -2,6 +2,10 @@ import { ref, watch, onUnmounted } from 'vue'
 import type { Character } from '@hsr-team-builder/shared'
 import { CharacterService } from '../services/characterService'
 
+// Constants
+const MIN_SEARCH_LENGTH = 3
+const MIN_SEARCH_INTERVAL = 300 // Minimum time between API calls in milliseconds
+
 export function useSearch() {
   const searchQuery = ref<string>('')
   const showSearchSuggestions = ref<boolean>(false)
@@ -9,12 +13,12 @@ export function useSearch() {
   const searchSuggestions = ref<Character[]>([])
   const searchError = ref<string>('')
   const isSearching = ref<boolean>(false)
+  const isRateLimited = ref<boolean>(false)
   let blurTimeout: ReturnType<typeof setTimeout> | null = null
   let lastSearchTime = 0
-  const MIN_SEARCH_INTERVAL = 300 // Minimum time between API calls in milliseconds
 
   // Helper function to check rate limiting
-  const isRateLimited = (lastTime: number, interval: number): boolean => {
+  const checkRateLimit = (lastTime: number, interval: number): boolean => {
     const now = Date.now()
     return now - lastTime < interval
   }
@@ -30,21 +34,30 @@ export function useSearch() {
 
   // Function to perform API search
   const performSearch = async (query: string) => {
-    if (!query || query.length < 3) {
+    if (!query || query.length < MIN_SEARCH_LENGTH) {
       searchSuggestions.value = []
       showSearchSuggestions.value = false
       return
     }
 
-    // Rate limiting check
-    if (isRateLimited(lastSearchTime, MIN_SEARCH_INTERVAL)) {
+    // Rate limiting check with user feedback
+    if (checkRateLimit(lastSearchTime, MIN_SEARCH_INTERVAL)) {
       console.log('🚦 Search rate limited, please wait...')
+      isRateLimited.value = true
+      searchError.value = 'Please wait a moment before searching again.'
+      
+      // Clear rate limit feedback after interval
+      setTimeout(() => {
+        isRateLimited.value = false
+        searchError.value = ''
+      }, MIN_SEARCH_INTERVAL)
       return
     }
 
     try {
       console.log('🔍 Searching for:', query)
       isSearching.value = true
+      isRateLimited.value = false
       searchError.value = '' // Clear any previous errors
       
       // Update lastSearchTime when API call actually happens
@@ -84,7 +97,7 @@ export function useSearch() {
   watch(searchQuery, (newQuery) => {
     const sanitizedQuery = sanitizeSearchInput(newQuery)
     
-    if (sanitizedQuery.length < 3) {
+    if (sanitizedQuery.length < MIN_SEARCH_LENGTH) {
       showSearchSuggestions.value = false
       searchSuggestions.value = []
       selectedIndex.value = -1
@@ -190,11 +203,13 @@ export function useSearch() {
     selectedIndex,
     searchError,
     isSearching,
+    isRateLimited,
     triggerSearch,
     selectCharacterFromSearch,
     onSearchFocus,
     onSearchBlur,
     onKeyDown,
     setSearchQuery,
+    MIN_SEARCH_LENGTH,
   }
 }
