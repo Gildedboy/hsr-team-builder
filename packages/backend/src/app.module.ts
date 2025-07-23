@@ -4,6 +4,7 @@ import { TypeOrmModule } from '@nestjs/typeorm'
 import { redisStore } from 'cache-manager-redis-store'
 import { CharactersModule } from './characters/characters.module'
 import { TeamsModule } from './teams/teams.module'
+import { AuthModule } from './auth/auth.module'
 import { CharacterEntity } from './entities/character.entity'
 
 @Module({
@@ -26,6 +27,7 @@ import { CharacterEntity } from './entities/character.entity'
     }),
     CharactersModule,
     TeamsModule,
+    AuthModule,
   ],
   controllers: [],
   providers: [],
