@@ -30,7 +30,7 @@ export function useHomeView(characters: ComputedRef<Character[]>) {
     onSearchFocus,
     onSearchBlur,
     onKeyDown,
-  } = useSearch(() => characters.value)
+  } = useSearch()
 
   const handleSelectFromSearch = (character: Character) => {
     selectCharacterFromSearch(character, (char) => selectCharacter(char, false))

@@ -1,14 +1,16 @@
-import { ref, watch, computed, onUnmounted } from 'vue'
+import { ref, watch, onUnmounted } from 'vue'
 import type { Character } from '@hsr-team-builder/shared'
+import { CharacterService } from '../services/characterService'
 
-export function useSearch(characters?: () => Character[]) {
+export function useSearch() {
   const searchQuery = ref<string>('')
   const showSearchSuggestions = ref<boolean>(false)
   const selectedIndex = ref<number>(-1)
+  const searchSuggestions = ref<Character[]>([])
   let searchTimeout: ReturnType<typeof setTimeout> | null = null
   let blurTimeout: ReturnType<typeof setTimeout> | null = null
   let lastSearchTime = 0
-  const MIN_SEARCH_INTERVAL = 50 // Minimum time between searches in milliseconds
+  const MIN_SEARCH_INTERVAL = 300 // Minimum time between API calls in milliseconds
 
   // Helper function to sanitize search input
   const sanitizeSearchInput = (input: string): string => {
@@ -19,80 +21,31 @@ export function useSearch(characters?: () => Character[]) {
       .substring(0, 100) // Limit length to prevent abuse
   }
 
-  // Compute search suggestions based on the search query
-  const searchSuggestions = computed(() => {
-    // Rate limiting check
-    const now = Date.now()
-    if (now - lastSearchTime < MIN_SEARCH_INTERVAL) {
-      return []
+  // Function to perform API search
+  const performSearch = async (query: string) => {
+    try {
+      console.log('🔍 Searching for:', query)
+      const results = await CharacterService.searchCharacters(query)
+      console.log('✅ Search results:', results)
+      
+      // Ensure results is an array
+      if (Array.isArray(results)) {
+        searchSuggestions.value = results.slice(0, 8) // Limit to 8 suggestions
+        showSearchSuggestions.value = results.length > 0
+      } else {
+        console.warn('⚠️ Search results is not an array:', results)
+        searchSuggestions.value = []
+        showSearchSuggestions.value = false
+      }
+    } catch (error) {
+      console.error('❌ Search error:', error)
+      searchSuggestions.value = []
+      showSearchSuggestions.value = false
+      
+      // Set user-friendly error message
+      searchError.value = 'Search temporarily unavailable. Please try again.'
     }
-    lastSearchTime = now
-
-    if (!searchQuery.value || searchQuery.value.length < 2 || !characters) {
-      return []
-    }
-
-    const sanitizedQuery = sanitizeSearchInput(searchQuery.value.toLowerCase())
-    if (!sanitizedQuery) {
-      return []
-    }
-
-    const allCharacters = characters()
-
-    if (!allCharacters || allCharacters.length === 0) {
-      return []
-    }
-
-    return allCharacters
-      .filter((character) => {
-        try {
-          // Search by name
-          if (character.name && character.name.toLowerCase().includes(sanitizedQuery)) {
-            return true
-          }
-
-          // Search by element
-          if (character.element && character.element.toLowerCase().includes(sanitizedQuery)) {
-            return true
-          }
-
-          // Search by path
-          if (character.path && character.path.toLowerCase().includes(sanitizedQuery)) {
-            return true
-          }
-
-          // Search by labels/tags
-          if (character.labels && Array.isArray(character.labels)) {
-            const hasMatchingLabel = character.labels.some((label: string) => 
-              label && label.toLowerCase().includes(sanitizedQuery)
-            )
-            if (hasMatchingLabel) return true
-          }
-
-          // Search by archetype
-          if (character.archetype && Array.isArray(character.archetype)) {
-            const hasMatchingArchetype = character.archetype.some((arch: string) => 
-              arch && arch.toLowerCase().includes(sanitizedQuery)
-            )
-            if (hasMatchingArchetype) return true
-          }
-
-          // Search by roles
-          if (character.roles && Array.isArray(character.roles)) {
-            const hasMatchingRole = character.roles.some((role: string) => 
-              role && role.toLowerCase().includes(sanitizedQuery)
-            )
-            if (hasMatchingRole) return true
-          }
-
-          return false
-        } catch (error) {
-          console.warn('Error filtering character:', character, error)
-          return false
-        }
-      })
-      .slice(0, 8) // Limit to 8 suggestions
-  })
+  }
 
   // Watch search query changes with debouncing
   watch(searchQuery, (newQuery) => {
@@ -103,14 +56,20 @@ export function useSearch(characters?: () => Character[]) {
 
     const sanitizedQuery = sanitizeSearchInput(newQuery)
     
-    if (sanitizedQuery.length >= 2) {
-      // Debounce search to avoid excessive computations
+    if (sanitizedQuery.length >= 3) { // Require at least 3 characters
+      // Rate limiting check
+      if (isRateLimited(lastSearchTime, MIN_SEARCH_INTERVAL)) {
+        return
+      }
+
+      // Debounce API calls to avoid excessive requests
       searchTimeout = setTimeout(() => {
-        showSearchSuggestions.value = true
+        performSearch(sanitizedQuery)
         selectedIndex.value = -1
-      }, 150) // 150ms debounce
+      }, 300) // 300ms debounce for API calls
     } else {
       showSearchSuggestions.value = false
+      searchSuggestions.value = []
       selectedIndex.value = -1
     }
   })
@@ -119,6 +78,7 @@ export function useSearch(characters?: () => Character[]) {
     onSelect(character)
     searchQuery.value = ''
     showSearchSuggestions.value = false
+    searchSuggestions.value = []
     selectedIndex.value = -1
   }
 
@@ -145,7 +105,8 @@ export function useSearch(characters?: () => Character[]) {
       blurTimeout = null
     }
     
-    if (searchQuery.value.length >= 2) {
+    // Only show suggestions if we have search results and query is long enough
+    if (searchQuery.value.length >= 3 && searchSuggestions.value.length > 0) {
       showSearchSuggestions.value = true
     }
   }
@@ -179,6 +140,7 @@ export function useSearch(characters?: () => Character[]) {
       case 'Escape':
         event.preventDefault()
         showSearchSuggestions.value = false
+        searchSuggestions.value = []
         selectedIndex.value = -1
         searchQuery.value = ''
         break
