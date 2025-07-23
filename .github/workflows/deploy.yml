@@ -9,9 +9,9 @@ on:
   workflow_dispatch:
     inputs:
       deploy_version:
-        description: 'Version tag to deploy (e.g., v1.2.0-static, v2.0.0-api)'
+        description: 'Version tag to deploy (e.g., v1.2.0, v2.0.0)'
         required: true
-        default: 'v2.0.0-api'
+        default: 'v2.0.0'
         type: string
 
 jobs:
@@ -24,6 +24,12 @@ jobs:
       id-token: write
 
     steps:
+      - name: Debug inputs
+        run: |
+          echo "Deploy version input: '${{ github.event.inputs.deploy_version }}'"
+          echo "GitHub ref: '${{ github.ref }}'"
+          echo "Event name: '${{ github.event_name }}'"
+      
       - name: Checkout
         uses: actions/checkout@v4
         with:
