@@ -12,7 +12,7 @@ import { CharacterEntity } from './entities/character.entity'
       type: 'postgres',
       url: process.env.DATABASE_URL || 'postgresql://postgres:password@localhost:5432/hsr_team_builder',
       entities: [CharacterEntity],
-      synchronize: process.env.NODE_ENV !== 'production', // Only sync in development
+      synchronize: true, // Enable for initial schema creation
       logging: process.env.NODE_ENV === 'development',
       ssl: process.env.NODE_ENV === 'production' ? { rejectUnauthorized: false } : false,
     }),
