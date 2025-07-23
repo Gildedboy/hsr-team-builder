@@ -1,6 +1,6 @@
 import { ref } from 'vue'
 import { useCharactersApi } from '@/composables/useCharactersApi'
-import type { Character } from '@/types/Character'
+import type { Character } from '@hsr-team-builder/shared'
 
 export function useTooltip() {
   const hoveredCharacter = ref<Character | null>(null)

@@ -1,5 +1,5 @@
 import { computed } from 'vue'
-import type { Character } from '@/types/Character'
+import type { Character } from '@hsr-team-builder/shared'
 
 export function useCharacterGrouping(filteredCharacters: { value: Character[] }, selectedArchetypes?: { value: string[] }) {
   const charactersByRole = computed(() => {

@@ -152,7 +152,7 @@
 </template>
 
 <script setup lang="ts">
-import type { Character } from '@/types/Character'
+import type { Character } from '@hsr-team-builder/shared'
 import CharacterRoleSection from './CharacterRoleSection.vue'
 
 interface Props {

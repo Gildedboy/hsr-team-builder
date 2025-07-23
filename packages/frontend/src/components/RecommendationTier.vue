@@ -52,7 +52,7 @@
 import { computed } from 'vue'
 import { getCharacterAvatar } from '@/data/avatars'
 import { COLORS } from '@/constants/design'
-import type { Character } from '@/types/Character'
+import type { Character } from '@hsr-team-builder/shared'
 
 interface Props {
   tier: 'bis' | 'generalist' | 'f2p'

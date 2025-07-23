@@ -33,7 +33,7 @@
 </template>
 
 <script setup lang="ts">
-import type { Character } from '@/types/Character'
+import type { Character } from '@hsr-team-builder/shared'
 import { getCharacterAvatar } from '@/data/avatars'
 import { COLORS } from '@/constants/design'
 import { useTooltip } from '@/composables/useTooltip'

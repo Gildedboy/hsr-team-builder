@@ -161,7 +161,7 @@
 
 <script setup lang="ts">
 import { ref, computed } from 'vue'
-import type { Character } from '@/types/Character'
+import type { Character } from '@hsr-team-builder/shared'
 import { useTooltip } from '@/composables/useTooltip'
 import { getCharacterAvatar } from '@/data/avatars'
 import { useCharactersApi } from '@/composables/useCharactersApi'

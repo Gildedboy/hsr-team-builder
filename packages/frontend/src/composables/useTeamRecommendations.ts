@@ -1,6 +1,6 @@
 import { ref, computed, watch, toRef } from 'vue'
 import { useCharactersApi } from '@/composables/useCharactersApi'
-import type { Character } from '@/types/Character'
+import type { Character } from '@hsr-team-builder/shared'
 
 export function useTeamRecommendations(character: Character) {
   const characterRef = toRef(() => character)

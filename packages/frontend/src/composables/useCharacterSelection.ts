@@ -1,5 +1,5 @@
 import { ref } from 'vue'
-import type { Character } from '@/types/Character'
+import type { Character } from '@hsr-team-builder/shared'
 
 export function useCharacterSelection() {
   const selectedCharacter = ref<Character | null>(null)
