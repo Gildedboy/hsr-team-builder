@@ -5,7 +5,6 @@ import { CACHE_MANAGER } from '@nestjs/cache-manager'
 import { Cache } from 'cache-manager'
 import { Character } from '../types/Character'
 import { CharacterEntity } from '../entities/character.entity'
-import { characterSeedData } from '../data/characterSeedData'
 
 @Injectable()
 export class CharactersService {
@@ -172,14 +171,82 @@ export class CharactersService {
 
     console.log('🌱 Seeding database with character data...')
     
-    // Use the comprehensive character seed data
-    const entities = characterSeedData.map(char => this.characterRepository.create(char))
-    const savedEntities = await this.characterRepository.save(entities)
+    // Character seed data defined inline
+    const seedData = [
+      {
+        id: 'seele',
+        name: 'Seele',
+        element: 'Quantum',
+        path: 'Hunt',
+        rarity: 5,
+        roles: ['DPS'],
+        archetype: ['Hypercarry'],
+        labels: ['Single Target', 'Extra Turn', 'Enhanced State', 'SP Unfriendly'],
+        teammateRecommendations: [],
+        teamCompositions: []
+      },
+      {
+        id: 'jing-yuan',
+        name: 'Jing Yuan',
+        element: 'Lightning',
+        path: 'Erudition',
+        rarity: 5,
+        roles: ['DPS'],
+        archetype: ['Follow-up', 'Summon', 'Hypercarry'],
+        labels: ['AoE', 'Summon', 'Follow-up Attack'],
+        teammateRecommendations: [],
+        teamCompositions: []
+      },
+      {
+        id: 'clara',
+        name: 'Clara',
+        element: 'Physical',
+        path: 'Destruction',
+        rarity: 5,
+        roles: ['DPS'],
+        archetype: ['Counter'],
+        labels: ['Counter Attack', 'Blast', 'AoE', 'F2P'],
+        teammateRecommendations: [],
+        teamCompositions: []
+      },
+      {
+        id: 'sparkle',
+        name: 'Sparkle',
+        element: 'Quantum',
+        path: 'Harmony',
+        rarity: 5,
+        roles: ['SUPPORT'],
+        archetype: ['Buffer'],
+        labels: ['SP Positive', 'CRIT DMG', 'Action Advance', 'Premium'],
+        teammateRecommendations: [],
+        teamCompositions: []
+      },
+      {
+        id: '1001',
+        name: 'March 7th',
+        element: 'Ice',
+        path: 'Preservation',
+        rarity: 4,
+        roles: ['SUSTAIN'],
+        archetype: ['Shielder'],
+        labels: ['Shield', 'Freeze', 'Counter', 'F2P'],
+        teammateRecommendations: [],
+        teamCompositions: []
+      }
+    ]
     
-    console.log(`🌱 Seeded ${savedEntities.length} characters`)
-    
-    // Clear cache and return seeded characters
-    await this.cacheManager.del('all-characters')
-    return savedEntities.map(this.entityToCharacter)
+    try {
+      const entities = seedData.map(char => this.characterRepository.create(char))
+      const savedEntities = await this.characterRepository.save(entities)
+      
+      console.log(`🌱 Seeded ${savedEntities.length} characters`)
+      
+      // Clear cache and return seeded characters
+      await this.cacheManager.del('all-characters')
+      return savedEntities.map(this.entityToCharacter)
+    } catch (error) {
+      console.error('❌ Seeding error:', error)
+      throw new Error(`Failed to seed characters: ${error.message}`)
+    }
   }
 }
