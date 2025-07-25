@@ -132,7 +132,7 @@
 
           <!-- Tab Content -->
           <div class="tab-content">
-            <div class="tab-pane fade show active" id="todo-tab" role="tabpanel">
+            <div class="tab-pane fade" id="todo-tab" role="tabpanel">
               <div class="text-white">
                 <h6 class="text-primary mb-3">Upcoming Features</h6>
                 <ul class="list-unstyled">
