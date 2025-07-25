@@ -97,7 +97,7 @@
           <ul class="nav nav-tabs mb-3" role="tablist">
             <li class="nav-item" role="presentation">
               <button
-                class="nav-link custom-tab"
+                class="nav-link custom-tab active"
                 data-bs-toggle="tab"
                 data-bs-target="#todo-tab"
                 type="button"
