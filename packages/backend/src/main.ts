@@ -35,7 +35,7 @@ async function bootstrap() {
     'http://localhost:5173',
     'http://localhost:3000',
     'http://localhost:4173',
-    'https://hsr-team-builder.gilded.dev'
+    process.env.PRODUCTION_DOMAIN || 'https://hsr-team-builder.gilded.dev'
   ]
   
   app.enableCors({
