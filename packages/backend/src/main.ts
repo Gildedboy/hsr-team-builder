@@ -34,7 +34,8 @@ async function bootstrap() {
   const allowedOrigins = process.env.ALLOWED_ORIGINS?.split(',') || [
     'http://localhost:5173',
     'http://localhost:3000',
-    'http://localhost:4173'
+    'http://localhost:4173',
+    'https://hsr-team-builder.gilded.dev'
   ]
   
   app.enableCors({
