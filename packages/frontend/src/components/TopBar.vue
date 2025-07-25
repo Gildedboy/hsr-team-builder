@@ -97,35 +97,13 @@
           <ul class="nav nav-tabs mb-3" role="tablist">
             <li class="nav-item" role="presentation">
               <button
-                class="nav-link active custom-tab"
-                data-bs-toggle="tab"
-                data-bs-target="#missing-tab"
-                type="button"
-                role="tab"
-              >
-                Missing Characters
-              </button>
-            </li>
-            <li class="nav-item" role="presentation">
-              <button
-                class="nav-link custom-tab"
+                class="nav-link custom-tab active"
                 data-bs-toggle="tab"
                 data-bs-target="#todo-tab"
                 type="button"
                 role="tab"
               >
                 TO-DO
-              </button>
-            </li>
-            <li class="nav-item" role="presentation">
-              <button
-                class="nav-link custom-tab"
-                data-bs-toggle="tab"
-                data-bs-target="#changelog-tab"
-                type="button"
-                role="tab"
-              >
-                CHANGELOGS
               </button>
             </li>
           </ul>
