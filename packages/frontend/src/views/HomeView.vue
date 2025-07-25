@@ -106,7 +106,7 @@ const getNewFormatCharacter = (characterId: string) => {
                   <input
                     v-model="searchQueryRef"
                     type="text"
-                    placeholder="Search characters... (Press Enter or click search)"
+                    placeholder="Search..."
                     class="form-control bg-dark text-white border-primary"
                     @focus="onSearchFocus"
                     @blur="onSearchBlur"
@@ -117,6 +117,7 @@ const getNewFormatCharacter = (characterId: string) => {
                     type="button"
                     :disabled="searchQueryRef.length < MIN_SEARCH_LENGTH || isSearching"
                     @click="triggerSearch"
+                    aria-label="Search characters"
                   >
                     <i v-if="isSearching" class="fas fa-spinner fa-spin"></i>
                     <i v-else class="fas fa-search"></i>
