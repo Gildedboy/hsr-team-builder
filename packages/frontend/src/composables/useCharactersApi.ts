@@ -1,24 +1,31 @@
 import { ref, computed } from 'vue'
 import { CharacterService } from '../services/characterService'
 import type { Character } from '@hsr-team-builder/shared'
+import { staticCharacterList } from '../data/staticCharacters'
 
-const characters = ref<Character[]>([])
+// Initialize with static characters for immediate display
+const characters = ref<Character[]>(staticCharacterList)
 const loading = ref(false)
 const error = ref<string | null>(null)
 
 // Load characters from API
 export const useCharactersApi = () => {
   const loadCharacters = async () => {
-    if (characters.value.length > 0) return // Already loaded
+    // Check if we already have API data (not just static data)
+    if (characters.value.length > 0 && characters.value[0]?.teammateRecommendations?.length > 0) {
+      return // Already loaded API data
+    }
 
     loading.value = true
     error.value = null
 
     try {
-      characters.value = await CharacterService.getAllCharacters()
+      const apiCharacters = await CharacterService.getAllCharacters()
+      characters.value = apiCharacters // Replace static data with API data
     } catch (err) {
       error.value = err instanceof Error ? err.message : 'Failed to load characters'
       console.error('Failed to load characters:', err)
+      // Keep static characters if API fails
     } finally {
       loading.value = false
     }
