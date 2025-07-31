@@ -10,11 +10,12 @@ import { COLORS } from '@/constants/design'
 import { onMounted } from 'vue'
 
 // Use API-based characters
-const { characters, loading, error, loadCharacters } = useCharactersApi()
+const { characters, loadCharacters } = useCharactersApi()
 
-// Load characters when component mounts
+// Load characters in background when component mounts
 onMounted(async () => {
-  await loadCharacters()
+  // Start loading in background - don't await
+  loadCharacters()
 })
 
 const {
@@ -54,30 +55,19 @@ const isNewFormatCharacter = (characterId: string) => {
 const getNewFormatCharacter = (characterId: string) => {
   return characters.value.find((char) => char.id === characterId)
 }
+
+// Check if selected character has full API data (not just static data)
+const hasFullCharacterData = (characterId: string) => {
+  const character = characters.value.find((char) => char.id === characterId)
+  return character && character.teammateRecommendations && character.teammateRecommendations.length > 0
+}
 </script>
 
 <template>
   <TopBar />
   <main class="container-fluid py-4" style="max-width: 1900px; margin: 0 auto">
-    <!-- Loading State -->
-    <div v-if="loading" class="text-center py-5">
-      <div class="spinner-border text-primary" role="status">
-        <span class="visually-hidden">Loading characters...</span>
-      </div>
-      <p class="text-white mt-3">Loading characters from server...</p>
-    </div>
-
-    <!-- Error State -->
-    <div v-else-if="error" class="text-center py-5">
-      <div class="alert alert-danger mx-auto" style="max-width: 500px">
-        <h4>Error Loading Characters</h4>
-        <p>{{ error }}</p>
-        <button @click="loadCharacters" class="btn btn-primary">Retry</button>
-      </div>
-    </div>
-
-    <!-- Main Content -->
-    <div v-else-if="characters.length > 0">
+    <!-- Main Content - Always show UI -->
+    <div>
       <div class="text-center mb-4">
         <p class="lead text-white fw-bold px-3">
           Select a character on the main grid to see team recommendations or you can also use the
@@ -282,8 +272,18 @@ const getNewFormatCharacter = (characterId: string) => {
 
         <!-- Team Recommendations -->
         <div class="col-lg-9 col-md-8">
+          <!-- Loading state when character is selected but doesn't have full API data -->
+          <div v-if="selectedCharacter && !hasFullCharacterData(selectedCharacter.id)" class="card bg-dark border-primary text-center py-5">
+            <div class="card-body">
+              <div class="spinner-border text-primary mb-3" role="status">
+                <span class="visually-hidden">Loading character data...</span>
+              </div>
+              <p class="text-white fw-bold mb-0">Loading character data from server...</p>
+            </div>
+          </div>
+          <!-- Character recommendations available -->
           <TeamRecommendations
-            v-if="
+            v-else-if="
               selectedCharacter &&
               isNewFormatCharacter(selectedCharacter.id) &&
               getNewFormatCharacter(selectedCharacter.id)
@@ -291,6 +291,7 @@ const getNewFormatCharacter = (characterId: string) => {
             :key="selectedCharacter.id"
             :character="getNewFormatCharacter(selectedCharacter.id)!"
           />
+          <!-- Character selected but no recommendations available -->
           <div v-else-if="selectedCharacter" class="card bg-dark border-primary text-center py-5">
             <div class="card-body">
               <p class="text-secondary mb-0">
@@ -298,6 +299,7 @@ const getNewFormatCharacter = (characterId: string) => {
               </p>
             </div>
           </div>
+          <!-- No character selected -->
           <div v-else class="card bg-dark border-primary text-center py-5">
             <div class="card-body">
               <p class="text-white fw-bold mb-0">Select a character to see team recommendations</p>
