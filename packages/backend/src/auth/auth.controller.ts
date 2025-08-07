@@ -1,6 +1,6 @@
-import { Controller, Post, Body } from '@nestjs/common'
-import { ApiTags, ApiOperation, ApiBody, ApiResponse } from '@nestjs/swagger'
-import { IsString, IsNotEmpty } from 'class-validator'
+import { Body, Controller, Post } from '@nestjs/common'
+import { ApiBody, ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger'
+import { IsNotEmpty, IsString } from 'class-validator'
 import { AuthService } from './auth.service'
 
 class LoginDto {

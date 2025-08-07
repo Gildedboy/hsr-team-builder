@@ -1,6 +1,6 @@
 import { Controller, Get, Param } from '@nestjs/common'
-import { ApiTags, ApiOperation, ApiParam, ApiResponse } from '@nestjs/swagger'
-import { TeamsService, TeamRecommendation } from './teams.service'
+import { ApiOperation, ApiParam, ApiResponse, ApiTags } from '@nestjs/swagger'
+import { TeamRecommendation, TeamsService } from './teams.service'
 
 @ApiTags('teams')
 @Controller('teams')

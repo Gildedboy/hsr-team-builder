@@ -1,24 +1,24 @@
 import {
-  Controller,
-  Get,
-  Param,
-  Query,
-  Put,
-  Post,
-  Delete,
   Body,
+  Controller,
+  Delete,
+  Get,
   HttpException,
   HttpStatus,
+  Param,
+  Post,
+  Put,
+  Query,
   UseGuards,
 } from '@nestjs/common'
 import {
-  ApiTags,
+  ApiBearerAuth,
+  ApiBody,
   ApiOperation,
   ApiParam,
   ApiQuery,
   ApiResponse,
-  ApiBody,
-  ApiBearerAuth,
+  ApiTags,
 } from '@nestjs/swagger'
 import { CharactersService } from './characters.service'
 import { Character } from '../types/Character'

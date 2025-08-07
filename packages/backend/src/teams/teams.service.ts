@@ -133,17 +133,17 @@ export class TeamsService {
         char.archetype.includes('Ultimate-Based'),
     )
 
-    if (complexCharacters.length >= 2) return 'Hard'
-    if (complexCharacters.length === 1) return 'Medium'
+    if (complexCharacters.length >= 2) {return 'Hard'}
+    if (complexCharacters.length === 1) {return 'Medium'}
     return 'Easy'
   }
 
   private calculateCost(characters: Character[]): 'F2P' | 'Low' | 'Medium' | 'High' {
     const fiveStars = characters.filter((char) => char.rarity === 5).length
 
-    if (fiveStars === 0) return 'F2P'
-    if (fiveStars === 1) return 'Low'
-    if (fiveStars === 2) return 'Medium'
+    if (fiveStars === 0) {return 'F2P'}
+    if (fiveStars === 1) {return 'Low'}
+    if (fiveStars === 2) {return 'Medium'}
     return 'High'
   }
 }
