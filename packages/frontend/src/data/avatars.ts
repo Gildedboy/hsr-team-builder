@@ -75,6 +75,8 @@ const characterAvatarMap: Record<string, string> = {
   hyacine: '1409',
   saber: '1014',
   archer: '1015',
+  hysilens: '1410',
+  cerydra: '1412',
 }
 
 export const getCharacterAvatar = (characterId: string): string => {
