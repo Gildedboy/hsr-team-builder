@@ -1,6 +1,6 @@
 import { NestFactory } from '@nestjs/core'
 import { ValidationPipe } from '@nestjs/common'
-import { SwaggerModule, DocumentBuilder } from '@nestjs/swagger'
+import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger'
 import { AppModule } from './app.module'
 
 async function bootstrap() {
@@ -35,18 +35,18 @@ async function bootstrap() {
     'http://localhost:5173',
     'http://localhost:3000',
     'http://localhost:4173',
-    process.env.PRODUCTION_DOMAIN || 'https://hsr-team-builder.gilded.dev'
+    process.env.PRODUCTION_DOMAIN || 'https://hsr-team-builder.gilded.dev',
   ]
-  
+
   app.enableCors({
     origin: (origin, callback) => {
       // Allow requests with no origin (mobile apps, etc.)
-      if (!origin) return callback(null, true)
-      
+      if (!origin) {return callback(null, true)}
+
       if (allowedOrigins.includes(origin)) {
         return callback(null, true)
       }
-      
+
       return callback(new Error('Not allowed by CORS'), false)
     },
     methods: ['GET', 'POST', 'PUT', 'DELETE'],
