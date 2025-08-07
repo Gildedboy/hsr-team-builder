@@ -170,7 +170,7 @@ export const staticCharacterList: Character[] = [
     path: 'Erudition',
     rarity: 4,
     roles: ['DPS'],
-    archetype: ['Ultimate-Based'],
+    archetype: ['Ultimate-Based', 'DoT'],
     labels: [],
   },
   {
