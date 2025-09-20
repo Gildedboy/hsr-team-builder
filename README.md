@@ -73,7 +73,7 @@ Contributions are welcome! Feel free to:
 
 ## Credits
 
-- **Character Images & Game Data**: [mar-7th/starrailres](https://github.com/mar-7th/starrailres) GitHub repository
+- **Character Images & Game Data**: [mar-7th/starrailres](https://github.com/mar-7th/starrailres) and [fribbels/hsr-optimizer](https://github.com/fribbels/hsr-optimizer) GitHub repositories
 - **Team Building Data**: [Gouba](https://www.youtube.com/@guobacertified) and [Prydwen](https://www.prydwen.gg/star-rail/)
 - **UI Framework**: Bootstrap 5
 - **Development**: Vue 3 + TypeScript + Vite
