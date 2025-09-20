@@ -33,6 +33,7 @@ async function bootstrap() {
   // Enable CORS with more restrictive settings
   const allowedOrigins = process.env.ALLOWED_ORIGINS?.split(',') || [
     'http://localhost:5173',
+    'http://localhost:5174', // Added for Vite dev server
     'http://localhost:3000',
     'http://localhost:4173',
     process.env.PRODUCTION_DOMAIN || 'https://hsr-team-builder.gilded.dev',
