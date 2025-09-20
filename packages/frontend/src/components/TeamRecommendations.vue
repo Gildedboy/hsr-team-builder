@@ -2,7 +2,7 @@
   <div class="card bg-dark border-primary h-100">
     <!-- No Data Message -->
     <div
-      v-if="(!character.teammateRecommendations || character.teammateRecommendations.length === 0) && (!character.teamCompositions || character.teamCompositions.length === 0)"
+      v-if="hasNoTeamData"
       class="card-body d-flex flex-column justify-content-center align-items-center text-center py-5"
     >
       <img
@@ -19,7 +19,7 @@
     </div>
 
     <!-- Regular Content -->
-    <div v-else-if="(character.teammateRecommendations && character.teammateRecommendations.length > 0) || (character.teamCompositions && character.teamCompositions.length > 0)" class="d-flex flex-column h-100">
+    <div v-else class="d-flex flex-column h-100">
       <div class="card-header text-center" style="padding-top: 10px">
         <h4 class="text-primary mb-0">Suggested Teammates for {{ character.name }}</h4>
       </div>
@@ -188,6 +188,11 @@ const currentTeammateSection = computed(() =>
 
 const currentTeamComposition = computed(() =>
   props.character.teamCompositions?.find((team) => team.name === activeTeamTab.value),
+)
+
+const hasNoTeamData = computed(() => 
+  (!props.character.teammateRecommendations || props.character.teammateRecommendations.length === 0) && 
+  (!props.character.teamCompositions || props.character.teamCompositions.length === 0)
 )
 
 const { hoveredCharacter, tooltipPosition, showTooltip, hideTooltip } = useTooltip()
