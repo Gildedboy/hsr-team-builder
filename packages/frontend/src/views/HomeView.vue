@@ -59,7 +59,8 @@ const getNewFormatCharacter = (characterId: string) => {
 // Check if selected character has full API data (not just static data)
 const hasFullCharacterData = (characterId: string) => {
   const character = characters.value.find((char) => char.id === characterId)
-  return character && character.teammateRecommendations && character.teammateRecommendations.length > 0
+  // Character has full data if it has the teammateRecommendations property (even if empty array)
+  return character && character.hasOwnProperty('teammateRecommendations')
 }
 </script>
 

@@ -193,17 +193,7 @@ const currentTeamComposition = computed(() =>
 const hasNoTeamData = computed(() => {
   const hasNoTeammates = !props.character.teammateRecommendations || props.character.teammateRecommendations.length === 0
   const hasNoCompositions = !props.character.teamCompositions || props.character.teamCompositions.length === 0
-  const result = hasNoTeammates && hasNoCompositions
-  
-  // Debug logging
-  console.log('Character:', props.character.name)
-  console.log('teammateRecommendations:', props.character.teammateRecommendations)
-  console.log('teamCompositions:', props.character.teamCompositions)
-  console.log('hasNoTeammates:', hasNoTeammates)
-  console.log('hasNoCompositions:', hasNoCompositions)
-  console.log('hasNoTeamData result:', result)
-  
-  return result
+  return hasNoTeammates && hasNoCompositions
 })
 
 const { hoveredCharacter, tooltipPosition, showTooltip, hideTooltip } = useTooltip()
