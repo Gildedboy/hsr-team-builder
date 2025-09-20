@@ -17,4 +17,4 @@ export const API_CONFIG = {
   },
 }
 
-console.log(`🌐 API Base URL: ${API_BASE_URL} (${isDevelopment ? 'development' : 'production'})`)
+//console.log(`🌐 API Base URL: ${API_BASE_URL} (${isDevelopment ? 'development' : 'production'})`)
