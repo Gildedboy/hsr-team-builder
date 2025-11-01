@@ -96,7 +96,7 @@ const hasFullCharacterData = (characterId: string) => {
                   <input
                     v-model="searchQueryRef"
                     type="text"
-                    placeholder="Search characters... (auto-search starts after 3 characters)"
+                    placeholder="Search characters..."
                     class="form-control bg-dark text-white border-primary pe-5"
                     @focus="onSearchFocus"
                     @blur="onSearchBlur"
@@ -112,7 +112,7 @@ const hasFullCharacterData = (characterId: string) => {
                 </div>
 
                 <!-- Search Help Text -->
-                <div v-if="!searchError && !isRateLimited && searchQueryRef.length === 0" class="text-muted small mt-1">
+                <div v-if="!searchError && !isRateLimited && searchQueryRef.length === 0" class="text-white small mt-1 opacity-75">
                   <i class="fas fa-keyboard"></i> Use ↑↓ arrows to navigate, Enter to select, Esc to clear
                 </div>
 
