@@ -81,16 +81,33 @@
   width: 100%;
   top: 100%;
   z-index: 1050;
-  max-height: 150px;
+  max-height: 200px;
   overflow-y: auto;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
 }
 
 .search-suggestion-item {
-  padding: 8px;
+  padding: 10px;
   cursor: pointer;
   display: flex;
   align-items: center;
   gap: 8px;
+  transition: background-color 0.15s ease;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.search-suggestion-item:last-child {
+  border-bottom: none;
+}
+
+.search-suggestion-item:hover,
+.search-suggestion-item.bg-primary {
+  background-color: rgba(0, 212, 255, 0.2) !important;
+  border-left: 3px solid #00d4ff;
+}
+
+.search-suggestion-item.bg-primary {
+  background-color: rgba(0, 212, 255, 0.3) !important;
 }
 
 .search-suggestion-avatar {
