@@ -5,6 +5,7 @@ import { CharacterService } from '../services/characterService'
 // Constants
 const MIN_SEARCH_LENGTH = 3
 const MIN_SEARCH_INTERVAL = 300 // Minimum time between API calls in milliseconds
+const AUTO_SEARCH_DELAY = 400 // Delay before auto-search triggers in milliseconds
 
 export function useSearch() {
   const searchQuery = ref<string>('')
@@ -15,6 +16,7 @@ export function useSearch() {
   const isSearching = ref<boolean>(false)
   const isRateLimited = ref<boolean>(false)
   let blurTimeout: ReturnType<typeof setTimeout> | null = null
+  let autoSearchTimeout: ReturnType<typeof setTimeout> | null = null
   let lastSearchTime = 0
 
   // Helper function to check rate limiting
@@ -45,7 +47,7 @@ export function useSearch() {
       console.log('🚦 Search rate limited, please wait...')
       isRateLimited.value = true
       searchError.value = 'Please wait a moment before searching again.'
-      
+
       // Clear rate limit feedback after interval
       setTimeout(() => {
         isRateLimited.value = false
@@ -59,13 +61,13 @@ export function useSearch() {
       isSearching.value = true
       isRateLimited.value = false
       searchError.value = '' // Clear any previous errors
-      
+
       // Update lastSearchTime when API call actually happens
       lastSearchTime = Date.now()
-      
+
       const results = await CharacterService.searchCharacters(query)
       console.log('✅ Search results:', results)
-      
+
       // Ensure results is an array
       if (Array.isArray(results)) {
         searchSuggestions.value = results.slice(0, 8) // Limit to 8 suggestions
@@ -79,7 +81,7 @@ export function useSearch() {
       console.error('❌ Search error:', error)
       searchSuggestions.value = []
       showSearchSuggestions.value = false
-      
+
       // Set user-friendly error message
       searchError.value = 'Search temporarily unavailable. Please try again.'
     } finally {
@@ -93,15 +95,30 @@ export function useSearch() {
     performSearch(sanitizedQuery)
   }
 
-  // Handle input changes (just hide suggestions if query is too short)
+  // Handle input changes with auto-search
   watch(searchQuery, (newQuery) => {
     const sanitizedQuery = sanitizeSearchInput(newQuery)
-    
+
+    // Clear any existing auto-search timeout
+    if (autoSearchTimeout) {
+      clearTimeout(autoSearchTimeout)
+      autoSearchTimeout = null
+    }
+
+    // Reset selected index when query changes
+    selectedIndex.value = -1
+
     if (sanitizedQuery.length < MIN_SEARCH_LENGTH) {
       showSearchSuggestions.value = false
       searchSuggestions.value = []
-      selectedIndex.value = -1
+      return
     }
+
+    // Auto-search after delay
+    autoSearchTimeout = setTimeout(() => {
+      performSearch(sanitizedQuery)
+      autoSearchTimeout = null
+    }, AUTO_SEARCH_DELAY)
   })
 
   const selectCharacterFromSearch = (character: Character, onSelect: (char: Character) => void) => {
@@ -121,7 +138,7 @@ export function useSearch() {
     if (blurTimeout) {
       clearTimeout(blurTimeout)
     }
-    
+
     blurTimeout = setTimeout(() => {
       showSearchSuggestions.value = false
       selectedIndex.value = -1
@@ -134,42 +151,77 @@ export function useSearch() {
       clearTimeout(blurTimeout)
       blurTimeout = null
     }
-    
-    // Only show suggestions if we have search results and query is long enough
-    if (searchQuery.value.length >= 3 && searchSuggestions.value.length > 0) {
+
+    // Show suggestions if we have them and query is long enough
+    if (searchQuery.value.length >= MIN_SEARCH_LENGTH && searchSuggestions.value.length > 0) {
       showSearchSuggestions.value = true
+    }
+
+    // Trigger search if we have enough characters but no suggestions yet
+    if (searchQuery.value.length >= MIN_SEARCH_LENGTH && searchSuggestions.value.length === 0) {
+      // Clear any existing timeout and trigger search immediately
+      if (autoSearchTimeout) {
+        clearTimeout(autoSearchTimeout)
+        autoSearchTimeout = null
+      }
+      triggerSearch()
     }
   }
 
   const onKeyDown = (event: KeyboardEvent, onSelect: (char: Character) => void) => {
+    // Handle Enter key when no suggestions are visible but we have results
+    if (
+      !showSearchSuggestions.value &&
+      searchSuggestions.value.length > 0 &&
+      event.key === 'Enter'
+    ) {
+      event.preventDefault()
+      selectCharacterFromSearch(searchSuggestions.value[0], onSelect)
+      return
+    }
+
+    // Handle Enter key for general search when no suggestions
+    if (!showSearchSuggestions.value && event.key === 'Enter') {
+      event.preventDefault()
+      triggerSearch()
+      return
+    }
+
+    // Return early if no suggestions are visible
     if (!showSearchSuggestions.value || searchSuggestions.value.length === 0) {
-      if (event.key === 'Enter' && searchSuggestions.value.length === 1) {
-        event.preventDefault()
-        selectCharacterFromSearch(searchSuggestions.value[0], onSelect)
-      }
       return
     }
 
     switch (event.key) {
       case 'ArrowDown':
         event.preventDefault()
-        selectedIndex.value = Math.min(selectedIndex.value + 1, searchSuggestions.value.length - 1)
+        if (selectedIndex.value < searchSuggestions.value.length - 1) {
+          selectedIndex.value++
+        } else {
+          selectedIndex.value = 0 // Wrap to first item
+        }
         break
       case 'ArrowUp':
         event.preventDefault()
-        selectedIndex.value = Math.max(selectedIndex.value - 1, -1)
+        if (selectedIndex.value > 0) {
+          selectedIndex.value--
+        } else if (selectedIndex.value === 0) {
+          selectedIndex.value = searchSuggestions.value.length - 1 // Wrap to last item
+        } else {
+          selectedIndex.value = searchSuggestions.value.length - 1 // Set to last item if -1
+        }
         break
       case 'Enter':
         event.preventDefault()
         if (selectedIndex.value >= 0 && selectedIndex.value < searchSuggestions.value.length) {
           // Select highlighted suggestion
           selectCharacterFromSearch(searchSuggestions.value[selectedIndex.value], onSelect)
-        } else if (searchSuggestions.value.length > 0) {
-          // Select first suggestion if available
+        } else if (searchSuggestions.value.length === 1) {
+          // Auto-select if only one option
           selectCharacterFromSearch(searchSuggestions.value[0], onSelect)
-        } else {
-          // No suggestions visible, trigger search
-          triggerSearch()
+        } else if (searchSuggestions.value.length > 0) {
+          // Select first suggestion as default
+          selectCharacterFromSearch(searchSuggestions.value[0], onSelect)
         }
         break
       case 'Escape':
@@ -182,8 +234,12 @@ export function useSearch() {
       case 'Tab':
         if (showSearchSuggestions.value) {
           event.preventDefault()
-          showSearchSuggestions.value = false
-          selectedIndex.value = -1
+          // Tab selects first suggestion or highlighted one
+          if (selectedIndex.value >= 0 && selectedIndex.value < searchSuggestions.value.length) {
+            selectCharacterFromSearch(searchSuggestions.value[selectedIndex.value], onSelect)
+          } else if (searchSuggestions.value.length > 0) {
+            selectCharacterFromSearch(searchSuggestions.value[0], onSelect)
+          }
         }
         break
     }
@@ -193,6 +249,9 @@ export function useSearch() {
   onUnmounted(() => {
     if (blurTimeout) {
       clearTimeout(blurTimeout)
+    }
+    if (autoSearchTimeout) {
+      clearTimeout(autoSearchTimeout)
     }
   })
 

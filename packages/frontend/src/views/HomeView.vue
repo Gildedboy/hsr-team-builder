@@ -38,7 +38,6 @@ const {
   selectCharacter,
   handleSelectFromSearch,
   handleClearFilters,
-  triggerSearch,
   onSearchFocus,
   onSearchBlur,
   isCharacterRecommended,
@@ -93,26 +92,28 @@ const hasFullCharacterData = (characterId: string) => {
             <div class="card-body">
               <!-- Search Bar -->
               <div class="mb-3 position-relative">
-                <div class="input-group">
+                <div class="position-relative">
                   <input
                     v-model="searchQueryRef"
                     type="text"
-                    placeholder="Search..."
-                    class="form-control bg-dark text-white border-primary"
+                    placeholder="Search characters..."
+                    class="form-control bg-dark text-white border-primary pe-5"
                     @focus="onSearchFocus"
                     @blur="onSearchBlur"
                     @keydown="onKeyDown($event, (char) => handleSelectFromSearch(char))"
+                    autocomplete="off"
                   />
-                  <button
-                    class="btn btn-primary"
-                    type="button"
-                    :disabled="searchQueryRef.length < MIN_SEARCH_LENGTH || isSearching"
-                    @click="triggerSearch"
-                    aria-label="Search characters"
-                  >
-                    <i v-if="isSearching" class="fas fa-spinner fa-spin"></i>
-                    <i v-else class="fas fa-search"></i>
-                  </button>
+                  <!-- Search indicator -->
+                  <div class="position-absolute top-50 end-0 translate-middle-y me-3">
+                    <i v-if="isSearching" class="fas fa-spinner fa-spin text-primary"></i>
+                    <i v-else-if="searchQueryRef.length >= MIN_SEARCH_LENGTH" class="fas fa-search text-success"></i>
+                    <i v-else class="fas fa-search text-muted"></i>
+                  </div>
+                </div>
+
+                <!-- Search Help Text -->
+                <div v-if="!searchError && !isRateLimited && searchQueryRef.length === 0" class="text-white small mt-1 opacity-75">
+                  <i class="fas fa-keyboard"></i> Use ↑↓ arrows to navigate, Enter to select, Esc to clear
                 </div>
 
                 <!-- Rate Limiting Feedback -->

@@ -1,10 +1,10 @@
 // API Configuration
 const isDevelopment = import.meta.env.DEV
 
-// Development API URL (your local backend)
-const DEV_API_URL = 'http://localhost:3001'
+// Development API URL (can be overridden by VITE_API_URL env var)
+const DEV_API_URL = import.meta.env.VITE_API_URL || 'http://localhost:3001'
 
-// Production API URL (your custom Railway backend domain)
+// Production API URL (can be overridden by VITE_API_URL env var)
 const PROD_API_URL = import.meta.env.VITE_API_URL || 'https://api.hsr-team-builder.gilded.dev'
 
 export const API_BASE_URL = isDevelopment ? DEV_API_URL : PROD_API_URL

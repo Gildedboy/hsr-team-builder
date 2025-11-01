@@ -79,6 +79,7 @@ const characterAvatarMap: Record<string, string> = {
   cerydra: '1412',
   evernight: '1413',
   'dan-heng-pt': '1414',
+  cyrene: '1415',
 }
 
 export const getCharacterAvatar = (characterId: string): string => {
