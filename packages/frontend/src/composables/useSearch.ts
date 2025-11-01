@@ -47,7 +47,7 @@ export function useSearch() {
       console.log('🚦 Search rate limited, please wait...')
       isRateLimited.value = true
       searchError.value = 'Please wait a moment before searching again.'
-      
+
       // Clear rate limit feedback after interval
       setTimeout(() => {
         isRateLimited.value = false
@@ -61,13 +61,13 @@ export function useSearch() {
       isSearching.value = true
       isRateLimited.value = false
       searchError.value = '' // Clear any previous errors
-      
+
       // Update lastSearchTime when API call actually happens
       lastSearchTime = Date.now()
-      
+
       const results = await CharacterService.searchCharacters(query)
       console.log('✅ Search results:', results)
-      
+
       // Ensure results is an array
       if (Array.isArray(results)) {
         searchSuggestions.value = results.slice(0, 8) // Limit to 8 suggestions
@@ -81,7 +81,7 @@ export function useSearch() {
       console.error('❌ Search error:', error)
       searchSuggestions.value = []
       showSearchSuggestions.value = false
-      
+
       // Set user-friendly error message
       searchError.value = 'Search temporarily unavailable. Please try again.'
     } finally {
@@ -98,22 +98,22 @@ export function useSearch() {
   // Handle input changes with auto-search
   watch(searchQuery, (newQuery) => {
     const sanitizedQuery = sanitizeSearchInput(newQuery)
-    
+
     // Clear any existing auto-search timeout
     if (autoSearchTimeout) {
       clearTimeout(autoSearchTimeout)
       autoSearchTimeout = null
     }
-    
+
     // Reset selected index when query changes
     selectedIndex.value = -1
-    
+
     if (sanitizedQuery.length < MIN_SEARCH_LENGTH) {
       showSearchSuggestions.value = false
       searchSuggestions.value = []
       return
     }
-    
+
     // Auto-search after delay
     autoSearchTimeout = setTimeout(() => {
       performSearch(sanitizedQuery)
@@ -138,7 +138,7 @@ export function useSearch() {
     if (blurTimeout) {
       clearTimeout(blurTimeout)
     }
-    
+
     blurTimeout = setTimeout(() => {
       showSearchSuggestions.value = false
       selectedIndex.value = -1
@@ -151,12 +151,12 @@ export function useSearch() {
       clearTimeout(blurTimeout)
       blurTimeout = null
     }
-    
+
     // Show suggestions if we have them and query is long enough
     if (searchQuery.value.length >= MIN_SEARCH_LENGTH && searchSuggestions.value.length > 0) {
       showSearchSuggestions.value = true
     }
-    
+
     // Trigger search if we have enough characters but no suggestions yet
     if (searchQuery.value.length >= MIN_SEARCH_LENGTH && searchSuggestions.value.length === 0) {
       // Clear any existing timeout and trigger search immediately
@@ -170,12 +170,16 @@ export function useSearch() {
 
   const onKeyDown = (event: KeyboardEvent, onSelect: (char: Character) => void) => {
     // Handle Enter key when no suggestions are visible but we have results
-    if (!showSearchSuggestions.value && searchSuggestions.value.length > 0 && event.key === 'Enter') {
+    if (
+      !showSearchSuggestions.value &&
+      searchSuggestions.value.length > 0 &&
+      event.key === 'Enter'
+    ) {
       event.preventDefault()
       selectCharacterFromSearch(searchSuggestions.value[0], onSelect)
       return
     }
-    
+
     // Handle Enter key for general search when no suggestions
     if (!showSearchSuggestions.value && event.key === 'Enter') {
       event.preventDefault()
@@ -225,6 +229,7 @@ export function useSearch() {
         showSearchSuggestions.value = false
         searchSuggestions.value = []
         selectedIndex.value = -1
+        searchQuery.value = ''
         break
       case 'Tab':
         if (showSearchSuggestions.value) {

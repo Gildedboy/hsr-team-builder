@@ -27,8 +27,9 @@ export class CharactersService {
         this.logger.log('🚀 Characters served from cache')
         return cachedCharacters
       }
-    } catch (error) {
-      this.logger.error('❌ Cache GET error:', error.message)
+    } catch (error: unknown) {
+      const errorMessage = error instanceof Error ? error.message : JSON.stringify(error)
+      this.logger.error('❌ Cache GET error:', errorMessage)
     }
 
     // If not in cache, get from database and cache it
@@ -38,10 +39,11 @@ export class CharactersService {
     try {
       this.logger.log('💾 Characters loaded from database and cached')
       await this.cacheManager.set(cacheKey, characters, 600) // Cache for 10 minutes
-    } catch (error) {
-      this.logger.error('❌ Cache SET error:', error.message)
+    } catch (error: unknown) {
+      const errorMessage = error instanceof Error ? error.message : JSON.stringify(error)
+      this.logger.error('❌ Cache SET error:', errorMessage)
     }
-    
+
     return characters
   }
 
