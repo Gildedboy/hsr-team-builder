@@ -20,19 +20,28 @@ export class CharactersService {
   async findAll(): Promise<Character[]> {
     const cacheKey = 'all-characters'
 
-    // Try to get from cache first
-    const cachedCharacters = await this.cacheManager.get<Character[]>(cacheKey)
-    if (cachedCharacters) {
-      console.log('🚀 Characters served from cache')
-      return cachedCharacters
+    try {
+      // Try to get from cache first
+      const cachedCharacters = await this.cacheManager.get<Character[]>(cacheKey)
+      if (cachedCharacters) {
+        this.logger.log('🚀 Characters served from cache')
+        return cachedCharacters
+      }
+    } catch (error) {
+      this.logger.error('❌ Cache GET error:', error.message)
     }
 
     // If not in cache, get from database and cache it
     const entities = await this.characterRepository.find()
     const characters = entities.map(this.entityToCharacter)
 
-    console.log('💾 Characters loaded from database and cached')
-    await this.cacheManager.set(cacheKey, characters, 600) // Cache for 10 minutes
+    try {
+      this.logger.log('💾 Characters loaded from database and cached')
+      await this.cacheManager.set(cacheKey, characters, 600) // Cache for 10 minutes
+    } catch (error) {
+      this.logger.error('❌ Cache SET error:', error.message)
+    }
+    
     return characters
   }
 
