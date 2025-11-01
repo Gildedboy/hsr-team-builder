@@ -38,7 +38,6 @@ const {
   selectCharacter,
   handleSelectFromSearch,
   handleClearFilters,
-  triggerSearch,
   onSearchFocus,
   onSearchBlur,
   isCharacterRecommended,
