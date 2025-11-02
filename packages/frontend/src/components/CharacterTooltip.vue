@@ -44,12 +44,6 @@
         <span>{{ character.path }}</span>
       </div>
     </div>
-
-    <div class="tooltip-labels">
-      <span v-for="label in character.labels.slice().sort()" :key="label" class="tooltip-label">
-        {{ label }}
-      </span>
-    </div>
   </div>
 </template>
 
@@ -150,23 +144,5 @@ defineProps<Props>()
 .tooltip-separator {
   color: #6c757d;
   margin: 0 2px;
-}
-
-.tooltip-labels {
-  margin-top: 8px;
-  display: flex;
-  flex-wrap: wrap;
-  gap: 4px;
-}
-
-.tooltip-label {
-  font-size: 11px;
-  padding: 3px 6px;
-  border-radius: 10px;
-  background: #00d4ff;
-  color: black;
-  font-weight: 500;
-  line-height: 1.2;
-  word-break: break-word;
 }
 </style>

@@ -18,7 +18,7 @@ export function useHomeView(characters: ComputedRef<Character[]>) {
 
   const { charactersByRole } = useCharacterGrouping(filteredCharacters, selectedArchetypes)
 
-  const { selectedCharacter, selectCharacter, isCharacterRecommended, getRecommendationTier } =
+  const { selectedCharacter, selectCharacter, clearSelection, isCharacterRecommended, getRecommendationTier } =
     useCharacterSelection()
 
   const {
@@ -44,7 +44,7 @@ export function useHomeView(characters: ComputedRef<Character[]>) {
   const handleClearFilters = () => {
     clearFilters()
     searchQueryRef.value = ''
-    selectedCharacter.value = null
+    clearSelection()
   }
 
   const getActiveTab = () => {

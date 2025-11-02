@@ -12,6 +12,10 @@ export function useCharacterSelection() {
     }
   }
 
+  const clearSelection = () => {
+    selectedCharacter.value = null
+  }
+
   const isCharacterRecommended = (selectedChar: Character, charId: string): boolean => {
     if (!selectedChar.teammateRecommendations) return false
     
@@ -50,6 +54,7 @@ export function useCharacterSelection() {
   return {
     selectedCharacter,
     selectCharacter,
+    clearSelection,
     isCharacterRecommended,
     getRecommendationTier
   }

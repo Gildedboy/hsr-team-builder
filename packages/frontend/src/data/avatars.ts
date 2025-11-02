@@ -90,6 +90,15 @@ export const getCharacterAvatar = (characterId: string): string => {
   return '/images/placeholder.svg' // fallback
 }
 
+// Get character image for the character detail panel (uses same mapping as avatars)
+export const getCharacterImage = (characterId: string): string => {
+  const imageId = characterAvatarMap[characterId]
+  if (imageId) {
+    return `/images/previews/${imageId}.webp`
+  }
+  return '/images/placeholder.svg' // fallback
+}
+
 // Handle image loading errors silently
 export const handleImageError = (event: Event) => {
   const img = event.target as HTMLImageElement
