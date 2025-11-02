@@ -8,6 +8,7 @@ import { useCharactersApi } from '@/composables/useCharactersApi'
 import { FILTER_OPTIONS } from '@/constants/filterOptions'
 import { COLORS } from '@/constants/design'
 import { onMounted } from 'vue'
+import type { Character } from '@hsr-team-builder/shared'
 
 // Use API-based characters
 const { characters, loadCharacters } = useCharactersApi()
@@ -66,6 +67,26 @@ const hasFullCharacterData = (characterId: string) => {
   // Character has full data if it has the teammateRecommendations property (even if empty array)
   return character && character.hasOwnProperty('teammateRecommendations')
 }
+
+// Scroll to character details when character is selected
+const scrollToCharacterDetails = () => {
+  const filterCard = document.querySelector('.filter-card')
+  if (filterCard) {
+    filterCard.scrollIntoView({ 
+      behavior: 'smooth', 
+      block: 'start' 
+    })
+  }
+}
+
+// Wrapper function for character selection with auto-scroll
+const selectCharacterWithScroll = (character: Character, shouldTriggerSearch = true) => {
+  selectCharacter(character, shouldTriggerSearch)
+  // Use nextTick to ensure the DOM has updated with the character details
+  setTimeout(() => {
+    scrollToCharacterDetails()
+  }, 100)
+}
 </script>
 
 <template>
@@ -84,7 +105,7 @@ const hasFullCharacterData = (characterId: string) => {
       <div class="row mb-5">
         <!-- Dynamic Filter/Character Section -->
         <div class="col-lg-3 col-md-4 mb-4">
-          <div class="card bg-dark border-primary filter-card" style="height: 650px; overflow: hidden;">
+          <div class="card bg-dark border-primary filter-card" style="height: var(--panel-height); overflow: hidden;">
             <!-- Filter Section Header (when no character selected) -->
             <div v-if="!selectedCharacter" class="card-header d-flex justify-content-between align-items-center px-3">
               <h2 class="h5 text-primary mb-0">Filters</h2>
@@ -297,7 +318,7 @@ const hasFullCharacterData = (characterId: string) => {
             </div>
             
             <!-- Character Detail Content (when character selected) -->
-            <div v-else class="card-body character-detail-content" style="min-height: 650px; max-height: 650px; overflow-y: auto; overflow-x: hidden; word-wrap: break-word; box-sizing: border-box; padding-bottom: 2rem;">
+            <div v-else class="card-body character-detail-content" style="min-height: var(--panel-height); max-height: var(--panel-height); overflow-y: auto; overflow-x: hidden; word-wrap: break-word; box-sizing: border-box; padding-bottom: 2rem;">
               <!-- Search Input for Character Details -->
               <div class="mb-3 position-relative">
                 <div class="position-relative">
@@ -390,7 +411,7 @@ const hasFullCharacterData = (characterId: string) => {
               :src="getCharacterImage(selectedCharacter.id)" 
               :alt="selectedCharacter.name"
               class="detail-character-image"
-              style="width: 200px; height: auto; object-fit: cover; border-radius: 8px; transform: translate(-16.7143%, -6.25%); margin-top: 20px;"
+              style="width: 200px; height: auto; object-fit: cover; border-radius: 8px; transform: translate(var(--character-image-offset-x), var(--character-image-offset-y)); margin-top: 20px;"
             />
                   <div class="detail-info flex-grow-1">
                     <div class="detail-name-row d-flex align-items-center gap-2 mb-2">
@@ -482,7 +503,7 @@ const hasFullCharacterData = (characterId: string) => {
         <!-- Team Recommendations -->
         <div class="col-lg-9 col-md-8">
           <!-- Loading state when character is selected but doesn't have full API data -->
-          <div v-if="selectedCharacter && !hasFullCharacterData(selectedCharacter.id)" class="card bg-dark border-primary text-center py-5" style="min-height: 650px;">
+          <div v-if="selectedCharacter && !hasFullCharacterData(selectedCharacter.id)" class="card bg-dark border-primary text-center py-5" style="min-height: var(--panel-height);">
             <div class="card-body">
                             <div class="spinner-border text-primary mb-3" aria-label="Loading">
                 <span class="visually-hidden">Loading...</span>
@@ -499,10 +520,10 @@ const hasFullCharacterData = (characterId: string) => {
             "
             :key="selectedCharacter.id"
             :character="getNewFormatCharacter(selectedCharacter.id)!"
-            style="min-height: 650px; max-height: 650px; overflow-y: auto;"
+            style="min-height: var(--panel-height); max-height: var(--panel-height); overflow-y: auto;"
           />
           <!-- Character selected but no recommendations available -->
-          <div v-else-if="selectedCharacter" class="card bg-dark border-primary text-center py-5" style="min-height: 650px;">
+          <div v-else-if="selectedCharacter" class="card bg-dark border-primary text-center py-5" style="min-height: var(--panel-height);">
             <div class="card-body">
               <p class="text-secondary mb-0">
                 Character recommendations not available in new format
@@ -510,7 +531,7 @@ const hasFullCharacterData = (characterId: string) => {
             </div>
           </div>
           <!-- No character selected -->
-          <div v-else class="card bg-dark border-primary text-center py-5" style="min-height: 650px;">
+          <div v-else class="card bg-dark border-primary text-center py-5" style="min-height: var(--panel-height);">
             <div class="card-body">
               <p class="text-white fw-bold mb-0">Select a character to see team recommendations</p>
             </div>
@@ -558,7 +579,7 @@ const hasFullCharacterData = (characterId: string) => {
           :selected-rarities="selectedRarities"
           :get-active-tab="getActiveTab"
           :has-characters-in-role="hasCharactersInRole"
-          @select="selectCharacter"
+          @select="selectCharacterWithScroll"
         />
       </div>
     </div>
@@ -566,6 +587,13 @@ const hasFullCharacterData = (characterId: string) => {
   </main>
 </template>
 <style scoped>
+/* Character image positioning variables */
+:root {
+  --character-image-offset-x: -16.7143%; /* Horizontal offset for character portrait positioning */
+  --character-image-offset-y: -6.25%;   /* Vertical offset for character portrait positioning */
+  --panel-height: 650px;                /* Standard height for filter and character detail panels */
+}
+
 .reset-button {
   height: 36px;
   padding: 8px 16px;
