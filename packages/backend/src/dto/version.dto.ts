@@ -1,4 +1,5 @@
 import { IsArray, IsBoolean, IsDateString, IsNotEmpty, IsOptional, IsString } from 'class-validator'
+import { Transform } from 'class-transformer'
 
 export class CreateVersionDto {
   @IsString()
@@ -38,10 +39,12 @@ export class CreateVersionDto {
 
   @IsOptional()
   @IsBoolean()
+  @Transform(({ value }) => value === 'true')
   isActive?: boolean
 
   @IsOptional()
   @IsBoolean()
+  @Transform(({ value }) => value === 'true')
   isPrerelease?: boolean
 }
 
@@ -80,10 +83,12 @@ export class UpdateVersionDto {
 
   @IsOptional()
   @IsBoolean()
+  @Transform(({ value }) => value === 'true')
   isActive?: boolean
 
   @IsOptional()
   @IsBoolean()
+  @Transform(({ value }) => value === 'true')
   isPrerelease?: boolean
 }
 
@@ -94,5 +99,6 @@ export class ChangelogQueryDto {
 
   @IsOptional()
   @IsBoolean()
+  @Transform(({ value }) => value === 'true')
   includePrerelease?: boolean = false
 }

@@ -98,22 +98,28 @@
           <ul class="nav nav-tabs mb-3" role="tablist">
             <li class="nav-item" role="presentation">
               <button
+                id="version-info-tab-button"
                 class="nav-link custom-tab active"
                 data-bs-toggle="tab"
                 data-bs-target="#version-info-tab"
                 type="button"
                 role="tab"
+                aria-controls="version-info-tab"
+                aria-selected="true"
               >
                 Version Info
               </button>
             </li>
             <li class="nav-item" role="presentation">
               <button
+                id="roadmap-tab-button"
                 class="nav-link custom-tab"
                 data-bs-toggle="tab"
                 data-bs-target="#todo-tab"
                 type="button"
                 role="tab"
+                aria-controls="todo-tab"
+                aria-selected="false"
               >
                 Roadmap
               </button>
@@ -123,7 +129,7 @@
           <!-- Tab Content -->
           <div class="tab-content">
             <!-- Version Info Tab -->
-            <div class="tab-pane fade show active" id="version-info-tab" role="tabpanel">
+            <div class="tab-pane fade show active" id="version-info-tab" role="tabpanel" aria-labelledby="version-info-tab-button">
               <div class="text-white">
                 <h6 class="text-primary mb-3">{{ appVersion }} Release Notes</h6>
 
@@ -216,7 +222,7 @@
             </div>
 
             <!-- Roadmap Tab -->
-            <div class="tab-pane fade" id="todo-tab" role="tabpanel">
+            <div class="tab-pane fade" id="todo-tab" role="tabpanel" aria-labelledby="roadmap-tab-button">
               <div class="text-white">
                 <h6 class="text-primary mb-3">Upcoming Features</h6>
                 <ul class="list-unstyled">
@@ -234,6 +240,7 @@
 </template>
 
 <script setup lang="ts">
+import { onMounted } from 'vue'
 import { useVersionInfo } from '@/composables/useVersionInfo'
 
 // Get version info from API
@@ -242,8 +249,14 @@ const {
   isLoading,
   error,
   appVersion,
-  hasVersionInfo
+  hasVersionInfo,
+  fetchVersionInfo
 } = useVersionInfo()
+
+// Fetch version info when component mounts
+onMounted(() => {
+  fetchVersionInfo()
+})
 </script>
 
 <style scoped>

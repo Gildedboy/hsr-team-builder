@@ -1,4 +1,4 @@
-import { ref, computed, onMounted } from 'vue'
+import { ref, computed } from 'vue'
 import { API_BASE_URL } from '@/config/api'
 
 export interface VersionInfo {
@@ -62,11 +62,6 @@ export function useVersionInfo() {
 
   // Check if we have version info loaded
   const hasVersionInfo = computed(() => currentVersionInfo.value !== null)
-
-  // Auto-fetch current version info when composable is used
-  onMounted(() => {
-    fetchVersionInfo()
-  })
 
   return {
     // State

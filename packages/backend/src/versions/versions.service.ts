@@ -9,6 +9,7 @@ import { ChangelogQueryDto, CreateVersionDto, UpdateVersionDto } from '../dto/ve
 @Injectable()
 export class VersionsService {
   private readonly logger = new Logger(VersionsService.name)
+  private static readonly MAX_CHANGELOG_LIMIT = 20
 
   constructor(
     @InjectRepository(VersionEntity)
@@ -166,7 +167,7 @@ export class VersionsService {
   }
 
   async getChangelog(query: ChangelogQueryDto): Promise<VersionEntity[]> {
-    const limit = Math.min(Number.parseInt(query.limit || '5'), 20) // Max 20 entries
+    const limit = Math.min(Number.parseInt(query.limit || '5', 10), VersionsService.MAX_CHANGELOG_LIMIT) // Max limit entries
     const cacheKey = `changelog:${limit}:${query.includePrerelease || false}`
     
     // Try to get from cache first
@@ -259,7 +260,7 @@ export class VersionsService {
     }
     
     // Add changelog cache keys (common combinations)
-    for (let i = 1; i <= 20; i++) {
+    for (let i = 1; i <= VersionsService.MAX_CHANGELOG_LIMIT; i++) {
       keys.push(`changelog:${i}:false`, `changelog:${i}:true`)
     }
 
