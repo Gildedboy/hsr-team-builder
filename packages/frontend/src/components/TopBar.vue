@@ -13,7 +13,7 @@
           data-bs-target="#infoModal"
           style="font-size: 10px"
         >
-          {{ appVersion }} {{ deploymentType }}
+          {{ appVersion }}
         </span>
       </div>
 
@@ -56,8 +56,8 @@
             <input type="hidden" name="_subject" value="HSR Team Builder Contact" />
 
             <div class="mb-3">
-              <label class="form-label text-white small">Type:</label>
-              <select name="type" class="form-select bg-dark text-white border-primary" required>
+              <label for="contact-type" class="form-label text-white small">Type:</label>
+              <select id="contact-type" name="type" class="form-select bg-dark text-white border-primary" required>
                 <option value="">Select...</option>
                 <option value="team-suggestion">Team/Teammate Suggestion</option>
                 <option value="bug-report">Bug Report</option>
@@ -66,8 +66,9 @@
             </div>
 
             <div class="mb-3">
-              <label class="form-label text-white small">Message:</label>
+              <label for="contact-message" class="form-label text-white small">Message:</label>
               <textarea
+                id="contact-message"
                 name="message"
                 class="form-control bg-dark text-white border-primary"
                 rows="4"
@@ -97,24 +98,137 @@
           <ul class="nav nav-tabs mb-3" role="tablist">
             <li class="nav-item" role="presentation">
               <button
+                id="version-info-tab-button"
                 class="nav-link custom-tab active"
+                data-bs-toggle="tab"
+                data-bs-target="#version-info-tab"
+                type="button"
+                role="tab"
+                aria-controls="version-info-tab"
+                aria-selected="true"
+              >
+                Version Info
+              </button>
+            </li>
+            <li class="nav-item" role="presentation">
+              <button
+                id="roadmap-tab-button"
+                class="nav-link custom-tab"
                 data-bs-toggle="tab"
                 data-bs-target="#todo-tab"
                 type="button"
                 role="tab"
+                aria-controls="todo-tab"
+                aria-selected="false"
               >
-                TO-DO
+                Roadmap
               </button>
             </li>
           </ul>
 
           <!-- Tab Content -->
           <div class="tab-content">
-            <div class="tab-pane fade" id="todo-tab" role="tabpanel">
+            <!-- Version Info Tab -->
+            <div class="tab-pane fade show active" id="version-info-tab" role="tabpanel" aria-labelledby="version-info-tab-button">
+              <div class="text-white">
+                <h6 class="text-primary mb-3">{{ appVersion }} Release Notes</h6>
+
+                <!-- Loading State -->
+                <div v-if="isLoading && !hasVersionInfo" class="mb-3">
+                  <div class="spinner-border spinner-border-sm text-primary me-2" role="status">
+                    <span class="visually-hidden">Loading...</span>
+                  </div>
+                  <small class="text-muted">Loading version information...</small>
+                </div>
+
+                <!-- Error State -->
+                <div v-else-if="error && !hasVersionInfo" class="mb-3">
+                  <div class="text-warning small">
+                    <i class="fas fa-exclamation-triangle me-1"></i>
+                    Unable to load latest version info. Showing cached content.
+                  </div>
+                </div>
+
+                <!-- Dynamic Content -->
+                <div v-if="currentVersionInfo" class="version-content">
+                  <div v-if="currentVersionInfo.description" class="mb-3">
+                    <p class="text-light">{{ currentVersionInfo.description }}</p>
+                  </div>
+
+                  <!-- Features -->
+                  <div v-if="currentVersionInfo.features?.length" class="mb-3">
+                    <h6 class="text-success mb-2">✨ New Features</h6>
+                    <ul class="list-unstyled">
+                      <li
+                        v-for="feature in currentVersionInfo.features"
+                        :key="feature"
+                        class="mb-1 small"
+                      >
+                        • {{ feature }}
+                      </li>
+                    </ul>
+                  </div>
+
+                  <!-- Bug Fixes -->
+                  <div v-if="currentVersionInfo.bugFixes?.length" class="mb-3">
+                    <h6 class="text-info mb-2">🐛 Bug Fixes</h6>
+                    <ul class="list-unstyled">
+                      <li v-for="fix in currentVersionInfo.bugFixes" :key="fix" class="mb-1 small">
+                        • {{ fix }}
+                      </li>
+                    </ul>
+                  </div>
+
+                  <!-- Breaking Changes -->
+                  <div v-if="currentVersionInfo.breakingChanges?.length" class="mb-3">
+                    <h6 class="text-warning mb-2">⚠️ Breaking Changes</h6>
+                    <ul class="list-unstyled">
+                      <li
+                        v-for="change in currentVersionInfo.breakingChanges"
+                        :key="change"
+                        class="mb-1 small"
+                      >
+                        • {{ change }}
+                      </li>
+                    </ul>
+                  </div>
+
+                  <!-- Known Issues -->
+                  <div v-if="currentVersionInfo.knownIssues?.length" class="mb-3">
+                    <h6 class="text-danger mb-2">🔴 Known Issues</h6>
+                    <ul class="list-unstyled">
+                      <li
+                        v-for="issue in currentVersionInfo.knownIssues"
+                        :key="issue"
+                        class="mb-1 small"
+                      >
+                        • {{ issue }}
+                      </li>
+                    </ul>
+                  </div>
+
+                  <!-- Release Date -->
+                  <div
+                    v-if="currentVersionInfo.releaseDate"
+                    class="mt-3 pt-2 border-top border-secondary"
+                  >
+                    <small class="text-muted">
+                      Released on
+                      {{ new Date(currentVersionInfo.releaseDate).toLocaleDateString() }}
+                    </small>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Roadmap Tab -->
+            <div class="tab-pane fade" id="todo-tab" role="tabpanel" aria-labelledby="roadmap-tab-button">
               <div class="text-white">
                 <h6 class="text-primary mb-3">Upcoming Features</h6>
                 <ul class="list-unstyled">
                   <li class="mb-2">• Add "Check Prydwen Build" link</li>
+                  <li class="mb-2">• Enhanced mobile responsiveness</li>
+                  <li class="mb-2">• Additional team composition recommendations</li>
                 </ul>
               </div>
             </div>
@@ -126,10 +240,23 @@
 </template>
 
 <script setup lang="ts">
-// Get version from environment variable, fallback to default
-const appVersion = import.meta.env.VITE_APP_VERSION || 'v1.2.0'
-const apiUrl = import.meta.env.VITE_API_URL
-const deploymentType = apiUrl ? 'API-Enabled' : 'Static'
+import { onMounted } from 'vue'
+import { useVersionInfo } from '@/composables/useVersionInfo'
+
+// Get version info from API
+const {
+  currentVersionInfo,
+  isLoading,
+  error,
+  appVersion,
+  hasVersionInfo,
+  fetchVersionInfo
+} = useVersionInfo()
+
+// Fetch version info when component mounts
+onMounted(() => {
+  fetchVersionInfo()
+})
 </script>
 
 <style scoped>
@@ -175,5 +302,47 @@ const deploymentType = apiUrl ? 'API-Enabled' : 'Static'
 
 .cursor-pointer {
   cursor: pointer;
+}
+
+.custom-tab {
+  background-color: transparent;
+  border: 1px solid rgba(114, 164, 242, 0.2);
+  color: rgba(255, 255, 255, 0.7);
+  border-bottom: none;
+}
+
+.custom-tab:hover {
+  background-color: rgba(114, 164, 242, 0.1);
+  color: #72a4f2;
+  border-color: rgba(114, 164, 242, 0.3);
+}
+
+.custom-tab.active {
+  background-color: #72a4f2;
+  color: #1a1a2e;
+  border-color: #72a4f2;
+}
+
+.fallback-content {
+  animation: fadeIn 0.3s ease-in;
+}
+
+.version-content,
+.changelog-content {
+  animation: fadeIn 0.3s ease-in;
+}
+
+.changelog-content .border-bottom:last-child {
+  border-bottom: none !important;
+  padding-bottom: 0 !important;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
 }
 </style>

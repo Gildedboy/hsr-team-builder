@@ -7,7 +7,9 @@ import { redisStore } from 'cache-manager-redis-store'
 import { CharactersModule } from './characters/characters.module'
 import { TeamsModule } from './teams/teams.module'
 import { AuthModule } from './auth/auth.module'
+import { VersionsModule } from './versions/versions.module'
 import { CharacterEntity } from './entities/character.entity'
+import { VersionEntity } from './entities/version.entity'
 
 @Module({
   imports: [
@@ -16,7 +18,7 @@ import { CharacterEntity } from './entities/character.entity'
       url:
         process.env.DATABASE_URL ||
         'postgresql://postgres:password@localhost:5432/hsr_team_builder',
-      entities: [CharacterEntity],
+      entities: [CharacterEntity, VersionEntity],
       synchronize: true, // Enable for initial schema creation
       logging: process.env.NODE_ENV === 'development',
       ssl: process.env.NODE_ENV === 'production' ? { rejectUnauthorized: false } : false,
@@ -39,7 +41,6 @@ import { CharacterEntity } from './entities/character.entity'
       },
     ]),
     CacheModule.register({
-      // @ts-ignore
       store: redisStore,
       url: process.env.REDIS_URL || 'redis://localhost:6379',
       ttl: 300, // 5 minutes cache
@@ -49,6 +50,7 @@ import { CharacterEntity } from './entities/character.entity'
     CharactersModule,
     TeamsModule,
     AuthModule,
+    VersionsModule,
   ],
   controllers: [],
   providers: [
