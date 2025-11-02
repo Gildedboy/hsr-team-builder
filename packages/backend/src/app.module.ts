@@ -41,7 +41,6 @@ import { VersionEntity } from './entities/version.entity'
       },
     ]),
     CacheModule.register({
-      // @ts-expect-error - Redis store type issue
       store: redisStore,
       url: process.env.REDIS_URL || 'redis://localhost:6379',
       ttl: 300, // 5 minutes cache
