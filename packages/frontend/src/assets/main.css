@@ -20,6 +20,8 @@ html {
   height: 100%;
   overflow-x: hidden;
   overscroll-behavior: none;
+  scrollbar-width: thin;
+  scrollbar-color: #00d4ff #1a1a2e;
 }
 
 body {
@@ -33,6 +35,28 @@ body {
   overscroll-behavior: none;
   position: relative;
 }
+
+/* Global Browser Scrollbar Styling */
+::-webkit-scrollbar {
+  width: 12px;
+}
+
+::-webkit-scrollbar-track {
+  background: #1a1a2e;
+  border-radius: 6px;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #00d4ff;
+  border-radius: 6px;
+  border: 2px solid #1a1a2e;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #0099cc;
+}
+
+
 
 #app {
   min-height: 100vh;

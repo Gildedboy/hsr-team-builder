@@ -39,9 +39,9 @@ export type Archetype =
 // Flexible teammate section - you can name it whatever you want
 export interface TeammateSection {
   name: string // Custom name: "Amplifiers", "Debuffers", "Sustain", etc.
-  bis: string[] // Character IDs
-  generalist: string[] // Character IDs
-  f2p: string[] // Character IDs
+  bis: string[] // Character IDs (required)
+  generalist?: string[] // Character IDs (optional)
+  f2p?: string[] // Character IDs (optional)
 }
 
 // Flexible team composition
