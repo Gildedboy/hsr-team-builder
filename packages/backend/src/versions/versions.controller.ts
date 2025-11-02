@@ -6,6 +6,7 @@ import {
   HttpException,
   HttpStatus,
   Param,
+  Patch,
   Post,
   Put,
   Query,
@@ -22,7 +23,7 @@ import {
 } from '@nestjs/swagger'
 import { JwtAuthGuard } from '../auth/guards/jwt-auth.guard'
 import { VersionsService } from './versions.service'
-import { ChangelogQueryDto, CreateVersionDto, UpdateVersionDto } from '../dto/version.dto'
+import { ChangelogQueryDto, CreateVersionDto, ReplaceVersionDto, UpdateVersionDto } from '../dto/version.dto'
 
 @ApiTags('versions')
 @Controller('versions')
@@ -82,6 +83,13 @@ export class VersionsController {
     return this.versionsService.getChangelog(query)
   }
 
+  @Get('roadmap')
+  @ApiOperation({ summary: 'Get roadmap items from all versions' })
+  @ApiResponse({ status: 200, description: 'Roadmap items from all versions' })
+  async getRoadmap() {
+    return this.versionsService.getRoadmap()
+  }
+
   @Get(':version')
   @ApiOperation({ summary: 'Get version by version string' })
   @ApiParam({ name: 'version', description: 'Version string (e.g., v2.6.2)' })
@@ -123,16 +131,39 @@ export class VersionsController {
   @UseGuards(JwtAuthGuard)
   @Put(':version')
   @ApiBearerAuth()
-  @ApiOperation({ summary: 'Update version by version string (requires authentication)' })
+  @ApiOperation({ summary: 'Replace entire version by version string (requires authentication)' })
   @ApiParam({ name: 'version', description: 'Version string (e.g., v2.6.2)' })
   @ApiBody({
-    description: 'Version update data',
+    description: 'Complete version data to replace existing version',
+    type: ReplaceVersionDto,
+  })
+  @ApiResponse({ status: 200, description: 'Version replaced successfully' })
+  @ApiResponse({ status: 401, description: 'Unauthorized' })
+  @ApiResponse({ status: 404, description: 'Version not found' })
+  async update(@Param('version') version: string, @Body() replaceVersionDto: ReplaceVersionDto) {
+    try {
+      return await this.versionsService.replace(version, replaceVersionDto)
+    } catch (error) {
+      if (error instanceof Error && error.message.includes('not found')) {
+        throw new HttpException(`Version ${version} not found`, HttpStatus.NOT_FOUND)
+      }
+      throw error
+    }
+  }
+
+  @UseGuards(JwtAuthGuard)
+  @Patch(':version')
+  @ApiBearerAuth()
+  @ApiOperation({ summary: 'Partially update version by version string (requires authentication)' })
+  @ApiParam({ name: 'version', description: 'Version string (e.g., v2.6.2)' })
+  @ApiBody({
+    description: 'Partial version data to update specific fields',
     type: UpdateVersionDto,
   })
   @ApiResponse({ status: 200, description: 'Version updated successfully' })
   @ApiResponse({ status: 401, description: 'Unauthorized' })
   @ApiResponse({ status: 404, description: 'Version not found' })
-  async update(@Param('version') version: string, @Body() updateVersionDto: UpdateVersionDto) {
+  async partialUpdate(@Param('version') version: string, @Body() updateVersionDto: UpdateVersionDto) {
     try {
       return await this.versionsService.update(version, updateVersionDto)
     } catch (error) {

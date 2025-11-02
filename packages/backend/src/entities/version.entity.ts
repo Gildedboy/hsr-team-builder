@@ -79,6 +79,14 @@ export class VersionEntity {
   isPrerelease: boolean
 
   @ApiProperty({
+    description: 'List of roadmap items/upcoming features',
+    type: [String],
+    example: ['Add Prydwen build integration', 'Enhanced mobile experience']
+  })
+  @Column({ type: 'json', default: [] })
+  roadmapItems: string[]
+
+  @ApiProperty({
     description: 'Creation timestamp'
   })
   @CreateDateColumn()

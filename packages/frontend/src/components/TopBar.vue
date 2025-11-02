@@ -225,11 +225,35 @@
             <div class="tab-pane fade" id="todo-tab" role="tabpanel" aria-labelledby="roadmap-tab-button">
               <div class="text-white">
                 <h6 class="text-primary mb-3">Upcoming Features</h6>
-                <ul class="list-unstyled">
-                  <li class="mb-2">• Add "Check Prydwen Build" link</li>
-                  <li class="mb-2">• Enhanced mobile responsiveness</li>
-                  <li class="mb-2">• Additional team composition recommendations</li>
+
+                <!-- Loading State -->
+                <div v-if="isLoadingRoadmap && roadmapItems.length === 0" class="mb-3">
+                  <div class="spinner-border spinner-border-sm text-primary me-2" role="status">
+                    <span class="visually-hidden">Loading...</span>
+                  </div>
+                  <small class="text-muted">Loading roadmap...</small>
+                </div>
+
+                <!-- Error State -->
+                <div v-else-if="roadmapError && roadmapItems.length === 0" class="mb-3">
+                  <div class="text-warning small">
+                    <i class="fas fa-exclamation-triangle me-1"></i>
+                    Unable to load roadmap. Showing cached content.
+                  </div>
+                </div>
+
+                <!-- Roadmap Items -->
+                <ul v-if="roadmapItems.length > 0" class="list-unstyled">
+                  <li v-for="item in roadmapItems" :key="item" class="mb-2">
+                    • {{ item }}
+                  </li>
                 </ul>
+
+                <!-- No roadmap items -->
+                <div v-else-if="!isLoadingRoadmap" class="text-muted">
+                  <i class="fas fa-check-circle me-1"></i>
+                  No upcoming features planned at this time.
+                </div>
               </div>
             </div>
           </div>
@@ -246,16 +270,21 @@ import { useVersionInfo } from '@/composables/useVersionInfo'
 // Get version info from API
 const {
   currentVersionInfo,
+  roadmapItems,
   isLoading,
+  isLoadingRoadmap,
   error,
+  roadmapError,
   appVersion,
   hasVersionInfo,
-  fetchVersionInfo
+  fetchVersionInfo,
+  fetchRoadmap
 } = useVersionInfo()
 
-// Fetch version info when component mounts
+// Fetch version info and roadmap when component mounts
 onMounted(() => {
   fetchVersionInfo()
+  fetchRoadmap()
 })
 </script>
 
