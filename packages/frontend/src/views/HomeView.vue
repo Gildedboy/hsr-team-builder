@@ -484,9 +484,9 @@ const hasFullCharacterData = (characterId: string) => {
           <!-- Loading state when character is selected but doesn't have full API data -->
           <div v-if="selectedCharacter && !hasFullCharacterData(selectedCharacter.id)" class="card bg-dark border-primary text-center py-5" style="min-height: 650px;">
             <div class="card-body">
-                            <output class="spinner-border text-primary mb-3">
+                            <div class="spinner-border text-primary mb-3" aria-label="Loading">
                 <span class="visually-hidden">Loading...</span>
-              </output>
+              </div>
               <p class="text-white fw-bold mb-0">Loading character data from server...</p>
             </div>
           </div>
