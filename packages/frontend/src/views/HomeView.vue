@@ -406,14 +406,19 @@ const selectCharacterWithScroll = (character: Character, shouldTriggerSearch = t
               
               <div v-if="getNewFormatCharacter(selectedCharacter.id)" class="character-detail-panel" style="word-wrap: break-word; overflow-wrap: break-word; width: 100%; box-sizing: border-box; padding-right: 10px;">
                 <!-- Character Header -->
-                <div class="detail-header mb-3 d-flex align-items-center">
-                              <img 
-              :src="getCharacterImage(selectedCharacter.id)" 
-              :alt="selectedCharacter.name"
-              class="detail-character-image"
-              style="width: 200px; height: auto; object-fit: cover; border-radius: 8px; transform: translate(var(--character-image-offset-x), var(--character-image-offset-y)); margin-top: 20px;"
-            />
-                  <div class="detail-info flex-grow-1">
+                <div class="detail-header mb-3">
+                  <!-- Character Image -->
+                  <div class="detail-image-container mb-3">
+                    <img 
+                      :src="getCharacterImage(selectedCharacter.id)" 
+                      :alt="selectedCharacter.name"
+                      class="detail-character-image"
+                      style="width: 200px; height: auto; object-fit: cover; border-radius: 8px; transform: translate(var(--character-image-offset-x), var(--character-image-offset-y)); margin-top: 20px;"
+                    />
+                  </div>
+                  
+                  <!-- Character Info - Will move below image on small screens -->
+                  <div class="detail-info">
                     <div class="detail-name-row d-flex align-items-center gap-2 mb-2">
                       <h3 class="detail-name text-white mb-0">{{ selectedCharacter.name }}</h3>
                       <span
@@ -591,6 +596,80 @@ const selectCharacterWithScroll = (character: Character, shouldTriggerSearch = t
 :root {
   --character-image-offset-x: -16.7143%; /* Horizontal offset for character portrait positioning */
   --character-image-offset-y: -6.25%;   /* Vertical offset for character portrait positioning */
+}
+
+/* Responsive character header layout */
+.detail-header {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.detail-image-container {
+  flex-shrink: 0;
+}
+
+.detail-info {
+  flex-grow: 1;
+  min-width: 0; /* Allow text to wrap/truncate */
+}
+
+/* At medium-large screen sizes, stack the image and info vertically to prevent text crowding */
+@media (max-width: 1800px) {
+  .detail-header {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+  
+  .detail-image-container {
+    align-self: center;
+    margin-bottom: 0.5rem;
+  }
+  
+  .detail-info {
+    width: 100%;
+    text-align: center;
+  }
+  
+  .detail-name-row {
+    justify-content: center !important;
+  }
+  
+  .detail-meta {
+    justify-content: center !important;
+  }
+}
+
+/* At smaller screen sizes, stack the image and info vertically */
+@media (max-width: 768px) {
+  .detail-header {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+  
+  .detail-image-container {
+    align-self: center;
+    margin-bottom: 0.5rem;
+  }
+  
+  .detail-info {
+    width: 100%;
+    text-align: center;
+  }
+  
+  .detail-name-row {
+    justify-content: center !important;
+  }
+  
+  .detail-meta {
+    justify-content: center !important;
+  }
+}
+
+/* Ensure minimum site width and add horizontal scroll if needed */
+body {
+  min-width: 320px; /* Just prevent extremely small widths */
+  overflow-x: auto;
 }
 
 .reset-button {
