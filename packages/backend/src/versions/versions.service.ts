@@ -4,7 +4,7 @@ import { Repository } from 'typeorm'
 import { CACHE_MANAGER } from '@nestjs/cache-manager'
 import { Cache } from 'cache-manager'
 import { VersionEntity } from '../entities/version.entity'
-import { ChangelogQueryDto, CreateVersionDto, UpdateVersionDto } from '../dto/version.dto'
+import { ChangelogQueryDto, CreateVersionDto, ReplaceVersionDto, UpdateVersionDto } from '../dto/version.dto'
 
 @Injectable()
 export class VersionsService {
@@ -125,6 +125,7 @@ export class VersionsService {
       bugFixes: createVersionDto.bugFixes || [],
       breakingChanges: createVersionDto.breakingChanges || [],
       knownIssues: createVersionDto.knownIssues || [],
+      roadmapItems: createVersionDto.roadmapItems || [],
       isActive: createVersionDto.isActive ?? true,
       isPrerelease: createVersionDto.isPrerelease ?? false,
     })
@@ -194,6 +195,59 @@ export class VersionsService {
     return changelog
   }
 
+  async getRoadmap(): Promise<string[]> {
+    const cacheKey = 'roadmap-items'
+    
+    // Try to get from cache first
+    let roadmapItems = await this.cacheManager.get<string[]>(cacheKey)
+    
+    if (!roadmapItems) {
+      const versions = await this.versionRepository.find({
+        where: { isActive: true },
+        select: ['roadmapItems'],
+      })
+
+      // Flatten all roadmap items from all versions and remove duplicates
+      roadmapItems = [...new Set(versions.flatMap(v => v.roadmapItems || []))].filter(item => item.trim() !== '')
+
+      // Cache for 30 minutes
+      await this.cacheManager.set(cacheKey, roadmapItems, 1800000)
+    }
+
+    return roadmapItems
+  }
+
+  async replace(version: string, replaceVersionDto: ReplaceVersionDto): Promise<VersionEntity> {
+    const existingVersion = await this.versionRepository.findOne({
+      where: { version },
+    })
+
+    if (!existingVersion) {
+      throw new NotFoundException(`Version ${version} not found`)
+    }
+
+    // For PUT (replace), we replace ALL fields except version, id, createdAt, updatedAt
+    const replacedVersion = this.versionRepository.create({
+      ...existingVersion, // Keep id, version, createdAt
+      ...replaceVersionDto,
+      // Ensure arrays are properly set (empty if not provided)
+      features: replaceVersionDto.features || [],
+      bugFixes: replaceVersionDto.bugFixes || [],
+      breakingChanges: replaceVersionDto.breakingChanges || [],
+      knownIssues: replaceVersionDto.knownIssues || [],
+      roadmapItems: replaceVersionDto.roadmapItems || [],
+      isActive: replaceVersionDto.isActive ?? true,
+      isPrerelease: replaceVersionDto.isPrerelease ?? false,
+    })
+
+    const savedVersion = await this.versionRepository.save(replacedVersion)
+
+    // Clear cache when version is replaced
+    await this.clearCache()
+
+    return savedVersion
+  }
+
   async update(version: string, updateVersionDto: UpdateVersionDto): Promise<VersionEntity> {
     const existingVersion = await this.versionRepository.findOne({
       where: { version },
@@ -251,7 +305,7 @@ export class VersionsService {
 
   private async clearCache(): Promise<void> {
     // Clear all version-related cache entries
-    const keys = ['latest-version']
+    const keys = ['latest-version', 'roadmap-items']
     
     // Generate possible cache keys for versions and changelog
     const versions = await this.versionRepository.find({ select: ['version'] })

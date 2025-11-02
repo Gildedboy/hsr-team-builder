@@ -10,12 +10,16 @@ export interface VersionInfo {
   bugFixes: string[]
   breakingChanges?: string[]
   knownIssues?: string[]
+  roadmapItems?: string[]
 }
 
 export function useVersionInfo() {
   const currentVersionInfo = ref<VersionInfo | null>(null)
+  const roadmapItems = ref<string[]>([])
   const isLoading = ref(false)
+  const isLoadingRoadmap = ref(false)
   const error = ref<string | null>(null)
+  const roadmapError = ref<string | null>(null)
 
   // Get current app version from environment
   const appVersion = computed(() => import.meta.env.VITE_APP_VERSION || 'v2.6.2')
@@ -60,14 +64,45 @@ export function useVersionInfo() {
     }
   }
 
+  const fetchRoadmap = async () => {
+    isLoadingRoadmap.value = true
+    roadmapError.value = null
+
+    try {
+      const response = await fetch(`${API_BASE_URL}/versions/roadmap`)
+
+      if (!response.ok) {
+        throw new Error(`Failed to fetch roadmap: ${response.status}`)
+      }
+
+      const data = await response.json()
+      roadmapItems.value = Array.isArray(data) ? data : []
+    } catch (err) {
+      roadmapError.value = err instanceof Error ? err.message : 'Failed to load roadmap'
+      console.warn('Roadmap API unavailable, using fallback content')
+
+      // Fallback roadmap content
+      roadmapItems.value = [
+        'Add "Check Prydwen Build" link',
+        'Enhanced mobile responsiveness',
+        'Additional team composition recommendations'
+      ]
+    } finally {
+      isLoadingRoadmap.value = false
+    }
+  }
+
   // Check if we have version info loaded
   const hasVersionInfo = computed(() => currentVersionInfo.value !== null)
 
   return {
     // State
     currentVersionInfo,
+    roadmapItems,
     isLoading,
+    isLoadingRoadmap,
     error,
+    roadmapError,
     appVersion,
 
     // Computed
@@ -75,5 +110,6 @@ export function useVersionInfo() {
 
     // Methods
     fetchVersionInfo,
+    fetchRoadmap,
   }
 }

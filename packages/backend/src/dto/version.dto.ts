@@ -1,5 +1,5 @@
 import { IsArray, IsBoolean, IsDateString, IsNotEmpty, IsOptional, IsString } from 'class-validator'
-import { Transform, Type } from 'class-transformer'
+import { Type } from 'class-transformer'
 import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger'
 
 export class CreateVersionDto {
@@ -81,7 +81,6 @@ export class CreateVersionDto {
   })
   @IsOptional()
   @IsBoolean()
-  @Transform(({ value }) => value === 'true')
   isActive?: boolean
 
   @ApiPropertyOptional({
@@ -91,8 +90,110 @@ export class CreateVersionDto {
   })
   @IsOptional()
   @IsBoolean()
-  @Transform(({ value }) => value === 'true')
   isPrerelease?: boolean
+
+  @ApiPropertyOptional({
+    description: 'List of roadmap items/upcoming features',
+    type: [String],
+    example: ['Add Prydwen build integration', 'Enhanced mobile experience', 'Team composition analyzer']
+  })
+  @IsOptional()
+  @IsArray()
+  @IsString({ each: true })
+  roadmapItems?: string[]
+}
+
+export class ReplaceVersionDto {
+  @ApiProperty({
+    description: 'Version title or name',
+    example: 'Updated Major Feature Release'
+  })
+  @IsString()
+  @IsNotEmpty()
+  title: string
+
+  @ApiPropertyOptional({
+    description: 'Detailed description of the version',
+    example: 'Updated description with additional improvements.'
+  })
+  @IsOptional()
+  @IsString()
+  description?: string
+
+  @ApiProperty({
+    description: 'Release date in ISO format',
+    example: '2025-11-02'
+  })
+  @IsDateString()
+  releaseDate: string
+
+  @ApiPropertyOptional({
+    description: 'List of new features',
+    type: [String],
+    example: ['Enhanced API performance', 'New caching system']
+  })
+  @IsOptional()
+  @IsArray()
+  @IsString({ each: true })
+  features?: string[]
+
+  @ApiPropertyOptional({
+    description: 'List of bug fixes',
+    type: [String],
+    example: ['Fixed critical security issue', 'Resolved database connection problems']
+  })
+  @IsOptional()
+  @IsArray()
+  @IsString({ each: true })
+  bugFixes?: string[]
+
+  @ApiPropertyOptional({
+    description: 'List of breaking changes',
+    type: [String],
+    example: ['Removed deprecated endpoints', 'Changed response format']
+  })
+  @IsOptional()
+  @IsArray()
+  @IsString({ each: true })
+  breakingChanges?: string[]
+
+  @ApiPropertyOptional({
+    description: 'List of known issues',
+    type: [String],
+    example: ['Performance degradation on large datasets']
+  })
+  @IsOptional()
+  @IsArray()
+  @IsString({ each: true })
+  knownIssues?: string[]
+
+  @ApiPropertyOptional({
+    description: 'Whether the version is active',
+    example: true,
+    default: true
+  })
+  @IsOptional()
+  @IsBoolean()
+  isActive?: boolean
+
+  @ApiPropertyOptional({
+    description: 'Whether the version is a prerelease',
+    example: false,
+    default: false
+  })
+  @IsOptional()
+  @IsBoolean()
+  isPrerelease?: boolean
+
+  @ApiPropertyOptional({
+    description: 'List of roadmap items/upcoming features',
+    type: [String],
+    example: ['Add Prydwen build integration', 'Enhanced mobile experience', 'Team composition analyzer']
+  })
+  @IsOptional()
+  @IsArray()
+  @IsString({ each: true })
+  roadmapItems?: string[]
 }
 
 export class UpdateVersionDto {
@@ -166,7 +267,6 @@ export class UpdateVersionDto {
   })
   @IsOptional()
   @IsBoolean()
-  @Transform(({ value }) => value === 'true')
   isActive?: boolean
 
   @ApiPropertyOptional({
@@ -175,8 +275,17 @@ export class UpdateVersionDto {
   })
   @IsOptional()
   @IsBoolean()
-  @Transform(({ value }) => value === 'true')
   isPrerelease?: boolean
+
+  @ApiPropertyOptional({
+    description: 'List of roadmap items/upcoming features',
+    type: [String],
+    example: ['Add Prydwen build integration', 'Enhanced mobile experience', 'Team composition analyzer']
+  })
+  @IsOptional()
+  @IsArray()
+  @IsString({ each: true })
+  roadmapItems?: string[]
 }
 
 export class ChangelogQueryDto {
