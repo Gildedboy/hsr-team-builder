@@ -21,7 +21,7 @@ export default defineConfigWithVueTs(
 
   {
     name: 'app/typescript-config',
-    files: ['**/*.{ts,mts,tsx,vue}'],
+    files: ['**/*.{ts,mts,tsx}'],
     languageOptions: {
       parserOptions: {
         tsconfigRootDir: __dirname,
@@ -30,7 +30,19 @@ export default defineConfigWithVueTs(
     },
   },
 
-  globalIgnores(['**/dist/**', '**/dist-ssr/**', '**/coverage/**']),
+  {
+    name: 'app/vue-config',
+    files: ['**/*.vue'],
+    languageOptions: {
+      parserOptions: {
+        tsconfigRootDir: __dirname,
+        project: null, // Disable type-aware linting for Vue files
+        extraFileExtensions: ['.vue'],
+      },
+    },
+  },
+
+  globalIgnores(['**/dist/**', '**/dist-ssr/**', '**/coverage/**', 'vite.config-new.ts']),
 
   pluginVue.configs['flat/essential'],
   vueTsConfigs.recommended,
