@@ -1,5 +1,5 @@
 import { IsArray, IsBoolean, IsDateString, IsNotEmpty, IsOptional, IsString } from 'class-validator'
-import { Transform } from 'class-transformer'
+import { Transform, Type } from 'class-transformer'
 
 export class CreateVersionDto {
   @IsString()
@@ -99,6 +99,6 @@ export class ChangelogQueryDto {
 
   @IsOptional()
   @IsBoolean()
-  @Transform(({ value }) => value === 'true')
+  @Type(() => Boolean)
   includePrerelease?: boolean = false
 }
