@@ -51,15 +51,17 @@ export class TeammateRecommendationDto {
   @IsString({ each: true })
   bis: string[]
 
-  @ApiProperty({ description: 'Generalist character IDs' })
+  @ApiPropertyOptional({ description: 'Generalist character IDs' })
+  @IsOptional()
   @IsArray()
   @IsString({ each: true })
-  generalist: string[]
+  generalist?: string[]
 
-  @ApiProperty({ description: 'F2P character IDs' })
+  @ApiPropertyOptional({ description: 'F2P character IDs' })
+  @IsOptional()
   @IsArray()
   @IsString({ each: true })
-  f2p: string[]
+  f2p?: string[]
 }
 
 export class TeamVariantDto {

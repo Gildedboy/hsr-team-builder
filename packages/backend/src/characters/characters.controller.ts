@@ -136,11 +136,19 @@ export class CharactersController {
     type: CreateCharacterDto,
   })
   @ApiResponse({ status: 201, description: 'Character created successfully' })
+  @ApiResponse({ status: 400, description: 'Character with this ID already exists' })
   @ApiResponse({ status: 401, description: 'Unauthorized' })
   async createCharacter(@Body() characterData: CreateCharacterDto): Promise<Character> {
-    // Convert DTO to Character type
-    const character = characterData as Character
-    return await this.charactersService.createCharacter(character)
+    try {
+      // Convert DTO to Character type
+      const character = characterData as Character
+      return await this.charactersService.createCharacter(character)
+    } catch (error) {
+      if (error instanceof Error && error.message.includes('already exists')) {
+        throw new HttpException(error.message, HttpStatus.BAD_REQUEST)
+      }
+      throw error
+    }
   }
 
   @UseGuards(JwtAuthGuard)
