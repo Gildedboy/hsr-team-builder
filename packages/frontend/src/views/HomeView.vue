@@ -105,7 +105,7 @@ const selectCharacterWithScroll = (character: Character, shouldTriggerSearch = t
       <div class="row mb-5">
         <!-- Dynamic Filter/Character Section -->
         <div class="col-lg-3 col-md-4 mb-4">
-          <div class="card bg-dark border-primary filter-card" style="height: var(--panel-height); overflow: hidden;">
+          <div class="card bg-dark border-primary filter-card" style="height: 650px; overflow: hidden;">
             <!-- Filter Section Header (when no character selected) -->
             <div v-if="!selectedCharacter" class="card-header d-flex justify-content-between align-items-center px-3">
               <h2 class="h5 text-primary mb-0">Filters</h2>
@@ -318,7 +318,7 @@ const selectCharacterWithScroll = (character: Character, shouldTriggerSearch = t
             </div>
             
             <!-- Character Detail Content (when character selected) -->
-            <div v-else class="card-body character-detail-content" style="min-height: var(--panel-height); max-height: var(--panel-height); overflow-y: auto; overflow-x: hidden; word-wrap: break-word; box-sizing: border-box; padding-bottom: 2rem;">
+            <div v-else class="card-body character-detail-content" style="min-height: 650px; max-height: 650px; overflow-y: auto; overflow-x: hidden; word-wrap: break-word; box-sizing: border-box; padding-bottom: 2rem;">
               <!-- Search Input for Character Details -->
               <div class="mb-3 position-relative">
                 <div class="position-relative">
@@ -503,7 +503,7 @@ const selectCharacterWithScroll = (character: Character, shouldTriggerSearch = t
         <!-- Team Recommendations -->
         <div class="col-lg-9 col-md-8">
           <!-- Loading state when character is selected but doesn't have full API data -->
-          <div v-if="selectedCharacter && !hasFullCharacterData(selectedCharacter.id)" class="card bg-dark border-primary text-center py-5" style="min-height: var(--panel-height);">
+          <div v-if="selectedCharacter && !hasFullCharacterData(selectedCharacter.id)" class="card bg-dark border-primary text-center py-5" style="min-height: 650px;">
             <div class="card-body">
                             <div class="spinner-border text-primary mb-3" aria-label="Loading">
                 <span class="visually-hidden">Loading...</span>
@@ -520,10 +520,10 @@ const selectCharacterWithScroll = (character: Character, shouldTriggerSearch = t
             "
             :key="selectedCharacter.id"
             :character="getNewFormatCharacter(selectedCharacter.id)!"
-            style="min-height: var(--panel-height); max-height: var(--panel-height); overflow-y: auto;"
+            style="min-height: 650px; max-height: 650px; overflow-y: auto;"
           />
           <!-- Character selected but no recommendations available -->
-          <div v-else-if="selectedCharacter" class="card bg-dark border-primary text-center py-5" style="min-height: var(--panel-height);">
+          <div v-else-if="selectedCharacter" class="card bg-dark border-primary text-center py-5" style="min-height: 650px;">
             <div class="card-body">
               <p class="text-secondary mb-0">
                 Character recommendations not available in new format
@@ -531,7 +531,7 @@ const selectCharacterWithScroll = (character: Character, shouldTriggerSearch = t
             </div>
           </div>
           <!-- No character selected -->
-          <div v-else class="card bg-dark border-primary text-center py-5" style="min-height: var(--panel-height);">
+          <div v-else class="card bg-dark border-primary text-center py-5" style="min-height: 650px;">
             <div class="card-body">
               <p class="text-white fw-bold mb-0">Select a character to see team recommendations</p>
             </div>
@@ -591,7 +591,6 @@ const selectCharacterWithScroll = (character: Character, shouldTriggerSearch = t
 :root {
   --character-image-offset-x: -16.7143%; /* Horizontal offset for character portrait positioning */
   --character-image-offset-y: -6.25%;   /* Vertical offset for character portrait positioning */
-  --panel-height: 650px;                /* Standard height for filter and character detail panels */
 }
 
 .reset-button {
