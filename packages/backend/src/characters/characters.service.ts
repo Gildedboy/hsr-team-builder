@@ -148,6 +148,15 @@ export class CharactersService {
   }
 
   async createCharacter(characterData: Character): Promise<Character> {
+    // Check if character already exists
+    const existingCharacter = await this.characterRepository.findOne({ 
+      where: { id: characterData.id } 
+    })
+    
+    if (existingCharacter) {
+      throw new Error(`Character with ID ${characterData.id} already exists`)
+    }
+
     const entity = new CharacterEntity()
     Object.assign(entity, characterData)
 
