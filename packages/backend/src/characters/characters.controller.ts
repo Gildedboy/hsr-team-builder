@@ -51,12 +51,46 @@ export class CharactersController {
   }
 
   @Get()
-  @ApiOperation({ summary: 'Get all characters' })
+  @ApiOperation({
+    summary: 'Get all characters',
+    description: 'Retrieve all characters with optional filtering',
+  })
   @ApiQuery({ name: 'role', required: false, description: 'Filter by role' })
   @ApiQuery({ name: 'element', required: false, description: 'Filter by element' })
   @ApiQuery({ name: 'path', required: false, description: 'Filter by path' })
   @ApiQuery({ name: 'search', required: false, description: 'Search characters by name or labels' })
-  @ApiResponse({ status: 200, description: 'List of characters' })
+  @ApiResponse({
+    status: 200,
+    description: 'List of characters with their associated lightcones',
+    schema: {
+      type: 'array',
+      items: {
+        type: 'object',
+        properties: {
+          id: { type: 'string', example: 'kafka' },
+          name: { type: 'string', example: 'Kafka' },
+          element: { type: 'string', example: 'Lightning' },
+          path: { type: 'string', example: 'Nihility' },
+          rarity: { type: 'number', example: 5 },
+          roles: { type: 'array', items: { type: 'string' }, example: ['DPS'] },
+          archetype: { type: 'array', items: { type: 'string' }, example: ['DoT'] },
+          labels: { type: 'array', items: { type: 'string' }, example: ['DoT', 'AoE'] },
+          lightcones: {
+            type: 'array',
+            items: {
+              type: 'object',
+              properties: {
+                id: { type: 'string', example: 'in-the-name-of-the-world' },
+                name: { type: 'string', example: 'In the Name of the World' },
+                rarity: { type: 'number', example: 5 },
+                path: { type: 'string', example: 'Nihility' },
+              },
+            },
+          },
+        },
+      },
+    },
+  })
   async findAll(
     @Query('role') role?: string,
     @Query('element') element?: string,
@@ -90,10 +124,50 @@ export class CharactersController {
   }
 
   @Get(':id')
-  @ApiOperation({ summary: 'Get character by ID' })
-  @ApiParam({ name: 'id', description: 'Character ID' })
-  @ApiResponse({ status: 200, description: 'Character details' })
-  @ApiResponse({ status: 404, description: 'Character not found' })
+  @ApiOperation({
+    summary: 'Get character by ID',
+    description: 'Retrieve detailed information about a specific character',
+  })
+  @ApiParam({ name: 'id', description: 'Character unique identifier', example: 'kafka' })
+  @ApiResponse({
+    status: 200,
+    description: 'Character details with associated lightcones',
+    schema: {
+      type: 'object',
+      properties: {
+        id: { type: 'string', example: 'kafka' },
+        name: { type: 'string', example: 'Kafka' },
+        element: { type: 'string', example: 'Lightning' },
+        path: { type: 'string', example: 'Nihility' },
+        rarity: { type: 'number', example: 5 },
+        roles: { type: 'array', items: { type: 'string' }, example: ['DPS'] },
+        archetype: { type: 'array', items: { type: 'string' }, example: ['DoT'] },
+        labels: { type: 'array', items: { type: 'string' }, example: ['DoT', 'AoE'] },
+        lightcones: {
+          type: 'array',
+          items: {
+            type: 'object',
+            properties: {
+              id: { type: 'string', example: 'in-the-name-of-the-world' },
+              name: { type: 'string', example: 'In the Name of the World' },
+              rarity: { type: 'number', example: 5 },
+              path: { type: 'string', example: 'Nihility' },
+            },
+          },
+        },
+      },
+    },
+  })
+  @ApiResponse({
+    status: 404,
+    description: 'Character not found',
+    schema: {
+      type: 'object',
+      properties: {
+        message: { type: 'string', example: 'Character not found' },
+      },
+    },
+  })
   async findOne(@Param('id') id: string): Promise<Character | { message: string }> {
     const character = await this.charactersService.findById(id)
     if (!character) {
@@ -118,8 +192,8 @@ export class CharactersController {
     @Param('id') id: string,
     @Body() updateData: UpdateCharacterDto,
   ): Promise<Character | { message: string }> {
-    // Convert DTO to Partial<Character> type
-    const characterUpdate = updateData as Partial<Character>
+    // Convert DTO to Partial<Character> type and handle lightconeIds
+    const characterUpdate = updateData as Partial<Character> & { lightconeIds?: string[] }
     const updatedCharacter = await this.charactersService.updateCharacter(id, characterUpdate)
     if (!updatedCharacter) {
       throw new HttpException('Character not found', HttpStatus.NOT_FOUND)

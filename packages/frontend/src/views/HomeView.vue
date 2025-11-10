@@ -3,6 +3,11 @@ import TopBar from '@/components/TopBar.vue'
 import TeamRecommendations from '@/components/TeamRecommendations.vue'
 import RoleTabsSection from '@/components/RoleTabsSection.vue'
 import { getCharacterAvatar, handleImageError, getCharacterImage } from '@/data/avatars'
+import {
+  getLightconeImage,
+  getLightconeRarityColor,
+  handleLightconeImageError,
+} from '@/data/lightcones'
 import { useHomeView } from '@/composables/useHomeView'
 import { useCharactersApi } from '@/composables/useCharactersApi'
 import { FILTER_OPTIONS } from '@/constants/filterOptions'
@@ -72,9 +77,9 @@ const hasFullCharacterData = (characterId: string) => {
 const scrollToCharacterDetails = () => {
   const filterCard = document.querySelector('.filter-card')
   if (filterCard) {
-    filterCard.scrollIntoView({ 
-      behavior: 'smooth', 
-      block: 'start' 
+    filterCard.scrollIntoView({
+      behavior: 'smooth',
+      block: 'start',
     })
   }
 }
@@ -105,9 +110,15 @@ const selectCharacterWithScroll = (character: Character, shouldTriggerSearch = t
       <div class="row mb-5">
         <!-- Dynamic Filter/Character Section -->
         <div class="col-lg-3 col-md-4 mb-4">
-          <div class="card bg-dark border-primary filter-card" style="height: 650px; overflow: hidden;">
+          <div
+            class="card bg-dark border-primary filter-card"
+            style="height: 650px; overflow: hidden"
+          >
             <!-- Filter Section Header (when no character selected) -->
-            <div v-if="!selectedCharacter" class="card-header d-flex justify-content-between align-items-center px-3">
+            <div
+              v-if="!selectedCharacter"
+              class="card-header d-flex justify-content-between align-items-center px-3"
+            >
               <h2 class="h5 text-primary mb-0">Filters</h2>
               <button
                 @click="handleClearFilters()"
@@ -126,7 +137,7 @@ const selectCharacterWithScroll = (character: Character, shouldTriggerSearch = t
                 Reset
               </button>
             </div>
-            
+
             <!-- Filter Content (when no character selected) -->
             <div v-if="!selectedCharacter" class="card-body">
               <!-- Search Bar -->
@@ -145,7 +156,10 @@ const selectCharacterWithScroll = (character: Character, shouldTriggerSearch = t
                   <!-- Search indicator -->
                   <div class="position-absolute top-50 end-0 translate-middle-y me-3">
                     <i v-if="isSearching" class="fas fa-spinner fa-spin text-primary"></i>
-                    <i v-else-if="searchQueryRef.length >= MIN_SEARCH_LENGTH" class="fas fa-search text-success"></i>
+                    <i
+                      v-else-if="searchQueryRef.length >= MIN_SEARCH_LENGTH"
+                      class="fas fa-search text-success"
+                    ></i>
                     <i v-else class="fas fa-search text-muted"></i>
                   </div>
                 </div>
@@ -164,7 +178,7 @@ const selectCharacterWithScroll = (character: Character, shouldTriggerSearch = t
                 <div
                   v-if="showSearchSuggestions && searchSuggestions.length > 0"
                   class="position-absolute w-100 bg-dark border border-primary border-top-0 rounded-bottom search-suggestions"
-                  style="z-index: 1000;"
+                  style="z-index: 1000"
                 >
                   <div
                     v-for="(character, index) in searchSuggestions"
@@ -316,9 +330,21 @@ const selectCharacterWithScroll = (character: Character, shouldTriggerSearch = t
                 </div>
               </div>
             </div>
-            
+
             <!-- Character Detail Content (when character selected) -->
-            <div v-else class="card-body character-detail-content" style="min-height: 650px; max-height: 650px; overflow-y: auto; overflow-x: hidden; word-wrap: break-word; box-sizing: border-box; padding-bottom: 2rem;">
+            <div
+              v-else
+              class="card-body character-detail-content"
+              style="
+                min-height: 650px;
+                max-height: 650px;
+                overflow-y: auto;
+                overflow-x: hidden;
+                word-wrap: break-word;
+                box-sizing: border-box;
+                padding-bottom: 2rem;
+              "
+            >
               <!-- Search Input for Character Details -->
               <div class="mb-3 position-relative">
                 <div class="position-relative">
@@ -335,7 +361,10 @@ const selectCharacterWithScroll = (character: Character, shouldTriggerSearch = t
                   <!-- Search indicator -->
                   <div class="position-absolute top-50 end-0 translate-middle-y me-3">
                     <i v-if="isSearching" class="fas fa-spinner fa-spin text-primary"></i>
-                    <i v-else-if="searchQueryRef.length >= MIN_SEARCH_LENGTH" class="fas fa-search text-success"></i>
+                    <i
+                      v-else-if="searchQueryRef.length >= MIN_SEARCH_LENGTH"
+                      class="fas fa-search text-success"
+                    ></i>
                     <i v-else class="fas fa-search text-muted"></i>
                   </div>
 
@@ -343,7 +372,7 @@ const selectCharacterWithScroll = (character: Character, shouldTriggerSearch = t
                   <div
                     v-if="showSearchSuggestions && searchSuggestions.length > 0"
                     class="position-absolute w-100 bg-dark border border-primary border-top-0 rounded-bottom search-suggestions"
-                    style="z-index: 1000;"
+                    style="z-index: 1000"
                   >
                     <div
                       v-for="(character, index) in searchSuggestions"
@@ -403,20 +432,40 @@ const selectCharacterWithScroll = (character: Character, shouldTriggerSearch = t
                   <i class="fas fa-exclamation-triangle"></i> {{ searchError }}
                 </div>
               </div>
-              
-              <div v-if="getNewFormatCharacter(selectedCharacter.id)" class="character-detail-panel" style="word-wrap: break-word; overflow-wrap: break-word; width: 100%; box-sizing: border-box; padding-right: 10px;">
+
+              <div
+                v-if="getNewFormatCharacter(selectedCharacter.id)"
+                class="character-detail-panel"
+                style="
+                  word-wrap: break-word;
+                  overflow-wrap: break-word;
+                  width: 100%;
+                  box-sizing: border-box;
+                  padding-right: 10px;
+                "
+              >
                 <!-- Character Header -->
                 <div class="detail-header mb-3">
                   <!-- Character Image -->
                   <div class="detail-image-container mb-3">
-                    <img 
-                      :src="getCharacterImage(selectedCharacter.id)" 
+                    <img
+                      :src="getCharacterImage(selectedCharacter.id)"
                       :alt="selectedCharacter.name"
                       class="detail-character-image"
-                      style="width: 200px; height: auto; object-fit: cover; border-radius: 8px; transform: translate(var(--character-image-offset-x), var(--character-image-offset-y)); margin-top: 20px;"
+                      style="
+                        width: 200px;
+                        height: auto;
+                        object-fit: cover;
+                        border-radius: 8px;
+                        transform: translate(
+                          var(--character-image-offset-x),
+                          var(--character-image-offset-y)
+                        );
+                        margin-top: 20px;
+                      "
                     />
                   </div>
-                  
+
                   <!-- Character Info - Will move below image on small screens -->
                   <div class="detail-info">
                     <div class="detail-name-row d-flex align-items-center gap-2 mb-2">
@@ -434,7 +483,7 @@ const selectCharacterWithScroll = (character: Character, shouldTriggerSearch = t
                           :src="`/images/element/${selectedCharacter.element}.webp`"
                           :alt="selectedCharacter.element"
                           class="meta-icon"
-                          style="width: 24px; height: 24px;"
+                          style="width: 24px; height: 24px"
                         />
                         <span class="text-white">{{ selectedCharacter.element }}</span>
                       </div>
@@ -443,9 +492,59 @@ const selectCharacterWithScroll = (character: Character, shouldTriggerSearch = t
                           :src="`/images/path/${selectedCharacter.path}.webp`"
                           :alt="selectedCharacter.path"
                           class="meta-icon"
-                          style="width: 24px; height: 24px;"
+                          style="width: 24px; height: 24px"
                         />
                         <span class="text-white">{{ selectedCharacter.path }}</span>
+                      </div>
+                    </div>
+
+                    <!-- Lightcones Section -->
+                    <div
+                      v-if="
+                        getNewFormatCharacter(selectedCharacter.id)?.lightcones &&
+                        getNewFormatCharacter(selectedCharacter.id)?.lightcones?.length > 0
+                      "
+                      class="detail-lightcones mt-3"
+                    >
+                      <h6 class="text-primary mb-2">Recommended Lightcones</h6>
+                      <div
+                        class="lightcones-grid"
+                        style="
+                          display: grid;
+                          grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+                          gap: 8px;
+                        "
+                      >
+                        <div
+                          v-for="lightcone in getNewFormatCharacter(selectedCharacter.id)
+                            ?.lightcones || []"
+                          :key="lightcone.id"
+                          class="lightcone-card"
+                          style="
+                            background: rgba(0, 212, 255, 0.1);
+                            border: 1px solid rgba(0, 212, 255, 0.3);
+                            border-radius: 6px;
+                            padding: 12px;
+                            transition: all 0.3s ease;
+                          "
+                        >
+                          <div
+                            class="lightcone-info d-flex justify-content-between align-items-center"
+                          >
+                            <span
+                              class="lightcone-name text-white"
+                              style="font-size: 14px; font-weight: 500"
+                              >{{ lightcone.name }}</span
+                            >
+                            <span
+                              class="lightcone-rarity fw-bold"
+                              :style="{ color: getLightconeRarityColor(lightcone.rarity) }"
+                              style="font-size: 13px"
+                            >
+                              {{ lightcone.rarity }}★
+                            </span>
+                          </div>
+                        </div>
                       </div>
                     </div>
                   </div>
@@ -456,12 +555,28 @@ const selectCharacterWithScroll = (character: Character, shouldTriggerSearch = t
                   <!-- Roles -->
                   <div class="mb-3">
                     <h5 class="text-primary mb-2">Roles</h5>
-                    <div class="d-flex flex-wrap gap-1" style="word-wrap: break-word; overflow-wrap: break-word; width: 100%; box-sizing: border-box;">
+                    <div
+                      class="d-flex flex-wrap gap-1"
+                      style="
+                        word-wrap: break-word;
+                        overflow-wrap: break-word;
+                        width: 100%;
+                        box-sizing: border-box;
+                      "
+                    >
                       <span
                         v-for="role in getNewFormatCharacter(selectedCharacter.id)?.roles || []"
                         :key="role"
                         class="badge bg-primary text-dark"
-                        style="word-wrap: break-word; overflow-wrap: break-word; word-break: break-word; white-space: normal; max-width: 100%; flex-shrink: 1; text-align: left;"
+                        style="
+                          word-wrap: break-word;
+                          overflow-wrap: break-word;
+                          word-break: break-word;
+                          white-space: normal;
+                          max-width: 100%;
+                          flex-shrink: 1;
+                          text-align: left;
+                        "
                       >
                         {{ role }}
                       </span>
@@ -471,12 +586,29 @@ const selectCharacterWithScroll = (character: Character, shouldTriggerSearch = t
                   <!-- Archetypes -->
                   <div class="mb-3">
                     <h5 class="text-primary mb-2">Archetypes</h5>
-                    <div class="d-flex flex-wrap gap-1" style="word-wrap: break-word; overflow-wrap: break-word; width: 100%; box-sizing: border-box;">
+                    <div
+                      class="d-flex flex-wrap gap-1"
+                      style="
+                        word-wrap: break-word;
+                        overflow-wrap: break-word;
+                        width: 100%;
+                        box-sizing: border-box;
+                      "
+                    >
                       <span
-                        v-for="archetype in getNewFormatCharacter(selectedCharacter.id)?.archetype || []"
+                        v-for="archetype in getNewFormatCharacter(selectedCharacter.id)
+                          ?.archetype || []"
                         :key="archetype"
                         class="badge bg-info text-dark"
-                        style="word-wrap: break-word; overflow-wrap: break-word; word-break: break-word; white-space: normal; max-width: 100%; flex-shrink: 1; text-align: left;"
+                        style="
+                          word-wrap: break-word;
+                          overflow-wrap: break-word;
+                          word-break: break-word;
+                          white-space: normal;
+                          max-width: 100%;
+                          flex-shrink: 1;
+                          text-align: left;
+                        "
                       >
                         {{ archetype }}
                       </span>
@@ -486,12 +618,31 @@ const selectCharacterWithScroll = (character: Character, shouldTriggerSearch = t
                   <!-- Labels -->
                   <div class="mb-4">
                     <h5 class="text-primary mb-2">Labels</h5>
-                    <div class="d-flex flex-wrap gap-1" style="word-wrap: break-word; overflow-wrap: break-word; width: 100%; box-sizing: border-box; padding-bottom: 40px;">
+                    <div
+                      class="d-flex flex-wrap gap-1"
+                      style="
+                        word-wrap: break-word;
+                        overflow-wrap: break-word;
+                        width: 100%;
+                        box-sizing: border-box;
+                        padding-bottom: 40px;
+                      "
+                    >
                       <span
-                        v-for="label in getNewFormatCharacter(selectedCharacter.id)?.labels?.slice().sort() || []"
+                        v-for="label in getNewFormatCharacter(selectedCharacter.id)
+                          ?.labels?.slice()
+                          .sort() || []"
                         :key="label"
                         class="badge bg-info text-dark small"
-                        style="word-wrap: break-word; overflow-wrap: break-word; word-break: break-word; white-space: normal; max-width: 100%; flex-shrink: 1; text-align: left;"
+                        style="
+                          word-wrap: break-word;
+                          overflow-wrap: break-word;
+                          word-break: break-word;
+                          white-space: normal;
+                          max-width: 100%;
+                          flex-shrink: 1;
+                          text-align: left;
+                        "
                       >
                         {{ label }}
                       </span>
@@ -508,9 +659,13 @@ const selectCharacterWithScroll = (character: Character, shouldTriggerSearch = t
         <!-- Team Recommendations -->
         <div class="col-lg-9 col-md-8">
           <!-- Loading state when character is selected but doesn't have full API data -->
-          <div v-if="selectedCharacter && !hasFullCharacterData(selectedCharacter.id)" class="card bg-dark border-primary text-center py-5" style="min-height: 650px;">
+          <div
+            v-if="selectedCharacter && !hasFullCharacterData(selectedCharacter.id)"
+            class="card bg-dark border-primary text-center py-5"
+            style="min-height: 650px"
+          >
             <div class="card-body">
-                            <div class="spinner-border text-primary mb-3" aria-label="Loading">
+              <div class="spinner-border text-primary mb-3" aria-label="Loading">
                 <span class="visually-hidden">Loading...</span>
               </div>
               <p class="text-white fw-bold mb-0">Loading character data from server...</p>
@@ -525,10 +680,14 @@ const selectCharacterWithScroll = (character: Character, shouldTriggerSearch = t
             "
             :key="selectedCharacter.id"
             :character="getNewFormatCharacter(selectedCharacter.id)!"
-            style="min-height: 650px; max-height: 650px; overflow-y: auto;"
+            style="min-height: 650px; max-height: 650px; overflow-y: auto"
           />
           <!-- Character selected but no recommendations available -->
-          <div v-else-if="selectedCharacter" class="card bg-dark border-primary text-center py-5" style="min-height: 650px;">
+          <div
+            v-else-if="selectedCharacter"
+            class="card bg-dark border-primary text-center py-5"
+            style="min-height: 650px"
+          >
             <div class="card-body">
               <p class="text-secondary mb-0">
                 Character recommendations not available in new format
@@ -536,7 +695,11 @@ const selectCharacterWithScroll = (character: Character, shouldTriggerSearch = t
             </div>
           </div>
           <!-- No character selected -->
-          <div v-else class="card bg-dark border-primary text-center py-5" style="min-height: 650px;">
+          <div
+            v-else
+            class="card bg-dark border-primary text-center py-5"
+            style="min-height: 650px"
+          >
             <div class="card-body">
               <p class="text-white fw-bold mb-0">Select a character to see team recommendations</p>
             </div>
@@ -567,7 +730,7 @@ const selectCharacterWithScroll = (character: Character, shouldTriggerSearch = t
       </div>
 
       <!-- Characters grouped by archetype -->
-      <div class="card bg-dark border-primary mb-5" style="min-height: 500px;">
+      <div class="card bg-dark border-primary mb-5" style="min-height: 500px">
         <RoleTabsSection
           :characters-by-role="charactersByRole"
           :selected-character="selectedCharacter"
@@ -595,7 +758,7 @@ const selectCharacterWithScroll = (character: Character, shouldTriggerSearch = t
 /* Character image positioning variables */
 :root {
   --character-image-offset-x: -16.7143%; /* Horizontal offset for character portrait positioning */
-  --character-image-offset-y: -6.25%;   /* Vertical offset for character portrait positioning */
+  --character-image-offset-y: -6.25%; /* Vertical offset for character portrait positioning */
 }
 
 /* Responsive character header layout */
@@ -620,21 +783,21 @@ const selectCharacterWithScroll = (character: Character, shouldTriggerSearch = t
     flex-direction: column;
     align-items: flex-start;
   }
-  
+
   .detail-image-container {
     align-self: center;
     margin-bottom: 0.5rem;
   }
-  
+
   .detail-info {
     width: 100%;
     text-align: center;
   }
-  
+
   .detail-name-row {
     justify-content: center !important;
   }
-  
+
   .detail-meta {
     justify-content: center !important;
   }
@@ -646,21 +809,21 @@ const selectCharacterWithScroll = (character: Character, shouldTriggerSearch = t
     flex-direction: column;
     align-items: flex-start;
   }
-  
+
   .detail-image-container {
     align-self: center;
     margin-bottom: 0.5rem;
   }
-  
+
   .detail-info {
     width: 100%;
     text-align: center;
   }
-  
+
   .detail-name-row {
     justify-content: center !important;
   }
-  
+
   .detail-meta {
     justify-content: center !important;
   }

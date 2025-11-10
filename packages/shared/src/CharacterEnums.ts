@@ -21,9 +21,24 @@ export const PATHS = [
 
 export const RARITIES = [4, 5] as const
 
+export const LIGHTCONE_RARITIES = [3, 4, 5] as const
+
+export const LIGHTCONE_PATHS = [
+  'Destruction',
+  'Hunt',
+  'Erudition',
+  'Harmony',
+  'Nihility',
+  'Preservation',
+  'Abundance',
+  'Remembrance',
+] as const
+
 export type Element = (typeof ELEMENTS)[number]
 export type Path = (typeof PATHS)[number]
 export type Rarity = (typeof RARITIES)[number]
+export type LightconeRarity = (typeof LIGHTCONE_RARITIES)[number]
+export type LightconePath = (typeof LIGHTCONE_PATHS)[number]
 
 export const MAIN_ARCHETYPES = [
   'DPS',

@@ -1,5 +1,6 @@
-import { Column, Entity, PrimaryColumn } from 'typeorm'
+import { Column, Entity, JoinTable, ManyToMany, PrimaryColumn } from 'typeorm'
 import { ApiProperty } from '@nestjs/swagger'
+import { LightconeEntity } from './lightcone.entity'
 
 @Entity('characters')
 export class CharacterEntity {
@@ -31,7 +32,11 @@ export class CharacterEntity {
   @Column('text', { array: true })
   archetype: string[]
 
-  @ApiProperty({ description: 'Character descriptive labels', type: [String], example: ['Single Target', 'Extra Turn'] })
+  @ApiProperty({
+    description: 'Character descriptive labels',
+    type: [String],
+    example: ['Single Target', 'Extra Turn'],
+  })
   @Column('text', { array: true })
   labels: string[]
 
@@ -42,6 +47,19 @@ export class CharacterEntity {
   @ApiProperty({ description: 'Team compositions', required: false })
   @Column('jsonb', { nullable: true })
   teamCompositions: any[]
+
+  @ApiProperty({
+    description: 'Character lightcones',
+    type: () => [LightconeEntity],
+    required: false,
+  })
+  @ManyToMany(() => LightconeEntity, (lightcone) => lightcone.characters)
+  @JoinTable({
+    name: 'character_lightcones',
+    joinColumn: { name: 'character_id', referencedColumnName: 'id' },
+    inverseJoinColumn: { name: 'lightcone_id', referencedColumnName: 'id' },
+  })
+  lightcones: LightconeEntity[]
 
   @ApiProperty({ description: 'Creation timestamp' })
   @Column({ type: 'timestamp', default: () => 'CURRENT_TIMESTAMP' })
