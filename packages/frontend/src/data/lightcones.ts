@@ -123,7 +123,7 @@ const lightconeAssetMap: Record<string, string> = {
   'insert-id-here-23022': '23022',
   'insert-id-here-23023': '23023',
   'insert-id-here-23024': '23024',
-  'insert-id-here-23025': '23025',
+  'whereabouts-should-dreams-rest': '23025',
   'insert-id-here-23026': '23026',
   'insert-id-here-23027': '23027',
   'insert-id-here-23028': '23028',
