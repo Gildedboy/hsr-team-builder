@@ -3,16 +3,12 @@ import TopBar from '@/components/TopBar.vue'
 import TeamRecommendations from '@/components/TeamRecommendations.vue'
 import RoleTabsSection from '@/components/RoleTabsSection.vue'
 import { getCharacterAvatar, handleImageError, getCharacterImage } from '@/data/avatars'
-import {
-  getLightconeImage,
-  getLightconeRarityColor,
-  handleLightconeImageError,
-} from '@/data/lightcones'
+import { getLightconeImage, handleLightconeImageError } from '@/data/lightcones'
 import { useHomeView } from '@/composables/useHomeView'
 import { useCharactersApi } from '@/composables/useCharactersApi'
 import { FILTER_OPTIONS } from '@/constants/filterOptions'
 import { COLORS } from '@/constants/design'
-import { onMounted } from 'vue'
+import { onMounted, ref } from 'vue'
 import type { Character } from '@hsr-team-builder/shared'
 
 // Use API-based characters
@@ -92,6 +88,23 @@ const selectCharacterWithScroll = (character: Character, shouldTriggerSearch = t
     scrollToCharacterDetails()
   }, 100)
 }
+
+// Lightcone modal functionality
+const lightconeModal = ref({
+  show: false,
+  lightcone: null as any,
+})
+
+const showLightconeModal = (lightcone: any) => {
+  lightconeModal.value = {
+    show: true,
+    lightcone,
+  }
+}
+
+const hideLightconeModal = () => {
+  lightconeModal.value.show = false
+}
 </script>
 
 <template>
@@ -112,7 +125,7 @@ const selectCharacterWithScroll = (character: Character, shouldTriggerSearch = t
         <div class="col-lg-3 col-md-4 mb-4">
           <div
             class="card bg-dark border-primary filter-card"
-            style="height: 650px; overflow: hidden"
+            style="height: 650px; overflow: hidden; z-index: 1001; position: relative"
           >
             <!-- Filter Section Header (when no character selected) -->
             <div
@@ -497,55 +510,33 @@ const selectCharacterWithScroll = (character: Character, shouldTriggerSearch = t
                         <span class="text-white">{{ selectedCharacter.path }}</span>
                       </div>
                     </div>
+                  </div>
+                </div>
 
-                    <!-- Lightcones Section -->
+                <!-- Lightcones Section - Below character image -->
+                <div
+                  v-if="
+                    getNewFormatCharacter(selectedCharacter.id)?.lightcones &&
+                    getNewFormatCharacter(selectedCharacter.id)?.lightcones?.length > 0
+                  "
+                  class="detail-lightcones mb-4"
+                >
+                  <h6 class="text-primary mb-2">Lightcones</h6>
+                  <div class="lightcones-list">
                     <div
-                      v-if="
-                        getNewFormatCharacter(selectedCharacter.id)?.lightcones &&
-                        getNewFormatCharacter(selectedCharacter.id)?.lightcones?.length > 0
-                      "
-                      class="detail-lightcones mt-3"
+                      v-for="lightcone in getNewFormatCharacter(selectedCharacter.id)?.lightcones ||
+                      []"
+                      :key="lightcone.id"
+                      class="lightcone-item"
                     >
-                      <h6 class="text-primary mb-2">Recommended Lightcones</h6>
-                      <div
-                        class="lightcones-grid"
-                        style="
-                          display: grid;
-                          grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-                          gap: 8px;
-                        "
-                      >
-                        <div
-                          v-for="lightcone in getNewFormatCharacter(selectedCharacter.id)
-                            ?.lightcones || []"
-                          :key="lightcone.id"
-                          class="lightcone-card"
-                          style="
-                            background: rgba(0, 212, 255, 0.1);
-                            border: 1px solid rgba(0, 212, 255, 0.3);
-                            border-radius: 6px;
-                            padding: 12px;
-                            transition: all 0.3s ease;
-                          "
-                        >
-                          <div
-                            class="lightcone-info d-flex justify-content-between align-items-center"
-                          >
-                            <span
-                              class="lightcone-name text-white"
-                              style="font-size: 14px; font-weight: 500"
-                              >{{ lightcone.name }}</span
-                            >
-                            <span
-                              class="lightcone-rarity fw-bold"
-                              :style="{ color: getLightconeRarityColor(lightcone.rarity) }"
-                              style="font-size: 13px"
-                            >
-                              {{ lightcone.rarity }}★
-                            </span>
-                          </div>
-                        </div>
-                      </div>
+                      <img
+                        :src="getLightconeImage(lightcone.id)"
+                        :alt="lightcone.name"
+                        :title="`${lightcone.name} (${lightcone.rarity}★)`"
+                        class="lightcone-image"
+                        @error="handleLightconeImageError"
+                        @click="showLightconeModal(lightcone)"
+                      />
                     </div>
                   </div>
                 </div>
@@ -751,6 +742,62 @@ const selectCharacterWithScroll = (character: Character, shouldTriggerSearch = t
         />
       </div>
     </div>
+
+    <!-- Lightcone Modal -->
+    <div
+      v-if="lightconeModal.show && lightconeModal.lightcone"
+      class="lightcone-modal-overlay"
+      @click="hideLightconeModal"
+    >
+      <div class="lightcone-modal" @click.stop>
+        <div class="lightcone-modal-header">
+          <button class="lightcone-modal-close" @click="hideLightconeModal">&times;</button>
+        </div>
+        <div class="lightcone-modal-content">
+          <div class="lightcone-modal-main">
+            <div class="lightcone-modal-image-container">
+              <img
+                :src="getLightconeImage(lightconeModal.lightcone.id)"
+                :alt="lightconeModal.lightcone.name"
+                class="lightcone-modal-image"
+                @error="handleLightconeImageError"
+              />
+            </div>
+            <div class="lightcone-modal-info">
+              <h3 class="lightcone-modal-name detail-name text-white mb-0">
+                {{ lightconeModal.lightcone.name }}
+              </h3>
+              <div class="lightcone-modal-details">
+                <div class="lightcone-modal-rarity">
+                  <span
+                    class="rarity-stars"
+                    :style="{
+                      color:
+                        lightconeModal.lightcone.rarity === 3
+                          ? '#4a90e2'
+                          : lightconeModal.lightcone.rarity === 4
+                            ? '#8a5fcc'
+                            : '#ffd700',
+                    }"
+                  >
+                    {{ lightconeModal.lightcone.rarity }}★
+                  </span>
+                </div>
+                <div class="lightcone-modal-path">
+                  <img
+                    :src="`/images/path/${lightconeModal.lightcone.path}.webp`"
+                    :alt="lightconeModal.lightcone.path"
+                    class="path-icon"
+                  />
+                  <span>{{ lightconeModal.lightcone.path }}</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
     <!-- End main content -->
   </main>
 </template>
@@ -859,6 +906,180 @@ body {
 }
 
 /* Custom Scrollbar Styling */
+/* Lightcone Styles */
+.lightcones-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 16px;
+  justify-content: flex-start;
+  align-items: flex-start;
+}
+
+.lightcone-item {
+  flex: 1 1 108px;
+  max-width: 150px;
+  min-width: 85px;
+  display: flex;
+  justify-content: center;
+  padding: 0;
+  background: transparent;
+  border-radius: 0;
+  border: none;
+  transition: none;
+}
+
+.lightcone-item:hover {
+  background: transparent;
+  border-color: transparent;
+}
+
+.lightcone-image {
+  width: 100%;
+  max-width: 150px;
+  height: auto;
+  aspect-ratio: 0.717;
+  border-radius: 8px;
+  object-fit: cover;
+  border: 2px solid rgba(0, 212, 255, 0.3);
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.lightcone-image:hover {
+  border-color: rgba(0, 212, 255, 0.6);
+  transform: scale(1.05);
+  box-shadow: 0 4px 16px rgba(0, 212, 255, 0.3);
+}
+
+/* Lightcone Modal Styles */
+.lightcone-modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background: rgba(0, 0, 0, 0.8);
+  z-index: 10000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  backdrop-filter: blur(5px);
+}
+
+.lightcone-modal {
+  background: rgba(15, 15, 35, 0.95);
+  border: 2px solid #00d4ff;
+  border-radius: 12px;
+  padding: 24px;
+  color: white;
+  width: 650px;
+  max-width: 90vw;
+  max-height: 90vh;
+  overflow-y: auto;
+  backdrop-filter: blur(10px);
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.5);
+}
+
+.lightcone-modal-header {
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  margin-bottom: 20px;
+}
+
+.lightcone-modal-close {
+  background: none;
+  border: none;
+  color: #00d4ff;
+  font-size: 24px;
+  font-weight: bold;
+  cursor: pointer;
+  padding: 0;
+  width: 30px;
+  height: 30px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 4px;
+  transition: background-color 0.2s;
+}
+
+.lightcone-modal-close:hover {
+  background: rgba(0, 212, 255, 0.2);
+}
+
+.lightcone-modal-content {
+  display: flex;
+  flex-direction: column;
+}
+
+.lightcone-modal-main {
+  display: flex;
+  align-items: center;
+  gap: 24px;
+}
+
+.lightcone-modal-image-container {
+  flex-shrink: 0;
+}
+
+.lightcone-modal-image {
+  width: 301px;
+  height: 420px;
+  border-radius: 12px;
+  border: 3px solid #00d4ff;
+  object-fit: cover;
+  box-shadow: 0 4px 16px rgba(0, 212, 255, 0.3);
+}
+
+.lightcone-modal-info {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  min-width: 0;
+}
+
+.lightcone-modal-details {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.lightcone-modal-rarity {
+  display: flex;
+  align-items: center;
+}
+
+.rarity-stars {
+  font-size: 24px;
+  font-weight: bold;
+}
+
+.lightcone-modal-path {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  color: white;
+}
+
+.path-icon {
+  width: 24px;
+  height: 24px;
+}
+
+.lightcone-name {
+  font-size: 16px;
+  font-weight: 500;
+  flex: 1;
+}
+
+.lightcone-rarity {
+  font-size: 16px;
+  font-weight: 600;
+}
+
+/* Scrollbar Styles */
 .character-detail-content::-webkit-scrollbar,
 .card::-webkit-scrollbar {
   width: 8px;
