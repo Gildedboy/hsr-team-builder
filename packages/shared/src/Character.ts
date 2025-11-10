@@ -1,4 +1,5 @@
 import type { Element, Path, Rarity } from './CharacterEnums'
+import type { Lightcone } from './Lightcone'
 
 // New flexible character system
 export interface Character {
@@ -16,6 +17,9 @@ export interface Character {
 
   // Flexible team compositions
   teamCompositions?: TeamComposition[]
+
+  // Character lightcones
+  lightcones?: Lightcone[]
 }
 
 export type Role = 'DPS' | 'SUB_DPS' | 'SUPPORT' | 'SUSTAIN' | 'AMPLIFIER'

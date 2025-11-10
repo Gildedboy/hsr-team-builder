@@ -5,6 +5,7 @@ import { CACHE_MANAGER } from '@nestjs/cache-manager'
 import { Cache } from 'cache-manager'
 import { Character } from '../types/Character'
 import { CharacterEntity } from '../entities/character.entity'
+import { LightconeEntity } from '../entities/lightcone.entity'
 import { allCharactersSeedData } from '../data/allCharactersData'
 
 @Injectable()
@@ -14,6 +15,8 @@ export class CharactersService {
   constructor(
     @InjectRepository(CharacterEntity)
     private readonly characterRepository: Repository<CharacterEntity>,
+    @InjectRepository(LightconeEntity)
+    private readonly lightconeRepository: Repository<LightconeEntity>,
     @Inject(CACHE_MANAGER) private readonly cacheManager: Cache,
   ) {}
 
@@ -33,7 +36,9 @@ export class CharactersService {
     }
 
     // If not in cache, get from database and cache it
-    const entities = await this.characterRepository.find()
+    const entities = await this.characterRepository.find({
+      relations: ['lightcones'],
+    })
     const characters = entities.map(this.entityToCharacter)
 
     try {
@@ -58,7 +63,10 @@ export class CharactersService {
     }
 
     // Get from database
-    const entity = await this.characterRepository.findOne({ where: { id } })
+    const entity = await this.characterRepository.findOne({
+      where: { id },
+      relations: ['lightcones'],
+    })
     if (entity) {
       const character = this.entityToCharacter(entity)
       await this.cacheManager.set(cacheKey, character, 600)
@@ -81,6 +89,7 @@ export class CharactersService {
     // Query database for characters with specific role
     const entities = await this.characterRepository
       .createQueryBuilder('character')
+      .leftJoinAndSelect('character.lightcones', 'lightcone')
       .where(':role = ANY(character.roles)', { role })
       .getMany()
 
@@ -92,12 +101,18 @@ export class CharactersService {
   }
 
   async findByElement(element: string): Promise<Character[]> {
-    const entities = await this.characterRepository.find({ where: { element } })
+    const entities = await this.characterRepository.find({ 
+      where: { element },
+      relations: ['lightcones']
+    })
     return entities.map(this.entityToCharacter)
   }
 
   async findByPath(path: string): Promise<Character[]> {
-    const entities = await this.characterRepository.find({ where: { path } })
+    const entities = await this.characterRepository.find({ 
+      where: { path },
+      relations: ['lightcones']
+    })
     return entities.map(this.entityToCharacter)
   }
 
@@ -106,6 +121,7 @@ export class CharactersService {
 
     const entities = await this.characterRepository
       .createQueryBuilder('character')
+      .leftJoinAndSelect('character.lightcones', 'lightcone')
       .where('LOWER(character.name) LIKE :query', { query: `%${lowercaseQuery}%` })
       .orWhere(
         'EXISTS (SELECT 1 FROM unnest(character.labels) AS label WHERE LOWER(label) LIKE :query)',
@@ -116,14 +132,28 @@ export class CharactersService {
     return entities.map(this.entityToCharacter)
   }
 
-  async updateCharacter(id: string, updateData: Partial<Character>): Promise<Character | null> {
-    const entity = await this.characterRepository.findOne({ where: { id } })
+  async updateCharacter(id: string, updateData: Partial<Character> & { lightconeIds?: string[] }): Promise<Character | null> {
+    const entity = await this.characterRepository.findOne({ 
+      where: { id },
+      relations: ['lightcones']
+    })
     if (!entity) {
       return null
     }
 
-    // Update the entity with new data
-    Object.assign(entity, updateData)
+    // Handle lightcone relationships if provided
+    if (updateData.lightconeIds) {
+      const lightcones = await this.lightconeRepository.findByIds(updateData.lightconeIds)
+      entity.lightcones = lightcones
+      // Remove lightconeIds from updateData to avoid TypeORM issues
+      const { lightconeIds, ...restUpdateData } = updateData
+      Object.assign(entity, restUpdateData)
+    } else {
+      // Update the entity with new data (excluding lightconeIds)
+      const { lightconeIds, ...restUpdateData } = updateData
+      Object.assign(entity, restUpdateData)
+    }
+
     await this.characterRepository.save(entity)
 
     // Clear cache for this character and all characters
@@ -149,10 +179,10 @@ export class CharactersService {
 
   async createCharacter(characterData: Character): Promise<Character> {
     // Check if character already exists
-    const existingCharacter = await this.characterRepository.findOne({ 
-      where: { id: characterData.id } 
+    const existingCharacter = await this.characterRepository.findOne({
+      where: { id: characterData.id },
     })
-    
+
     if (existingCharacter) {
       throw new Error(`Character with ID ${characterData.id} already exists`)
     }
@@ -173,14 +203,59 @@ export class CharactersService {
     return {
       id: entity.id,
       name: entity.name,
-      element: entity.element as any,
-      path: entity.path as any,
-      rarity: entity.rarity as any,
-      roles: entity.roles as any,
-      archetype: entity.archetype as any,
+      element: entity.element as
+        | 'Physical'
+        | 'Fire'
+        | 'Ice'
+        | 'Lightning'
+        | 'Wind'
+        | 'Quantum'
+        | 'Imaginary',
+      path: entity.path as
+        | 'Destruction'
+        | 'Hunt'
+        | 'Erudition'
+        | 'Harmony'
+        | 'Nihility'
+        | 'Preservation'
+        | 'Abundance'
+        | 'Remembrance',
+      rarity: entity.rarity as 4 | 5,
+      roles: entity.roles as ('DPS' | 'SUB_DPS' | 'SUPPORT' | 'SUSTAIN' | 'AMPLIFIER')[],
+      archetype: entity.archetype as (
+        | 'Hypercarry'
+        | 'HP-Scaling'
+        | 'Follow-up'
+        | 'Break-DPS'
+        | 'Debuffer'
+        | 'Buffer'
+        | 'Healer'
+        | 'Shielder'
+        | 'Counter'
+        | 'Ultimate-Based'
+        | 'Energy-Hungry'
+        | 'Summon'
+        | 'Debuff DPS'
+        | 'DoT'
+      )[],
       labels: entity.labels,
       teammateRecommendations: entity.teammateRecommendations || [],
       teamCompositions: entity.teamCompositions || [],
+      lightcones:
+        entity.lightcones?.map((lc) => ({
+          id: lc.id,
+          name: lc.name,
+          rarity: lc.rarity as 3 | 4 | 5,
+          path: lc.path as
+            | 'Destruction'
+            | 'Hunt'
+            | 'Erudition'
+            | 'Harmony'
+            | 'Nihility'
+            | 'Preservation'
+            | 'Abundance'
+            | 'Remembrance',
+        })) || [],
     }
   }
 

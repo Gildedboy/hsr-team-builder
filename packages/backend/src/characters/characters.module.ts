@@ -3,9 +3,10 @@ import { TypeOrmModule } from '@nestjs/typeorm'
 import { CharactersController } from './characters.controller'
 import { CharactersService } from './characters.service'
 import { CharacterEntity } from '../entities/character.entity'
+import { LightconeEntity } from '../entities/lightcone.entity'
 
 @Module({
-  imports: [TypeOrmModule.forFeature([CharacterEntity])],
+  imports: [TypeOrmModule.forFeature([CharacterEntity, LightconeEntity])],
   controllers: [CharactersController],
   providers: [CharactersService],
   exports: [CharactersService],

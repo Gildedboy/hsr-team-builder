@@ -43,6 +43,35 @@
         />
         <span>{{ character.path }}</span>
       </div>
+
+      <!-- Lightcones section -->
+      <div
+        v-if="character.lightcones && character.lightcones.length > 0"
+        class="tooltip-lightcones"
+      >
+        <div class="lightcones-header">
+          <span class="lightcones-title">Lightcones</span>
+        </div>
+        <div class="lightcones-list">
+          <div v-for="lightcone in character.lightcones" :key="lightcone.id" class="lightcone-item">
+            <img
+              :src="getLightconeIcon(lightcone.id)"
+              :alt="lightcone.name"
+              class="lightcone-icon"
+              @error="handleLightconeImageError"
+            />
+            <div class="lightcone-info">
+              <span class="lightcone-name">{{ lightcone.name }}</span>
+              <span
+                class="lightcone-rarity"
+                :style="{ color: getLightconeRarityColor(lightcone.rarity) }"
+              >
+                {{ lightcone.rarity }}★
+              </span>
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
   </div>
 </template>
@@ -50,6 +79,11 @@
 <script setup lang="ts">
 import type { Character } from '@hsr-team-builder/shared'
 import { getCharacterAvatar } from '@/data/avatars'
+import {
+  getLightconeIcon,
+  getLightconeRarityColor,
+  handleLightconeImageError,
+} from '@/data/lightcones'
 
 interface Props {
   character: Character | null
@@ -144,5 +178,65 @@ defineProps<Props>()
 .tooltip-separator {
   color: #6c757d;
   margin: 0 2px;
+}
+
+.tooltip-lightcones {
+  margin-top: 8px;
+  padding-top: 8px;
+  border-top: 1px solid rgba(0, 212, 255, 0.3);
+}
+
+.lightcones-header {
+  margin-bottom: 6px;
+}
+
+.lightcones-title {
+  font-size: 14px;
+  font-weight: 600;
+  color: #00d4ff;
+}
+
+.lightcones-list {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.lightcone-item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  padding: 4px 6px;
+  background: rgba(0, 212, 255, 0.1);
+  border-radius: 4px;
+}
+
+.lightcone-icon {
+  width: 24px;
+  height: 24px;
+  border-radius: 4px;
+  flex-shrink: 0;
+}
+
+.lightcone-info {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  flex: 1;
+}
+
+.lightcone-name {
+  font-size: 13px;
+  color: #e0e0e0;
+  flex: 1;
+  word-wrap: break-word;
+}
+
+.lightcone-rarity {
+  font-size: 12px;
+  font-weight: 600;
+  flex-shrink: 0;
 }
 </style>

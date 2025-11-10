@@ -1,0 +1,33 @@
+<svg width="512" height="512" viewBox="0 0 512 512" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <rect width="512" height="512" rx="24" fill="#1a1a2e" />
+  <rect x="16" y="16" width="480" height="480" rx="16" fill="#16213e" stroke="#00d4ff"
+    stroke-width="2" />
+
+  <!-- Lightcone icon -->
+  <g transform="translate(256, 256)">
+    <!-- Central diamond -->
+    <path d="M-48 0 L0 -48 L48 0 L0 48 Z" fill="#00d4ff" opacity="0.3" />
+
+    <!-- Rays -->
+    <path d="M0 -80 L8 -56 L-8 -56 Z" fill="#00d4ff" opacity="0.6" />
+    <path d="M0 80 L8 56 L-8 56 Z" fill="#00d4ff" opacity="0.6" />
+    <path d="M80 0 L56 8 L56 -8 Z" fill="#00d4ff" opacity="0.6" />
+    <path d="M-80 0 L-56 8 L-56 -8 Z" fill="#00d4ff" opacity="0.6" />
+
+    <!-- Diagonal rays -->
+    <path d="M56 -56 L48 -48 L48 -64 L64 -48 Z" fill="#00d4ff" opacity="0.4" />
+    <path d="M-56 -56 L-48 -48 L-64 -48 L-48 -64 Z" fill="#00d4ff" opacity="0.4" />
+    <path d="M56 56 L48 48 L64 48 L48 64 Z" fill="#00d4ff" opacity="0.4" />
+    <path d="M-56 56 L-48 48 L-48 64 L-64 48 Z" fill="#00d4ff" opacity="0.4" />
+
+    <!-- Center star -->
+    <circle cx="0" cy="0" r="12" fill="#ffffff" />
+    <circle cx="0" cy="0" r="8" fill="#00d4ff" />
+  </g>
+
+  <!-- Text -->
+  <text x="256" y="384" text-anchor="middle" fill="#00d4ff" font-family="Arial, sans-serif"
+    font-size="24" font-weight="bold">Lightcone</text>
+  <text x="256" y="416" text-anchor="middle" fill="#6c757d" font-family="Arial, sans-serif"
+    font-size="16">Image Not Found</text>
+</svg>

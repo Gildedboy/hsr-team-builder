@@ -211,4 +211,14 @@ export class UpdateCharacterDto {
   @ValidateNested({ each: true })
   @Type(() => TeamCompositionDto)
   teamCompositions?: TeamCompositionDto[]
+
+  @ApiPropertyOptional({ 
+    description: 'Lightcone IDs to assign to this character',
+    type: [String],
+    example: ['20000', '20001']
+  })
+  @IsOptional()
+  @IsArray()
+  @IsString({ each: true })
+  lightconeIds?: string[]
 }
