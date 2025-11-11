@@ -9,7 +9,7 @@ import { useCharactersApi } from '@/composables/useCharactersApi'
 import { FILTER_OPTIONS } from '@/constants/filterOptions'
 import { COLORS } from '@/constants/design'
 import { onMounted, ref } from 'vue'
-import type { Character } from '@hsr-team-builder/shared'
+import type { Character, Lightcone } from '@hsr-team-builder/shared'
 
 // Use API-based characters
 const { characters, loadCharacters } = useCharactersApi()
@@ -92,10 +92,10 @@ const selectCharacterWithScroll = (character: Character, shouldTriggerSearch = t
 // Lightcone modal functionality
 const lightconeModal = ref({
   show: false,
-  lightcone: null as any,
+  lightcone: null as Lightcone | null,
 })
 
-const showLightconeModal = (lightcone: any) => {
+const showLightconeModal = (lightcone: Lightcone) => {
   lightconeModal.value = {
     show: true,
     lightcone,
@@ -1030,6 +1030,21 @@ body {
   border: 3px solid #00d4ff;
   object-fit: cover;
   box-shadow: 0 4px 16px rgba(0, 212, 255, 0.3);
+}
+
+/* Mobile responsive lightcone modal image */
+@media (max-width: 768px) {
+  .lightcone-modal-image {
+    width: 200px;
+    height: 280px;
+  }
+}
+
+@media (max-width: 480px) {
+  .lightcone-modal-image {
+    width: 150px;
+    height: 210px;
+  }
 }
 
 .lightcone-modal-info {
