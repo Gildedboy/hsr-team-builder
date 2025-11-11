@@ -145,6 +145,89 @@ export class LightconesController {
   }
 
   @UseGuards(JwtAuthGuard)
+  @Post('bulk')
+  @ApiBearerAuth()
+  @ApiOperation({
+    summary: 'Create multiple lightcones',
+    description: 'Create multiple lightcones in bulk (requires authentication)',
+  })
+  @ApiBody({
+    description: 'Array of lightcone creation data',
+    schema: {
+      type: 'array',
+      items: {
+        $ref: '#/components/schemas/CreateLightconeDto',
+      },
+    },
+    examples: {
+      example1: {
+        summary: 'Bulk lightcone creation',
+        value: [
+          {
+            id: 'arrows',
+            name: 'Arrows',
+            rarity: 3,
+            path: 'Hunt',
+          },
+          {
+            id: 'cornucopia',
+            name: 'Cornucopia',
+            rarity: 3,
+            path: 'Abundance',
+          },
+        ],
+      },
+    },
+  })
+  @ApiResponse({
+    status: 201,
+    description: 'Lightcones created successfully',
+    schema: {
+      type: 'object',
+      properties: {
+        message: { type: 'string', example: 'Successfully created 152 lightcones' },
+        created: { type: 'number', example: 152 },
+        failed: { type: 'number', example: 0 },
+        errors: {
+          type: 'array',
+          items: { type: 'string' },
+          example: [],
+        },
+      },
+    },
+  })
+  @ApiResponse({ status: 401, description: 'Unauthorized - JWT token required' })
+  async createLightconesBulk(@Body() lightconesData: CreateLightconeDto[]): Promise<{
+    message: string
+    created: number
+    failed: number
+    errors: string[]
+  }> {
+    const results = {
+      created: 0,
+      failed: 0,
+      errors: [] as string[],
+    }
+
+    for (const lightconeData of lightconesData) {
+      try {
+        const lightcone = lightconeData as Lightcone
+        await this.lightconesService.createLightcone(lightcone)
+        results.created++
+      } catch (error) {
+        results.failed++
+        const errorMessage = error instanceof Error ? error.message : 'Unknown error'
+        results.errors.push(`Failed to create ${lightconeData.id}: ${errorMessage}`)
+      }
+    }
+
+    return {
+      message: `Successfully created ${results.created} lightcones`,
+      ...results,
+    }
+  }
+
+  @UseGuards(JwtAuthGuard)
   @Put(':id')
   @ApiBearerAuth()
   @ApiOperation({
