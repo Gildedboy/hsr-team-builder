@@ -12,6 +12,7 @@ import { LightconesModule } from './lightcones/lightcones.module'
 import { CharacterEntity } from './entities/character.entity'
 import { VersionEntity } from './entities/version.entity'
 import { LightconeEntity } from './entities/lightcone.entity'
+import { CharacterLightconeEntity } from './entities/character-lightcone.entity'
 
 @Module({
   imports: [
@@ -20,7 +21,7 @@ import { LightconeEntity } from './entities/lightcone.entity'
       url:
         process.env.DATABASE_URL ||
         'postgresql://postgres:password@localhost:5432/hsr_team_builder',
-      entities: [CharacterEntity, VersionEntity, LightconeEntity],
+      entities: [CharacterEntity, VersionEntity, LightconeEntity, CharacterLightconeEntity],
       synchronize: true, // Enable for initial schema creation
       logging: process.env.NODE_ENV === 'development',
       ssl: process.env.NODE_ENV === 'production' ? { rejectUnauthorized: false } : false,
