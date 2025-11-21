@@ -152,7 +152,7 @@ const lightconeAssetMap: Record<string, string> = {
   'this-love-forever': '23052',
 
   // 5-star simulated universe lightcones (24xxx)
-  'on-the-fall-on-an-aeon': '24000',
+  'on-the-fall-of-an-aeon': '24000',
   'cruising-in-the-stellar-sea': '24001',
   'texture-of-memories': '24002',
   'solitary-healing': '24003',
