@@ -1,6 +1,7 @@
-import { Column, Entity, JoinTable, ManyToMany, PrimaryColumn } from 'typeorm'
+import { Column, Entity, JoinTable, ManyToMany, PrimaryColumn, OneToMany } from 'typeorm'
 import { ApiProperty } from '@nestjs/swagger'
 import { LightconeEntity } from './lightcone.entity'
+import { CharacterLightconeEntity } from './character-lightcone.entity'
 
 @Entity('characters')
 export class CharacterEntity {
@@ -53,13 +54,8 @@ export class CharacterEntity {
     type: () => [LightconeEntity],
     required: false,
   })
-  @ManyToMany(() => LightconeEntity, (lightcone) => lightcone.characters)
-  @JoinTable({
-    name: 'character_lightcones',
-    joinColumn: { name: 'character_id', referencedColumnName: 'id' },
-    inverseJoinColumn: { name: 'lightcone_id', referencedColumnName: 'id' },
-  })
-  lightcones: LightconeEntity[]
+  @OneToMany(() => CharacterLightconeEntity, cl => cl.character, { cascade: true, eager: true })
+  characterLightcones: CharacterLightconeEntity[]
 
   @ApiProperty({ description: 'Creation timestamp' })
   @Column({ type: 'timestamp', default: () => 'CURRENT_TIMESTAMP' })

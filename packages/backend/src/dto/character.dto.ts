@@ -1,3 +1,13 @@
+export class CharacterLightconeNoteDto {
+  @ApiProperty({ description: 'Lightcone ID' })
+  @IsString()
+  id: string;
+
+  @ApiPropertyOptional({ description: 'Note for this lightcone/character association' })
+  @IsOptional()
+  @IsString()
+  note?: string;
+}
 import {
   ArrayMinSize,
   IsArray,
@@ -99,6 +109,15 @@ export class TeamCompositionDto {
 }
 
 export class CreateCharacterDto {
+    @ApiPropertyOptional({
+      description: 'Lightcones with optional notes for this character',
+      type: [CharacterLightconeNoteDto],
+    })
+    @IsOptional()
+    @IsArray()
+    @ValidateNested({ each: true })
+    @Type(() => CharacterLightconeNoteDto)
+    lightcones?: CharacterLightconeNoteDto[];
   @ApiProperty({ description: 'Unique character identifier' })
   @IsString()
   id: string
@@ -212,13 +231,13 @@ export class UpdateCharacterDto {
   @Type(() => TeamCompositionDto)
   teamCompositions?: TeamCompositionDto[]
 
-  @ApiPropertyOptional({ 
-    description: 'Lightcone IDs to assign to this character',
-    type: [String],
-    example: ['20000', '20001']
+  @ApiPropertyOptional({
+    description: 'Lightcones with optional notes for this character',
+    type: [CharacterLightconeNoteDto],
   })
   @IsOptional()
   @IsArray()
-  @IsString({ each: true })
-  lightconeIds?: string[]
+  @ValidateNested({ each: true })
+  @Type(() => CharacterLightconeNoteDto)
+  lightcones?: CharacterLightconeNoteDto[];
 }

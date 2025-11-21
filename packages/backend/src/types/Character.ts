@@ -18,8 +18,8 @@ export interface Character {
   // Flexible team compositions
   teamCompositions?: TeamComposition[]
 
-  // Character lightcones
-  lightcones?: Lightcone[]
+  // Character lightcones (with optional note)
+  lightcones?: (Lightcone & { note?: string })[]
 }
 
 export type Role = 'DPS' | 'SUB_DPS' | 'SUPPORT' | 'SUSTAIN' | 'AMPLIFIER'

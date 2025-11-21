@@ -192,8 +192,8 @@ export class CharactersController {
     @Param('id') id: string,
     @Body() updateData: UpdateCharacterDto,
   ): Promise<Character | { message: string }> {
-    // Convert DTO to Partial<Character> type and handle lightconeIds
-    const characterUpdate = updateData as Partial<Character> & { lightconeIds?: string[] }
+    // Convert DTO to Partial<Character> type and handle lightcones with notes
+    const characterUpdate = updateData as Partial<Character> & { lightcones?: { id: string, note?: string }[] }
     const updatedCharacter = await this.charactersService.updateCharacter(id, characterUpdate)
     if (!updatedCharacter) {
       throw new HttpException('Character not found', HttpStatus.NOT_FOUND)
@@ -215,7 +215,7 @@ export class CharactersController {
   async createCharacter(@Body() characterData: CreateCharacterDto): Promise<Character> {
     try {
       // Convert DTO to Character type
-      const character = characterData as Character
+      const character = characterData as Character & { lightcones?: { id: string, note?: string }[] }
       return await this.charactersService.createCharacter(character)
     } catch (error) {
       if (error instanceof Error && error.message.includes('already exists')) {

@@ -6,6 +6,7 @@ import { Cache } from 'cache-manager'
 import { Character } from '../types/Character'
 import { CharacterEntity } from '../entities/character.entity'
 import { LightconeEntity } from '../entities/lightcone.entity'
+import { CharacterLightconeEntity } from '../entities/character-lightcone.entity'
 import { allCharactersSeedData } from '../data/allCharactersData'
 
 @Injectable()
@@ -132,38 +133,47 @@ export class CharactersService {
     return entities.map(this.entityToCharacter)
   }
 
-  async updateCharacter(id: string, updateData: Partial<Character> & { lightconeIds?: string[] }): Promise<Character | null> {
-    const entity = await this.characterRepository.findOne({ 
+  async updateCharacter(id: string, updateData: Partial<Character> & { lightcones?: { id: string, note?: string }[] }): Promise<Character | null> {
+    const entity = await this.characterRepository.findOne({
       where: { id },
-      relations: ['lightcones']
+      relations: ['characterLightcones', 'characterLightcones.lightcone']
     })
     if (!entity) {
       return null
     }
 
     // Handle lightcone relationships if provided
-    if (updateData.lightconeIds) {
-      const lightcones = await this.lightconeRepository.findByIds(updateData.lightconeIds)
-      // Sort lightcones to match the order of lightconeIds
-      const idToLightcone = new Map(lightcones.map(lc => [lc.id, lc]))
-      entity.lightcones = updateData.lightconeIds.map(id => idToLightcone.get(id)).filter(Boolean)
-      // Remove lightconeIds from updateData to avoid TypeORM issues
-      const { lightconeIds, ...restUpdateData } = updateData
-      Object.assign(entity, restUpdateData)
+    if (updateData.lightcones) {
+      // Remove all previous associations
+      entity.characterLightcones = [];
+      // Add new associations
+      for (const lc of updateData.lightcones) {
+        const lightconeEntity = await this.lightconeRepository.findOne({ where: { id: lc.id } });
+        if (lightconeEntity) {
+          const cl = new CharacterLightconeEntity();
+          cl.lightcone = lightconeEntity;
+          cl.note = lc.note;
+          cl.character = entity;
+          entity.characterLightcones.push(cl);
+        }
+      }
+      // Remove lightcones from updateData to avoid TypeORM issues
+      const { lightcones, ...restUpdateData } = updateData;
+      Object.assign(entity, restUpdateData);
     } else {
-      // Update the entity with new data (excluding lightconeIds)
-      const { lightconeIds, ...restUpdateData } = updateData
-      Object.assign(entity, restUpdateData)
+      // Update the entity with new data (excluding lightcones)
+      const { lightcones, ...restUpdateData } = updateData;
+      Object.assign(entity, restUpdateData);
     }
 
-    await this.characterRepository.save(entity)
+    await this.characterRepository.save(entity);
 
     // Clear cache for this character and all characters
-    await this.cacheManager.del(`character-${id}`)
-    await this.cacheManager.del('all-characters')
+    await this.cacheManager.del(`character-${id}`);
+    await this.cacheManager.del('all-characters');
 
-    console.log(`✅ Updated character ${id} and cleared cache`)
-    return this.entityToCharacter(entity)
+    console.log(`✅ Updated character ${id} and cleared cache`);
+    return this.entityToCharacter(entity);
   }
 
   async deleteCharacter(id: string): Promise<boolean> {
@@ -179,26 +189,41 @@ export class CharactersService {
     return false
   }
 
-  async createCharacter(characterData: Character): Promise<Character> {
+  async createCharacter(characterData: Character & { lightcones?: { id: string, note?: string }[] }): Promise<Character> {
     // Check if character already exists
     const existingCharacter = await this.characterRepository.findOne({
       where: { id: characterData.id },
     })
 
     if (existingCharacter) {
-      throw new Error(`Character with ID ${characterData.id} already exists`)
+      throw new Error(`Character with ID ${characterData.id} already exists`);
     }
 
-    const entity = new CharacterEntity()
-    Object.assign(entity, characterData)
+    const entity = new CharacterEntity();
+    Object.assign(entity, characterData);
 
-    const savedEntity = await this.characterRepository.save(entity)
+    // Handle lightcones if provided
+    if (characterData.lightcones) {
+      entity.characterLightcones = [];
+      for (const lc of characterData.lightcones) {
+        const lightconeEntity = await this.lightconeRepository.findOne({ where: { id: lc.id } });
+        if (lightconeEntity) {
+          const cl = new CharacterLightconeEntity();
+          cl.lightcone = lightconeEntity;
+          cl.note = lc.note;
+          cl.character = entity;
+          entity.characterLightcones.push(cl);
+        }
+      }
+    }
+
+    const savedEntity = await this.characterRepository.save(entity);
 
     // Clear cache to include new character
-    await this.cacheManager.del('all-characters')
+    await this.cacheManager.del('all-characters');
 
-    console.log(`✅ Created character ${characterData.id} and cleared cache`)
-    return this.entityToCharacter(savedEntity)
+    console.log(`✅ Created character ${characterData.id} and cleared cache`);
+    return this.entityToCharacter(savedEntity);
   }
 
   private entityToCharacter(entity: CharacterEntity): Character {
@@ -244,11 +269,11 @@ export class CharactersService {
       teammateRecommendations: entity.teammateRecommendations || [],
       teamCompositions: entity.teamCompositions || [],
       lightcones:
-        entity.lightcones?.map((lc) => ({
-          id: lc.id,
-          name: lc.name,
-          rarity: lc.rarity as 3 | 4 | 5,
-          path: lc.path as
+        entity.characterLightcones?.map((cl) => ({
+          id: cl.lightcone.id,
+          name: cl.lightcone.name,
+          rarity: cl.lightcone.rarity as 3 | 4 | 5,
+          path: cl.lightcone.path as
             | 'Destruction'
             | 'Hunt'
             | 'Erudition'
@@ -257,6 +282,7 @@ export class CharactersService {
             | 'Preservation'
             | 'Abundance'
             | 'Remembrance',
+          note: cl.note || undefined,
         })) || [],
     }
   }
