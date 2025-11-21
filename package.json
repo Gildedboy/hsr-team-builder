@@ -22,7 +22,8 @@
     "deploy": "npm run build:all && gh-pages -d packages/frontend/dist"
   },
   "dependencies": {
-    "concurrently": "^8.2.2"
+    "concurrently": "^8.2.2",
+    "glob": "^11.1.0"
   },
   "devDependencies": {
     "gh-pages": "^6.3.0"
