@@ -1,13 +1,3 @@
-export class CharacterLightconeNoteDto {
-  @ApiProperty({ description: 'Lightcone ID' })
-  @IsString()
-  id: string;
-
-  @ApiPropertyOptional({ description: 'Note for this lightcone/character association' })
-  @IsOptional()
-  @IsString()
-  note?: string;
-}
 import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger'
 import {
   ArrayMinSize,
@@ -49,6 +39,17 @@ export enum Role {
   SUB_DPS = 'SUB_DPS',
   SUPPORT = 'SUPPORT',
   SUSTAIN = 'SUSTAIN',
+}
+
+export class CharacterLightconeNoteDto {
+  @ApiProperty({ description: 'Lightcone ID' })
+  @IsString()
+  id: string
+
+  @ApiPropertyOptional({ description: 'Note for this lightcone/character association' })
+  @IsOptional()
+  @IsString()
+  note?: string
 }
 
 export class TeammateRecommendationDto {
@@ -109,68 +110,15 @@ export class TeamCompositionDto {
 }
 
 export class CreateCharacterDto {
-    @ApiPropertyOptional({
-      description: 'Lightcones with optional notes for this character',
-      type: [CharacterLightconeNoteDto],
-    })
-    @IsOptional()
-    @IsArray()
-    @ValidateNested({ each: true })
-    @Type(() => CharacterLightconeNoteDto)
-    lightcones?: CharacterLightconeNoteDto[];
-  @ApiProperty({ description: 'Unique character identifier' })
-  @IsString()
-  id: string
-
-  @ApiProperty({ description: 'Character display name' })
-  @IsString()
-  name: string
-
-  @ApiProperty({ description: 'Character element', enum: Element })
-  @IsEnum(Element)
-  element: Element
-
-  @ApiProperty({ description: 'Character path', enum: Path })
-  @IsEnum(Path)
-  path: Path
-
-  @ApiProperty({ description: 'Character rarity (4 or 5 stars)', minimum: 4, maximum: 5 })
-  @IsNumber()
-  @Min(4)
-  @Max(5)
-  rarity: number
-
-  @ApiProperty({ description: 'Character roles', enum: Role, isArray: true })
-  @IsArray()
-  @IsEnum(Role, { each: true })
-  roles: Role[]
-
-  @ApiProperty({ description: 'Character archetypes' })
-  @IsArray()
-  @IsString({ each: true })
-  archetype: string[]
-
-  @ApiProperty({ description: 'Character descriptive labels' })
-  @IsArray()
-  @IsString({ each: true })
-  labels: string[]
-
   @ApiPropertyOptional({
-    description: 'Teammate recommendations',
-    type: [TeammateRecommendationDto],
+    description: 'Lightcones with optional notes for this character',
+    type: [CharacterLightconeNoteDto],
   })
   @IsOptional()
   @IsArray()
   @ValidateNested({ each: true })
-  @Type(() => TeammateRecommendationDto)
-  teammateRecommendations?: TeammateRecommendationDto[]
-
-  @ApiPropertyOptional({ description: 'Team compositions', type: [TeamCompositionDto] })
-  @IsOptional()
-  @IsArray()
-  @ValidateNested({ each: true })
-  @Type(() => TeamCompositionDto)
-  teamCompositions?: TeamCompositionDto[]
+  @Type(() => CharacterLightconeNoteDto)
+  lightcones?: CharacterLightconeNoteDto[]
 }
 
 export class UpdateCharacterDto {
@@ -239,5 +187,5 @@ export class UpdateCharacterDto {
   @IsArray()
   @ValidateNested({ each: true })
   @Type(() => CharacterLightconeNoteDto)
-  lightcones?: CharacterLightconeNoteDto[];
+  lightcones?: CharacterLightconeNoteDto[]
 }
