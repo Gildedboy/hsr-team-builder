@@ -8,6 +8,7 @@ export class CharacterLightconeNoteDto {
   @IsString()
   note?: string;
 }
+import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger'
 import {
   ArrayMinSize,
   IsArray,
@@ -20,7 +21,6 @@ import {
   ValidateNested,
 } from 'class-validator'
 import { Type } from 'class-transformer'
-import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger'
 
 // Enums for validation
 export enum Element {
