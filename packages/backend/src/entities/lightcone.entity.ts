@@ -1,6 +1,7 @@
-import { Column, Entity, ManyToMany, PrimaryColumn } from 'typeorm'
+import { Column, Entity, ManyToMany, PrimaryColumn, OneToMany } from 'typeorm'
 import { ApiProperty } from '@nestjs/swagger'
 import { CharacterEntity } from './character.entity'
+import { CharacterLightconeEntity } from './character-lightcone.entity'
 
 @Entity('lightcones')
 export class LightconeEntity {
@@ -24,8 +25,8 @@ export class LightconeEntity {
     description: 'Characters that can use this lightcone',
     type: () => [CharacterEntity],
   })
-  @ManyToMany(() => CharacterEntity, (character) => character.lightcones)
-  characters: CharacterEntity[]
+  @OneToMany(() => CharacterLightconeEntity, cl => cl.lightcone)
+  characterLightcones: CharacterLightconeEntity[]
 
   @ApiProperty({ description: 'Creation timestamp' })
   @Column({ type: 'timestamp', default: () => 'CURRENT_TIMESTAMP' })
