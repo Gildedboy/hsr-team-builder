@@ -144,7 +144,9 @@ export class CharactersService {
     // Handle lightcone relationships if provided
     if (updateData.lightconeIds) {
       const lightcones = await this.lightconeRepository.findByIds(updateData.lightconeIds)
-      entity.lightcones = lightcones
+      // Sort lightcones to match the order of lightconeIds
+      const idToLightcone = new Map(lightcones.map(lc => [lc.id, lc]))
+      entity.lightcones = updateData.lightconeIds.map(id => idToLightcone.get(id)).filter(Boolean)
       // Remove lightconeIds from updateData to avoid TypeORM issues
       const { lightconeIds, ...restUpdateData } = updateData
       Object.assign(entity, restUpdateData)
