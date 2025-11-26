@@ -12,9 +12,7 @@ export class LightconesService {
   ) {}
 
   async findAll(): Promise<Lightcone[]> {
-    const lightcones = await this.lightconeRepository.find({
-      relations: ['characters'],
-    })
+    const lightcones = await this.lightconeRepository.find()
 
     return lightcones.map(this.entityToLightcone)
   }
@@ -22,7 +20,6 @@ export class LightconesService {
   async findById(id: string): Promise<Lightcone | null> {
     const lightcone = await this.lightconeRepository.findOne({
       where: { id },
-      relations: ['characters'],
     })
 
     if (!lightcone) {

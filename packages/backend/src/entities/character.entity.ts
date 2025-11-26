@@ -1,6 +1,6 @@
-import { Column, Entity, JoinTable, ManyToMany, PrimaryColumn } from 'typeorm'
+import { Column, Entity, OneToMany, PrimaryColumn } from 'typeorm'
 import { ApiProperty } from '@nestjs/swagger'
-import { LightconeEntity } from './lightcone.entity'
+import { CharacterLightconeEntity } from './character-lightcone.entity'
 
 @Entity('characters')
 export class CharacterEntity {
@@ -23,6 +23,14 @@ export class CharacterEntity {
   @ApiProperty({ description: 'Character rarity (4 or 5 stars)', example: 5 })
   @Column()
   rarity: number
+
+  @ApiProperty({ description: 'Optional Prydwen link for character builds', required: false })
+  @Column({ nullable: true })
+  prydwenLink?: string | null
+
+  @ApiProperty({ description: 'Optional Guoba video link', required: false })
+  @Column({ nullable: true })
+  guobaLink?: string | null
 
   @ApiProperty({ description: 'Character roles', type: [String], example: ['DPS'] })
   @Column('text', { array: true })
@@ -49,17 +57,12 @@ export class CharacterEntity {
   teamCompositions: any[]
 
   @ApiProperty({
-    description: 'Character lightcones',
-    type: () => [LightconeEntity],
+    description: 'Character lightcones with optional notes',
+    type: () => [CharacterLightconeEntity],
     required: false,
   })
-  @ManyToMany(() => LightconeEntity, (lightcone) => lightcone.characters)
-  @JoinTable({
-    name: 'character_lightcones',
-    joinColumn: { name: 'character_id', referencedColumnName: 'id' },
-    inverseJoinColumn: { name: 'lightcone_id', referencedColumnName: 'id' },
-  })
-  lightcones: LightconeEntity[]
+  @OneToMany(() => CharacterLightconeEntity, (relation) => relation.character, { cascade: true })
+  lightconeRelations: CharacterLightconeEntity[]
 
   @ApiProperty({ description: 'Creation timestamp' })
   @Column({ type: 'timestamp', default: () => 'CURRENT_TIMESTAMP' })
