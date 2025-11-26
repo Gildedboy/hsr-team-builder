@@ -906,19 +906,38 @@ body {
 }
 
 /* Custom Scrollbar Styling */
+/* Filter hover tweaks - match active color on hover */
+.filter-card .btn-outline-secondary,
+.filter-card .btn-outline-light,
+.filter-card .element-path-button {
+  transition: background-color 0.15s ease, border-color 0.15s ease, color 0.15s ease;
+}
+
+.filter-card .btn-outline-secondary:hover,
+.filter-card .element-path-button.btn-outline-secondary:hover {
+  background-color: var(--bs-primary);
+  border-color: var(--bs-primary) !important;
+  color: #ffffff !important;
+}
+
+.filter-card .btn-outline-light:hover {
+  background-color: var(--bs-primary);
+  border-color: var(--bs-primary);
+  color: #0b0b0b !important;
+}
+
 /* Lightcone Styles */
 .lightcones-list {
-  display: flex;
-  flex-wrap: wrap;
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(108px, 1fr));
   gap: 16px;
-  justify-content: flex-start;
-  align-items: flex-start;
+  align-items: start;
 }
 
 .lightcone-item {
-  flex: 1 1 108px;
+  width: 100%;
   max-width: 150px;
-  min-width: 85px;
+  min-width: 108px;
   display: flex;
   justify-content: center;
   padding: 0;
