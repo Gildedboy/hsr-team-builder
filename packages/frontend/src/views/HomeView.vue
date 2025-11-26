@@ -573,7 +573,7 @@ const hideLightconeModal = () => {
                   v-if="getNewFormatCharacter(selectedCharacter.id)?.guobaLink"
                   class="detail-guoba mb-4"
                 >
-                  <h6 class="text-primary mb-2">Guoba Video Guide</h6>
+                  <h6 class="text-primary mb-2">Video Guide</h6>
                   <div class="guoba-video-wrapper">
                     <iframe
                       class="guoba-video"
