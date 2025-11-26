@@ -83,9 +83,7 @@ export function useVersionInfo() {
 
       // Fallback roadmap content
       roadmapItems.value = [
-        'Add "Check Prydwen Build" link',
-        'Enhanced mobile responsiveness',
-        'Additional team composition recommendations'
+        'Allow users to pick their owned characters, store locally, and recommend teams based on their roster',
       ]
     } finally {
       isLoadingRoadmap.value = false
