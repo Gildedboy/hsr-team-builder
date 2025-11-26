@@ -16,6 +16,10 @@ export interface Character {
 
   // Flexible team compositions
   teamCompositions?: TeamComposition[]
+
+  // External resources
+  prydwenLink?: string
+  guobaLink?: string
 }
 
 export type Role = 'DPS' | 'SUB_DPS' | 'SUPPORT' | 'SUSTAIN' | 'AMPLIFIER'
@@ -94,6 +98,16 @@ export class CharacterBuilder {
 
   labels(labels: string[]) {
     this.character.labels = labels
+    return this
+  }
+
+  prydwenLink(link: string) {
+    this.character.prydwenLink = link
+    return this
+  }
+
+  guobaLink(link: string) {
+    this.character.guobaLink = link
     return this
   }
 

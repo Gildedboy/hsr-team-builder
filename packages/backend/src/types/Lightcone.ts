@@ -5,6 +5,8 @@ export interface Lightcone {
   name: string
   rarity: LightconeRarity
   path: LightconePath
+  // Optional per-character note for this lightcone
+  note?: string
 }
 
 // Helper function to get lightcone rarity color

@@ -6,6 +6,7 @@ import { Cache } from 'cache-manager'
 import { Character } from '../types/Character'
 import { CharacterEntity } from '../entities/character.entity'
 import { LightconeEntity } from '../entities/lightcone.entity'
+import { CharacterLightconeEntity } from '../entities/character-lightcone.entity'
 import { allCharactersSeedData } from '../data/allCharactersData'
 
 @Injectable()
@@ -17,6 +18,8 @@ export class CharactersService {
     private readonly characterRepository: Repository<CharacterEntity>,
     @InjectRepository(LightconeEntity)
     private readonly lightconeRepository: Repository<LightconeEntity>,
+    @InjectRepository(CharacterLightconeEntity)
+    private readonly characterLightconeRepository: Repository<CharacterLightconeEntity>,
     @Inject(CACHE_MANAGER) private readonly cacheManager: Cache,
   ) {}
 
@@ -37,7 +40,7 @@ export class CharactersService {
 
     // If not in cache, get from database and cache it
     const entities = await this.characterRepository.find({
-      relations: ['lightcones'],
+      relations: ['lightconeRelations', 'lightconeRelations.lightcone'],
     })
     const characters = entities.map(this.entityToCharacter)
 
@@ -65,7 +68,7 @@ export class CharactersService {
     // Get from database
     const entity = await this.characterRepository.findOne({
       where: { id },
-      relations: ['lightcones'],
+      relations: ['lightconeRelations', 'lightconeRelations.lightcone'],
     })
     if (entity) {
       const character = this.entityToCharacter(entity)
@@ -89,7 +92,8 @@ export class CharactersService {
     // Query database for characters with specific role
     const entities = await this.characterRepository
       .createQueryBuilder('character')
-      .leftJoinAndSelect('character.lightcones', 'lightcone')
+      .leftJoinAndSelect('character.lightconeRelations', 'relation')
+      .leftJoinAndSelect('relation.lightcone', 'lightcone')
       .where(':role = ANY(character.roles)', { role })
       .getMany()
 
@@ -101,17 +105,17 @@ export class CharactersService {
   }
 
   async findByElement(element: string): Promise<Character[]> {
-    const entities = await this.characterRepository.find({ 
+    const entities = await this.characterRepository.find({
       where: { element },
-      relations: ['lightcones']
+      relations: ['lightconeRelations', 'lightconeRelations.lightcone'],
     })
     return entities.map(this.entityToCharacter)
   }
 
   async findByPath(path: string): Promise<Character[]> {
-    const entities = await this.characterRepository.find({ 
+    const entities = await this.characterRepository.find({
       where: { path },
-      relations: ['lightcones']
+      relations: ['lightconeRelations', 'lightconeRelations.lightcone'],
     })
     return entities.map(this.entityToCharacter)
   }
@@ -121,7 +125,8 @@ export class CharactersService {
 
     const entities = await this.characterRepository
       .createQueryBuilder('character')
-      .leftJoinAndSelect('character.lightcones', 'lightcone')
+      .leftJoinAndSelect('character.lightconeRelations', 'relation')
+      .leftJoinAndSelect('relation.lightcone', 'lightcone')
       .where('LOWER(character.name) LIKE :query', { query: `%${lowercaseQuery}%` })
       .orWhere(
         'EXISTS (SELECT 1 FROM unnest(character.labels) AS label WHERE LOWER(label) LIKE :query)',
@@ -132,27 +137,46 @@ export class CharactersService {
     return entities.map(this.entityToCharacter)
   }
 
-  async updateCharacter(id: string, updateData: Partial<Character> & { lightconeIds?: string[] }): Promise<Character | null> {
+  async updateCharacter(
+    id: string,
+    updateData: Partial<Character> & { lightcones?: { id: string; note?: string }[] },
+  ): Promise<Character | null> {
     const entity = await this.characterRepository.findOne({ 
       where: { id },
-      relations: ['lightcones']
+      relations: ['lightconeRelations', 'lightconeRelations.lightcone']
     })
     if (!entity) {
       return null
     }
 
     // Handle lightcone relationships if provided
-    if (updateData.lightconeIds) {
-      const lightcones = await this.lightconeRepository.findByIds(updateData.lightconeIds)
-      // Sort lightcones to match the order of lightconeIds
-      const idToLightcone = new Map(lightcones.map(lc => [lc.id, lc]))
-      entity.lightcones = updateData.lightconeIds.map(id => idToLightcone.get(id)).filter(Boolean)
-      // Remove lightconeIds from updateData to avoid TypeORM issues
-      const { lightconeIds, ...restUpdateData } = updateData
+    if (updateData.lightcones) {
+      const requestedLightconeIds = updateData.lightcones.map((lc) => lc.id)
+      const lightcones = await this.lightconeRepository.findByIds(requestedLightconeIds)
+      const idToLightcone = new Map(lightcones.map((lc) => [lc.id, lc]))
+
+      // Reset existing relations so updates replace notes/assignments cleanly
+      await this.characterLightconeRepository.delete({ characterId: entity.id })
+
+      // Replace existing relations with new set
+      const relations: CharacterLightconeEntity[] = []
+      for (const item of updateData.lightcones) {
+        const lc = idToLightcone.get(item.id)
+        if (!lc) continue
+        const relation = new CharacterLightconeEntity()
+        relation.character = entity
+        relation.characterId = entity.id
+        relation.lightcone = lc
+        relation.lightconeId = lc.id
+        relation.note = item.note ?? null
+        relations.push(relation)
+      }
+      entity.lightconeRelations = relations
+      const { lightcones: _lightcones, ...restUpdateData } = updateData
       Object.assign(entity, restUpdateData)
     } else {
       // Update the entity with new data (excluding lightconeIds)
-      const { lightconeIds, ...restUpdateData } = updateData
+      const { lightcones, ...restUpdateData } = updateData
       Object.assign(entity, restUpdateData)
     }
 
@@ -190,7 +214,27 @@ export class CharactersService {
     }
 
     const entity = new CharacterEntity()
-    Object.assign(entity, characterData)
+    const { lightcones, ...rest } = characterData
+    Object.assign(entity, rest)
+
+    if (lightcones?.length) {
+      const lightconeIds = lightcones.map((lc) => lc.id)
+      const foundLightcones = await this.lightconeRepository.findByIds(lightconeIds)
+      const idToLightcone = new Map(foundLightcones.map((lc) => [lc.id, lc]))
+      entity.lightconeRelations = lightcones
+        .map((item) => {
+          const lc = idToLightcone.get(item.id)
+          if (!lc) return null
+          const relation = new CharacterLightconeEntity()
+          relation.character = entity
+          relation.characterId = entity.id
+          relation.lightcone = lc
+          relation.lightconeId = lc.id
+          relation.note = item.note ?? null
+          return relation
+        })
+        .filter((relation): relation is CharacterLightconeEntity => Boolean(relation))
+    }
 
     const savedEntity = await this.characterRepository.save(entity)
 
@@ -241,14 +285,16 @@ export class CharactersService {
         | 'DoT'
       )[],
       labels: entity.labels,
+      prydwenLink: entity.prydwenLink || undefined,
+      guobaLink: entity.guobaLink || undefined,
       teammateRecommendations: entity.teammateRecommendations || [],
       teamCompositions: entity.teamCompositions || [],
       lightcones:
-        entity.lightcones?.map((lc) => ({
-          id: lc.id,
-          name: lc.name,
-          rarity: lc.rarity as 3 | 4 | 5,
-          path: lc.path as
+        entity.lightconeRelations?.map((relation) => ({
+          id: relation.lightcone.id,
+          name: relation.lightcone.name,
+          rarity: relation.lightcone.rarity as 3 | 4 | 5,
+          path: relation.lightcone.path as
             | 'Destruction'
             | 'Hunt'
             | 'Erudition'
@@ -257,6 +303,7 @@ export class CharactersService {
             | 'Preservation'
             | 'Abundance'
             | 'Remembrance',
+          note: relation.note || undefined,
         })) || [],
     }
   }

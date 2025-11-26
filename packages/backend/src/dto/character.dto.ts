@@ -98,6 +98,17 @@ export class TeamCompositionDto {
   f2p?: TeamVariantDto
 }
 
+export class CharacterLightconeDto {
+  @ApiProperty({ description: 'Lightcone ID', example: '23000' })
+  @IsString()
+  id: string
+
+  @ApiPropertyOptional({ description: 'Per-character lightcone note/label', example: 'Best in slot' })
+  @IsOptional()
+  @IsString()
+  note?: string
+}
+
 export class CreateCharacterDto {
   @ApiProperty({ description: 'Unique character identifier' })
   @IsString()
@@ -152,6 +163,32 @@ export class CreateCharacterDto {
   @ValidateNested({ each: true })
   @Type(() => TeamCompositionDto)
   teamCompositions?: TeamCompositionDto[]
+
+  @ApiPropertyOptional({
+    description: 'Link to Prydwen build guide for this character',
+    example: 'https://www.prydwen.gg/star-rail/characters/kafka/',
+  })
+  @IsOptional()
+  @IsString()
+  prydwenLink?: string
+
+  @ApiPropertyOptional({
+    description: 'Link to Guoba video guide for this character',
+    example: 'https://www.youtube.com/embed/xyz123',
+  })
+  @IsOptional()
+  @IsString()
+  guobaLink?: string
+
+  @ApiPropertyOptional({
+    description: 'Lightcones with optional per-character notes',
+    type: [CharacterLightconeDto],
+  })
+  @IsOptional()
+  @IsArray()
+  @ValidateNested({ each: true })
+  @Type(() => CharacterLightconeDto)
+  lightcones?: CharacterLightconeDto[]
 }
 
 export class UpdateCharacterDto {
@@ -212,13 +249,29 @@ export class UpdateCharacterDto {
   @Type(() => TeamCompositionDto)
   teamCompositions?: TeamCompositionDto[]
 
-  @ApiPropertyOptional({ 
-    description: 'Lightcone IDs to assign to this character',
-    type: [String],
-    example: ['20000', '20001']
+  @ApiPropertyOptional({
+    description: 'Link to Prydwen build guide for this character',
+    example: 'https://www.prydwen.gg/star-rail/characters/kafka/',
+  })
+  @IsOptional()
+  @IsString()
+  prydwenLink?: string
+
+  @ApiPropertyOptional({
+    description: 'Link to Guoba video guide for this character',
+    example: 'https://www.youtube.com/embed/xyz123',
+  })
+  @IsOptional()
+  @IsString()
+  guobaLink?: string
+
+  @ApiPropertyOptional({
+    description: 'Lightcones with optional per-character notes',
+    type: [CharacterLightconeDto],
   })
   @IsOptional()
   @IsArray()
-  @IsString({ each: true })
-  lightconeIds?: string[]
+  @ValidateNested({ each: true })
+  @Type(() => CharacterLightconeDto)
+  lightcones?: CharacterLightconeDto[]
 }

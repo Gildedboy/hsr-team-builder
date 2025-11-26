@@ -57,6 +57,15 @@ const getNewFormatCharacter = (characterId: string) => {
   return characters.value.find((char) => char.id === characterId)
 }
 
+// Provide a dev-only demo link so the Prydwen icon renders even before API data arrives
+const PRYDWEN_DEMO_LINK = import.meta.env.DEV
+  ? 'https://www.prydwen.gg/star-rail/characters/kafka/'
+  : undefined
+
+const getPrydwenLink = (characterId: string) => {
+  return getNewFormatCharacter(characterId)?.prydwenLink || PRYDWEN_DEMO_LINK
+}
+
 // Search keydown handler for character details
 const handleDetailSearchKeydown = (event: KeyboardEvent) => {
   onKeyDown(event, handleSelectFromSearch)
@@ -509,6 +518,21 @@ const hideLightconeModal = () => {
                         />
                         <span class="text-white">{{ selectedCharacter.path }}</span>
                       </div>
+                      <a
+                        v-if="getPrydwenLink(selectedCharacter.id)"
+                        :href="getPrydwenLink(selectedCharacter.id)"
+                        class="prydwen-link d-inline-flex align-items-center"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        title="Open Prydwen build guide"
+                      >
+                        <img
+                          src="https://www.prydwen.gg/static/e5cca805ee22a6a5327c633bbab70f48/c5628/prydwen_logo_small.webp"
+                          alt="Prydwen"
+                          class="prydwen-logo"
+                          loading="lazy"
+                        />
+                      </a>
                     </div>
                   </div>
                 </div>
@@ -537,7 +561,28 @@ const hideLightconeModal = () => {
                         @error="handleLightconeImageError"
                         @click="showLightconeModal(lightcone)"
                       />
+                      <div v-if="lightcone.note" class="lightcone-label">
+                        {{ lightcone.note }}
+                      </div>
                     </div>
+                  </div>
+                </div>
+
+                <!-- Guoba Guide -->
+                <div
+                  v-if="getNewFormatCharacter(selectedCharacter.id)?.guobaLink"
+                  class="detail-guoba mb-4"
+                >
+                  <h6 class="text-primary mb-2">Guoba Video Guide</h6>
+                  <div class="guoba-video-wrapper">
+                    <iframe
+                      class="guoba-video"
+                      :src="getNewFormatCharacter(selectedCharacter.id)?.guobaLink"
+                      title="Guoba video guide"
+                      frameborder="0"
+                      allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                      allowfullscreen
+                    ></iframe>
                   </div>
                 </div>
 
@@ -926,6 +971,24 @@ body {
   color: #0b0b0b !important;
 }
 
+.prydwen-link {
+  display: inline-flex;
+  align-items: center;
+  text-decoration: none;
+  transition: transform 0.15s ease, filter 0.15s ease;
+}
+
+.prydwen-link:hover {
+  transform: translateY(-1px);
+  filter: drop-shadow(0 2px 6px rgba(0, 212, 255, 0.35));
+}
+
+.prydwen-logo {
+  height: 28px;
+  width: auto;
+  object-fit: contain;
+}
+
 /* Lightcone Styles */
 .lightcones-list {
   display: grid;
@@ -938,6 +1001,7 @@ body {
   width: 100%;
   max-width: 150px;
   min-width: 108px;
+  position: relative;
   display: flex;
   justify-content: center;
   padding: 0;
@@ -968,6 +1032,42 @@ body {
   border-color: rgba(0, 212, 255, 0.6);
   transform: scale(1.05);
   box-shadow: 0 4px 16px rgba(0, 212, 255, 0.3);
+}
+
+.lightcone-label {
+  position: absolute;
+  bottom: 8px;
+  left: 8px;
+  right: 8px;
+  padding: 4px 6px;
+  font-size: 12px;
+  line-height: 1.2;
+  color: #ffffff;
+  background: rgba(0, 0, 0, 0.7);
+  border: 1px solid rgba(0, 212, 255, 0.4);
+  border-radius: 6px;
+  text-align: center;
+  backdrop-filter: blur(2px);
+  pointer-events: none;
+}
+
+.detail-guoba .guoba-video-wrapper {
+  position: relative;
+  width: 100%;
+  padding-bottom: 56.25%;
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid rgba(0, 212, 255, 0.2);
+  border-radius: 10px;
+  overflow: hidden;
+}
+
+.detail-guoba .guoba-video {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  border: 0;
 }
 
 /* Lightcone Modal Styles */

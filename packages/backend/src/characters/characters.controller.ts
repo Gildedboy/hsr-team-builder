@@ -75,6 +75,8 @@ export class CharactersController {
           roles: { type: 'array', items: { type: 'string' }, example: ['DPS'] },
           archetype: { type: 'array', items: { type: 'string' }, example: ['DoT'] },
           labels: { type: 'array', items: { type: 'string' }, example: ['DoT', 'AoE'] },
+          prydwenLink: { type: 'string', example: 'https://www.prydwen.gg/star-rail/characters/kafka/' },
+          guobaLink: { type: 'string', example: 'https://www.youtube.com/embed/xyz123' },
           lightcones: {
             type: 'array',
             items: {
@@ -84,6 +86,7 @@ export class CharactersController {
                 name: { type: 'string', example: 'In the Name of the World' },
                 rarity: { type: 'number', example: 5 },
                 path: { type: 'string', example: 'Nihility' },
+                note: { type: 'string', example: 'Best in slot vs. imaginary weak enemies' },
               },
             },
           },
@@ -143,6 +146,8 @@ export class CharactersController {
         roles: { type: 'array', items: { type: 'string' }, example: ['DPS'] },
         archetype: { type: 'array', items: { type: 'string' }, example: ['DoT'] },
         labels: { type: 'array', items: { type: 'string' }, example: ['DoT', 'AoE'] },
+        prydwenLink: { type: 'string', example: 'https://www.prydwen.gg/star-rail/characters/kafka/' },
+        guobaLink: { type: 'string', example: 'https://www.youtube.com/embed/xyz123' },
         lightcones: {
           type: 'array',
           items: {
@@ -152,6 +157,7 @@ export class CharactersController {
               name: { type: 'string', example: 'In the Name of the World' },
               rarity: { type: 'number', example: 5 },
               path: { type: 'string', example: 'Nihility' },
+              note: { type: 'string', example: 'Best in slot vs. imaginary weak enemies' },
             },
           },
         },
@@ -192,8 +198,10 @@ export class CharactersController {
     @Param('id') id: string,
     @Body() updateData: UpdateCharacterDto,
   ): Promise<Character | { message: string }> {
-    // Convert DTO to Partial<Character> type and handle lightconeIds
-    const characterUpdate = updateData as Partial<Character> & { lightconeIds?: string[] }
+    // Convert DTO to Partial<Character> type and handle lightcone relations
+    const characterUpdate = updateData as Partial<Character> & {
+      lightcones?: { id: string; note?: string }[]
+    }
     const updatedCharacter = await this.charactersService.updateCharacter(id, characterUpdate)
     if (!updatedCharacter) {
       throw new HttpException('Character not found', HttpStatus.NOT_FOUND)
