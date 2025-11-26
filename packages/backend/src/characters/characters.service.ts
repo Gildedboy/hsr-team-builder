@@ -290,7 +290,10 @@ export class CharactersService {
       teammateRecommendations: entity.teammateRecommendations || [],
       teamCompositions: entity.teamCompositions || [],
       lightcones:
-        entity.lightconeRelations?.map((relation) => ({
+        (entity.lightconeRelations
+          ? [...entity.lightconeRelations].sort((a, b) => (a.id ?? 0) - (b.id ?? 0))
+          : []
+        ).map((relation) => ({
           id: relation.lightcone.id,
           name: relation.lightcone.name,
           rarity: relation.lightcone.rarity as 3 | 4 | 5,
@@ -304,7 +307,7 @@ export class CharactersService {
             | 'Abundance'
             | 'Remembrance',
           note: relation.note || undefined,
-        })) || [],
+        })),
     }
   }
 
