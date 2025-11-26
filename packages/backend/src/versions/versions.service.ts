@@ -202,13 +202,14 @@ export class VersionsService {
     let roadmapItems = await this.cacheManager.get<string[]>(cacheKey)
     
     if (!roadmapItems) {
-      const versions = await this.versionRepository.find({
+      // Only show roadmap from the most recent active version
+      const latestActive = await this.versionRepository.findOne({
         where: { isActive: true },
         select: ['roadmapItems'],
+        order: { releaseDate: 'DESC', createdAt: 'DESC' },
       })
 
-      // Flatten all roadmap items from all versions and remove duplicates
-      roadmapItems = [...new Set(versions.flatMap(v => v.roadmapItems || []))].filter(item => item.trim() !== '')
+      roadmapItems = (latestActive?.roadmapItems || []).filter((item) => item.trim() !== '')
 
       // Cache for 30 minutes
       await this.cacheManager.set(cacheKey, roadmapItems, 1800000)
