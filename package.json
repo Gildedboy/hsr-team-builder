@@ -16,7 +16,7 @@
     "build:backend": "npm run build -w @hsr-team-builder/backend",
     "build:all": "npm run build:backend && npm run build:frontend",
     "preview": "npm run preview -w @hsr-team-builder/frontend",
-    "type-check": "npm run type-check -w @hsr-team-builder/frontend && npm run type-check -w @hsr-team-builder/backend",
+    "type-check": "npm run build -w @hsr-team-builder/shared && npm run type-check -w @hsr-team-builder/frontend && npm run type-check -w @hsr-team-builder/backend",
     "lint": "npm run lint -w @hsr-team-builder/frontend && npm run lint -w @hsr-team-builder/backend",
     "format": "npm run format -w @hsr-team-builder/frontend && npm run format -w @hsr-team-builder/backend",
     "deploy": "npm run build:all && gh-pages -d packages/frontend/dist"
