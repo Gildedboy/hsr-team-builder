@@ -7,11 +7,17 @@ export interface JwtPayload {
   role: string
 }
 
+interface AdminUser {
+  id: string
+  username: string
+  role: string
+}
+
 @Injectable()
 export class AuthService {
   constructor(private readonly jwtService: JwtService) {}
 
-  async validateAdmin(username: string, password: string): Promise<any> {
+  validateAdmin(username: string, password: string): AdminUser | null {
     // Use environment variables for admin credentials
     const adminUsername = process.env.ADMIN_USERNAME || 'admin'
     const adminPassword = process.env.ADMIN_PASSWORD || 'change-me-in-production'

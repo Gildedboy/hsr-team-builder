@@ -61,7 +61,7 @@ export class CharactersService {
     // Try cache first
     const cachedCharacter = await this.cacheManager.get<Character>(cacheKey)
     if (cachedCharacter) {
-      console.log(`🚀 Character ${id} served from cache`)
+      this.logger.log(`🚀 Character ${id} served from cache`)
       return cachedCharacter
     }
 
@@ -73,7 +73,7 @@ export class CharactersService {
     if (entity) {
       const character = this.entityToCharacter(entity)
       await this.cacheManager.set(cacheKey, character, 600)
-      console.log(`💾 Character ${id} cached`)
+      this.logger.log(`💾 Character ${id} cached`)
       return character
     }
 
@@ -85,7 +85,7 @@ export class CharactersService {
 
     const cached = await this.cacheManager.get<Character[]>(cacheKey)
     if (cached) {
-      console.log(`🚀 Characters with role ${role} served from cache`)
+      this.logger.log(`🚀 Characters with role ${role} served from cache`)
       return cached
     }
 
@@ -100,7 +100,7 @@ export class CharactersService {
     const characters = entities.map(this.entityToCharacter)
 
     await this.cacheManager.set(cacheKey, characters, 300) // Cache for 5 minutes
-    console.log(`💾 Characters with role ${role} cached`)
+    this.logger.log(`💾 Characters with role ${role} cached`)
     return characters
   }
 
@@ -190,7 +190,7 @@ export class CharactersService {
     await this.cacheManager.del(`character-${id}`)
     await this.cacheManager.del('all-characters')
 
-    console.log(`✅ Updated character ${id} and cleared cache`)
+    this.logger.log(`✅ Updated character ${id} and cleared cache`)
     return this.entityToCharacter(entity)
   }
 
@@ -201,7 +201,7 @@ export class CharactersService {
       await this.cacheManager.del(`character-${id}`)
       await this.cacheManager.del('all-characters')
 
-      console.log(`✅ Deleted character ${id} and cleared cache`)
+      this.logger.log(`✅ Deleted character ${id} and cleared cache`)
       return true
     }
     return false
@@ -247,7 +247,7 @@ export class CharactersService {
     // Clear cache to include new character
     await this.cacheManager.del('all-characters')
 
-    console.log(`✅ Created character ${characterData.id} and cleared cache`)
+    this.logger.log(`✅ Created character ${characterData.id} and cleared cache`)
     return this.entityToCharacter(savedEntity)
   }
 
@@ -334,14 +334,14 @@ export class CharactersService {
         const character = new CharacterEntity()
         character.id = data.id
         character.name = data.name
-        character.element = data.element as any
-        character.path = data.path as any
-        character.rarity = data.rarity as any
-        character.roles = data.roles as any[]
-        character.archetype = data.archetype as any[]
+        character.element = data.element
+        character.path = data.path
+        character.rarity = data.rarity
+        character.roles = data.roles
+        character.archetype = data.archetype
         character.labels = data.labels
-        character.teammateRecommendations = data.teammateRecommendations as any[]
-        character.teamCompositions = data.teamCompositions as any[]
+        character.teammateRecommendations = data.teammateRecommendations ?? null
+        character.teamCompositions = data.teamCompositions ?? null
         characters.push(character)
       }
 
