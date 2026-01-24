@@ -5,14 +5,14 @@ import { ApiProperty } from '@nestjs/swagger'
 export class VersionEntity {
   @ApiProperty({
     description: 'Version identifier',
-    example: 'v2.7.0'
+    example: 'v2.7.0',
   })
   @PrimaryColumn()
   version: string
 
   @ApiProperty({
     description: 'Version title',
-    example: 'Major Feature Release'
+    example: 'Major Feature Release',
   })
   @Column()
   title: string
@@ -20,14 +20,14 @@ export class VersionEntity {
   @ApiProperty({
     description: 'Version description',
     example: 'This release introduces the new version management API system.',
-    required: false
+    required: false,
   })
   @Column({ type: 'text', nullable: true })
   description?: string
 
   @ApiProperty({
     description: 'Release date',
-    example: '2025-11-02'
+    example: '2025-11-02',
   })
   @Column({ type: 'date' })
   releaseDate: string
@@ -35,7 +35,7 @@ export class VersionEntity {
   @ApiProperty({
     description: 'List of new features',
     type: [String],
-    example: ['Dynamic version info API', 'Redis caching']
+    example: ['Dynamic version info API', 'Redis caching'],
   })
   @Column({ type: 'json', default: [] })
   features: string[]
@@ -43,7 +43,7 @@ export class VersionEntity {
   @ApiProperty({
     description: 'List of bug fixes',
     type: [String],
-    example: ['Fixed memory leak', 'Resolved API timeout issues']
+    example: ['Fixed memory leak', 'Resolved API timeout issues'],
   })
   @Column({ type: 'json', default: [] })
   bugFixes: string[]
@@ -51,7 +51,7 @@ export class VersionEntity {
   @ApiProperty({
     description: 'List of breaking changes',
     type: [String],
-    example: ['Changed API endpoint structure']
+    example: ['Changed API endpoint structure'],
   })
   @Column({ type: 'json', default: [] })
   breakingChanges: string[]
@@ -59,21 +59,21 @@ export class VersionEntity {
   @ApiProperty({
     description: 'List of known issues',
     type: [String],
-    example: ['Minor styling issue on mobile']
+    example: ['Minor styling issue on mobile'],
   })
   @Column({ type: 'json', default: [] })
   knownIssues: string[]
 
   @ApiProperty({
     description: 'Whether the version is active',
-    example: true
+    example: true,
   })
   @Column({ default: true })
   isActive: boolean
 
   @ApiProperty({
     description: 'Whether the version is a prerelease',
-    example: false
+    example: false,
   })
   @Column({ default: false })
   isPrerelease: boolean
@@ -81,19 +81,19 @@ export class VersionEntity {
   @ApiProperty({
     description: 'List of roadmap items/upcoming features',
     type: [String],
-    example: ['Add Prydwen build integration', 'Enhanced mobile experience']
+    example: ['Add Prydwen build integration', 'Enhanced mobile experience'],
   })
   @Column({ type: 'json', default: [] })
   roadmapItems: string[]
 
   @ApiProperty({
-    description: 'Creation timestamp'
+    description: 'Creation timestamp',
   })
   @CreateDateColumn()
   createdAt: Date
 
   @ApiProperty({
-    description: 'Last update timestamp'
+    description: 'Last update timestamp',
   })
   @UpdateDateColumn()
   updatedAt: Date

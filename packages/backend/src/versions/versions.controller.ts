@@ -23,7 +23,12 @@ import {
 } from '@nestjs/swagger'
 import { JwtAuthGuard } from '../auth/guards/jwt-auth.guard'
 import { VersionsService } from './versions.service'
-import { ChangelogQueryDto, CreateVersionDto, ReplaceVersionDto, UpdateVersionDto } from '../dto/version.dto'
+import {
+  ChangelogQueryDto,
+  CreateVersionDto,
+  ReplaceVersionDto,
+  UpdateVersionDto,
+} from '../dto/version.dto'
 
 @ApiTags('versions')
 @Controller('versions')
@@ -63,21 +68,31 @@ export class VersionsController {
   @ApiResponse({ status: 404, description: 'No versions available' })
   async getLatest() {
     const latestVersion = await this.versionsService.getLatestVersion()
-    
+
     if (!latestVersion) {
       return {
         message: 'No versions available',
         fallback: true,
       }
     }
-    
+
     return latestVersion
   }
 
   @Get('changelog')
   @ApiOperation({ summary: 'Get recent versions for changelog' })
-  @ApiQuery({ name: 'limit', required: false, description: 'Number of versions to return (max 20)', example: '5' })
-  @ApiQuery({ name: 'includePrerelease', required: false, description: 'Include prerelease versions', example: 'false' })
+  @ApiQuery({
+    name: 'limit',
+    required: false,
+    description: 'Number of versions to return (max 20)',
+    example: '5',
+  })
+  @ApiQuery({
+    name: 'includePrerelease',
+    required: false,
+    description: 'Include prerelease versions',
+    example: 'false',
+  })
   @ApiResponse({ status: 200, description: 'Changelog entries' })
   async getChangelog(@Query() query: ChangelogQueryDto) {
     return this.versionsService.getChangelog(query)
@@ -163,7 +178,10 @@ export class VersionsController {
   @ApiResponse({ status: 200, description: 'Version updated successfully' })
   @ApiResponse({ status: 401, description: 'Unauthorized' })
   @ApiResponse({ status: 404, description: 'Version not found' })
-  async partialUpdate(@Param('version') version: string, @Body() updateVersionDto: UpdateVersionDto) {
+  async partialUpdate(
+    @Param('version') version: string,
+    @Body() updateVersionDto: UpdateVersionDto,
+  ) {
     try {
       return await this.versionsService.update(version, updateVersionDto)
     } catch (error) {

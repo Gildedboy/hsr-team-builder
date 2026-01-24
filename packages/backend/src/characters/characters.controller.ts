@@ -75,7 +75,10 @@ export class CharactersController {
           roles: { type: 'array', items: { type: 'string' }, example: ['DPS'] },
           archetype: { type: 'array', items: { type: 'string' }, example: ['DoT'] },
           labels: { type: 'array', items: { type: 'string' }, example: ['DoT', 'AoE'] },
-          prydwenLink: { type: 'string', example: 'https://www.prydwen.gg/star-rail/characters/kafka/' },
+          prydwenLink: {
+            type: 'string',
+            example: 'https://www.prydwen.gg/star-rail/characters/kafka/',
+          },
           guobaLink: { type: 'string', example: 'https://www.youtube.com/embed/xyz123' },
           lightcones: {
             type: 'array',
@@ -146,7 +149,10 @@ export class CharactersController {
         roles: { type: 'array', items: { type: 'string' }, example: ['DPS'] },
         archetype: { type: 'array', items: { type: 'string' }, example: ['DoT'] },
         labels: { type: 'array', items: { type: 'string' }, example: ['DoT', 'AoE'] },
-        prydwenLink: { type: 'string', example: 'https://www.prydwen.gg/star-rail/characters/kafka/' },
+        prydwenLink: {
+          type: 'string',
+          example: 'https://www.prydwen.gg/star-rail/characters/kafka/',
+        },
         guobaLink: { type: 'string', example: 'https://www.youtube.com/embed/xyz123' },
         lightcones: {
           type: 'array',

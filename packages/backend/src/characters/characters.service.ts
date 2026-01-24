@@ -141,9 +141,9 @@ export class CharactersService {
     id: string,
     updateData: Partial<Character> & { lightcones?: { id: string; note?: string }[] },
   ): Promise<Character | null> {
-    const entity = await this.characterRepository.findOne({ 
+    const entity = await this.characterRepository.findOne({
       where: { id },
-      relations: ['lightconeRelations', 'lightconeRelations.lightcone']
+      relations: ['lightconeRelations', 'lightconeRelations.lightcone'],
     })
     if (!entity) {
       return null
@@ -162,7 +162,9 @@ export class CharactersService {
       const relations: CharacterLightconeEntity[] = []
       for (const item of updateData.lightcones) {
         const lc = idToLightcone.get(item.id)
-        if (!lc) continue
+        if (!lc) {
+          continue
+        }
         const relation = new CharacterLightconeEntity()
         relation.character = entity
         relation.characterId = entity.id
@@ -224,7 +226,9 @@ export class CharactersService {
       entity.lightconeRelations = lightcones
         .map((item) => {
           const lc = idToLightcone.get(item.id)
-          if (!lc) return null
+          if (!lc) {
+            return null
+          }
           const relation = new CharacterLightconeEntity()
           relation.character = entity
           relation.characterId = entity.id
@@ -289,25 +293,24 @@ export class CharactersService {
       guobaLink: entity.guobaLink || undefined,
       teammateRecommendations: entity.teammateRecommendations || [],
       teamCompositions: entity.teamCompositions || [],
-      lightcones:
-        (entity.lightconeRelations
-          ? [...entity.lightconeRelations].sort((a, b) => (a.id ?? 0) - (b.id ?? 0))
-          : []
-        ).map((relation) => ({
-          id: relation.lightcone.id,
-          name: relation.lightcone.name,
-          rarity: relation.lightcone.rarity as 3 | 4 | 5,
-          path: relation.lightcone.path as
-            | 'Destruction'
-            | 'Hunt'
-            | 'Erudition'
-            | 'Harmony'
-            | 'Nihility'
-            | 'Preservation'
-            | 'Abundance'
-            | 'Remembrance',
-          note: relation.note || undefined,
-        })),
+      lightcones: (entity.lightconeRelations
+        ? [...entity.lightconeRelations].sort((a, b) => (a.id ?? 0) - (b.id ?? 0))
+        : []
+      ).map((relation) => ({
+        id: relation.lightcone.id,
+        name: relation.lightcone.name,
+        rarity: relation.lightcone.rarity as 3 | 4 | 5,
+        path: relation.lightcone.path as
+          | 'Destruction'
+          | 'Hunt'
+          | 'Erudition'
+          | 'Harmony'
+          | 'Nihility'
+          | 'Preservation'
+          | 'Abundance'
+          | 'Remembrance',
+        note: relation.note || undefined,
+      })),
     }
   }
 

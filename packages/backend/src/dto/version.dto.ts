@@ -5,7 +5,7 @@ import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger'
 export class CreateVersionDto {
   @ApiProperty({
     description: 'Version identifier (e.g., v2.7.0)',
-    example: 'v2.7.0'
+    example: 'v2.7.0',
   })
   @IsString()
   @IsNotEmpty()
@@ -13,7 +13,7 @@ export class CreateVersionDto {
 
   @ApiProperty({
     description: 'Version title or name',
-    example: 'Major Feature Release'
+    example: 'Major Feature Release',
   })
   @IsString()
   @IsNotEmpty()
@@ -21,7 +21,7 @@ export class CreateVersionDto {
 
   @ApiPropertyOptional({
     description: 'Detailed description of the version',
-    example: 'This release introduces the new version management API system.'
+    example: 'This release introduces the new version management API system.',
   })
   @IsOptional()
   @IsString()
@@ -29,7 +29,7 @@ export class CreateVersionDto {
 
   @ApiProperty({
     description: 'Release date in ISO format',
-    example: '2025-11-02'
+    example: '2025-11-02',
   })
   @IsDateString()
   releaseDate: string
@@ -37,7 +37,7 @@ export class CreateVersionDto {
   @ApiPropertyOptional({
     description: 'List of new features',
     type: [String],
-    example: ['Dynamic version info API', 'Redis caching', 'JWT authentication']
+    example: ['Dynamic version info API', 'Redis caching', 'JWT authentication'],
   })
   @IsOptional()
   @IsArray()
@@ -47,7 +47,7 @@ export class CreateVersionDto {
   @ApiPropertyOptional({
     description: 'List of bug fixes',
     type: [String],
-    example: ['Fixed memory leak', 'Resolved API timeout issues']
+    example: ['Fixed memory leak', 'Resolved API timeout issues'],
   })
   @IsOptional()
   @IsArray()
@@ -57,7 +57,7 @@ export class CreateVersionDto {
   @ApiPropertyOptional({
     description: 'List of breaking changes',
     type: [String],
-    example: ['Changed API endpoint structure', 'Updated authentication method']
+    example: ['Changed API endpoint structure', 'Updated authentication method'],
   })
   @IsOptional()
   @IsArray()
@@ -67,7 +67,7 @@ export class CreateVersionDto {
   @ApiPropertyOptional({
     description: 'List of known issues',
     type: [String],
-    example: ['Minor styling issue on mobile', 'Slow loading on older browsers']
+    example: ['Minor styling issue on mobile', 'Slow loading on older browsers'],
   })
   @IsOptional()
   @IsArray()
@@ -77,7 +77,7 @@ export class CreateVersionDto {
   @ApiPropertyOptional({
     description: 'Whether the version is active',
     example: true,
-    default: true
+    default: true,
   })
   @IsOptional()
   @IsBoolean()
@@ -86,7 +86,7 @@ export class CreateVersionDto {
   @ApiPropertyOptional({
     description: 'Whether the version is a prerelease',
     example: false,
-    default: false
+    default: false,
   })
   @IsOptional()
   @IsBoolean()
@@ -95,7 +95,11 @@ export class CreateVersionDto {
   @ApiPropertyOptional({
     description: 'List of roadmap items/upcoming features',
     type: [String],
-    example: ['Add Prydwen build integration', 'Enhanced mobile experience', 'Team composition analyzer']
+    example: [
+      'Add Prydwen build integration',
+      'Enhanced mobile experience',
+      'Team composition analyzer',
+    ],
   })
   @IsOptional()
   @IsArray()
@@ -106,7 +110,7 @@ export class CreateVersionDto {
 export class ReplaceVersionDto {
   @ApiProperty({
     description: 'Version title or name',
-    example: 'Updated Major Feature Release'
+    example: 'Updated Major Feature Release',
   })
   @IsString()
   @IsNotEmpty()
@@ -114,7 +118,7 @@ export class ReplaceVersionDto {
 
   @ApiPropertyOptional({
     description: 'Detailed description of the version',
-    example: 'Updated description with additional improvements.'
+    example: 'Updated description with additional improvements.',
   })
   @IsOptional()
   @IsString()
@@ -122,7 +126,7 @@ export class ReplaceVersionDto {
 
   @ApiProperty({
     description: 'Release date in ISO format',
-    example: '2025-11-02'
+    example: '2025-11-02',
   })
   @IsDateString()
   releaseDate: string
@@ -130,7 +134,7 @@ export class ReplaceVersionDto {
   @ApiPropertyOptional({
     description: 'List of new features',
     type: [String],
-    example: ['Enhanced API performance', 'New caching system']
+    example: ['Enhanced API performance', 'New caching system'],
   })
   @IsOptional()
   @IsArray()
@@ -140,7 +144,7 @@ export class ReplaceVersionDto {
   @ApiPropertyOptional({
     description: 'List of bug fixes',
     type: [String],
-    example: ['Fixed critical security issue', 'Resolved database connection problems']
+    example: ['Fixed critical security issue', 'Resolved database connection problems'],
   })
   @IsOptional()
   @IsArray()
@@ -150,7 +154,7 @@ export class ReplaceVersionDto {
   @ApiPropertyOptional({
     description: 'List of breaking changes',
     type: [String],
-    example: ['Removed deprecated endpoints', 'Changed response format']
+    example: ['Removed deprecated endpoints', 'Changed response format'],
   })
   @IsOptional()
   @IsArray()
@@ -160,7 +164,7 @@ export class ReplaceVersionDto {
   @ApiPropertyOptional({
     description: 'List of known issues',
     type: [String],
-    example: ['Performance degradation on large datasets']
+    example: ['Performance degradation on large datasets'],
   })
   @IsOptional()
   @IsArray()
@@ -170,7 +174,7 @@ export class ReplaceVersionDto {
   @ApiPropertyOptional({
     description: 'Whether the version is active',
     example: true,
-    default: true
+    default: true,
   })
   @IsOptional()
   @IsBoolean()
@@ -179,7 +183,7 @@ export class ReplaceVersionDto {
   @ApiPropertyOptional({
     description: 'Whether the version is a prerelease',
     example: false,
-    default: false
+    default: false,
   })
   @IsOptional()
   @IsBoolean()
@@ -188,7 +192,11 @@ export class ReplaceVersionDto {
   @ApiPropertyOptional({
     description: 'List of roadmap items/upcoming features',
     type: [String],
-    example: ['Add Prydwen build integration', 'Enhanced mobile experience', 'Team composition analyzer']
+    example: [
+      'Add Prydwen build integration',
+      'Enhanced mobile experience',
+      'Team composition analyzer',
+    ],
   })
   @IsOptional()
   @IsArray()
@@ -199,7 +207,7 @@ export class ReplaceVersionDto {
 export class UpdateVersionDto {
   @ApiPropertyOptional({
     description: 'Version title or name',
-    example: 'Updated Major Feature Release'
+    example: 'Updated Major Feature Release',
   })
   @IsOptional()
   @IsString()
@@ -207,7 +215,7 @@ export class UpdateVersionDto {
 
   @ApiPropertyOptional({
     description: 'Detailed description of the version',
-    example: 'Updated description with additional improvements.'
+    example: 'Updated description with additional improvements.',
   })
   @IsOptional()
   @IsString()
@@ -215,7 +223,7 @@ export class UpdateVersionDto {
 
   @ApiPropertyOptional({
     description: 'Release date in ISO format',
-    example: '2025-11-02'
+    example: '2025-11-02',
   })
   @IsOptional()
   @IsDateString()
@@ -224,7 +232,7 @@ export class UpdateVersionDto {
   @ApiPropertyOptional({
     description: 'List of new features',
     type: [String],
-    example: ['Enhanced API performance', 'New caching system']
+    example: ['Enhanced API performance', 'New caching system'],
   })
   @IsOptional()
   @IsArray()
@@ -234,7 +242,7 @@ export class UpdateVersionDto {
   @ApiPropertyOptional({
     description: 'List of bug fixes',
     type: [String],
-    example: ['Fixed critical security issue', 'Resolved database connection problems']
+    example: ['Fixed critical security issue', 'Resolved database connection problems'],
   })
   @IsOptional()
   @IsArray()
@@ -244,7 +252,7 @@ export class UpdateVersionDto {
   @ApiPropertyOptional({
     description: 'List of breaking changes',
     type: [String],
-    example: ['Removed deprecated endpoints', 'Changed response format']
+    example: ['Removed deprecated endpoints', 'Changed response format'],
   })
   @IsOptional()
   @IsArray()
@@ -254,7 +262,7 @@ export class UpdateVersionDto {
   @ApiPropertyOptional({
     description: 'List of known issues',
     type: [String],
-    example: ['Performance degradation on large datasets']
+    example: ['Performance degradation on large datasets'],
   })
   @IsOptional()
   @IsArray()
@@ -263,7 +271,7 @@ export class UpdateVersionDto {
 
   @ApiPropertyOptional({
     description: 'Whether the version is active',
-    example: true
+    example: true,
   })
   @IsOptional()
   @IsBoolean()
@@ -271,7 +279,7 @@ export class UpdateVersionDto {
 
   @ApiPropertyOptional({
     description: 'Whether the version is a prerelease',
-    example: false
+    example: false,
   })
   @IsOptional()
   @IsBoolean()
@@ -280,7 +288,11 @@ export class UpdateVersionDto {
   @ApiPropertyOptional({
     description: 'List of roadmap items/upcoming features',
     type: [String],
-    example: ['Add Prydwen build integration', 'Enhanced mobile experience', 'Team composition analyzer']
+    example: [
+      'Add Prydwen build integration',
+      'Enhanced mobile experience',
+      'Team composition analyzer',
+    ],
   })
   @IsOptional()
   @IsArray()
@@ -292,7 +304,7 @@ export class ChangelogQueryDto {
   @ApiPropertyOptional({
     description: 'Maximum number of versions to return (1-20)',
     example: '5',
-    default: '5'
+    default: '5',
   })
   @IsOptional()
   @IsString()
@@ -301,7 +313,7 @@ export class ChangelogQueryDto {
   @ApiPropertyOptional({
     description: 'Whether to include prerelease versions',
     example: false,
-    default: false
+    default: false,
   })
   @IsOptional()
   @IsBoolean()

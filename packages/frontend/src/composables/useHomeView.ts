@@ -18,8 +18,13 @@ export function useHomeView(characters: ComputedRef<Character[]>) {
 
   const { charactersByRole } = useCharacterGrouping(filteredCharacters, selectedArchetypes)
 
-  const { selectedCharacter, selectCharacter, clearSelection, isCharacterRecommended, getRecommendationTier } =
-    useCharacterSelection()
+  const {
+    selectedCharacter,
+    selectCharacter,
+    clearSelection,
+    isCharacterRecommended,
+    getRecommendationTier,
+  } = useCharacterSelection()
 
   const {
     searchQuery: searchQueryRef,

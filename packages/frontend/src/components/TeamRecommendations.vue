@@ -191,8 +191,10 @@ const currentTeamComposition = computed(() =>
 )
 
 const hasNoTeamData = computed(() => {
-  const hasNoTeammates = !props.character.teammateRecommendations || props.character.teammateRecommendations.length === 0
-  const hasNoCompositions = !props.character.teamCompositions || props.character.teamCompositions.length === 0
+  const hasNoTeammates =
+    !props.character.teammateRecommendations || props.character.teammateRecommendations.length === 0
+  const hasNoCompositions =
+    !props.character.teamCompositions || props.character.teamCompositions.length === 0
   return hasNoTeammates && hasNoCompositions
 })
 
