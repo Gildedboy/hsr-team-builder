@@ -11,6 +11,7 @@ import {
 } from 'class-validator'
 import { Type } from 'class-transformer'
 import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger'
+import { LightconePath, LightconeRarity } from './lightcone.dto'
 
 // Enums for validation
 export enum Element {
@@ -100,9 +101,35 @@ export class TeamCompositionDto {
 }
 
 export class CharacterLightconeDto {
-  @ApiProperty({ description: 'Lightcone ID', example: '23000' })
+  @ApiProperty({ description: 'Lightcone ID (required on write)', example: '23000' })
   @IsString()
   id: string
+
+  @ApiPropertyOptional({
+    description: 'Lightcone name (ignored on write; provided by GET)',
+    example: 'In the Name of the World',
+  })
+  @IsOptional()
+  @IsString()
+  name?: string
+
+  @ApiPropertyOptional({
+    description: 'Lightcone rarity (ignored on write; provided by GET)',
+    enum: LightconeRarity,
+    example: LightconeRarity.FIVE_STAR,
+  })
+  @IsOptional()
+  @IsEnum(LightconeRarity)
+  rarity?: LightconeRarity
+
+  @ApiPropertyOptional({
+    description: 'Lightcone path (ignored on write; provided by GET)',
+    enum: LightconePath,
+    example: LightconePath.NIHILITY,
+  })
+  @IsOptional()
+  @IsEnum(LightconePath)
+  path?: LightconePath
 
   @ApiPropertyOptional({
     description: 'Per-character lightcone note/label',
@@ -185,7 +212,8 @@ export class CreateCharacterDto {
   guobaLink?: string
 
   @ApiPropertyOptional({
-    description: 'Lightcones with optional per-character notes',
+    description:
+      'Lightcones for this character. On POST/PUT, only `id` (+ optional `note`) is used; other fields are ignored.',
     type: [CharacterLightconeDto],
   })
   @IsOptional()
@@ -270,7 +298,8 @@ export class UpdateCharacterDto {
   guobaLink?: string
 
   @ApiPropertyOptional({
-    description: 'Lightcones with optional per-character notes',
+    description:
+      'Lightcones for this character. On POST/PUT, only `id` (+ optional `note`) is used; other fields are ignored.',
     type: [CharacterLightconeDto],
   })
   @IsOptional()
