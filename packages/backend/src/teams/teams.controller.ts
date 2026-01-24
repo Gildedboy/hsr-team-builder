@@ -18,9 +18,7 @@ export class TeamsController {
   @ApiOperation({ summary: 'Get team recommendations for a character' })
   @ApiParam({ name: 'characterId', description: 'Character ID to build teams around' })
   @ApiResponse({ status: 200, description: 'Team recommendations for the character' })
-  getTeamRecommendations(
-    @Param('characterId') characterId: string,
-  ): Promise<TeamRecommendation[]> {
+  getTeamRecommendations(@Param('characterId') characterId: string): Promise<TeamRecommendation[]> {
     return this.teamsService.generateTeamRecommendations(characterId)
   }
 }
