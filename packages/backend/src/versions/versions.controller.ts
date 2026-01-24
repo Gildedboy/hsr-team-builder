@@ -23,7 +23,12 @@ import {
 } from '@nestjs/swagger'
 import { JwtAuthGuard } from '../auth/guards/jwt-auth.guard'
 import { VersionsService } from './versions.service'
-import { ChangelogQueryDto, CreateVersionDto, ReplaceVersionDto, UpdateVersionDto } from '../dto/version.dto'
+import {
+  ChangelogQueryDto,
+  CreateVersionDto,
+  ReplaceVersionDto,
+  UpdateVersionDto,
+} from '../dto/version.dto'
 
 @ApiTags('versions')
 @Controller('versions')
@@ -36,7 +41,7 @@ export class VersionsController {
   @ApiOperation({ summary: 'Seed database with initial version data (requires authentication)' })
   @ApiResponse({ status: 201, description: 'Database seeded successfully' })
   @ApiResponse({ status: 401, description: 'Unauthorized' })
-  async seedDatabase(): Promise<{ message: string; count: number }> {
+  seedDatabase(): Promise<{ message: string; count: number }> {
     return this.versionsService.seedVersions()
   }
 
@@ -46,14 +51,14 @@ export class VersionsController {
   @ApiOperation({ summary: 'Clear all versions from database (requires authentication)' })
   @ApiResponse({ status: 200, description: 'Database cleared successfully' })
   @ApiResponse({ status: 401, description: 'Unauthorized' })
-  async clearDatabase(): Promise<{ message: string; cleared: number }> {
-    return await this.versionsService.clearVersions()
+  clearDatabase(): Promise<{ message: string; cleared: number }> {
+    return this.versionsService.clearVersions()
   }
 
   @Get()
   @ApiOperation({ summary: 'Get all versions' })
   @ApiResponse({ status: 200, description: 'List of versions' })
-  async findAll() {
+  findAll() {
     return this.versionsService.findAll()
   }
 
@@ -63,30 +68,40 @@ export class VersionsController {
   @ApiResponse({ status: 404, description: 'No versions available' })
   async getLatest() {
     const latestVersion = await this.versionsService.getLatestVersion()
-    
+
     if (!latestVersion) {
       return {
         message: 'No versions available',
         fallback: true,
       }
     }
-    
+
     return latestVersion
   }
 
   @Get('changelog')
   @ApiOperation({ summary: 'Get recent versions for changelog' })
-  @ApiQuery({ name: 'limit', required: false, description: 'Number of versions to return (max 20)', example: '5' })
-  @ApiQuery({ name: 'includePrerelease', required: false, description: 'Include prerelease versions', example: 'false' })
+  @ApiQuery({
+    name: 'limit',
+    required: false,
+    description: 'Number of versions to return (max 20)',
+    example: '5',
+  })
+  @ApiQuery({
+    name: 'includePrerelease',
+    required: false,
+    description: 'Include prerelease versions',
+    example: 'false',
+  })
   @ApiResponse({ status: 200, description: 'Changelog entries' })
-  async getChangelog(@Query() query: ChangelogQueryDto) {
+  getChangelog(@Query() query: ChangelogQueryDto) {
     return this.versionsService.getChangelog(query)
   }
 
   @Get('roadmap')
   @ApiOperation({ summary: 'Get roadmap items from all versions' })
   @ApiResponse({ status: 200, description: 'Roadmap items from all versions' })
-  async getRoadmap() {
+  getRoadmap() {
     return this.versionsService.getRoadmap()
   }
 
@@ -97,7 +112,8 @@ export class VersionsController {
   @ApiResponse({ status: 404, description: 'Version not found' })
   async findOne(@Param('version') version: string) {
     try {
-      return await this.versionsService.findOne(version)
+      const found = await this.versionsService.findOne(version)
+      return found
     } catch (error) {
       if (error instanceof Error && error.message.includes('not found')) {
         return { message: `Version ${version} not found` }
@@ -119,7 +135,8 @@ export class VersionsController {
   @ApiResponse({ status: 400, description: 'Version already exists' })
   async create(@Body() createVersionDto: CreateVersionDto) {
     try {
-      return await this.versionsService.create(createVersionDto)
+      const created = await this.versionsService.create(createVersionDto)
+      return created
     } catch (error) {
       if (error instanceof Error && error.message.includes('already exists')) {
         throw new HttpException(error.message, HttpStatus.BAD_REQUEST)
@@ -142,7 +159,8 @@ export class VersionsController {
   @ApiResponse({ status: 404, description: 'Version not found' })
   async update(@Param('version') version: string, @Body() replaceVersionDto: ReplaceVersionDto) {
     try {
-      return await this.versionsService.replace(version, replaceVersionDto)
+      const updated = await this.versionsService.replace(version, replaceVersionDto)
+      return updated
     } catch (error) {
       if (error instanceof Error && error.message.includes('not found')) {
         throw new HttpException(`Version ${version} not found`, HttpStatus.NOT_FOUND)
@@ -163,9 +181,13 @@ export class VersionsController {
   @ApiResponse({ status: 200, description: 'Version updated successfully' })
   @ApiResponse({ status: 401, description: 'Unauthorized' })
   @ApiResponse({ status: 404, description: 'Version not found' })
-  async partialUpdate(@Param('version') version: string, @Body() updateVersionDto: UpdateVersionDto) {
+  async partialUpdate(
+    @Param('version') version: string,
+    @Body() updateVersionDto: UpdateVersionDto,
+  ) {
     try {
-      return await this.versionsService.update(version, updateVersionDto)
+      const updated = await this.versionsService.update(version, updateVersionDto)
+      return updated
     } catch (error) {
       if (error instanceof Error && error.message.includes('not found')) {
         throw new HttpException(`Version ${version} not found`, HttpStatus.NOT_FOUND)

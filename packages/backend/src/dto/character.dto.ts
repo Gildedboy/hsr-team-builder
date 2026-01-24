@@ -103,7 +103,10 @@ export class CharacterLightconeDto {
   @IsString()
   id: string
 
-  @ApiPropertyOptional({ description: 'Per-character lightcone note/label', example: 'Best in slot' })
+  @ApiPropertyOptional({
+    description: 'Per-character lightcone note/label',
+    example: 'Best in slot',
+  })
   @IsOptional()
   @IsString()
   note?: string

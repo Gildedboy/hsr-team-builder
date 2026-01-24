@@ -57,7 +57,12 @@
 
             <div class="mb-3">
               <label for="contact-type" class="form-label text-white small">Type:</label>
-              <select id="contact-type" name="type" class="form-select bg-dark text-white border-primary" required>
+              <select
+                id="contact-type"
+                name="type"
+                class="form-select bg-dark text-white border-primary"
+                required
+              >
                 <option value="">Select...</option>
                 <option value="team-suggestion">Team/Teammate Suggestion</option>
                 <option value="bug-report">Bug Report</option>
@@ -129,7 +134,12 @@
           <!-- Tab Content -->
           <div class="tab-content">
             <!-- Version Info Tab -->
-            <div class="tab-pane fade show active" id="version-info-tab" role="tabpanel" aria-labelledby="version-info-tab-button">
+            <div
+              class="tab-pane fade show active"
+              id="version-info-tab"
+              role="tabpanel"
+              aria-labelledby="version-info-tab-button"
+            >
               <div class="text-white">
                 <h6 class="text-primary mb-3">{{ appVersion }} Release Notes</h6>
 
@@ -222,7 +232,12 @@
             </div>
 
             <!-- Roadmap Tab -->
-            <div class="tab-pane fade" id="todo-tab" role="tabpanel" aria-labelledby="roadmap-tab-button">
+            <div
+              class="tab-pane fade"
+              id="todo-tab"
+              role="tabpanel"
+              aria-labelledby="roadmap-tab-button"
+            >
               <div class="text-white">
                 <h6 class="text-primary mb-3">Upcoming Features</h6>
 
@@ -244,9 +259,7 @@
 
                 <!-- Roadmap Items -->
                 <ul v-if="roadmapItems.length > 0" class="list-unstyled">
-                  <li v-for="item in roadmapItems" :key="item" class="mb-2">
-                    • {{ item }}
-                  </li>
+                  <li v-for="item in roadmapItems" :key="item" class="mb-2">• {{ item }}</li>
                 </ul>
 
                 <!-- No roadmap items -->
@@ -278,7 +291,7 @@ const {
   appVersion,
   hasVersionInfo,
   fetchVersionInfo,
-  fetchRoadmap
+  fetchRoadmap,
 } = useVersionInfo()
 
 // Fetch version info and roadmap when component mounts

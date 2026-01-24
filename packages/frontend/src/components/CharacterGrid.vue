@@ -1,9 +1,9 @@
 <template>
   <div class="character-grid">
-    <div 
-      v-for="char in characters" 
-      :key="char.id" 
-      @click="$emit('select', char)" 
+    <div
+      v-for="char in characters"
+      :key="char.id"
+      @click="$emit('select', char)"
       @mouseenter="showTooltip(char.id, $event)"
       @mouseleave="hideTooltip"
       class="character-item"
@@ -11,14 +11,25 @@
         selected: selectedCharacter?.id === char.id,
         recommended: selectedCharacter && isRecommended(char.id),
         'recommended-bis': selectedCharacter && getRecommendationTier(char.id) === 'bis',
-        'recommended-generalist': selectedCharacter && getRecommendationTier(char.id) === 'generalist',
-        'recommended-f2p': selectedCharacter && getRecommendationTier(char.id) === 'f2p'
+        'recommended-generalist':
+          selectedCharacter && getRecommendationTier(char.id) === 'generalist',
+        'recommended-f2p': selectedCharacter && getRecommendationTier(char.id) === 'f2p',
       }"
-      :style="isFiltered(char) ? { opacity: '0.25', filter: 'grayscale(80%)', boxShadow: '0 2px 6px rgba(0, 0, 0, 0.3)', borderColor: 'rgba(255, 255, 255, 0.1)', transform: 'scale(1)' } : {}"
+      :style="
+        isFiltered(char)
+          ? {
+              opacity: '0.25',
+              filter: 'grayscale(80%)',
+              boxShadow: '0 2px 6px rgba(0, 0, 0, 0.3)',
+              borderColor: 'rgba(255, 255, 255, 0.1)',
+              transform: 'scale(1)',
+            }
+          : {}
+      "
     >
-      <img 
-        :src="getCharacterAvatar(char.id)" 
-        :alt="char.name" 
+      <img
+        :src="getCharacterAvatar(char.id)"
+        :alt="char.name"
         class="character-avatar"
         width="66"
         height="66"
@@ -27,7 +38,7 @@
       />
       <div class="character-name">{{ char.name }}</div>
     </div>
-    
+
     <CharacterTooltip :character="hoveredCharacter" :position="tooltipPosition" />
   </div>
 </template>
@@ -58,7 +69,7 @@ const props = withDefaults(defineProps<Props>(), {
   getRecommendationTier: () => () => null,
   selectedElements: () => [],
   selectedPaths: () => [],
-  selectedRarities: () => []
+  selectedRarities: () => [],
 })
 
 defineEmits<Emits>()
@@ -66,18 +77,18 @@ defineEmits<Emits>()
 const { hoveredCharacter, tooltipPosition, showTooltip, hideTooltip } = useTooltip()
 
 const isFiltered = (char: Character) => {
-  const hasFilters = (props.selectedElements.length > 0 && !props.selectedElements.includes(char.element)) ||
-         (props.selectedPaths.length > 0 && !props.selectedPaths.includes(char.path)) ||
-         (props.selectedRarities.length > 0 && !props.selectedRarities.includes(char.rarity))
-  
-  const isNotRecommended = props.selectedCharacter && 
-                          char.id !== props.selectedCharacter.id && 
-                          !props.isRecommended(char.id)
-  
+  const hasFilters =
+    (props.selectedElements.length > 0 && !props.selectedElements.includes(char.element)) ||
+    (props.selectedPaths.length > 0 && !props.selectedPaths.includes(char.path)) ||
+    (props.selectedRarities.length > 0 && !props.selectedRarities.includes(char.rarity))
+
+  const isNotRecommended =
+    props.selectedCharacter &&
+    char.id !== props.selectedCharacter.id &&
+    !props.isRecommended(char.id)
+
   return hasFilters || isNotRecommended
 }
-
-
 </script>
 
 <style scoped>
@@ -127,8 +138,6 @@ const isFiltered = (char: Character) => {
   box-shadow: 0 0 8px rgba(46, 204, 113, 0.6);
   border-color: #2ecc71;
 }
-
-
 
 .character-avatar {
   width: 100%;

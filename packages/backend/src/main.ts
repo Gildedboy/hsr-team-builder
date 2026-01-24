@@ -1,10 +1,11 @@
 import { NestFactory } from '@nestjs/core'
-import { ValidationPipe } from '@nestjs/common'
+import { Logger, ValidationPipe } from '@nestjs/common'
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger'
 import { AppModule } from './app.module'
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule)
+  const logger = new Logger('Bootstrap')
 
   // Security headers
   app.use((req, res, next) => {
@@ -42,7 +43,9 @@ async function bootstrap() {
   app.enableCors({
     origin: (origin, callback) => {
       // Allow requests with no origin (mobile apps, etc.)
-      if (!origin) {return callback(null, true)}
+      if (!origin) {
+        return callback(null, true)
+      }
 
       if (allowedOrigins.includes(origin)) {
         return callback(null, true)
@@ -74,7 +77,7 @@ async function bootstrap() {
 
   const port = process.env.PORT || 3001
   await app.listen(port)
-  console.log(`🚀 Backend server running on port ${port}`)
-  console.log(`📚 API Documentation available at /swagger`)
+  logger.log(`🚀 Backend server running on port ${port}`)
+  logger.log('📚 API Documentation available at /swagger')
 }
 bootstrap()

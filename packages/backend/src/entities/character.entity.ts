@@ -1,6 +1,7 @@
 import { Column, Entity, OneToMany, PrimaryColumn } from 'typeorm'
 import { ApiProperty } from '@nestjs/swagger'
 import { CharacterLightconeEntity } from './character-lightcone.entity'
+import type { TeamComposition, TeammateSection } from '../types/Character'
 
 @Entity('characters')
 export class CharacterEntity {
@@ -50,11 +51,11 @@ export class CharacterEntity {
 
   @ApiProperty({ description: 'Teammate recommendations', required: false })
   @Column('jsonb', { nullable: true })
-  teammateRecommendations: any[]
+  teammateRecommendations: TeammateSection[] | null
 
   @ApiProperty({ description: 'Team compositions', required: false })
   @Column('jsonb', { nullable: true })
-  teamCompositions: any[]
+  teamCompositions: TeamComposition[] | null
 
   @ApiProperty({
     description: 'Character lightcones with optional notes',

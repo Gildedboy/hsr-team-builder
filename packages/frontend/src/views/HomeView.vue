@@ -955,7 +955,10 @@ body {
 .filter-card .btn-outline-secondary,
 .filter-card .btn-outline-light,
 .filter-card .element-path-button {
-  transition: background-color 0.15s ease, border-color 0.15s ease, color 0.15s ease;
+  transition:
+    background-color 0.15s ease,
+    border-color 0.15s ease,
+    color 0.15s ease;
 }
 
 .filter-card .btn-outline-secondary:hover,
@@ -975,7 +978,9 @@ body {
   display: inline-flex;
   align-items: center;
   text-decoration: none;
-  transition: transform 0.15s ease, filter 0.15s ease;
+  transition:
+    transform 0.15s ease,
+    filter 0.15s ease;
 }
 
 .prydwen-link:hover {

@@ -1,11 +1,13 @@
 <template>
-  <div 
+  <div
     v-for="(chars, category) in roleCharacters"
     :key="category"
     v-show="chars.length > 0"
     class="mb-4"
   >
-    <h3 class="h5 text-primary mb-3 p-2 rounded border-start border-primary border-3 category-header">
+    <h3
+      class="h5 text-primary mb-3 p-2 rounded border-start border-primary border-3 category-header"
+    >
       {{ category }} ({{ chars.length }})
     </h3>
     <CharacterGrid

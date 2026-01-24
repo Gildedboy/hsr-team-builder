@@ -5,10 +5,14 @@
       <table class="table table-dark mb-0">
         <thead>
           <tr class="bg-gradient">
-            <th class="text-primary text-center fw-bold border-end border-primary role-column-width">
+            <th
+              class="text-primary text-center fw-bold border-end border-primary role-column-width"
+            >
               DPS / Sub-DPS
             </th>
-            <th class="text-primary text-center fw-bold border-end border-primary role-column-width">
+            <th
+              class="text-primary text-center fw-bold border-end border-primary role-column-width"
+            >
               Amplifier
             </th>
             <th class="text-primary text-center fw-bold role-column-width-last">Sustain</th>
@@ -63,7 +67,11 @@
     <ul class="nav nav-tabs nav-fill" role="tablist">
       <li v-show="hasCharactersInRole('dps')" class="nav-item" role="presentation">
         <button
-          :class="getActiveTab() === 'dps' ? 'nav-link active fw-bold custom-tab' : 'nav-link fw-bold custom-tab'"
+          :class="
+            getActiveTab() === 'dps'
+              ? 'nav-link active fw-bold custom-tab'
+              : 'nav-link fw-bold custom-tab'
+          "
           data-bs-toggle="tab"
           data-bs-target="#dps-tab"
           type="button"
@@ -74,7 +82,11 @@
       </li>
       <li v-show="hasCharactersInRole('support')" class="nav-item" role="presentation">
         <button
-          :class="getActiveTab() === 'support' ? 'nav-link active fw-bold custom-tab' : 'nav-link fw-bold custom-tab'"
+          :class="
+            getActiveTab() === 'support'
+              ? 'nav-link active fw-bold custom-tab'
+              : 'nav-link fw-bold custom-tab'
+          "
           data-bs-toggle="tab"
           data-bs-target="#support-tab"
           type="button"
@@ -85,7 +97,11 @@
       </li>
       <li v-show="hasCharactersInRole('sustain')" class="nav-item" role="presentation">
         <button
-          :class="getActiveTab() === 'sustain' ? 'nav-link active fw-bold custom-tab' : 'nav-link fw-bold custom-tab'"
+          :class="
+            getActiveTab() === 'sustain'
+              ? 'nav-link active fw-bold custom-tab'
+              : 'nav-link fw-bold custom-tab'
+          "
           data-bs-toggle="tab"
           data-bs-target="#sustain-tab"
           type="button"
@@ -114,7 +130,9 @@
         />
       </div>
       <div
-        :class="getActiveTab() === 'support' ? 'tab-pane fade show active p-3' : 'tab-pane fade p-3'"
+        :class="
+          getActiveTab() === 'support' ? 'tab-pane fade show active p-3' : 'tab-pane fade p-3'
+        "
         id="support-tab"
         role="tabpanel"
         class="role-section-support"
@@ -131,7 +149,9 @@
         />
       </div>
       <div
-        :class="getActiveTab() === 'sustain' ? 'tab-pane fade show active p-3' : 'tab-pane fade p-3'"
+        :class="
+          getActiveTab() === 'sustain' ? 'tab-pane fade show active p-3' : 'tab-pane fade p-3'
+        "
         id="sustain-tab"
         role="tabpanel"
         class="role-section-sustain"

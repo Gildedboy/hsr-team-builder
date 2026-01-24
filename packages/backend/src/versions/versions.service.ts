@@ -4,7 +4,12 @@ import { Repository } from 'typeorm'
 import { CACHE_MANAGER } from '@nestjs/cache-manager'
 import { Cache } from 'cache-manager'
 import { VersionEntity } from '../entities/version.entity'
-import { ChangelogQueryDto, CreateVersionDto, ReplaceVersionDto, UpdateVersionDto } from '../dto/version.dto'
+import {
+  ChangelogQueryDto,
+  CreateVersionDto,
+  ReplaceVersionDto,
+  UpdateVersionDto,
+} from '../dto/version.dto'
 
 @Injectable()
 export class VersionsService {
@@ -29,35 +34,29 @@ export class VersionsService {
           'Better mobile experience across all screen sizes',
           'Fixed text crowding on medium screens',
           'Improved character info visibility',
-          'Dynamic version information system'
+          'Dynamic version information system',
         ],
         bugFixes: [
           'Character details no longer hidden on smaller screens',
           'Mobile layout properly activates at correct breakpoints',
-          'Fixed minimum width causing horizontal scroll issues'
+          'Fixed minimum width causing horizontal scroll issues',
         ],
         breakingChanges: [],
         knownIssues: [],
         isActive: true,
-        isPrerelease: false
+        isPrerelease: false,
       },
       {
         version: 'v2.6.1',
         title: 'Performance Improvements',
         description: 'General performance improvements and bug fixes.',
         releaseDate: '2025-10-30',
-        features: [
-          'Performance optimizations',
-          'Improved API response times'
-        ],
-        bugFixes: [
-          'Various stability improvements',
-          'Memory usage optimizations'
-        ],
+        features: ['Performance optimizations', 'Improved API response times'],
+        bugFixes: ['Various stability improvements', 'Memory usage optimizations'],
         breakingChanges: [],
         knownIssues: [],
         isActive: true,
-        isPrerelease: false
+        isPrerelease: false,
       },
       {
         version: 'v2.6.0',
@@ -67,17 +66,14 @@ export class VersionsService {
         features: [
           'Enhanced team recommendations',
           'Improved character filtering',
-          'Better search functionality'
+          'Better search functionality',
         ],
-        bugFixes: [
-          'Fixed various UI issues',
-          'Improved mobile responsiveness'
-        ],
+        bugFixes: ['Fixed various UI issues', 'Improved mobile responsiveness'],
         breakingChanges: [],
         knownIssues: [],
         isActive: true,
-        isPrerelease: false
-      }
+        isPrerelease: false,
+      },
     ]
 
     let seededCount = 0
@@ -101,10 +97,10 @@ export class VersionsService {
   async clearVersions(): Promise<{ message: string; cleared: number }> {
     const versions = await this.versionRepository.find()
     const count = versions.length
-    
+
     await this.versionRepository.remove(versions)
     await this.clearCache()
-    
+
     this.logger.log(`🗑️ Cleared ${count} versions from database`)
     return { message: `Cleared ${count} versions successfully`, cleared: count }
   }
@@ -140,10 +136,10 @@ export class VersionsService {
 
   async findOne(version: string): Promise<VersionEntity> {
     const cacheKey = `version:${version}`
-    
+
     // Try to get from cache first
     let versionData = await this.cacheManager.get<VersionEntity>(cacheKey)
-    
+
     if (!versionData) {
       versionData = await this.versionRepository.findOne({
         where: { version, isActive: true },
@@ -168,12 +164,15 @@ export class VersionsService {
   }
 
   async getChangelog(query: ChangelogQueryDto): Promise<VersionEntity[]> {
-    const limit = Math.min(Number.parseInt(query.limit || '5', 10), VersionsService.MAX_CHANGELOG_LIMIT) // Max limit entries
+    const limit = Math.min(
+      Number.parseInt(query.limit || '5', 10),
+      VersionsService.MAX_CHANGELOG_LIMIT,
+    ) // Max limit entries
     const cacheKey = `changelog:${limit}:${query.includePrerelease || false}`
-    
+
     // Try to get from cache first
     let changelog = await this.cacheManager.get<VersionEntity[]>(cacheKey)
-    
+
     if (!changelog) {
       const queryBuilder = this.versionRepository
         .createQueryBuilder('version')
@@ -197,10 +196,10 @@ export class VersionsService {
 
   async getRoadmap(): Promise<string[]> {
     const cacheKey = 'roadmap-items'
-    
+
     // Try to get from cache first
     let roadmapItems = await this.cacheManager.get<string[]>(cacheKey)
-    
+
     if (!roadmapItems) {
       // Only show roadmap from the most recent active version
       const latestActive = await this.versionRepository.findOne({
@@ -286,9 +285,9 @@ export class VersionsService {
 
   async getLatestVersion(): Promise<VersionEntity | null> {
     const cacheKey = 'latest-version'
-    
+
     let latestVersion = await this.cacheManager.get<VersionEntity>(cacheKey)
-    
+
     if (!latestVersion) {
       latestVersion = await this.versionRepository.findOne({
         where: { isActive: true, isPrerelease: false },
@@ -307,19 +306,19 @@ export class VersionsService {
   private async clearCache(): Promise<void> {
     // Clear all version-related cache entries
     const keys = ['latest-version', 'roadmap-items']
-    
+
     // Generate possible cache keys for versions and changelog
     const versions = await this.versionRepository.find({ select: ['version'] })
     for (const version of versions) {
       keys.push(`version:${version.version}`)
     }
-    
+
     // Add changelog cache keys (common combinations)
     for (let i = 1; i <= VersionsService.MAX_CHANGELOG_LIMIT; i++) {
       keys.push(`changelog:${i}:false`, `changelog:${i}:true`)
     }
 
     // Clear all keys
-    await Promise.all(keys.map(key => this.cacheManager.del(key)))
+    await Promise.all(keys.map((key) => this.cacheManager.del(key)))
   }
 }

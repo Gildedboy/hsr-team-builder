@@ -21,9 +21,12 @@ import {
   ApiTags,
 } from '@nestjs/swagger'
 import { CharactersService } from './characters.service'
-import { Character } from '../types/Character'
+import { Character, Role } from '../types/Character'
 import { CreateCharacterDto, UpdateCharacterDto } from '../dto/character.dto'
 import { JwtAuthGuard } from '../auth/guards/jwt-auth.guard'
+
+const ROLE_VALUES: Role[] = ['DPS', 'SUB_DPS', 'SUPPORT', 'SUSTAIN', 'AMPLIFIER']
+const isRole = (value: string): value is Role => ROLE_VALUES.includes(value as Role)
 
 @ApiTags('characters')
 @Controller('characters')
@@ -36,8 +39,8 @@ export class CharactersController {
   @ApiOperation({ summary: 'Seed database with initial character data (requires authentication)' })
   @ApiResponse({ status: 201, description: 'Database seeded successfully' })
   @ApiResponse({ status: 401, description: 'Unauthorized' })
-  async seedDatabase(): Promise<{ message: string; count: number }> {
-    return await this.charactersService.seedCharacters()
+  seedDatabase(): Promise<{ message: string; count: number }> {
+    return this.charactersService.seedCharacters()
   }
 
   @UseGuards(JwtAuthGuard)
@@ -46,8 +49,8 @@ export class CharactersController {
   @ApiOperation({ summary: 'Clear all characters from database (requires authentication)' })
   @ApiResponse({ status: 200, description: 'Database cleared successfully' })
   @ApiResponse({ status: 401, description: 'Unauthorized' })
-  async clearDatabase(): Promise<{ message: string; cleared: number }> {
-    return await this.charactersService.clearCharacters()
+  clearDatabase(): Promise<{ message: string; cleared: number }> {
+    return this.charactersService.clearCharacters()
   }
 
   @Get()
@@ -75,7 +78,10 @@ export class CharactersController {
           roles: { type: 'array', items: { type: 'string' }, example: ['DPS'] },
           archetype: { type: 'array', items: { type: 'string' }, example: ['DoT'] },
           labels: { type: 'array', items: { type: 'string' }, example: ['DoT', 'AoE'] },
-          prydwenLink: { type: 'string', example: 'https://www.prydwen.gg/star-rail/characters/kafka/' },
+          prydwenLink: {
+            type: 'string',
+            example: 'https://www.prydwen.gg/star-rail/characters/kafka/',
+          },
           guobaLink: { type: 'string', example: 'https://www.youtube.com/embed/xyz123' },
           lightcones: {
             type: 'array',
@@ -102,8 +108,8 @@ export class CharactersController {
   ): Promise<Character[]> {
     let characters = await this.charactersService.findAll()
 
-    if (role) {
-      characters = characters.filter((char) => char.roles.includes(role as any))
+    if (role && isRole(role)) {
+      characters = characters.filter((char) => char.roles.includes(role))
     }
 
     if (element) {
@@ -146,7 +152,10 @@ export class CharactersController {
         roles: { type: 'array', items: { type: 'string' }, example: ['DPS'] },
         archetype: { type: 'array', items: { type: 'string' }, example: ['DoT'] },
         labels: { type: 'array', items: { type: 'string' }, example: ['DoT', 'AoE'] },
-        prydwenLink: { type: 'string', example: 'https://www.prydwen.gg/star-rail/characters/kafka/' },
+        prydwenLink: {
+          type: 'string',
+          example: 'https://www.prydwen.gg/star-rail/characters/kafka/',
+        },
         guobaLink: { type: 'string', example: 'https://www.youtube.com/embed/xyz123' },
         lightcones: {
           type: 'array',
