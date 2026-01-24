@@ -17,6 +17,7 @@ export const PATHS = [
   'Preservation',
   'Abundance',
   'Remembrance',
+  'Elation',
 ] as const
 
 export const RARITIES = [4, 5] as const
@@ -32,6 +33,7 @@ export const LIGHTCONE_PATHS = [
   'Preservation',
   'Abundance',
   'Remembrance',
+  'Elation',
 ] as const
 
 export type Element = (typeof ELEMENTS)[number]
