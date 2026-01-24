@@ -17,6 +17,7 @@ export enum LightconePath {
   PRESERVATION = 'Preservation',
   ABUNDANCE = 'Abundance',
   REMEMBRANCE = 'Remembrance',
+  ELATION = 'Elation',
 }
 
 export class CreateLightconeDto {

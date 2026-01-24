@@ -150,6 +150,7 @@ const lightconeAssetMap: Record<string, string> = {
   'to-evernights-stars': '23049',
   'thought-worlds-apart': '23051',
   'this-love-forever': '23052',
+  'never-forget-her-flame': '23050',
 
   // 5-star simulated universe lightcones (24xxx)
   'on-the-fall-of-an-aeon': '24000',
