@@ -174,11 +174,13 @@ export class CharactersService {
         relations.push(relation)
       }
       entity.lightconeRelations = relations
-      const { lightcones: _lightcones, ...restUpdateData } = updateData
+      const restUpdateData = { ...updateData }
+      delete restUpdateData.lightcones
       Object.assign(entity, restUpdateData)
     } else {
       // Update the entity with new data (excluding lightconeIds)
-      const { lightcones, ...restUpdateData } = updateData
+      const restUpdateData = { ...updateData }
+      delete restUpdateData.lightcones
       Object.assign(entity, restUpdateData)
     }
 
