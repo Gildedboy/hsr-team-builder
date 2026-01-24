@@ -32,6 +32,7 @@ export enum Path {
   PRESERVATION = 'Preservation',
   ABUNDANCE = 'Abundance',
   REMEMBRANCE = 'Remembrance',
+  ELATION = 'Elation',
 }
 
 export enum Role {

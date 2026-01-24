@@ -9,6 +9,7 @@ export const FILTER_OPTIONS = {
     'Preservation',
     'Abundance',
     'Remembrance',
+    'Elation',
   ],
   rarities: [5, 4],
   archetypes: [
