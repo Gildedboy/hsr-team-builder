@@ -2,7 +2,7 @@ import { useCharacterFilters } from './useCharacterFilters'
 import { useCharacterGrouping } from './useCharacterGrouping'
 import { useCharacterSelection } from './useCharacterSelection'
 import { useSearch } from './useSearch'
-import { type ComputedRef } from 'vue'
+import { type ComputedRef, watch } from 'vue'
 import type { Character } from '@hsr-team-builder/shared'
 
 export function useHomeView(characters: ComputedRef<Character[]>) {
@@ -51,6 +51,18 @@ export function useHomeView(characters: ComputedRef<Character[]>) {
     searchQueryRef.value = ''
     clearSelection()
   }
+
+  watch(characters, (nextCharacters) => {
+    const currentSelection = selectedCharacter.value
+    if (!currentSelection) {
+      return
+    }
+
+    const refreshedCharacter = nextCharacters.find((char) => char.id === currentSelection.id)
+    if (refreshedCharacter && refreshedCharacter !== currentSelection) {
+      selectedCharacter.value = refreshedCharacter
+    }
+  })
 
   const getActiveTab = () => {
     // If a character is selected, switch to their role's tab
