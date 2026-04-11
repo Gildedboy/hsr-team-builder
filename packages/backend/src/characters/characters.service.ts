@@ -9,6 +9,9 @@ import { LightconeEntity } from '../entities/lightcone.entity'
 import { CharacterLightconeEntity } from '../entities/character-lightcone.entity'
 import { allCharactersSeedData } from '../data/allCharactersData'
 
+const FIVE_MINUTES_MS = 5 * 60 * 1000
+const TEN_MINUTES_MS = 10 * 60 * 1000
+
 @Injectable()
 export class CharactersService {
   private readonly logger = new Logger(CharactersService.name)
@@ -46,7 +49,7 @@ export class CharactersService {
 
     try {
       this.logger.log('💾 Characters loaded from database and cached')
-      await this.cacheManager.set(cacheKey, characters, 600) // Cache for 10 minutes
+      await this.cacheManager.set(cacheKey, characters, TEN_MINUTES_MS)
     } catch (error: unknown) {
       const errorMessage = error instanceof Error ? error.message : JSON.stringify(error)
       this.logger.error('❌ Cache SET error:', errorMessage)
@@ -72,7 +75,7 @@ export class CharactersService {
     })
     if (entity) {
       const character = this.entityToCharacter(entity)
-      await this.cacheManager.set(cacheKey, character, 600)
+      await this.cacheManager.set(cacheKey, character, TEN_MINUTES_MS)
       this.logger.log(`💾 Character ${id} cached`)
       return character
     }
@@ -99,7 +102,7 @@ export class CharactersService {
 
     const characters = entities.map(this.entityToCharacter)
 
-    await this.cacheManager.set(cacheKey, characters, 300) // Cache for 5 minutes
+    await this.cacheManager.set(cacheKey, characters, FIVE_MINUTES_MS)
     this.logger.log(`💾 Characters with role ${role} cached`)
     return characters
   }
