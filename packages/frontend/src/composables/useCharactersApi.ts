@@ -7,13 +7,29 @@ import { staticCharacterList } from '../data/staticCharacters'
 const characters = ref<Character[]>(staticCharacterList)
 const loading = ref(false)
 const error = ref<string | null>(null)
+const RETRY_DELAY_MS = 10000
+
+let retryTimer: ReturnType<typeof setTimeout> | null = null
+
+const hasApiCharacterData = (character: Character | undefined) =>
+  Boolean(character && 'teammateRecommendations' in character)
+
+const hasLoadedApiCharacters = () =>
+  characters.value.length > 0 && hasApiCharacterData(characters.value[0])
+
+const clearRetryTimer = () => {
+  if (retryTimer) {
+    clearTimeout(retryTimer)
+    retryTimer = null
+  }
+}
 
 // Load characters from API
 export const useCharactersApi = () => {
   const loadCharacters = async () => {
     // Check if we already have API data (not just static data)
-    if (characters.value.length > 0 && characters.value[0]?.teammateRecommendations?.length > 0) {
-      return // Already loaded API data
+    if (hasLoadedApiCharacters() || loading.value) {
+      return
     }
 
     loading.value = true
@@ -21,11 +37,19 @@ export const useCharactersApi = () => {
 
     try {
       const apiCharacters = await CharacterService.getAllCharacters()
-      characters.value = apiCharacters // Replace static data with API data
+      characters.value = apiCharacters
+      clearRetryTimer()
     } catch (err) {
       error.value = err instanceof Error ? err.message : 'Failed to load characters'
       console.error('Failed to load characters:', err)
-      // Keep static characters if API fails
+      // Keep static characters if API fails, but retry so the UI can recover
+      // when the backend wakes up.
+      if (!retryTimer) {
+        retryTimer = setTimeout(() => {
+          retryTimer = null
+          void loadCharacters()
+        }, RETRY_DELAY_MS)
+      }
     } finally {
       loading.value = false
     }
