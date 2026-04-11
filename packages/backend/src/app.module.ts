@@ -1,9 +1,9 @@
 import { Module } from '@nestjs/common'
 import { CacheModule } from '@nestjs/cache-manager'
+import KeyvRedis from '@keyv/redis'
 import { TypeOrmModule } from '@nestjs/typeorm'
 import { ThrottlerGuard, ThrottlerModule } from '@nestjs/throttler'
 import { APP_GUARD } from '@nestjs/core'
-import { redisStore } from 'cache-manager-redis-store'
 import { CharactersModule } from './characters/characters.module'
 import { TeamsModule } from './teams/teams.module'
 import { AuthModule } from './auth/auth.module'
@@ -43,12 +43,13 @@ import { CharacterLightconeEntity } from './entities/character-lightcone.entity'
         limit: 1000, // 1000 requests per 15 minutes
       },
     ]),
-    CacheModule.register({
-      store: redisStore,
-      url: process.env.REDIS_URL || 'redis://localhost:6379',
-      ttl: 300, // 5 minutes cache
-      max: 100, // maximum number of items in cache
-      isGlobal: true, // Make cache available globally
+    CacheModule.registerAsync({
+      isGlobal: true,
+      useFactory: async () => ({
+        // Nest 11 cache-manager integrations are Keyv-based.
+        stores: [new KeyvRedis(process.env.REDIS_URL || 'redis://localhost:6379')],
+        ttl: 5 * 60 * 1000,
+      }),
     }),
     CharactersModule,
     TeamsModule,
