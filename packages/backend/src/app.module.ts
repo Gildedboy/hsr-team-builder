@@ -13,14 +13,13 @@ import { CharacterEntity } from './entities/character.entity'
 import { VersionEntity } from './entities/version.entity'
 import { LightconeEntity } from './entities/lightcone.entity'
 import { CharacterLightconeEntity } from './entities/character-lightcone.entity'
+import { getDatabaseUrl, getRedisUrl } from './config/env'
 
 @Module({
   imports: [
     TypeOrmModule.forRoot({
       type: 'postgres',
-      url:
-        process.env.DATABASE_URL ||
-        'postgresql://postgres:password@localhost:5432/hsr_team_builder',
+      url: getDatabaseUrl(),
       entities: [CharacterEntity, VersionEntity, LightconeEntity, CharacterLightconeEntity],
       synchronize: true, // Enable for initial schema creation
       logging: process.env.NODE_ENV === 'development',
@@ -47,7 +46,7 @@ import { CharacterLightconeEntity } from './entities/character-lightcone.entity'
       isGlobal: true,
       useFactory: async () => ({
         // Nest 11 cache-manager integrations are Keyv-based.
-        stores: [new KeyvRedis(process.env.REDIS_URL || 'redis://localhost:6379')],
+        stores: [new KeyvRedis(getRedisUrl())],
         ttl: 5 * 60 * 1000,
       }),
     }),
