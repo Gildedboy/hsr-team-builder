@@ -24,6 +24,8 @@ const lightconeAssetMap: Record<string, string> = {
   sagacity: '20020',
   shadowburn: '20021',
   reminiscence: '20022',
+  sneering: '20023',
+  'lingering-tear': '20024',
 
   // 4-star lightcones (21xxx series)
   'post-op-conversation': '21000',
@@ -87,6 +89,8 @@ const lightconeAssetMap: Record<string, string> = {
   'a-dream-scented-in-wheat': '21060',
   'holiday-thermae-escapade': '21061',
   'see-you-at-the-end': '21062',
+  'mushy-shroomys-adventures': '21064',
+  'todays-good-luck': '21065',
 
   // 4-star event lightcones (22xxx series)
   'before-the-tutorial-mission-starts': '22000',
@@ -96,6 +100,7 @@ const lightconeAssetMap: Record<string, string> = {
   'the-great-cosmic-enterprise': '22004',
   'the-forever-victual': '22005',
   'fly-into-a-pink-tomorrow': '22006',
+  'tomorrow-together': '22007',
 
   // 5-star lightcones (23xxx)
   'night-on-the-milky-way': '23000',
@@ -148,9 +153,14 @@ const lightconeAssetMap: Record<string, string> = {
   'why-does-the-ocean-sing': '23047',
   'epoch-etched-in-golden-blood': '23048',
   'to-evernights-stars': '23049',
+  'never-forget-her-flame': '23050',
   'thought-worlds-apart': '23051',
   'this-love-forever': '23052',
-  'never-forget-her-flame': '23050',
+  'dazzled-by-a-flowery-world': '23053',
+  'when-she-decided-to-see': '23054',
+  'the-finale-of-a-lie': '23056',
+  'welcome-to-the-cosmic-city': '23057',
+  'until-the-flowers-bloom-again': '23058',
 
   // 5-star simulated universe lightcones (24xxx)
   'on-the-fall-of-an-aeon': '24000',
@@ -159,6 +169,7 @@ const lightconeAssetMap: Record<string, string> = {
   'solitary-healing': '24003',
   'eternal-calculus': '24004',
   'memorys-curtain-never-falls': '24005',
+  'elation-brimming-with-blessings': '24006',
 }
 
 export const getLightconeImage = (lightconeId: string): string => {

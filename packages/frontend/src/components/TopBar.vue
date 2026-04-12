@@ -19,6 +19,30 @@
 
       <!-- Buttons -->
       <div class="d-flex gap-2 align-items-center flex-wrap justify-content-center">
+        <div class="tb-toggle d-flex align-items-center">
+          <span class="tb-toggle-label">TRAILBLAZER</span>
+          <div class="tb-toggle-group">
+            <button
+              type="button"
+              :class="trailblazerAvatarGender === 'female' ? 'tb-toggle-btn active' : 'tb-toggle-btn'"
+              @click="setTrailblazerAvatarGender('female')"
+              aria-label="Use female Trailblazer avatar"
+              title="Female Trailblazer avatar"
+            >
+              <i class="fas fa-venus" aria-hidden="true"></i>
+            </button>
+            <button
+              type="button"
+              :class="trailblazerAvatarGender === 'male' ? 'tb-toggle-btn active' : 'tb-toggle-btn'"
+              @click="setTrailblazerAvatarGender('male')"
+              aria-label="Use male Trailblazer avatar"
+              title="Male Trailblazer avatar"
+            >
+              <i class="fas fa-mars" aria-hidden="true"></i>
+            </button>
+          </div>
+        </div>
+
         <!-- Contact Modal Button -->
         <button class="contact-btn" data-bs-toggle="modal" data-bs-target="#contactModal">
           <i class="fas fa-envelope me-1"></i> Contact
@@ -278,6 +302,7 @@
 
 <script setup lang="ts">
 import { onMounted } from 'vue'
+import { useAvatarPreference } from '@/composables/useAvatarPreference'
 import { useVersionInfo } from '@/composables/useVersionInfo'
 
 // Get version info from API
@@ -294,6 +319,8 @@ const {
   fetchRoadmap,
 } = useVersionInfo()
 
+const { trailblazerAvatarGender, setTrailblazerAvatarGender } = useAvatarPreference()
+
 // Fetch version info and roadmap when component mounts
 onMounted(() => {
   fetchVersionInfo()
@@ -307,7 +334,8 @@ onMounted(() => {
 }
 
 .contact-btn,
-.github-btn {
+.github-btn,
+.tb-toggle-btn {
   height: 36px;
   padding: 8px 16px;
   border-radius: 18px;
@@ -340,6 +368,46 @@ onMounted(() => {
   background-color: #555;
   color: white;
   text-decoration: none;
+}
+
+.tb-toggle {
+  background: rgba(255, 255, 255, 0.06);
+  border: 1px solid rgba(114, 164, 242, 0.2);
+  border-radius: 18px;
+  gap: 10px;
+  padding: 4px 6px 4px 12px;
+}
+
+.tb-toggle-label {
+  color: rgba(255, 255, 255, 0.8);
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.02em;
+  text-transform: uppercase;
+}
+
+.tb-toggle-group {
+  display: flex;
+  gap: 4px;
+}
+
+.tb-toggle-btn {
+  background: transparent;
+  border: none;
+  color: rgba(255, 255, 255, 0.78);
+  height: 28px;
+  min-width: 28px;
+  padding: 0 10px;
+  font-size: 14px;
+}
+
+.tb-toggle-btn.active {
+  background: #00d4ff;
+  color: #111827;
+}
+
+.tb-toggle-btn i {
+  display: block;
 }
 
 .cursor-pointer {
