@@ -6,13 +6,29 @@ import { getCharacterAvatar, handleImageError, getCharacterImage } from '@/data/
 import { getLightconeImage, handleLightconeImageError } from '@/data/lightcones'
 import { useHomeView } from '@/composables/useHomeView'
 import { useCharactersApi } from '@/composables/useCharactersApi'
+import { useRoster } from '@/composables/useRoster'
 import { FILTER_OPTIONS } from '@/constants/filterOptions'
 import { COLORS } from '@/constants/design'
-import { onMounted, ref } from 'vue'
+import { computed, onMounted, ref } from 'vue'
 import type { Character, Lightcone } from '@hsr-team-builder/shared'
 
 // Use API-based characters
 const { characters, loadCharacters } = useCharactersApi()
+const {
+  disabledCharacterIds,
+  hasStagedChanges,
+  isRosterEditMode,
+  isCharacterDisabled,
+  enterRosterEditMode,
+  cancelRosterEditMode,
+  saveRosterEditMode,
+  selectAllNonFreeCharacters,
+  hideAllNonFreeCharacters,
+  toggleCharacterAvailability,
+  isCharacterRecommended,
+  getRecommendationTier,
+  isFreeCharacterId,
+} = useRoster()
 
 // Load characters in background when component mounts
 onMounted(async () => {
@@ -28,6 +44,7 @@ const {
   charactersByRole,
   selectedCharacter,
   searchQueryRef,
+  gridSearchQuery,
   showSearchSuggestions,
   searchSuggestions,
   selectedIndex,
@@ -40,10 +57,9 @@ const {
   selectCharacter,
   handleSelectFromSearch,
   handleClearFilters,
+  handleClearSelection,
   onSearchFocus,
   onSearchBlur,
-  isCharacterRecommended,
-  getRecommendationTier,
   getActiveTab,
   hasCharactersInRole,
 } = useHomeView(characters)
@@ -114,6 +130,29 @@ const showLightconeModal = (lightcone: Lightcone) => {
 const hideLightconeModal = () => {
   lightconeModal.value.show = false
 }
+
+const disabledCharacterCount = computed(() => disabledCharacterIds.value.length)
+const totalNonFreeCharacterCount = computed(
+  () => characters.value.filter((character) => !isFreeCharacterId(character.id)).length,
+)
+const areAllNonFreeCharactersOwned = computed(
+  () => totalNonFreeCharacterCount.value > 0 && disabledCharacterCount.value === 0,
+)
+const areAllNonFreeCharactersHidden = computed(
+  () =>
+    totalNonFreeCharacterCount.value > 0 &&
+    disabledCharacterCount.value === totalNonFreeCharacterCount.value,
+)
+
+const isRecommendedForRoster = (characterId: string) =>
+  selectedCharacter.value
+    ? isCharacterRecommended(selectedCharacter.value, characterId, characters.value)
+    : false
+
+const getRecommendationTierForRoster = (characterId: string) =>
+  selectedCharacter.value
+    ? getRecommendationTier(selectedCharacter.value, characterId, characters.value)
+    : null
 </script>
 
 <template>
@@ -762,27 +801,126 @@ const hideLightconeModal = () => {
             <div class="legend-color" style="background-color: #2ecc71"></div>
             <span class="text-white legend-text">F2P</span>
           </div>
+          <div class="d-flex align-items-center gap-2">
+            <div class="legend-color" style="background-color: #17a2b8"></div>
+            <span class="text-white legend-text">Free / Locked</span>
+          </div>
+          <div class="d-flex align-items-center gap-2">
+            <div class="legend-color" style="background-color: #ffc107"></div>
+            <span class="text-white legend-text">Unavailable</span>
+          </div>
         </div>
       </div>
 
       <!-- Characters grouped by archetype -->
       <div class="card bg-dark border-primary mb-5" style="min-height: 500px">
+        <div class="card-header border-bottom border-primary-subtle">
+          <div
+            class="d-flex flex-column flex-lg-row align-items-start align-items-lg-center justify-content-between gap-3"
+          >
+            <div>
+              <h2 class="h5 text-primary mb-1">My Roster</h2>
+              <p class="text-secondary mb-0 small">
+                {{
+                  isRosterEditMode
+                    ? 'Edit directly on the grid. Free characters stay locked and changes are only saved when you confirm.'
+                    : 'Use Edit Roster to mark which characters you have, then save the grid to match your account.'
+                }}
+              </p>
+            </div>
+
+            <div class="d-flex flex-wrap gap-2">
+              <button
+                v-if="selectedCharacter"
+                class="btn btn-outline-warning btn-sm fw-semibold rounded-pill"
+                @click="handleClearSelection()"
+              >
+                Clear Selection
+              </button>
+              <button
+                v-if="!isRosterEditMode"
+                class="btn btn-outline-info btn-sm fw-semibold rounded-pill"
+                @click="enterRosterEditMode()"
+              >
+                Edit Roster
+              </button>
+              <template v-else>
+                <button
+                  :class="
+                    areAllNonFreeCharactersOwned
+                      ? 'btn btn-success btn-sm fw-semibold rounded-pill'
+                      : 'btn btn-outline-success btn-sm fw-semibold rounded-pill'
+                  "
+                  @click="selectAllNonFreeCharacters()"
+                >
+                  Select All
+                </button>
+                <button
+                  :class="
+                    areAllNonFreeCharactersHidden
+                      ? 'btn btn-danger btn-sm fw-semibold rounded-pill'
+                      : 'btn btn-outline-danger btn-sm fw-semibold rounded-pill'
+                  "
+                  @click="hideAllNonFreeCharacters(characters)"
+                >
+                  Hide All
+                </button>
+                <button
+                  class="btn btn-success btn-sm fw-semibold rounded-pill"
+                  :disabled="!hasStagedChanges"
+                  @click="saveRosterEditMode()"
+                >
+                  Save Changes
+                </button>
+                <button
+                  class="btn btn-outline-secondary btn-sm fw-semibold rounded-pill"
+                  @click="cancelRosterEditMode()"
+                >
+                  Cancel
+                </button>
+              </template>
+            </div>
+          </div>
+
+          <div
+            class="d-flex flex-column flex-md-row align-items-start align-items-md-center justify-content-between gap-3 mt-3"
+          >
+            <div class="small text-white">
+              Not owned characters: <strong>{{ disabledCharacterCount }}</strong>
+            </div>
+
+            <div v-if="isRosterEditMode" class="position-relative roster-search-group">
+              <input
+                v-model="gridSearchQuery"
+                type="text"
+                placeholder="Search characters..."
+                class="form-control bg-dark text-white border-primary pe-5"
+              />
+              <div class="position-absolute top-50 end-0 translate-middle-y me-3">
+                <i
+                  v-if="gridSearchQuery.length > 0"
+                  class="fas fa-search text-success"
+                ></i>
+                <i v-else class="fas fa-search text-muted"></i>
+              </div>
+            </div>
+          </div>
+        </div>
+
         <RoleTabsSection
           :characters-by-role="charactersByRole"
           :selected-character="selectedCharacter"
-          :is-recommended="
-            (charId: string) =>
-              selectedCharacter ? isCharacterRecommended(selectedCharacter, charId) : false
-          "
-          :get-recommendation-tier="
-            (charId: string) =>
-              selectedCharacter ? getRecommendationTier(selectedCharacter, charId) : null
-          "
+          :is-recommended="isRecommendedForRoster"
+          :get-recommendation-tier="getRecommendationTierForRoster"
           :selected-elements="selectedElements"
           :selected-paths="selectedPaths"
           :selected-rarities="selectedRarities"
           :get-active-tab="getActiveTab"
           :has-characters-in-role="hasCharactersInRole"
+          :is-roster-edit-mode="isRosterEditMode"
+          :is-character-disabled="isCharacterDisabled"
+          :is-free-character="isFreeCharacterId"
+          :toggle-character-availability="toggleCharacterAvailability"
           @select="selectCharacterWithScroll"
         />
       </div>
@@ -858,6 +996,10 @@ const hideLightconeModal = () => {
   display: flex;
   align-items: center;
   gap: 1rem;
+}
+
+.roster-search-group {
+  max-width: 280px;
 }
 
 .detail-image-container {

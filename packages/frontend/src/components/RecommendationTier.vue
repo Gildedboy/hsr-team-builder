@@ -11,22 +11,26 @@
     </div>
 
     <div v-else-if="hasRecommendations" class="d-flex flex-wrap gap-2 justify-content-center">
-      <template v-for="characterId in sortedCharacterIds" :key="characterId">
+      <template v-for="entry in visibleEntries" :key="`${tier}-${entry.originalId}-${entry.id}`">
         <!-- Character Image -->
-        <div v-if="!isCustomText(characterId)" class="text-center">
+        <div v-if="entry.kind !== 'custom'" class="text-center recommendation-entry">
           <img
-            :src="getCharacterAvatar(characterId)"
-            :alt="getCharacterName(characterId)"
+            :src="getCharacterAvatar(entry.id)"
+            :alt="getCharacterName(entry.id)"
             class="rounded-circle border border-3 cursor-pointer mb-1"
+            :class="{ 'is-unavailable': entry.kind === 'unavailable' }"
             :style="{
               width: '80px',
               height: '80px',
               borderColor: tierColor + ' !important',
             }"
             @error="($event.target as HTMLImageElement).src = '/images/placeholder.svg'"
-            @mouseenter="$emit('show-tooltip', characterId, $event)"
+            @mouseenter="$emit('show-tooltip', entry.id, $event)"
             @mouseleave="$emit('hide-tooltip')"
           />
+          <div v-if="entry.kind !== 'owned'" class="recommendation-tag small">
+            {{ getEntryTag(entry) }}
+          </div>
         </div>
 
         <!-- Custom Text -->
@@ -40,7 +44,7 @@
           }"
         >
           <span class="fw-bold small text-center text-white">
-            {{ characterId }}
+            {{ entry.name }}
           </span>
         </div>
       </template>
@@ -53,10 +57,11 @@ import { computed } from 'vue'
 import { getCharacterAvatar } from '@/data/avatars'
 import { COLORS } from '@/constants/design'
 import type { Character } from '@hsr-team-builder/shared'
+import type { ResolvedCharacterEntry } from '@/composables/useRoster'
 
 interface Props {
   tier: 'bis' | 'generalist' | 'f2p'
-  characterIds: string[]
+  entries: ResolvedCharacterEntry[]
   activeTab: string
   noSustainAvailable?: boolean
   characters: Character[]
@@ -84,7 +89,7 @@ const tierColor = computed(() => tierConfig[props.tier].color)
 
 const hasRecommendations = computed(
   () =>
-    props.characterIds.length > 0 ||
+    props.entries.length > 0 ||
     (props.tier === 'f2p' && props.activeTab === 'sustain' && props.noSustainAvailable),
 )
 
@@ -92,43 +97,56 @@ const showNoSustainMessage = computed(
   () => props.tier === 'f2p' && props.activeTab === 'sustain' && props.noSustainAvailable,
 )
 
-const isCustomText = (entry: string): boolean => {
-  // Check if it's custom text (not a character ID)
-  return !props.characters.find((c) => c.id === entry)
-}
-
-const sortedCharacterIds = computed(() => {
-  return [...props.characterIds].sort((a, b) => {
-    const aIsCustom = isCustomText(a)
-    const bIsCustom = isCustomText(b)
-
-    // Put custom text at the end
-    if (aIsCustom && !bIsCustom) return 1
-    if (!aIsCustom && bIsCustom) return -1
-    if (aIsCustom && bIsCustom) return a.localeCompare(b)
-
-    const charA = props.characters.find((c) => c.id === a)
-    const charB = props.characters.find((c) => c.id === b)
-
-    // Sort by rarity (5-star first, then 4-star)
-    if (charA?.rarity !== charB?.rarity) {
-      return (charB?.rarity || 0) - (charA?.rarity || 0)
-    }
-
-    // If same rarity, sort alphabetically by name
-    return (charA?.name || a).localeCompare(charB?.name || b)
-  })
-})
+const visibleEntries = computed(() => props.entries)
 
 const getCharacterName = (characterId: string): string => {
   const char = props.characters.find((c) => c.id === characterId)
   return char?.name || characterId
+}
+
+const getEntryTag = (entry: ResolvedCharacterEntry) => {
+  const displayedCharacter = props.characters.find((character) => character.id === entry.id)
+
+  if (entry.kind === 'free') {
+    return 'Free'
+  }
+
+  if (entry.kind === 'fallback') {
+    const originalCharacter = props.characters.find((character) => character.id === entry.originalId)
+
+    if (entry.isFree && originalCharacter?.roles.includes('SUSTAIN')) {
+      return `Free Sustain Option: ${displayedCharacter?.name || entry.name} for ${entry.originalName}`
+    }
+
+    return `${displayedCharacter?.name || entry.name} replacing ${entry.originalName}`
+  }
+
+  if (entry.kind === 'unavailable') {
+    return 'Not obtained yet'
+  }
+
+  return ''
 }
 </script>
 
 <style scoped>
 .cursor-pointer {
   cursor: pointer;
+}
+
+.recommendation-entry {
+  max-width: 90px;
+}
+
+.recommendation-tag {
+  color: rgba(255, 255, 255, 0.84);
+  line-height: 1.2;
+  min-height: 2rem;
+}
+
+.is-unavailable {
+  filter: grayscale(100%) saturate(0.2);
+  opacity: 0.5;
 }
 
 .title-container {

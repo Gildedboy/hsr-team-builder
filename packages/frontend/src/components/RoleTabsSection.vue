@@ -29,6 +29,10 @@
                 :selected-elements="selectedElements"
                 :selected-paths="selectedPaths"
                 :selected-rarities="selectedRarities"
+                :is-roster-edit-mode="isRosterEditMode"
+                :is-character-disabled="isCharacterDisabled"
+                :is-free-character="isFreeCharacter"
+                :toggle-character-availability="toggleCharacterAvailability"
                 @select="$emit('select', $event)"
               />
             </td>
@@ -41,6 +45,10 @@
                 :selected-elements="selectedElements"
                 :selected-paths="selectedPaths"
                 :selected-rarities="selectedRarities"
+                :is-roster-edit-mode="isRosterEditMode"
+                :is-character-disabled="isCharacterDisabled"
+                :is-free-character="isFreeCharacter"
+                :toggle-character-availability="toggleCharacterAvailability"
                 @select="$emit('select', $event)"
               />
             </td>
@@ -53,6 +61,10 @@
                 :selected-elements="selectedElements"
                 :selected-paths="selectedPaths"
                 :selected-rarities="selectedRarities"
+                :is-roster-edit-mode="isRosterEditMode"
+                :is-character-disabled="isCharacterDisabled"
+                :is-free-character="isFreeCharacter"
+                :toggle-character-availability="toggleCharacterAvailability"
                 @select="$emit('select', $event)"
               />
             </td>
@@ -126,6 +138,10 @@
           :selected-elements="selectedElements"
           :selected-paths="selectedPaths"
           :selected-rarities="selectedRarities"
+          :is-roster-edit-mode="isRosterEditMode"
+          :is-character-disabled="isCharacterDisabled"
+          :is-free-character="isFreeCharacter"
+          :toggle-character-availability="toggleCharacterAvailability"
           @select="$emit('select', $event)"
         />
       </div>
@@ -145,6 +161,10 @@
           :selected-elements="selectedElements"
           :selected-paths="selectedPaths"
           :selected-rarities="selectedRarities"
+          :is-roster-edit-mode="isRosterEditMode"
+          :is-character-disabled="isCharacterDisabled"
+          :is-free-character="isFreeCharacter"
+          :toggle-character-availability="toggleCharacterAvailability"
           @select="$emit('select', $event)"
         />
       </div>
@@ -164,6 +184,10 @@
           :selected-elements="selectedElements"
           :selected-paths="selectedPaths"
           :selected-rarities="selectedRarities"
+          :is-roster-edit-mode="isRosterEditMode"
+          :is-character-disabled="isCharacterDisabled"
+          :is-free-character="isFreeCharacter"
+          :toggle-character-availability="toggleCharacterAvailability"
           @select="$emit('select', $event)"
         />
       </div>
@@ -189,6 +213,10 @@ interface Props {
   selectedRarities: number[]
   getActiveTab: () => string
   hasCharactersInRole: (role: 'dps' | 'support' | 'sustain') => boolean
+  isRosterEditMode: boolean
+  isCharacterDisabled: (charId: string) => boolean
+  isFreeCharacter: (charId: string) => boolean
+  toggleCharacterAvailability: (charId: string) => void
 }
 
 interface Emits {
