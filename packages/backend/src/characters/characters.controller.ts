@@ -6,6 +6,7 @@ import {
   HttpException,
   HttpStatus,
   Param,
+  Patch,
   Post,
   Put,
   Query,
@@ -14,20 +15,28 @@ import {
 import {
   ApiBearerAuth,
   ApiBody,
+  ApiExtraModels,
   ApiOperation,
   ApiParam,
   ApiQuery,
   ApiResponse,
   ApiTags,
+  getSchemaPath,
 } from '@nestjs/swagger'
 import { CharactersService } from './characters.service'
 import { Character, Role } from '../types/Character'
-import { CreateCharacterDto, UpdateCharacterDto } from '../dto/character.dto'
+import {
+  BulkCharacterUpdateDto,
+  BulkCharacterUpdateResponseDto,
+  CreateCharacterDto,
+  UpdateCharacterDto,
+} from '../dto/character.dto'
 import { JwtAuthGuard } from '../auth/guards/jwt-auth.guard'
 
 const ROLE_VALUES: Role[] = ['DPS', 'SUB_DPS', 'SUPPORT', 'SUSTAIN', 'AMPLIFIER']
 const isRole = (value: string): value is Role => ROLE_VALUES.includes(value as Role)
 
+@ApiExtraModels(CreateCharacterDto, BulkCharacterUpdateResponseDto)
 @ApiTags('characters')
 @Controller('characters')
 export class CharactersController {
@@ -68,35 +77,7 @@ export class CharactersController {
     schema: {
       type: 'array',
       items: {
-        type: 'object',
-        properties: {
-          id: { type: 'string', example: 'kafka' },
-          name: { type: 'string', example: 'Kafka' },
-          element: { type: 'string', example: 'Lightning' },
-          path: { type: 'string', example: 'Nihility' },
-          rarity: { type: 'number', example: 5 },
-          roles: { type: 'array', items: { type: 'string' }, example: ['DPS'] },
-          archetype: { type: 'array', items: { type: 'string' }, example: ['DoT'] },
-          labels: { type: 'array', items: { type: 'string' }, example: ['DoT', 'AoE'] },
-          prydwenLink: {
-            type: 'string',
-            example: 'https://www.prydwen.gg/star-rail/characters/kafka/',
-          },
-          guobaLink: { type: 'string', example: 'https://www.youtube.com/embed/xyz123' },
-          lightcones: {
-            type: 'array',
-            items: {
-              type: 'object',
-              properties: {
-                id: { type: 'string', example: 'in-the-name-of-the-world' },
-                name: { type: 'string', example: 'In the Name of the World' },
-                rarity: { type: 'number', example: 5 },
-                path: { type: 'string', example: 'Nihility' },
-                note: { type: 'string', example: 'Best in slot vs. imaginary weak enemies' },
-              },
-            },
-          },
-        },
+        $ref: getSchemaPath(CreateCharacterDto),
       },
     },
   })
@@ -142,35 +123,7 @@ export class CharactersController {
     status: 200,
     description: 'Character details with associated lightcones',
     schema: {
-      type: 'object',
-      properties: {
-        id: { type: 'string', example: 'kafka' },
-        name: { type: 'string', example: 'Kafka' },
-        element: { type: 'string', example: 'Lightning' },
-        path: { type: 'string', example: 'Nihility' },
-        rarity: { type: 'number', example: 5 },
-        roles: { type: 'array', items: { type: 'string' }, example: ['DPS'] },
-        archetype: { type: 'array', items: { type: 'string' }, example: ['DoT'] },
-        labels: { type: 'array', items: { type: 'string' }, example: ['DoT', 'AoE'] },
-        prydwenLink: {
-          type: 'string',
-          example: 'https://www.prydwen.gg/star-rail/characters/kafka/',
-        },
-        guobaLink: { type: 'string', example: 'https://www.youtube.com/embed/xyz123' },
-        lightcones: {
-          type: 'array',
-          items: {
-            type: 'object',
-            properties: {
-              id: { type: 'string', example: 'in-the-name-of-the-world' },
-              name: { type: 'string', example: 'In the Name of the World' },
-              rarity: { type: 'number', example: 5 },
-              path: { type: 'string', example: 'Nihility' },
-              note: { type: 'string', example: 'Best in slot vs. imaginary weak enemies' },
-            },
-          },
-        },
-      },
+      $ref: getSchemaPath(CreateCharacterDto),
     },
   })
   @ApiResponse({
@@ -183,12 +136,111 @@ export class CharactersController {
       },
     },
   })
-  async findOne(@Param('id') id: string): Promise<Character | { message: string }> {
+  async findOne(@Param('id') id: string): Promise<Character> {
     const character = await this.charactersService.findById(id)
     if (!character) {
-      return { message: 'Character not found' }
+      throw new HttpException('Character not found', HttpStatus.NOT_FOUND)
     }
     return character
+  }
+
+  @UseGuards(JwtAuthGuard)
+  @Patch('bulk')
+  @ApiBearerAuth()
+  @ApiOperation({
+    summary: 'Bulk update nested character recommendations and team compositions (requires authentication)',
+    description:
+      'Use this endpoint to update many characters at once without rewriting full character payloads. It supports two admin workflows: adding IDs into teammate recommendation buckets, and replacing a specific slot inside matched team compositions. Start with `dryRun: true` to preview the result safely in Swagger before persisting changes.',
+  })
+  @ApiBody({
+    description: 'Bulk character operations with optional dry-run preview support',
+    type: BulkCharacterUpdateDto,
+    examples: {
+      addCyreneToBisTeammates: {
+        summary: 'Add Cyrene to the BiS amplifier list for multiple characters',
+        value: {
+          operations: [
+            {
+              type: 'upsert_teammate_recommendation',
+              characterIds: ['firefly', 'feixiao', 'boothill'],
+              sectionName: 'Amplifiers',
+              bucket: 'bis',
+              teammateIds: ['cyrene'],
+              mode: 'append_unique',
+            },
+          ],
+        },
+      },
+      replaceFinalBisSlot: {
+        summary: 'Replace the final BiS slot in matched teams with DHPT',
+        value: {
+          operations: [
+            {
+              type: 'replace_team_member',
+              characterIds: ['firefly', 'rappa', 'boothill'],
+              match: {
+                role: 'Main DPS',
+              },
+              variant: 'bis',
+              slotIndex: 3,
+              newCharacterId: 'dhpt',
+            },
+          ],
+          dryRun: true,
+        },
+      },
+      replaceSpecificSustainlessSlot: {
+        summary: 'Only replace a specific existing character in matched team slots',
+        value: {
+          operations: [
+            {
+              type: 'replace_team_member',
+              characterIds: ['firefly', 'boothill'],
+              match: {
+                nameContains: 'Sustainless',
+              },
+              variant: 'bis',
+              slotIndex: 3,
+              expectedCharacterId: 'ruan-mei',
+              newCharacterId: 'dhpt',
+            },
+          ],
+          dryRun: true,
+        },
+      },
+    },
+  })
+  @ApiResponse({
+    status: 200,
+    description: 'Bulk update completed successfully',
+    type: BulkCharacterUpdateResponseDto,
+    examples: {
+      dryRunPreview: {
+        summary: 'Preview response',
+        value: {
+          dryRun: true,
+          operations: [
+            {
+              index: 0,
+              type: 'replace_team_member',
+              requestedCharacterIds: ['firefly', 'boothill', 'rappa'],
+              updatedCharacterIds: ['firefly', 'boothill'],
+              skippedCharacterIds: ['rappa'],
+              details: [
+                'Updated firefly composition "Main DPS Team" (bis) slot 3 -> dhpt',
+                'Updated boothill composition "Main DPS Team" (bis) slot 3 -> dhpt',
+                'Skipped rappa: character not found',
+              ],
+            },
+          ],
+        },
+      },
+    },
+  })
+  @ApiResponse({ status: 400, description: 'Invalid bulk update payload' })
+  @ApiResponse({ status: 401, description: 'Unauthorized' })
+  bulkUpdateCharacters(@Body() bulkUpdate: BulkCharacterUpdateDto): Promise<BulkCharacterUpdateResponseDto> {
+    return this.charactersService.bulkUpdateCharacters(bulkUpdate)
   }
 
   @UseGuards(JwtAuthGuard)

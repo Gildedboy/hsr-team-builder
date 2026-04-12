@@ -70,10 +70,7 @@ export class VersionsController {
     const latestVersion = await this.versionsService.getLatestVersion()
 
     if (!latestVersion) {
-      return {
-        message: 'No versions available',
-        fallback: true,
-      }
+      throw new HttpException('No versions available', HttpStatus.NOT_FOUND)
     }
 
     return latestVersion
@@ -116,7 +113,7 @@ export class VersionsController {
       return found
     } catch (error) {
       if (error instanceof Error && error.message.includes('not found')) {
-        return { message: `Version ${version} not found` }
+        throw new HttpException(`Version ${version} not found`, HttpStatus.NOT_FOUND)
       }
       throw error
     }

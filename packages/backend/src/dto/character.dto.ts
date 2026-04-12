@@ -1,7 +1,10 @@
 import {
+  ArrayNotEmpty,
   ArrayMinSize,
+  IsBoolean,
   IsArray,
   IsEnum,
+  IsInt,
   IsNumber,
   IsOptional,
   IsString,
@@ -41,6 +44,243 @@ export enum Role {
   SUB_DPS = 'SUB_DPS',
   SUPPORT = 'SUPPORT',
   SUSTAIN = 'SUSTAIN',
+  AMPLIFIER = 'AMPLIFIER',
+}
+
+export enum BulkCharacterOperationType {
+  UPSERT_TEAMMATE_RECOMMENDATION = 'upsert_teammate_recommendation',
+  REPLACE_TEAM_MEMBER = 'replace_team_member',
+}
+
+export enum RecommendationBucket {
+  BIS = 'bis',
+  GENERALIST = 'generalist',
+  F2P = 'f2p',
+}
+
+export enum BulkListUpdateMode {
+  APPEND_UNIQUE = 'append_unique',
+  REPLACE = 'replace',
+}
+
+export enum TeamVariantType {
+  BIS = 'bis',
+  F2P = 'f2p',
+}
+
+export class TeamCompositionMatchDto {
+  @ApiPropertyOptional({
+    description: 'Match a team composition by exact name',
+    example: 'Main DPS Team',
+  })
+  @IsOptional()
+  @IsString()
+  name?: string
+
+  @ApiPropertyOptional({
+    description: 'Match team compositions whose name contains this substring',
+    example: 'Sustainless',
+  })
+  @IsOptional()
+  @IsString()
+  nameContains?: string
+
+  @ApiPropertyOptional({
+    description: 'Match a team composition by role label',
+    example: 'Main DPS',
+  })
+  @IsOptional()
+  @IsString()
+  role?: string
+}
+
+export class CharacterBulkOperationDto {
+  @ApiProperty({
+    enum: BulkCharacterOperationType,
+    description:
+      'Bulk operation type. Use `upsert_teammate_recommendation` for teammate sections, or `replace_team_member` for team composition slots.',
+    example: BulkCharacterOperationType.UPSERT_TEAMMATE_RECOMMENDATION,
+  })
+  @IsEnum(BulkCharacterOperationType)
+  type: BulkCharacterOperationType
+
+  @ApiProperty({
+    description: 'Characters that should receive this operation',
+    type: [String],
+    example: ['firefly', 'feixiao', 'boothill'],
+  })
+  @IsArray()
+  @ArrayMinSize(1)
+  @IsString({ each: true })
+  characterIds: string[]
+
+  @ApiPropertyOptional({
+    description:
+      'Teammate recommendation section name to update. Required for `upsert_teammate_recommendation`.',
+    example: 'Amplifiers',
+  })
+  @IsOptional()
+  @IsString()
+  sectionName?: string
+
+  @ApiPropertyOptional({
+    enum: RecommendationBucket,
+    description:
+      'Recommendation bucket to edit inside the selected teammate section. Required for `upsert_teammate_recommendation`.',
+    example: RecommendationBucket.BIS,
+  })
+  @IsOptional()
+  @IsEnum(RecommendationBucket)
+  bucket?: RecommendationBucket
+
+  @ApiPropertyOptional({
+    description:
+      'Teammate IDs to add or replace in the target recommendation bucket. Required for `upsert_teammate_recommendation`.',
+    type: [String],
+    example: ['cyrene'],
+  })
+  @IsOptional()
+  @IsArray()
+  @ArrayNotEmpty()
+  @IsString({ each: true })
+  teammateIds?: string[]
+
+  @ApiPropertyOptional({
+    description:
+      'How to update the target recommendation bucket. `append_unique` keeps existing IDs and adds new ones only if missing. `replace` overwrites the full bucket.',
+    enum: BulkListUpdateMode,
+    default: BulkListUpdateMode.APPEND_UNIQUE,
+    example: BulkListUpdateMode.APPEND_UNIQUE,
+  })
+  @IsOptional()
+  @IsEnum(BulkListUpdateMode)
+  mode?: BulkListUpdateMode
+
+  @ApiPropertyOptional({
+    description:
+      'Filters that select which team compositions to update. Optional for `replace_team_member`; if omitted, all team compositions for each target character are considered.',
+    type: TeamCompositionMatchDto,
+  })
+  @IsOptional()
+  @ValidateNested()
+  @Type(() => TeamCompositionMatchDto)
+  match?: TeamCompositionMatchDto
+
+  @ApiPropertyOptional({
+    description:
+      'Which variant inside the matched team composition should be edited. Required for `replace_team_member`.',
+    enum: TeamVariantType,
+    example: TeamVariantType.BIS,
+  })
+  @IsOptional()
+  @IsEnum(TeamVariantType)
+  variant?: TeamVariantType
+
+  @ApiPropertyOptional({
+    description:
+      '0-based team slot to replace inside the selected variant. Example: `3` targets the fourth/final team slot.',
+    minimum: 0,
+    example: 3,
+  })
+  @IsOptional()
+  @Type(() => Number)
+  @IsInt()
+  @Min(0)
+  slotIndex?: number
+
+  @ApiPropertyOptional({
+    description:
+      'Optional safety check. Only replace the slot when it currently matches this character ID.',
+    example: 'ruan-mei',
+  })
+  @IsOptional()
+  @IsString()
+  expectedCharacterId?: string
+
+  @ApiPropertyOptional({
+    description:
+      'Character ID that will be written into the target slot. Required for `replace_team_member`.',
+    example: 'dhpt',
+  })
+  @IsOptional()
+  @IsString()
+  newCharacterId?: string
+}
+
+export class BulkCharacterUpdateDto {
+  @ApiProperty({
+    description: 'List of bulk operations to run sequentially',
+    type: [CharacterBulkOperationDto],
+  })
+  @IsArray()
+  @ArrayMinSize(1)
+  @ValidateNested({ each: true })
+  @Type(() => CharacterBulkOperationDto)
+  operations: CharacterBulkOperationDto[]
+
+  @ApiPropertyOptional({
+    description:
+      'Preview changes without persisting them. Useful to verify which characters and teams will be affected before applying the update.',
+    default: false,
+    example: true,
+  })
+  @IsOptional()
+  @Type(() => Boolean)
+  @IsBoolean()
+  dryRun?: boolean
+}
+
+export class BulkCharacterOperationResultDto {
+  @ApiProperty({ description: '0-based index of the operation in the request payload', example: 0 })
+  index: number
+
+  @ApiProperty({ enum: BulkCharacterOperationType, example: BulkCharacterOperationType.REPLACE_TEAM_MEMBER })
+  type: BulkCharacterOperationType
+
+  @ApiProperty({
+    description: 'Target character IDs requested for this operation',
+    type: [String],
+    example: ['firefly', 'boothill', 'rappa'],
+  })
+  requestedCharacterIds: string[]
+
+  @ApiProperty({
+    description: 'Character IDs that were actually modified',
+    type: [String],
+    example: ['firefly', 'boothill'],
+  })
+  updatedCharacterIds: string[]
+
+  @ApiProperty({
+    description: 'Character IDs that were skipped because nothing changed or the character was missing',
+    type: [String],
+    example: ['rappa'],
+  })
+  skippedCharacterIds: string[]
+
+  @ApiProperty({
+    description: 'Human-readable notes describing what happened for each target',
+    type: [String],
+    example: [
+      'Updated firefly composition "Main DPS Team" (bis) slot 3 -> dhpt',
+      'Skipped rappa: character not found',
+    ],
+  })
+  details: string[]
+}
+
+export class BulkCharacterUpdateResponseDto {
+  @ApiProperty({
+    description: 'Whether the request ran in preview mode without saving changes',
+    example: true,
+  })
+  dryRun: boolean
+
+  @ApiProperty({
+    description: 'Results for each requested bulk operation, in order',
+    type: [BulkCharacterOperationResultDto],
+  })
+  operations: BulkCharacterOperationResultDto[]
 }
 
 export class TeammateRecommendationDto {

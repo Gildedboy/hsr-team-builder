@@ -55,7 +55,7 @@ async function bootstrap() {
 
       return callback(new Error('Not allowed by CORS'), false)
     },
-    methods: ['GET', 'POST', 'PUT', 'DELETE'],
+    methods: ['GET', 'POST', 'PUT', 'PATCH', 'DELETE'],
     credentials: true,
     maxAge: 86400, // Cache preflight response for 24 hours
   })
@@ -65,14 +65,11 @@ async function bootstrap() {
     .setTitle('HSR Team Builder API')
     .setDescription('API for Honkai Star Rail Team Builder application')
     .setVersion('1.0')
-    .addBearerAuth(
-      {
-        type: 'http',
-        scheme: 'bearer',
-        bearerFormat: 'JWT',
-      },
-      'access-token',
-    )
+    .addBearerAuth({
+      type: 'http',
+      scheme: 'bearer',
+      bearerFormat: 'JWT',
+    })
     .build()
   const document = SwaggerModule.createDocument(app, config)
   SwaggerModule.setup('swagger', app, document)
