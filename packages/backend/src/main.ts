@@ -2,8 +2,10 @@ import { NestFactory } from '@nestjs/core'
 import { Logger, ValidationPipe } from '@nestjs/common'
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger'
 import { AppModule } from './app.module'
+import { validateRuntimeEnv } from './config/env'
 
 async function bootstrap() {
+  validateRuntimeEnv()
   const app = await NestFactory.create(AppModule)
   const logger = new Logger('Bootstrap')
 

@@ -11,6 +11,7 @@ export function useHomeView(characters: ComputedRef<Character[]>) {
     selectedPaths,
     selectedRarities,
     selectedArchetypes,
+    searchQuery: gridSearchQuery,
     filteredCharacters,
     toggleFilter,
     clearFilters,
@@ -49,6 +50,10 @@ export function useHomeView(characters: ComputedRef<Character[]>) {
   const handleClearFilters = () => {
     clearFilters()
     searchQueryRef.value = ''
+    clearSelection()
+  }
+
+  const handleClearSelection = () => {
     clearSelection()
   }
 
@@ -105,6 +110,7 @@ export function useHomeView(characters: ComputedRef<Character[]>) {
 
     // Search state
     searchQueryRef,
+    gridSearchQuery,
     showSearchSuggestions,
     searchSuggestions,
     selectedIndex,
@@ -118,6 +124,7 @@ export function useHomeView(characters: ComputedRef<Character[]>) {
     selectCharacter,
     handleSelectFromSearch,
     handleClearFilters,
+    handleClearSelection,
     triggerSearch,
     onSearchFocus,
     onSearchBlur,

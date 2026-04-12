@@ -1,5 +1,6 @@
 import { Injectable } from '@nestjs/common'
 import { JwtService } from '@nestjs/jwt'
+import { getAdminPassword, getAdminUsername } from '../config/env'
 
 export interface JwtPayload {
   sub: string
@@ -18,9 +19,8 @@ export class AuthService {
   constructor(private readonly jwtService: JwtService) {}
 
   validateAdmin(username: string, password: string): AdminUser | null {
-    // Use environment variables for admin credentials
-    const adminUsername = process.env.ADMIN_USERNAME || 'admin'
-    const adminPassword = process.env.ADMIN_PASSWORD || 'change-me-in-production'
+    const adminUsername = getAdminUsername()
+    const adminPassword = getAdminPassword()
 
     if (username === adminUsername && password === adminPassword) {
       return {

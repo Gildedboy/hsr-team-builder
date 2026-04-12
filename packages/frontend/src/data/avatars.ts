@@ -1,9 +1,8 @@
+import { useAvatarPreference } from '@/composables/useAvatarPreference'
+
 // Character ID to avatar mapping (based on Honkai Star Rail character IDs)
 const characterAvatarMap: Record<string, string> = {
   // Main characters (1000 series)
-  'destruction-trailblazer': '8002',
-  'fire-trailblazer': '8004',
-  'harmony-trailblazer': '8006',
   'dan-heng': '1002',
   'march-7th': '1001',
   himeko: '1003',
@@ -81,10 +80,36 @@ const characterAvatarMap: Record<string, string> = {
   'dan-heng-pt': '1414',
   cyrene: '1415',
   'the-dahlia': '1321',
+  sparxie: '1501',
+  'yao-guang': '1502',
+  ashveil: '1504',
+  evanescia: '1505',
+  'silver-wolf-lv-999': '1506',
+  'male-elation-trailblazer': '8009',
+  'female-elation-trailblazer': '8010',
+}
+
+const trailblazerAssetPairs: Record<string, { caelus: string; stelle: string }> = {
+  'destruction-trailblazer': { caelus: '8001', stelle: '8002' },
+  'preservation-trailblazer': { caelus: '8003', stelle: '8004' },
+  'fire-trailblazer': { caelus: '8003', stelle: '8004' },
+  'harmony-trailblazer': { caelus: '8005', stelle: '8006' },
+  'remembrance-trailblazer': { caelus: '8007', stelle: '8008' },
+  'elation-trailblazer': { caelus: '8009', stelle: '8010' },
+}
+
+const resolveAvatarAssetId = (characterId: string) => {
+  const trailblazerAssetPair = trailblazerAssetPairs[characterId]
+  if (trailblazerAssetPair) {
+    const { trailblazerAvatarVariant } = useAvatarPreference()
+    return trailblazerAssetPair[trailblazerAvatarVariant.value]
+  }
+
+  return characterAvatarMap[characterId]
 }
 
 export const getCharacterAvatar = (characterId: string): string => {
-  const avatarId = characterAvatarMap[characterId]
+  const avatarId = resolveAvatarAssetId(characterId)
   if (avatarId) {
     return `/images/avatar/${avatarId}.webp`
   }
@@ -93,7 +118,7 @@ export const getCharacterAvatar = (characterId: string): string => {
 
 // Get character image for the character detail panel (uses same mapping as avatars)
 export const getCharacterImage = (characterId: string): string => {
-  const imageId = characterAvatarMap[characterId]
+  const imageId = resolveAvatarAssetId(characterId)
   if (imageId) {
     return `/images/previews/${imageId}.webp`
   }
