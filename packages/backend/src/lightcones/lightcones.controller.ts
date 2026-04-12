@@ -86,10 +86,10 @@ export class LightconesController {
       },
     },
   })
-  async findOne(@Param('id') id: string): Promise<Lightcone | { message: string }> {
+  async findOne(@Param('id') id: string): Promise<Lightcone> {
     const lightcone = await this.lightconesService.findById(id)
     if (!lightcone) {
-      return { message: 'Lightcone not found' }
+      throw new HttpException('Lightcone not found', HttpStatus.NOT_FOUND)
     }
     return lightcone
   }

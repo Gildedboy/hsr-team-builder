@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common'
+import { Injectable, UnauthorizedException } from '@nestjs/common'
 import { JwtService } from '@nestjs/jwt'
 import { getAdminPassword, getAdminUsername } from '../config/env'
 
@@ -35,7 +35,7 @@ export class AuthService {
   async login(username: string, password: string) {
     const user = await this.validateAdmin(username, password)
     if (!user) {
-      throw new Error('Invalid credentials')
+      throw new UnauthorizedException('Invalid credentials')
     }
 
     const payload: JwtPayload = {

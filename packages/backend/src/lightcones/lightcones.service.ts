@@ -76,7 +76,8 @@ export class LightconesService {
         | 'Nihility'
         | 'Preservation'
         | 'Abundance'
-        | 'Remembrance',
+        | 'Remembrance'
+        | 'Elation',
     }
   }
 }
