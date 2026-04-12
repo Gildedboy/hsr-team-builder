@@ -24,19 +24,19 @@
           <div class="tb-toggle-group">
             <button
               type="button"
-              :class="trailblazerAvatarGender === 'female' ? 'tb-toggle-btn active' : 'tb-toggle-btn'"
-              @click="setTrailblazerAvatarGender('female')"
-              aria-label="Use female Trailblazer avatar"
-              title="Female Trailblazer avatar"
+              :class="trailblazerAvatarVariant === 'stelle' ? 'tb-toggle-btn active' : 'tb-toggle-btn'"
+              @click="setTrailblazerAvatarVariant('stelle')"
+              aria-label="Use Stelle Trailblazer avatar"
+              title="Stelle avatar"
             >
               <i class="fas fa-venus" aria-hidden="true"></i>
             </button>
             <button
               type="button"
-              :class="trailblazerAvatarGender === 'male' ? 'tb-toggle-btn active' : 'tb-toggle-btn'"
-              @click="setTrailblazerAvatarGender('male')"
-              aria-label="Use male Trailblazer avatar"
-              title="Male Trailblazer avatar"
+              :class="trailblazerAvatarVariant === 'caelus' ? 'tb-toggle-btn active' : 'tb-toggle-btn'"
+              @click="setTrailblazerAvatarVariant('caelus')"
+              aria-label="Use Caelus Trailblazer avatar"
+              title="Caelus avatar"
             >
               <i class="fas fa-mars" aria-hidden="true"></i>
             </button>
@@ -319,7 +319,7 @@ const {
   fetchRoadmap,
 } = useVersionInfo()
 
-const { trailblazerAvatarGender, setTrailblazerAvatarGender } = useAvatarPreference()
+const { trailblazerAvatarVariant, setTrailblazerAvatarVariant } = useAvatarPreference()
 
 // Fetch version info and roadmap when component mounts
 onMounted(() => {

@@ -89,20 +89,20 @@ const characterAvatarMap: Record<string, string> = {
   'female-elation-trailblazer': '8010',
 }
 
-const trailblazerAssetPairs: Record<string, { male: string; female: string }> = {
-  'destruction-trailblazer': { male: '8001', female: '8002' },
-  'preservation-trailblazer': { male: '8003', female: '8004' },
-  'fire-trailblazer': { male: '8003', female: '8004' },
-  'harmony-trailblazer': { male: '8005', female: '8006' },
-  'remembrance-trailblazer': { male: '8007', female: '8008' },
-  'elation-trailblazer': { male: '8009', female: '8010' },
+const trailblazerAssetPairs: Record<string, { caelus: string; stelle: string }> = {
+  'destruction-trailblazer': { caelus: '8001', stelle: '8002' },
+  'preservation-trailblazer': { caelus: '8003', stelle: '8004' },
+  'fire-trailblazer': { caelus: '8003', stelle: '8004' },
+  'harmony-trailblazer': { caelus: '8005', stelle: '8006' },
+  'remembrance-trailblazer': { caelus: '8007', stelle: '8008' },
+  'elation-trailblazer': { caelus: '8009', stelle: '8010' },
 }
 
 const resolveAvatarAssetId = (characterId: string) => {
   const trailblazerAssetPair = trailblazerAssetPairs[characterId]
   if (trailblazerAssetPair) {
-    const { trailblazerAvatarGender } = useAvatarPreference()
-    return trailblazerAssetPair[trailblazerAvatarGender.value]
+    const { trailblazerAvatarVariant } = useAvatarPreference()
+    return trailblazerAssetPair[trailblazerAvatarVariant.value]
   }
 
   return characterAvatarMap[characterId]
