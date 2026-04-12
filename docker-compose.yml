@@ -6,7 +6,7 @@ services:
     environment:
       POSTGRES_DB: hsr_team_builder
       POSTGRES_USER: postgres
-      POSTGRES_PASSWORD: password
+      POSTGRES_PASSWORD: hsr-team-builder-local-dev
     ports:
       - '5432:5432'
     volumes:

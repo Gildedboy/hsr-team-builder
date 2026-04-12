@@ -1,4 +1,5 @@
 const isProduction = process.env.NODE_ENV === 'production'
+const LOCAL_DEV_POSTGRES_PASSWORD = 'hsr-team-builder-local-dev'
 
 const readEnv = (name: string) => process.env[name]?.trim()
 
@@ -29,7 +30,8 @@ const getSecureProductionEnv = (name: string, developmentFallback: string, inval
 export const getDatabaseUrl = () =>
   isProduction
     ? requireEnv('DATABASE_URL')
-    : readEnv('DATABASE_URL') || 'postgresql://postgres:password@localhost:5432/hsr_team_builder'
+    : readEnv('DATABASE_URL') ||
+      `postgresql://postgres:${LOCAL_DEV_POSTGRES_PASSWORD}@localhost:5432/hsr_team_builder`
 
 export const getRedisUrl = () =>
   isProduction ? requireEnv('REDIS_URL') : readEnv('REDIS_URL') || 'redis://localhost:6379'
