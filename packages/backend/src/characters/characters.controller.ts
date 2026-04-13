@@ -8,7 +8,6 @@ import {
   Param,
   Patch,
   Post,
-  Put,
   Query,
   UseGuards,
 } from '@nestjs/common'
@@ -244,12 +243,12 @@ export class CharactersController {
   }
 
   @UseGuards(JwtAuthGuard)
-  @Put(':id')
+  @Patch(':id')
   @ApiBearerAuth()
-  @ApiOperation({ summary: 'Update character by ID (requires authentication)' })
+  @ApiOperation({ summary: 'Partially update character by ID (requires authentication)' })
   @ApiParam({ name: 'id', description: 'Character ID' })
   @ApiBody({
-    description: 'Character update data',
+    description: 'Partial character update data',
     type: UpdateCharacterDto,
   })
   @ApiResponse({ status: 200, description: 'Character updated successfully' })

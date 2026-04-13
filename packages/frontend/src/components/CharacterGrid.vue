@@ -131,7 +131,12 @@ const handleCharacterClick = (character: Character) => {
 
 .character-item {
   cursor: pointer;
-  transition: all 0.3s ease;
+  transition:
+    transform 0.18s ease,
+    box-shadow 0.18s ease,
+    border-color 0.18s ease,
+    opacity 0.18s ease,
+    filter 0.18s ease;
   position: relative;
   border-radius: 8px;
   overflow: hidden;
@@ -140,6 +145,7 @@ const handleCharacterClick = (character: Character) => {
   box-shadow: 0 2px 6px rgba(0, 0, 0, 0.3);
   border: 2px solid transparent;
   filter: none;
+  contain: layout paint;
 }
 
 .character-item.edit-mode {
@@ -240,5 +246,14 @@ const handleCharacterClick = (character: Character) => {
   padding: 4px 2px;
   text-align: center;
   font-weight: 500;
+}
+
+@media (hover: none) and (pointer: coarse) {
+  .character-item {
+    transition:
+      opacity 0.12s ease,
+      filter 0.12s ease,
+      border-color 0.12s ease;
+  }
 }
 </style>

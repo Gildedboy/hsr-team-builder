@@ -9,7 +9,7 @@ import { useCharactersApi } from '@/composables/useCharactersApi'
 import { useRoster } from '@/composables/useRoster'
 import { FILTER_OPTIONS } from '@/constants/filterOptions'
 import { COLORS } from '@/constants/design'
-import { computed, onMounted, ref } from 'vue'
+import { computed, nextTick, onMounted, ref } from 'vue'
 import type { Character, Lightcone } from '@hsr-team-builder/shared'
 
 // Use API-based characters
@@ -98,20 +98,22 @@ const hasFullCharacterData = (characterId: string) => {
 const scrollToCharacterDetails = () => {
   const filterCard = document.querySelector('.filter-card')
   if (filterCard) {
+    const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches
+    const shouldSmoothScroll = !prefersReducedMotion && window.innerWidth > 768
     filterCard.scrollIntoView({
-      behavior: 'smooth',
+      behavior: shouldSmoothScroll ? 'smooth' : 'auto',
       block: 'start',
     })
   }
 }
 
 // Wrapper function for character selection with auto-scroll
-const selectCharacterWithScroll = (character: Character, shouldTriggerSearch = true) => {
+const selectCharacterWithScroll = async (character: Character, shouldTriggerSearch = true) => {
   selectCharacter(character, shouldTriggerSearch)
-  // Use nextTick to ensure the DOM has updated with the character details
-  setTimeout(() => {
+  await nextTick()
+  requestAnimationFrame(() => {
     scrollToCharacterDetails()
-  }, 100)
+  })
 }
 
 // Lightcone modal functionality
@@ -291,7 +293,7 @@ const getRecommendationTierForRoster = (characterId: string) =>
 
               <!-- Rarity -->
               <div class="mb-3">
-                <h6 class="text-white small mb-2">Rarity:</h6>
+                <p class="filter-group-label text-white small mb-2">Rarity:</p>
                 <div class="d-flex gap-2 justify-content-center">
                   <button
                     v-for="rarity in FILTER_OPTIONS.rarities"
@@ -315,7 +317,7 @@ const getRecommendationTierForRoster = (characterId: string) =>
 
               <!-- Elements -->
               <div class="mb-3">
-                <h6 class="text-white small mb-2">Elements:</h6>
+                <p class="filter-group-label text-white small mb-2">Elements:</p>
                 <div class="d-flex flex-wrap gap-2 justify-content-center">
                   <button
                     v-for="element in FILTER_OPTIONS.elements"
@@ -344,7 +346,7 @@ const getRecommendationTierForRoster = (characterId: string) =>
 
               <!-- Paths -->
               <div class="mb-3">
-                <h6 class="text-white small mb-2">Paths:</h6>
+                <p class="filter-group-label text-white small mb-2">Paths:</p>
                 <div class="d-flex flex-wrap gap-2 justify-content-center">
                   <button
                     v-for="path in FILTER_OPTIONS.paths"
@@ -373,7 +375,7 @@ const getRecommendationTierForRoster = (characterId: string) =>
 
               <!-- Archetype -->
               <div>
-                <h6 class="text-white small mb-2">Archetype:</h6>
+                <p class="filter-group-label text-white small mb-2">Archetype:</p>
                 <div class="d-flex flex-wrap gap-2 justify-content-center">
                   <button
                     v-for="archetype in FILTER_OPTIONS.archetypes"
@@ -513,9 +515,11 @@ const getRecommendationTierForRoster = (characterId: string) =>
                       :src="getCharacterImage(selectedCharacter.id)"
                       :alt="selectedCharacter.name"
                       class="detail-character-image"
+                      width="200"
+                      height="280"
+                      decoding="async"
+                      fetchpriority="high"
                       style="
-                        width: 200px;
-                        height: auto;
                         object-fit: cover;
                         border-radius: 8px;
                         transform: translate(
@@ -570,6 +574,9 @@ const getRecommendationTierForRoster = (characterId: string) =>
                           alt="Prydwen"
                           class="prydwen-logo"
                           loading="lazy"
+                          width="112"
+                          height="28"
+                          decoding="async"
                         />
                       </a>
                     </div>
@@ -584,7 +591,7 @@ const getRecommendationTierForRoster = (characterId: string) =>
                   "
                   class="detail-lightcones mb-4"
                 >
-                  <h6 class="text-primary mb-2">Lightcones</h6>
+                  <h4 class="text-primary h5 mb-2">Lightcones</h4>
                   <div class="lightcones-list">
                     <div
                       v-for="lightcone in getNewFormatCharacter(selectedCharacter.id)?.lightcones ||
@@ -597,6 +604,10 @@ const getRecommendationTierForRoster = (characterId: string) =>
                         :alt="lightcone.name"
                         :title="`${lightcone.name} (${lightcone.rarity}★)`"
                         class="lightcone-image"
+                        width="150"
+                        height="209"
+                        loading="lazy"
+                        decoding="async"
                         @error="handleLightconeImageError"
                         @click="showLightconeModal(lightcone)"
                       />
@@ -612,7 +623,7 @@ const getRecommendationTierForRoster = (characterId: string) =>
                   v-if="getNewFormatCharacter(selectedCharacter.id)?.guobaLink"
                   class="detail-guoba mb-4"
                 >
-                  <h6 class="text-primary mb-2">Video Guide</h6>
+                  <h4 class="text-primary h5 mb-2">Video Guide</h4>
                   <div class="guoba-video-wrapper">
                     <iframe
                       class="guoba-video"
@@ -629,7 +640,7 @@ const getRecommendationTierForRoster = (characterId: string) =>
                 <div class="character-sections">
                   <!-- Roles -->
                   <div class="mb-3">
-                    <h5 class="text-primary mb-2">Roles</h5>
+                    <h4 class="text-primary h5 mb-2">Roles</h4>
                     <div
                       class="d-flex flex-wrap gap-1"
                       style="
@@ -660,7 +671,7 @@ const getRecommendationTierForRoster = (characterId: string) =>
 
                   <!-- Archetypes -->
                   <div class="mb-3">
-                    <h5 class="text-primary mb-2">Archetypes</h5>
+                    <h4 class="text-primary h5 mb-2">Archetypes</h4>
                     <div
                       class="d-flex flex-wrap gap-1"
                       style="
@@ -692,7 +703,7 @@ const getRecommendationTierForRoster = (characterId: string) =>
 
                   <!-- Labels -->
                   <div class="mb-4">
-                    <h5 class="text-primary mb-2">Labels</h5>
+                    <h4 class="text-primary h5 mb-2">Labels</h4>
                     <div
                       class="d-flex flex-wrap gap-1"
                       style="
@@ -943,6 +954,9 @@ const getRecommendationTierForRoster = (characterId: string) =>
                 :src="getLightconeImage(lightconeModal.lightcone.id)"
                 :alt="lightconeModal.lightcone.name"
                 class="lightcone-modal-image"
+                width="301"
+                height="420"
+                decoding="async"
                 @error="handleLightconeImageError"
               />
             </div>
@@ -1004,6 +1018,15 @@ const getRecommendationTierForRoster = (characterId: string) =>
 
 .detail-image-container {
   flex-shrink: 0;
+  width: 200px;
+  min-height: 280px;
+}
+
+.detail-character-image {
+  display: block;
+  width: 200px;
+  height: 280px;
+  aspect-ratio: 5 / 7;
 }
 
 .detail-info {
@@ -1079,6 +1102,10 @@ body {
   align-items: center;
   cursor: pointer;
   transition: all 0.2s ease;
+}
+
+.filter-group-label {
+  font-weight: 600;
 }
 
 .legend-color {
