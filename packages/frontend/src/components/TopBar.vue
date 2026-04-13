@@ -49,18 +49,24 @@
         </button>
 
         <!-- GitHub Link -->
-        <a href="https://github.com/Gildedboy/hsr-team-builder" target="_blank" class="github-btn">
+        <a
+          href="https://github.com/Gildedboy/hsr-team-builder"
+          target="_blank"
+          rel="noopener noreferrer"
+          class="github-btn"
+        >
           <i class="fab fa-github me-1"></i> GitHub
         </a>
 
         <!-- Ko-fi Link -->
-        <a href="https://ko-fi.com/Z8Z31V1ED" target="_blank">
+        <a href="https://ko-fi.com/Z8Z31V1ED" target="_blank" rel="noopener noreferrer">
           <img
-            height="36"
-            style="border: 0px; height: 36px"
+            class="kofi-badge"
             src="https://storage.ko-fi.com/cdn/kofi5.png?v=6"
-            border="0"
             alt="Buy Me a Coffee at ko-fi.com"
+            width="145"
+            height="36"
+            decoding="async"
           />
         </a>
       </div>
@@ -408,6 +414,15 @@ onMounted(() => {
 
 .tb-toggle-btn i {
   display: block;
+}
+
+.kofi-badge {
+  border: 0;
+  width: 145px;
+  height: 36px;
+  display: block;
+  object-fit: contain;
+  flex-shrink: 0;
 }
 
 .cursor-pointer {

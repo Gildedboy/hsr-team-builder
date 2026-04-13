@@ -35,3 +35,4 @@ coverage
 !.env.example
 
 .codex
+.local-notes/

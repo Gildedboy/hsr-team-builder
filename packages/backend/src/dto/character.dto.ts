@@ -453,7 +453,7 @@ export class CreateCharacterDto {
 
   @ApiPropertyOptional({
     description:
-      'Lightcones for this character. On POST/PUT, only `id` (+ optional `note`) is used; other fields are ignored.',
+      'Lightcones for this character. On create or update, only `id` (+ optional `note`) is used; other fields are ignored.',
     type: [CharacterLightconeDto],
   })
   @IsOptional()
@@ -539,7 +539,7 @@ export class UpdateCharacterDto {
 
   @ApiPropertyOptional({
     description:
-      'Lightcones for this character. On POST/PUT, only `id` (+ optional `note`) is used; other fields are ignored.',
+      'Lightcones for this character. On create or update, only `id` (+ optional `note`) is used; other fields are ignored.',
     type: [CharacterLightconeDto],
   })
   @IsOptional()
