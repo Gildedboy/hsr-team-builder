@@ -1,5 +1,6 @@
 import { computed } from 'vue'
 import type { Character } from '@hsr-team-builder/shared'
+import { canonicalizeArchetypes, canonicalizeArchetype } from '@/utils/archetypes'
 
 export function useCharacterGrouping(
   filteredCharacters: { value: Character[] },
@@ -13,8 +14,11 @@ export function useCharacterGrouping(
       (char) => char.roles.includes('DPS') || char.roles.includes('SUB_DPS'),
     )
 
-    // Support Column - characters with role 'SUPPORT'
-    const supportCharacters = filtered.filter((char) => char.roles.includes('SUPPORT'))
+    // Support/Amplifier column excludes sustains so hybrid sustain units
+    // like shielders never appear in both support and sustain.
+    const supportCharacters = filtered.filter(
+      (char) => char.roles.includes('SUPPORT') && !char.roles.includes('SUSTAIN'),
+    )
 
     // Sustain Column - characters with role 'SUSTAIN'
     const sustainCharacters = filtered.filter((char) => char.roles.includes('SUSTAIN'))
@@ -24,11 +28,15 @@ export function useCharacterGrouping(
       const groups: { [key: string]: Character[] } = {}
 
       characters.forEach((char) => {
-        const archetypes = char.archetype || ['Other']
+        const archetypes = canonicalizeArchetypes(char.archetype || ['Other'])
 
         // If archetype filters are active, only show characters in those subcategories
         const relevantArchetypes = selectedArchetypes?.value.length
-          ? archetypes.filter((archetype) => selectedArchetypes.value.includes(archetype))
+          ? archetypes.filter((archetype) =>
+              selectedArchetypes.value.some(
+                (selectedArchetype) => canonicalizeArchetype(selectedArchetype) === archetype,
+              ),
+            )
           : archetypes
 
         // Add character to each of their relevant archetype groups

@@ -1,5 +1,6 @@
 import { ref, computed, type ComputedRef } from 'vue'
 import type { Character, Archetype } from '@hsr-team-builder/shared'
+import { canonicalizeArchetypes, canonicalizeArchetype } from '@/utils/archetypes'
 
 export function useCharacterFilters(characters: ComputedRef<Character[]>) {
   const selectedElements = ref<string[]>([])
@@ -25,8 +26,11 @@ export function useCharacterFilters(characters: ComputedRef<Character[]>) {
 
       const archetypeMatch =
         selectedArchetypes.value.length === 0 ||
-        selectedArchetypes.value.some((archetype) =>
-          character.archetype.includes(archetype as Archetype),
+        canonicalizeArchetypes(character.archetype).some((archetype) =>
+          selectedArchetypes.value.some(
+            (selectedArchetype) =>
+              archetype === canonicalizeArchetype(selectedArchetype as Archetype),
+          ),
         )
 
       return searchMatch && elementMatch && pathMatch && rarityMatch && archetypeMatch
