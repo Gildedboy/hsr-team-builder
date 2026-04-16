@@ -381,10 +381,10 @@ const getRecommendationTierForRoster = (characterId: string) =>
                     v-for="archetype in FILTER_OPTIONS.archetypes"
                     :key="archetype"
                     @click="toggleFilter(selectedArchetypes, archetype)"
-                    class="btn btn-sm fw-medium rounded-pill"
+                    class="btn btn-sm fw-medium rounded-pill filter-chip"
                     :class="
                       selectedArchetypes.includes(archetype)
-                        ? 'btn-primary text-dark'
+                        ? 'filter-chip-active'
                         : 'btn-outline-light'
                     "
                   >
@@ -1132,15 +1132,75 @@ body {
 
 .filter-card .btn-outline-secondary:hover,
 .filter-card .element-path-button.btn-outline-secondary:hover {
-  background-color: var(--bs-primary);
-  border-color: var(--bs-primary) !important;
-  color: #ffffff !important;
+  background-color: rgba(0, 212, 255, 0.12) !important;
+  border-color: rgba(0, 212, 255, 0.45) !important;
+  color: #d7f7ff !important;
 }
 
 .filter-card .btn-outline-light:hover {
-  background-color: var(--bs-primary);
-  border-color: var(--bs-primary);
-  color: #0b0b0b !important;
+  background-color: rgba(0, 212, 255, 0.12) !important;
+  border-color: rgba(0, 212, 255, 0.45) !important;
+  color: #eefbff !important;
+}
+
+.filter-card .btn-outline-primary.active,
+.filter-card .btn-outline-primary:hover,
+.filter-card .btn-outline-primary:active {
+  background-color: rgba(0, 212, 255, 0.24) !important;
+  border-color: rgba(78, 224, 255, 0.75) !important;
+  color: #ffffff !important;
+  box-shadow: none !important;
+}
+
+.filter-card .btn-outline-secondary.active,
+.filter-card .element-path-button.active {
+  background-color: rgba(0, 212, 255, 0.24) !important;
+  border-color: rgba(78, 224, 255, 0.75) !important;
+  color: #ffffff !important;
+  box-shadow: none !important;
+}
+
+.filter-card .btn-outline-secondary:focus,
+.filter-card .btn-outline-light:focus,
+.filter-card .element-path-button:focus,
+.filter-card .filter-chip:focus {
+  box-shadow: none !important;
+}
+
+.filter-card .btn-outline-secondary:focus-visible,
+.filter-card .btn-outline-light:focus-visible,
+.filter-card .element-path-button:focus-visible,
+.filter-card .filter-chip:focus-visible {
+  box-shadow: 0 0 0 0.18rem rgba(0, 212, 255, 0.18) !important;
+}
+
+.filter-card .filter-chip {
+  transition:
+    background-color 0.15s ease,
+    border-color 0.15s ease,
+    color 0.15s ease,
+    box-shadow 0.15s ease;
+}
+
+.filter-card .filter-chip-active {
+  background-color: rgba(0, 212, 255, 0.24) !important;
+  border-color: rgba(78, 224, 255, 0.75) !important;
+  color: #ffffff !important;
+  box-shadow: none !important;
+}
+
+.filter-card .filter-chip-active:hover,
+.filter-card .filter-chip-active:active {
+  background-color: rgba(0, 212, 255, 0.28) !important;
+  border-color: rgba(120, 233, 255, 0.9) !important;
+  color: #ffffff !important;
+  box-shadow: none !important;
+}
+
+.filter-card .filter-chip-active:focus-visible,
+.filter-card .btn-outline-primary.active:focus-visible,
+.filter-card .element-path-button.active:focus-visible {
+  box-shadow: 0 0 0 0.18rem rgba(0, 212, 255, 0.2) !important;
 }
 
 .prydwen-link {
