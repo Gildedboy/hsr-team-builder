@@ -25,8 +25,15 @@ export function useVersionInfo() {
   let versionRetryTimer: ReturnType<typeof setTimeout> | null = null
   let roadmapRetryTimer: ReturnType<typeof setTimeout> | null = null
 
-  // Get current app version from environment
-  const appVersion = computed(() => import.meta.env.VITE_APP_VERSION || 'v2.6.2')
+  const configuredAppVersion = import.meta.env.VITE_APP_VERSION?.trim()
+  const versionEndpoint = configuredAppVersion
+    ? `${API_BASE_URL}/versions/${configuredAppVersion}`
+    : `${API_BASE_URL}/versions/latest`
+
+  // Use the deployed app version when available, otherwise show the latest API version in dev.
+  const appVersion = computed(
+    () => currentVersionInfo.value?.version || configuredAppVersion || 'latest',
+  )
 
   const clearVersionRetryTimer = () => {
     if (versionRetryTimer) {
@@ -51,8 +58,7 @@ export function useVersionInfo() {
     error.value = null
 
     try {
-      // Try to fetch the current version from API
-      const response = await fetch(`${API_BASE_URL}/versions/${appVersion.value}`)
+      const response = await fetch(versionEndpoint)
 
       if (!response.ok) {
         throw new Error(`Failed to fetch version info: ${response.status}`)
@@ -67,7 +73,7 @@ export function useVersionInfo() {
 
       // Fallback content for current version
       currentVersionInfo.value = {
-        version: appVersion.value,
+        version: configuredAppVersion || 'latest',
         releaseDate: new Date().toISOString().split('T')[0],
         title: 'Responsive Character Details Fix',
         description: 'Improved mobile and desktop experience with better character detail layouts.',

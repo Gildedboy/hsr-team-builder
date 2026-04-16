@@ -202,7 +202,7 @@ const getRecommendationTierForRoster = (characterId: string) =>
             </div>
 
             <!-- Filter Content (when no character selected) -->
-            <div v-if="!selectedCharacter" class="card-body">
+            <div v-if="!selectedCharacter" class="card-body filter-content">
               <!-- Search Bar -->
               <div class="mb-3 position-relative">
                 <div class="position-relative">
@@ -1476,6 +1476,13 @@ body {
 .card {
   scrollbar-width: thin;
   scrollbar-color: #00d4ff rgba(0, 0, 0, 0.2);
+}
+
+.filter-content {
+  min-height: 0;
+  overflow-y: auto;
+  overflow-x: hidden;
+  padding-bottom: 1rem;
 }
 
 /* Global Firefox Scrollbar */
