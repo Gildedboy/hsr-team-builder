@@ -19,6 +19,7 @@ export const FILTER_OPTIONS = {
     'Debuff DPS',
     'Debuffer',
     'DoT',
+    'Elation',
     'Follow-up',
     'Healer',
     'HP-Scaling',
