@@ -50,6 +50,7 @@ export enum Role {
 export enum BulkCharacterOperationType {
   UPSERT_TEAMMATE_RECOMMENDATION = 'upsert_teammate_recommendation',
   REPLACE_TEAM_MEMBER = 'replace_team_member',
+  UPDATE_CHARACTER_FIELDS = 'update_character_fields',
 }
 
 export enum RecommendationBucket {
@@ -92,6 +93,48 @@ export class TeamCompositionMatchDto {
   @IsOptional()
   @IsString()
   role?: string
+}
+
+export class CharacterFieldUpdatesDto {
+  @ApiPropertyOptional({ description: 'Replacement character roles', enum: Role, isArray: true })
+  @IsOptional()
+  @IsArray()
+  @IsEnum(Role, { each: true })
+  roles?: Role[]
+
+  @ApiPropertyOptional({
+    description: 'Replacement character archetypes',
+    example: ['Hypercarry', 'Elation'],
+  })
+  @IsOptional()
+  @IsArray()
+  @IsString({ each: true })
+  archetype?: string[]
+
+  @ApiPropertyOptional({
+    description: 'Replacement character descriptive labels',
+    example: ['AoE', 'Elation Damage'],
+  })
+  @IsOptional()
+  @IsArray()
+  @IsString({ each: true })
+  labels?: string[]
+
+  @ApiPropertyOptional({
+    description: 'Replacement Prydwen build guide link',
+    example: 'https://www.prydwen.gg/star-rail/characters/kafka/',
+  })
+  @IsOptional()
+  @IsString()
+  prydwenLink?: string
+
+  @ApiPropertyOptional({
+    description: 'Replacement Guoba video guide link',
+    example: 'https://www.youtube.com/embed/xyz123',
+  })
+  @IsOptional()
+  @IsString()
+  guobaLink?: string
 }
 
 export class CharacterBulkOperationDto {
@@ -205,6 +248,19 @@ export class CharacterBulkOperationDto {
   @IsOptional()
   @IsString()
   newCharacterId?: string
+
+  @ApiPropertyOptional({
+    description:
+      'Top-level character fields to replace. Required for `update_character_fields`. Supported fields: roles, archetype, labels, prydwenLink, guobaLink.',
+    type: CharacterFieldUpdatesDto,
+    example: {
+      archetype: ['Hypercarry', 'Elation'],
+    },
+  })
+  @IsOptional()
+  @ValidateNested()
+  @Type(() => CharacterFieldUpdatesDto)
+  updates?: CharacterFieldUpdatesDto
 }
 
 export class BulkCharacterUpdateDto {

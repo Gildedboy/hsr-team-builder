@@ -127,7 +127,7 @@
                   </div>
                 </div>
               </div>
-              <p v-if="currentTeamComposition.bis.description" class="text-muted small mt-2">
+              <p v-if="currentTeamComposition.bis.description" class="team-description small mt-2">
                 {{ currentTeamComposition.bis.description }}
               </p>
             </div>
@@ -154,7 +154,7 @@
                   </div>
                 </div>
               </div>
-              <p v-if="currentTeamComposition.f2p.description" class="text-muted small mt-2">
+              <p v-if="currentTeamComposition.f2p.description" class="team-description small mt-2">
                 {{ currentTeamComposition.f2p.description }}
               </p>
             </div>
@@ -304,5 +304,10 @@ const getEntryStatus = (entry: ResolvedCharacterEntry) => {
   font-size: 0.72rem;
   line-height: 1.2;
   margin-top: 0.35rem;
+}
+
+.team-description {
+  color: rgba(255, 255, 255, 0.78);
+  line-height: 1.45;
 }
 </style>

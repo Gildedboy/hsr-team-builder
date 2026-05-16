@@ -207,32 +207,50 @@ export class CharactersController {
           dryRun: true,
         },
       },
+      addElationArchetype: {
+        summary: 'Add the Elation archetype to Elation DPS and amplifiers',
+        value: {
+          operations: [
+            {
+              type: 'update_character_fields',
+              characterIds: ['sparxie', 'silver-wolf-lv-999', 'elation-trailblazer'],
+              updates: {
+                archetype: ['Hypercarry', 'Elation'],
+              },
+            },
+            {
+              type: 'update_character_fields',
+              characterIds: ['yao-guang'],
+              updates: {
+                archetype: ['Buffer', 'Elation'],
+              },
+            },
+          ],
+          dryRun: true,
+        },
+      },
     },
   })
   @ApiResponse({
     status: 200,
     description: 'Bulk update completed successfully',
-    type: BulkCharacterUpdateResponseDto,
-    examples: {
-      dryRunPreview: {
-        summary: 'Preview response',
-        value: {
-          dryRun: true,
-          operations: [
-            {
-              index: 0,
-              type: 'replace_team_member',
-              requestedCharacterIds: ['firefly', 'boothill', 'rappa'],
-              updatedCharacterIds: ['firefly', 'boothill'],
-              skippedCharacterIds: ['rappa'],
-              details: [
-                'Updated firefly composition "Main DPS Team" (bis) slot 3 -> dhpt',
-                'Updated boothill composition "Main DPS Team" (bis) slot 3 -> dhpt',
-                'Skipped rappa: character not found',
-              ],
-            },
-          ],
-        },
+    schema: {
+      example: {
+        dryRun: true,
+        operations: [
+          {
+            index: 0,
+            type: 'replace_team_member',
+            requestedCharacterIds: ['firefly', 'boothill', 'rappa'],
+            updatedCharacterIds: ['firefly', 'boothill'],
+            skippedCharacterIds: ['rappa'],
+            details: [
+              'Updated firefly composition "Main DPS Team" (bis) slot 3 -> dhpt',
+              'Updated boothill composition "Main DPS Team" (bis) slot 3 -> dhpt',
+              'Skipped rappa: character not found',
+            ],
+          },
+        ],
       },
     },
   })

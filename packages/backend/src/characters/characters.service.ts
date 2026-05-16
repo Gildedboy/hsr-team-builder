@@ -13,6 +13,7 @@ import {
   BulkCharacterOperationType,
   BulkCharacterUpdateDto,
   BulkListUpdateMode,
+  CharacterFieldUpdatesDto,
   CharacterBulkOperationDto,
   RecommendationBucket,
   TeamCompositionMatchDto,
@@ -250,10 +251,7 @@ export class CharactersService {
           continue
         }
 
-        const changed =
-          operation.type === BulkCharacterOperationType.UPSERT_TEAMMATE_RECOMMENDATION
-            ? this.applyTeammateRecommendationBulkOperation(entity, operation, result.details)
-            : this.applyReplaceTeamMemberBulkOperation(entity, operation, result.details)
+        const changed = this.applyBulkOperation(entity, operation, result.details)
 
         if (!changed) {
           result.skippedCharacterIds.push(characterId)
@@ -382,6 +380,7 @@ export class CharactersService {
         | 'Summon'
         | 'Debuff DPS'
         | 'DoT'
+        | 'Elation'
         | 'Damage Distribution'
       )[],
       labels: entity.labels,
@@ -427,6 +426,13 @@ export class CharactersService {
       return
     }
 
+    if (operation.type === BulkCharacterOperationType.UPDATE_CHARACTER_FIELDS) {
+      if (!operation.updates || Object.keys(operation.updates).length === 0) {
+        throw new BadRequestException('updates is required for character field updates')
+      }
+      return
+    }
+
     if (!operation.variant) {
       throw new BadRequestException('variant is required for team composition updates')
     }
@@ -436,6 +442,68 @@ export class CharactersService {
     if (!operation.newCharacterId) {
       throw new BadRequestException('newCharacterId is required for team composition updates')
     }
+  }
+
+  private applyBulkOperation(
+    entity: CharacterEntity,
+    operation: CharacterBulkOperationDto,
+    details: string[],
+  ): boolean {
+    switch (operation.type) {
+      case BulkCharacterOperationType.UPSERT_TEAMMATE_RECOMMENDATION:
+        return this.applyTeammateRecommendationBulkOperation(entity, operation, details)
+      case BulkCharacterOperationType.UPDATE_CHARACTER_FIELDS:
+        return this.applyCharacterFieldUpdateBulkOperation(entity, operation, details)
+      case BulkCharacterOperationType.REPLACE_TEAM_MEMBER:
+        return this.applyReplaceTeamMemberBulkOperation(entity, operation, details)
+      default:
+        throw new BadRequestException(`Unsupported bulk operation type: ${operation.type}`)
+    }
+  }
+
+  private applyCharacterFieldUpdateBulkOperation(
+    entity: CharacterEntity,
+    operation: CharacterBulkOperationDto,
+    details: string[],
+  ): boolean {
+    const updates = operation.updates as CharacterFieldUpdatesDto
+    const changedFields: string[] = []
+
+    if (updates.roles && !this.areStringArraysEqual(entity.roles, updates.roles)) {
+      entity.roles = updates.roles
+      changedFields.push('roles')
+    }
+
+    if (updates.archetype && !this.areStringArraysEqual(entity.archetype, updates.archetype)) {
+      entity.archetype = updates.archetype
+      changedFields.push('archetype')
+    }
+
+    if (updates.labels && !this.areStringArraysEqual(entity.labels, updates.labels)) {
+      entity.labels = updates.labels
+      changedFields.push('labels')
+    }
+
+    if (
+      updates.prydwenLink !== undefined &&
+      (entity.prydwenLink ?? undefined) !== updates.prydwenLink
+    ) {
+      entity.prydwenLink = updates.prydwenLink
+      changedFields.push('prydwenLink')
+    }
+
+    if (updates.guobaLink !== undefined && (entity.guobaLink ?? undefined) !== updates.guobaLink) {
+      entity.guobaLink = updates.guobaLink
+      changedFields.push('guobaLink')
+    }
+
+    if (changedFields.length === 0) {
+      details.push(`No field change needed for ${entity.id}`)
+      return false
+    }
+
+    details.push(`Updated ${entity.id} fields: ${changedFields.join(', ')}`)
+    return true
   }
 
   private applyTeammateRecommendationBulkOperation(

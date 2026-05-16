@@ -36,6 +36,7 @@ export type Archetype =
   | 'Counter'
   | 'Ultimate-Based'
   | 'Energy-Hungry'
+  | 'Elation'
   | 'Summon'
   | 'Debuff DPS'
   | 'DoT'
