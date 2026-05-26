@@ -44,6 +44,26 @@ npm run build
 npm run lint
 ```
 
+## Test Automation
+
+Playwright automation lives in `tests/automation` and is intentionally separate from the frontend and backend packages. If you are using Codex or another coding agent from any working directory, start with [AGENTS.md](./AGENTS.md) and the automation README.
+
+This project expects TestDino Playwright skill guidance for test work:
+
+```sh
+npx skills add testdino-hq/playwright-skill
+```
+
+Use the skill as standards material for locators, web-first assertions, POMs, fixtures, API clients, CI, and flaky test prevention. It is not a production/runtime dependency.
+
+Common automation entry point:
+
+```sh
+cd tests/automation
+npm install
+npm run test:smoke
+```
+
 ## Usage
 
 1. **Browse Characters** - Characters are organized by their primary roles

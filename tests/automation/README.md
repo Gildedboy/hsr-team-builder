@@ -4,6 +4,26 @@ Standalone Playwright TypeScript automation framework for the HSR Team Builder m
 
 The framework validates the product from the outside: frontend smoke flows, backend API contracts, integration behavior, critical E2E paths, visual guards, and post-deploy checks. It intentionally lives under `tests/automation` instead of `packages/frontend` or `packages/backend`.
 
+## Agent and Skill Discovery
+
+If you are using Codex or another coding agent from the repo root, a parent folder, or another workspace location, first read the root `AGENTS.md` file. It points agents back to this automation package and its TestDino expectations.
+
+Before generating, reviewing, or modifying tests, use the TestDino Playwright skill guidance:
+
+```bash
+npx skills add testdino-hq/playwright-skill
+```
+
+If your agent environment already has the skill installed, use the local `playwright-skill` instead of reinstalling it. In this repo, TestDino guidance is standards material for test design and review; it is not a product runtime dependency.
+
+The local Playwright CLI helper can also initialize agent/browser tooling for this package:
+
+```bash
+npm run agent:install-skills
+```
+
+For the detailed policy, read `docs/PLAYWRIGHT_SKILLS_USAGE.md` and review modified tests against `docs/TEST_REVIEW_CHECKLIST.md`.
+
 ## Setup
 
 ```bash
