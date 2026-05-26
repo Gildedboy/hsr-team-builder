@@ -1,0 +1,57 @@
+name: Automation Frontend Deploy
+
+on:
+  workflow_run:
+    workflows:
+      - Deploy Frontend to GitHub Pages
+    types:
+      - completed
+  workflow_dispatch:
+    inputs:
+      frontend_base_url:
+        description: Frontend URL to test
+        required: true
+        default: https://hsr-team-builder.gilded.dev
+        type: string
+      backend_base_url:
+        description: Backend API URL used by integration checks
+        required: true
+        default: https://api.hsr-team-builder.gilded.dev
+        type: string
+
+jobs:
+  frontend-post-deploy:
+    if: ${{ github.event_name == 'workflow_dispatch' || github.event.workflow_run.conclusion == 'success' }}
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+          cache-dependency-path: tests/automation/package-lock.json
+      - run: npm ci
+        working-directory: tests/automation
+      - run: npx playwright install --with-deps chromium
+        working-directory: tests/automation
+      - name: Wait for Pages/cache propagation
+        run: sleep 60
+      - run: npm run test:smoke
+        working-directory: tests/automation
+        env:
+          FRONTEND_BASE_URL: ${{ inputs.frontend_base_url || vars.FRONTEND_BASE_URL || 'https://hsr-team-builder.gilded.dev' }}
+          BACKEND_BASE_URL: ${{ inputs.backend_base_url || vars.BACKEND_BASE_URL || 'https://api.hsr-team-builder.gilded.dev' }}
+      - run: npm run test:e2e
+        working-directory: tests/automation
+        env:
+          FRONTEND_BASE_URL: ${{ inputs.frontend_base_url || vars.FRONTEND_BASE_URL || 'https://hsr-team-builder.gilded.dev' }}
+          BACKEND_BASE_URL: ${{ inputs.backend_base_url || vars.BACKEND_BASE_URL || 'https://api.hsr-team-builder.gilded.dev' }}
+      - uses: actions/upload-artifact@v4
+        if: failure()
+        with:
+          name: automation-frontend-deploy-artifacts
+          path: |
+            tests/automation/playwright-report
+            tests/automation/test-results
+          if-no-files-found: ignore

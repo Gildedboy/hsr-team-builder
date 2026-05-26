@@ -7,12 +7,37 @@ on:
       - 'packages/shared/**'
       - 'tests/automation/**'
       - '.github/workflows/automation-api.yml'
+  push:
+    branches:
+      - main
+    paths:
+      - 'packages/backend/**'
+      - 'packages/shared/**'
+      - 'tests/automation/**'
+      - '.github/workflows/automation-api.yml'
+  repository_dispatch:
+    types:
+      - railway-backend-deployed
   workflow_dispatch:
+    inputs:
+      backend_base_url:
+        description: Backend API URL to test
+        required: true
+        default: https://api.hsr-team-builder.gilded.dev
+        type: string
+      deploy_wait_seconds:
+        description: Seconds to wait before testing a just-deployed backend
+        required: true
+        default: '0'
+        type: string
 
 jobs:
   api:
     runs-on: ubuntu-latest
     timeout-minutes: 15
+    env:
+      BACKEND_BASE_URL: ${{ github.event.client_payload.backend_base_url || inputs.backend_base_url || vars.BACKEND_BASE_URL || 'https://api.hsr-team-builder.gilded.dev' }}
+      DEPLOY_WAIT_SECONDS: ${{ github.event_name == 'push' && '120' || github.event.client_payload.deploy_wait_seconds || inputs.deploy_wait_seconds || '0' }}
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
@@ -24,10 +49,11 @@ jobs:
         working-directory: tests/automation
       - run: npm run typecheck
         working-directory: tests/automation
+      - name: Wait for backend deployment propagation
+        if: ${{ env.DEPLOY_WAIT_SECONDS != '0' }}
+        run: sleep "$DEPLOY_WAIT_SECONDS"
       - run: npm run test:api
         working-directory: tests/automation
-        env:
-          BACKEND_BASE_URL: ${{ vars.BACKEND_BASE_URL || 'https://api.hsr-team-builder.gilded.dev' }}
       - uses: actions/upload-artifact@v4
         if: failure()
         with:
