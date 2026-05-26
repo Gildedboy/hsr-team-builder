@@ -2,6 +2,16 @@
 
 This framework uses the TestDino Playwright skill guidance as standards material, not as a runtime dependency.
 
+This requirement applies no matter where an agent is launched from. If you start Codex or another tool outside `tests/automation`, read the root `AGENTS.md` file first, then this document.
+
+Install or discover the skill with the Skills CLI when it is missing:
+
+```bash
+npx skills add testdino-hq/playwright-skill
+```
+
+If the agent environment already has `playwright-skill` installed locally, use that copy instead of reinstalling.
+
 Apply it when generating, reviewing, or refactoring tests:
 
 - prefer user-facing locators and web-first assertions
