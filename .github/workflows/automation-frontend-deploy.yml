@@ -19,6 +19,9 @@ on:
         default: https://api.hsr-team-builder.gilded.dev
         type: string
 
+permissions:
+  contents: read
+
 jobs:
   frontend-post-deploy:
     if: ${{ github.event_name == 'workflow_dispatch' || github.event.workflow_run.conclusion == 'success' }}

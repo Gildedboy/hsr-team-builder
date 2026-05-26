@@ -5,6 +5,9 @@ on:
     - cron: '30 8 * * 1'
   workflow_dispatch:
 
+permissions:
+  contents: read
+
 jobs:
   weekly-regression:
     runs-on: ubuntu-latest
