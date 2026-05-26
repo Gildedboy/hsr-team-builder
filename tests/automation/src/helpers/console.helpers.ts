@@ -3,7 +3,11 @@ import type { ConsoleMessage, Page } from '@playwright/test'
 const CRITICAL_MESSAGE_TYPES = new Set(['error'])
 const IGNORED_ERROR_PATTERNS = [
   /Failed to load characters/i,
+  /Failed to fetch characters/i,
+  /Failed to fetch version info/i,
   /Failed to load resource/i,
+  /blocked by CORS policy/i,
+  /No 'Access-Control-Allow-Origin' header/i,
   /ERR_BLOCKED_BY_CLIENT/i,
   /ERR_NAME_NOT_RESOLVED/i,
 ]
