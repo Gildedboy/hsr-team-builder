@@ -33,4 +33,19 @@ export class TopBarPage {
     await toggle.click()
     await expect(toggle).toHaveClass(/active/)
   }
+
+  async expectTrailblazerAvatarSelected(avatar: 'Stelle' | 'Caelus'): Promise<void> {
+    const activeToggle = avatar === 'Stelle' ? this.stelleToggle : this.caelusToggle
+    const inactiveToggle = avatar === 'Stelle' ? this.caelusToggle : this.stelleToggle
+
+    await expect(activeToggle).toHaveClass(/active/)
+    await expect(inactiveToggle).not.toHaveClass(/active/)
+  }
+
+  async expectTrailblazerPreferenceStored(avatar: 'Stelle' | 'Caelus'): Promise<void> {
+    const storedVariant = await this.page.evaluate(() =>
+      window.localStorage.getItem('hsr-team-builder:trailblazer-avatar-variant:v1'),
+    )
+    expect(storedVariant).toBe(avatar === 'Stelle' ? 'stelle' : 'caelus')
+  }
 }

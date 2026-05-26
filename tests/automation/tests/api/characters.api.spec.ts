@@ -20,4 +20,36 @@ test.describe('characters API', () => {
     expect(Array.isArray(characters), 'search response is an array').toBe(true)
     expect(characters.some((character) => character.name.toLowerCase().includes('kafka'))).toBe(true)
   })
+
+  test('returns a real character detail by id', async ({ charactersClient }) => {
+    const response = await charactersClient.getById('kafka')
+    expectOkJson(response)
+
+    const character = await charactersClient.getByIdJson('kafka')
+    expectValidCharacter(character)
+    expect(character.id).toBe('kafka')
+    expect(character.name).toBe('Kafka')
+  })
+
+  test('filters characters by role, element, and path', async ({ charactersClient }) => {
+    const response = await charactersClient.list({
+      role: 'DPS',
+      element: 'Lightning',
+      path: 'Nihility',
+    })
+    expectOkJson(response)
+
+    const characters = await charactersClient.listJson({
+      role: 'DPS',
+      element: 'Lightning',
+      path: 'Nihility',
+    })
+
+    expect(characters.length, 'filtered characters are seeded').toBeGreaterThan(0)
+    for (const character of characters) {
+      expect(character.roles).toContain('DPS')
+      expect(character.element).toBe('Lightning')
+      expect(character.path).toBe('Nihility')
+    }
+  })
 })

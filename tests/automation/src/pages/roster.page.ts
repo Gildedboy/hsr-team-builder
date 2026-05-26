@@ -31,8 +31,23 @@ export class RosterPage {
     await expect(this.saveChangesButton).toBeEnabled()
   }
 
+  async saveChanges(): Promise<void> {
+    await this.saveChangesButton.click()
+    await expect(this.editRosterButton).toBeVisible()
+  }
+
   async cancelEditMode(): Promise<void> {
     await this.cancelButton.click()
     await expect(this.editRosterButton).toBeVisible()
+  }
+
+  async expectNotOwnedCountGreaterThan(count: number): Promise<void> {
+    const countLabel = this.page.getByText(/not owned characters:/i).locator('strong')
+    const value = Number((await countLabel.textContent())?.trim() ?? '0')
+    expect(value, 'not owned character count').toBeGreaterThan(count)
+  }
+
+  async expectUnavailableCharactersVisible(): Promise<void> {
+    await expect(this.page.locator('.unavailable-badge').first()).toBeVisible()
   }
 }

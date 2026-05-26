@@ -15,4 +15,23 @@ test.describe('roster management', () => {
     await rosterPage.hideAllNonFreeCharacters()
     await rosterPage.cancelEditMode()
   })
+
+  test('user can save hidden roster characters and keep them hidden after reload', async ({
+    homePage,
+    rosterPage,
+  }) => {
+    await homePage.gotoHome()
+    await rosterPage.expectReady()
+
+    await rosterPage.enterEditMode()
+    await rosterPage.hideAllNonFreeCharacters()
+    await rosterPage.saveChanges()
+    await rosterPage.expectNotOwnedCountGreaterThan(0)
+    await rosterPage.expectUnavailableCharactersVisible()
+
+    await homePage.gotoHome()
+
+    await rosterPage.expectNotOwnedCountGreaterThan(0)
+    await rosterPage.expectUnavailableCharactersVisible()
+  })
 })

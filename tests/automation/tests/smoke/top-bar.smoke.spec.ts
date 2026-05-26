@@ -14,4 +14,15 @@ test.describe('top bar smoke', () => {
     await topBarPage.selectTrailblazerAvatar('Caelus')
     await topBarPage.selectTrailblazerAvatar('Stelle')
   })
+
+  test('trailblazer avatar choice is saved after reload', async ({ homePage, topBarPage }) => {
+    await homePage.gotoHome()
+
+    await topBarPage.selectTrailblazerAvatar('Caelus')
+    await topBarPage.expectTrailblazerPreferenceStored('Caelus')
+
+    await homePage.gotoHome()
+
+    await topBarPage.expectTrailblazerAvatarSelected('Caelus')
+  })
 })

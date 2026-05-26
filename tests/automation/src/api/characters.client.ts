@@ -24,8 +24,27 @@ export class CharactersClient extends BaseApiClient {
     return this.get(`/characters/${characterId}`)
   }
 
+  async update(
+    characterId: string,
+    payload: Partial<CharacterSummary>,
+    accessToken: string,
+  ): Promise<APIResponse> {
+    return this.request.patch(`/characters/${characterId}`, {
+      data: payload,
+      headers: {
+        Accept: 'application/json',
+        Authorization: `Bearer ${accessToken}`,
+      },
+    })
+  }
+
   async listJson(params?: Parameters<CharactersClient['list']>[0]): Promise<CharacterSummary[]> {
     const response = await this.list(params)
     return this.parseJson<CharacterSummary[]>(response)
+  }
+
+  async getByIdJson(characterId: string): Promise<CharacterSummary> {
+    const response = await this.getById(characterId)
+    return this.parseJson<CharacterSummary>(response)
   }
 }

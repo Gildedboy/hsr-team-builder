@@ -20,4 +20,21 @@ test.describe('teams API', () => {
     const teams = await teamsClient.recommendationsJson('kafka')
     expect(Array.isArray(teams), 'character recommendations response is an array').toBe(true)
   })
+
+  test('returns recommendations for a character discovered through search', async ({
+    charactersClient,
+    teamsClient,
+  }) => {
+    const characters = await charactersClient.listJson({ search: 'kafka' })
+    const kafka = characters.find((character) => character.id === 'kafka')
+    expect(kafka, 'Kafka exists in character search results').toBeDefined()
+
+    const response = await teamsClient.recommendations(kafka!.id)
+    expectOkJson(response)
+
+    const teams = await teamsClient.recommendationsJson(kafka!.id)
+    expect(Array.isArray(teams), 'discovered character recommendations response is an array').toBe(
+      true,
+    )
+  })
 })
