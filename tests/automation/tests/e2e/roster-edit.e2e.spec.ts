@@ -6,4 +6,13 @@ test.describe('roster management', () => {
     await rosterPage.expectReady()
     await rosterPage.enterEditMode()
   })
+
+  test('user can stage and cancel roster availability changes', async ({ homePage, rosterPage }) => {
+    await homePage.gotoHome()
+    await rosterPage.expectReady()
+
+    await rosterPage.enterEditMode()
+    await rosterPage.hideAllNonFreeCharacters()
+    await rosterPage.cancelEditMode()
+  })
 })
