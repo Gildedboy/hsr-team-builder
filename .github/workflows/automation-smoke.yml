@@ -34,6 +34,7 @@ jobs:
         working-directory: tests/automation
       - run: npm run lint
         working-directory: tests/automation
+      - run: npm run build -w @hsr-team-builder/shared
       - run: npm run build:frontend
       - name: Start frontend preview
         run: |
