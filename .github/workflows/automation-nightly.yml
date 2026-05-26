@@ -1,0 +1,39 @@
+name: Automation Weekly Regression
+
+on:
+  schedule:
+    - cron: '30 8 * * 1'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  weekly-regression:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+          cache-dependency-path: tests/automation/package-lock.json
+      - run: npm ci
+        working-directory: tests/automation
+      - run: npx playwright install --with-deps chromium
+        working-directory: tests/automation
+      - run: npm run test
+        working-directory: tests/automation
+        env:
+          FRONTEND_BASE_URL: ${{ vars.FRONTEND_BASE_URL || 'https://hsr-team-builder.gilded.dev' }}
+          BACKEND_BASE_URL: ${{ vars.BACKEND_BASE_URL || 'https://api.hsr-team-builder.gilded.dev' }}
+          TEST_ENV: weekly
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: automation-weekly-regression-report
+          path: |
+            tests/automation/playwright-report
+            tests/automation/test-results
+          if-no-files-found: ignore

@@ -1,0 +1,61 @@
+name: Automation Smoke
+
+on:
+  pull_request:
+    paths:
+      - 'packages/frontend/**'
+      - 'packages/shared/**'
+      - 'tests/automation/**'
+      - '.github/workflows/automation-smoke.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  smoke:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+          cache-dependency-path: |
+            package-lock.json
+            tests/automation/package-lock.json
+      - run: npm ci
+      - run: npm ci
+        working-directory: tests/automation
+      - run: npx playwright install --with-deps chromium
+        working-directory: tests/automation
+      - run: npm run typecheck
+        working-directory: tests/automation
+      - run: npm run lint
+        working-directory: tests/automation
+      - run: npm run build -w @hsr-team-builder/shared
+      - run: npm run build:frontend
+      - name: Start frontend preview
+        run: |
+          npm run preview -w @hsr-team-builder/frontend -- --host 127.0.0.1 > /tmp/hsr-frontend-preview.log 2>&1 &
+          for attempt in {1..30}; do
+            if curl -fsS http://127.0.0.1:4173 >/dev/null; then
+              exit 0
+            fi
+            sleep 1
+          done
+          cat /tmp/hsr-frontend-preview.log
+          exit 1
+      - run: npm run test:smoke
+        working-directory: tests/automation
+        env:
+          FRONTEND_BASE_URL: http://127.0.0.1:4173
+      - uses: actions/upload-artifact@v4
+        if: failure()
+        with:
+          name: automation-smoke-artifacts
+          path: |
+            tests/automation/playwright-report
+            tests/automation/test-results
+          if-no-files-found: ignore
