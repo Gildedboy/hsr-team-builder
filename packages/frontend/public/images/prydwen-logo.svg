@@ -1,0 +1,7 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="112" height="28" viewBox="0 0 112 28" role="img" aria-labelledby="title">
+  <title id="title">Prydwen</title>
+  <rect width="112" height="28" rx="4" fill="#111827"/>
+  <path d="M10 6h10.5c4.3 0 7 2.5 7 6.2s-2.7 6.2-7 6.2h-5.1V22H10V6Zm9.8 8.5c1.5 0 2.4-.8 2.4-2.3s-.9-2.3-2.4-2.3h-4.4v4.6h4.4Z" fill="#f8fafc"/>
+  <text x="33" y="19" fill="#e5e7eb" font-family="Inter, Arial, sans-serif" font-size="13" font-weight="800" letter-spacing=".6">PRYDWEN</text>
+  <circle cx="102" cy="9" r="3" fill="#00d4ff"/>
+</svg>
