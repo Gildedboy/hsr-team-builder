@@ -570,7 +570,7 @@ const getRecommendationTierForRoster = (characterId: string) =>
                         title="Open Prydwen build guide"
                       >
                         <img
-                          src="https://www.prydwen.gg/static/e5cca805ee22a6a5327c633bbab70f48/c5628/prydwen_logo_small.webp"
+                          src="/images/prydwen-logo.svg"
                           alt="Prydwen"
                           class="prydwen-logo"
                           loading="lazy"
