@@ -85,6 +85,7 @@ const characterAvatarMap: Record<string, string> = {
   ashveil: '1504',
   evanescia: '1505',
   'silver-wolf-lv-999': '1506',
+  'mortenax-blade': '1507',
   'male-elation-trailblazer': '8009',
   'female-elation-trailblazer': '8010',
 }
