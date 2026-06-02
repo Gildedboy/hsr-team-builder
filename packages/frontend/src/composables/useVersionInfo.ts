@@ -13,6 +13,22 @@ export interface VersionInfo {
   roadmapItems?: string[]
 }
 
+const fallbackVersionContent: Record<string, Omit<VersionInfo, 'version' | 'releaseDate'>> = {
+  'v4.3.2': {
+    title: 'Team Suggestions and Prydwen Logo Update',
+    description:
+      'Adds bulk team suggestion updates for admins and switches the Prydwen link badge to the official logo asset.',
+    features: [
+      'Bulk updater can add full team composition suggestions across multiple characters',
+      'Bulk team composition updates support append-only and replace modes',
+      'Prydwen links now use the official downloaded logo asset',
+    ],
+    bugFixes: [
+      'Version info fallback no longer shows stale release notes when the API record is missing',
+    ],
+  },
+}
+
 export function useVersionInfo() {
   const currentVersionInfo = ref<VersionInfo | null>(null)
   const roadmapItems = ref<string[]>([])
@@ -71,22 +87,19 @@ export function useVersionInfo() {
       error.value = err instanceof Error ? err.message : 'Failed to load version information'
       console.warn('Version info API unavailable, using fallback content')
 
-      // Fallback content for current version
+      const fallbackVersion = configuredAppVersion || 'latest'
+      const fallbackContent = fallbackVersionContent[fallbackVersion] ?? {
+        title: `Version ${fallbackVersion}`,
+        description:
+          'Release notes for this deployed version are not available from the version API yet.',
+        features: [],
+        bugFixes: [],
+      }
+
       currentVersionInfo.value = {
-        version: configuredAppVersion || 'latest',
+        version: fallbackVersion,
         releaseDate: new Date().toISOString().split('T')[0],
-        title: 'Responsive Character Details Fix',
-        description: 'Improved mobile and desktop experience with better character detail layouts.',
-        features: [
-          'Responsive character details layout improvements',
-          'Better mobile experience across all screen sizes',
-          'Fixed text crowding on medium screens',
-          'Improved character info visibility',
-        ],
-        bugFixes: [
-          'Character details no longer hidden on smaller screens',
-          'Mobile layout properly activates at correct breakpoints',
-        ],
+        ...fallbackContent,
       }
 
       if (!versionRetryTimer) {

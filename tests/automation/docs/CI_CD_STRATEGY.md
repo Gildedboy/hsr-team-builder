@@ -4,11 +4,11 @@ Automation should run as a quality gate without blocking unrelated work unnecess
 
 Recommended suite mapping:
 
-| Event | Suite |
-| --- | --- |
-| Pull request | typecheck, lint, smoke, API |
-| Frontend deploy | smoke, frontend-critical E2E |
-| Backend deploy | API and integration |
+| Event             | Suite                         |
+| ----------------- | ----------------------------- |
+| Pull request      | typecheck, lint, smoke, API   |
+| Frontend deploy   | smoke, frontend-critical E2E  |
+| Backend deploy    | API and integration           |
 | Weekly regression | full suite plus visual guards |
 
 CI should upload Playwright reports, traces, screenshots, and videos on failure. Keep retries at `2` in CI and `0` locally.
@@ -20,7 +20,7 @@ Default CI targets:
 
 Use local or staging URLs only when those environments have representative data for the suite being run.
 
-`.github/workflows/automation-nightly.yml` is named historically, but it is scheduled weekly at `08:30 UTC` every Monday.
+`.github/workflows/automation-weekly.yml` runs the full regression suite at `08:30 UTC` every Monday.
 
 ## Current Repository Wiring
 

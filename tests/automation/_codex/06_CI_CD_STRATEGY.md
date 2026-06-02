@@ -19,8 +19,7 @@ Create:
 ```txt
 .github/workflows/automation-smoke.yml
 .github/workflows/automation-api.yml
-.github/workflows/automation-e2e.yml
-.github/workflows/automation-nightly.yml
+.github/workflows/automation-weekly.yml
 ```
 
 ## Working Directory
@@ -138,7 +137,7 @@ npm run test:integration
 npm run test:e2e
 ```
 
-## Nightly Strategy
+## Weekly Strategy
 
 Once per day:
 
@@ -148,7 +147,7 @@ Run:
 npm run test
 ```
 
-Nightly may include:
+Weekly may include:
 
 - full E2E
 - mobile viewport

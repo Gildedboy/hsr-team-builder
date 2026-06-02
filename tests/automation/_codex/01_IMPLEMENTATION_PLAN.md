@@ -150,14 +150,14 @@ Example:
 Good:
 
 ```ts
-await teamBuilderPage.selectMainCharacter('Firefly');
-await teamBuilderPage.generateTeams();
+await teamBuilderPage.selectMainCharacter('Firefly')
+await teamBuilderPage.generateTeams()
 ```
 
 Bad:
 
 ```ts
-await page.locator('.main > div:nth-child(3) button').click();
+await page.locator('.main > div:nth-child(3) button').click()
 ```
 
 ## Milestone 4 — Fixtures and Helpers
@@ -228,19 +228,18 @@ Create workflows:
 ```txt
 .github/workflows/automation-smoke.yml
 .github/workflows/automation-api.yml
-.github/workflows/automation-e2e.yml
-.github/workflows/automation-nightly.yml
+.github/workflows/automation-weekly.yml
 ```
 
 Execution strategy:
 
-| Event | Suite |
-|---|---|
-| Pull request | typecheck, lint, smoke, API |
-| Frontend deploy | smoke, frontend-critical E2E |
-| Backend deploy | API, backend-critical integration |
-| Full deploy | smoke, API, integration, E2E |
-| Nightly | full regression |
+| Event           | Suite                             |
+| --------------- | --------------------------------- |
+| Pull request    | typecheck, lint, smoke, API       |
+| Frontend deploy | smoke, frontend-critical E2E      |
+| Backend deploy  | API, backend-critical integration |
+| Full deploy     | smoke, API, integration, E2E      |
+| Weekly          | full regression                   |
 
 ## Milestone 7 — Hardening
 

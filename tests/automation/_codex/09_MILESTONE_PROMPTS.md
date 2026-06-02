@@ -27,7 +27,7 @@ For Milestone 1, create:
 - playwright.config.ts
 - .env.example
 - README.md
-- docs copied/adapted from _codex
+- docs copied/adapted from \_codex
 - prompts directory
 - src base folders
 - tests/smoke/home.smoke.spec.ts
@@ -78,7 +78,7 @@ Create:
 - src/api/base-api.client.ts
 - API clients for real backend endpoints
 - src/assertions/api.assertions.ts
-- tests/api/*.api.spec.ts
+- tests/api/\*.api.spec.ts
 
 Use Playwright APIRequestContext.
 
@@ -241,8 +241,7 @@ Create:
 
 - .github/workflows/automation-smoke.yml
 - .github/workflows/automation-api.yml
-- .github/workflows/automation-e2e.yml
-- .github/workflows/automation-nightly.yml
+- .github/workflows/automation-weekly.yml
 
 Requirements:
 
