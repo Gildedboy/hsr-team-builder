@@ -77,9 +77,20 @@ const getNewFormatCharacter = (characterId: string) => {
 const PRYDWEN_DEMO_LINK = import.meta.env.DEV
   ? 'https://www.prydwen.gg/star-rail/characters/kafka/'
   : undefined
+const PRYDWEN_LOGO_URL = '/images/prydwen-logo.webp'
+const PRYDWEN_LOGO_FALLBACK_URL = '/images/prydwen-logo.svg'
 
 const getPrydwenLink = (characterId: string) => {
   return getNewFormatCharacter(characterId)?.prydwenLink || PRYDWEN_DEMO_LINK
+}
+
+const handlePrydwenLogoError = (event: Event) => {
+  const image = event.currentTarget as HTMLImageElement
+  if (image.src.endsWith(PRYDWEN_LOGO_FALLBACK_URL)) {
+    return
+  }
+
+  image.src = PRYDWEN_LOGO_FALLBACK_URL
 }
 
 // Search keydown handler for character details
@@ -570,13 +581,14 @@ const getRecommendationTierForRoster = (characterId: string) =>
                         title="Open Prydwen build guide"
                       >
                         <img
-                          src="/images/prydwen-logo.svg"
+                          :src="PRYDWEN_LOGO_URL"
                           alt="Prydwen"
                           class="prydwen-logo"
                           loading="lazy"
                           width="112"
                           height="28"
                           decoding="async"
+                          @error="handlePrydwenLogoError"
                         />
                       </a>
                     </div>

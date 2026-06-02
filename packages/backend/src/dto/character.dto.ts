@@ -49,6 +49,7 @@ export enum Role {
 
 export enum BulkCharacterOperationType {
   UPSERT_TEAMMATE_RECOMMENDATION = 'upsert_teammate_recommendation',
+  UPSERT_TEAM_COMPOSITION = 'upsert_team_composition',
   REPLACE_TEAM_MEMBER = 'replace_team_member',
   UPDATE_CHARACTER_FIELDS = 'update_character_fields',
 }
@@ -137,11 +138,48 @@ export class CharacterFieldUpdatesDto {
   guobaLink?: string
 }
 
+export class BulkTeamVariantDto {
+  @ApiProperty({
+    description: 'Team character IDs',
+    example: ['firefly', 'htb', 'ruan-mei', 'gallagher'],
+  })
+  @IsArray()
+  @ArrayMinSize(1)
+  @IsString({ each: true })
+  characters: string[]
+
+  @ApiPropertyOptional({ description: 'Team description' })
+  @IsOptional()
+  @IsString()
+  description?: string
+}
+
+export class BulkTeamCompositionDto {
+  @ApiProperty({ description: 'Team composition name', example: 'Main DPS Team' })
+  @IsString()
+  name: string
+
+  @ApiProperty({ description: 'Character role in this team', example: 'Main DPS' })
+  @IsString()
+  role: string
+
+  @ApiProperty({ description: 'Best in slot team variant', type: BulkTeamVariantDto })
+  @ValidateNested()
+  @Type(() => BulkTeamVariantDto)
+  bis: BulkTeamVariantDto
+
+  @ApiPropertyOptional({ description: 'F2P team variant', type: BulkTeamVariantDto })
+  @IsOptional()
+  @ValidateNested()
+  @Type(() => BulkTeamVariantDto)
+  f2p?: BulkTeamVariantDto
+}
+
 export class CharacterBulkOperationDto {
   @ApiProperty({
     enum: BulkCharacterOperationType,
     description:
-      'Bulk operation type. Use `upsert_teammate_recommendation` for teammate sections, or `replace_team_member` for team composition slots.',
+      'Bulk operation type. Use `upsert_teammate_recommendation` for teammate sections, `upsert_team_composition` for full team suggestions, or `replace_team_member` for team composition slots.',
     example: BulkCharacterOperationType.UPSERT_TEAMMATE_RECOMMENDATION,
   })
   @IsEnum(BulkCharacterOperationType)
@@ -190,7 +228,28 @@ export class CharacterBulkOperationDto {
 
   @ApiPropertyOptional({
     description:
-      'How to update the target recommendation bucket. `append_unique` keeps existing IDs and adds new ones only if missing. `replace` overwrites the full bucket.',
+      'Full team composition to add or replace. Required for `upsert_team_composition`. The default `append_unique` mode adds it only when no composition with the same name and role exists; `replace` overwrites the matched composition.',
+    type: BulkTeamCompositionDto,
+    example: {
+      name: 'Main DPS Team',
+      role: 'Main DPS',
+      bis: {
+        characters: ['firefly', 'htb', 'ruan-mei', 'gallagher'],
+        description: 'Premium break setup',
+      },
+      f2p: {
+        characters: ['firefly', 'asta', 'htb', 'gallagher'],
+      },
+    },
+  })
+  @IsOptional()
+  @ValidateNested()
+  @Type(() => BulkTeamCompositionDto)
+  teamComposition?: BulkTeamCompositionDto
+
+  @ApiPropertyOptional({
+    description:
+      'How to update the target recommendation bucket or team composition. For team compositions, `append_unique` only adds a missing name/role pair and `replace` overwrites the matching composition.',
     enum: BulkListUpdateMode,
     default: BulkListUpdateMode.APPEND_UNIQUE,
     example: BulkListUpdateMode.APPEND_UNIQUE,
@@ -201,7 +260,7 @@ export class CharacterBulkOperationDto {
 
   @ApiPropertyOptional({
     description:
-      'Filters that select which team compositions to update. Optional for `replace_team_member`; if omitted, all team compositions for each target character are considered.',
+      'Filters that select which team compositions to update. Optional for `replace_team_member`; for `upsert_team_composition` with `replace`, it selects the composition to overwrite.',
     type: TeamCompositionMatchDto,
   })
   @IsOptional()
@@ -290,7 +349,10 @@ export class BulkCharacterOperationResultDto {
   @ApiProperty({ description: '0-based index of the operation in the request payload', example: 0 })
   index: number
 
-  @ApiProperty({ enum: BulkCharacterOperationType, example: BulkCharacterOperationType.REPLACE_TEAM_MEMBER })
+  @ApiProperty({
+    enum: BulkCharacterOperationType,
+    example: BulkCharacterOperationType.REPLACE_TEAM_MEMBER,
+  })
   type: BulkCharacterOperationType
 
   @ApiProperty({
@@ -308,7 +370,8 @@ export class BulkCharacterOperationResultDto {
   updatedCharacterIds: string[]
 
   @ApiProperty({
-    description: 'Character IDs that were skipped because nothing changed or the character was missing',
+    description:
+      'Character IDs that were skipped because nothing changed or the character was missing',
     type: [String],
     example: ['rappa'],
   })
