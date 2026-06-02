@@ -292,8 +292,7 @@ Create GitHub Actions workflows:
 ```txt
 .github/workflows/automation-smoke.yml
 .github/workflows/automation-api.yml
-.github/workflows/automation-e2e.yml
-.github/workflows/automation-nightly.yml
+.github/workflows/automation-weekly.yml
 ```
 
 The workflows must:
