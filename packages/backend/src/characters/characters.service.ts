@@ -1,4 +1,10 @@
-import { BadRequestException, Inject, Injectable, InternalServerErrorException, Logger } from '@nestjs/common'
+import {
+  BadRequestException,
+  Inject,
+  Injectable,
+  InternalServerErrorException,
+  Logger,
+} from '@nestjs/common'
 import { InjectRepository } from '@nestjs/typeorm'
 import { In, Repository } from 'typeorm'
 import { CACHE_MANAGER } from '@nestjs/cache-manager'
@@ -426,6 +432,13 @@ export class CharactersService {
       return
     }
 
+    if (operation.type === BulkCharacterOperationType.UPSERT_TEAM_COMPOSITION) {
+      if (!operation.teamComposition) {
+        throw new BadRequestException('teamComposition is required for team composition upserts')
+      }
+      return
+    }
+
     if (operation.type === BulkCharacterOperationType.UPDATE_CHARACTER_FIELDS) {
       if (!operation.updates || Object.keys(operation.updates).length === 0) {
         throw new BadRequestException('updates is required for character field updates')
@@ -454,6 +467,8 @@ export class CharactersService {
         return this.applyTeammateRecommendationBulkOperation(entity, operation, details)
       case BulkCharacterOperationType.UPDATE_CHARACTER_FIELDS:
         return this.applyCharacterFieldUpdateBulkOperation(entity, operation, details)
+      case BulkCharacterOperationType.UPSERT_TEAM_COMPOSITION:
+        return this.applyTeamCompositionBulkOperation(entity, operation, details)
       case BulkCharacterOperationType.REPLACE_TEAM_MEMBER:
         return this.applyReplaceTeamMemberBulkOperation(entity, operation, details)
       default:
@@ -546,6 +561,52 @@ export class CharactersService {
     return true
   }
 
+  private applyTeamCompositionBulkOperation(
+    entity: CharacterEntity,
+    operation: CharacterBulkOperationDto,
+    details: string[],
+  ): boolean {
+    const mode = operation.mode ?? BulkListUpdateMode.APPEND_UNIQUE
+    const incomingComposition = structuredClone(operation.teamComposition) as TeamComposition
+    const compositions = entity.teamCompositions ? structuredClone(entity.teamCompositions) : []
+    const match = mode === BulkListUpdateMode.REPLACE ? operation.match : undefined
+    const matchingIndex = compositions.findIndex((composition) =>
+      match
+        ? this.teamCompositionMatches(composition, match)
+        : composition.name === incomingComposition.name &&
+          composition.role === incomingComposition.role,
+    )
+
+    if (matchingIndex === -1) {
+      compositions.push(incomingComposition)
+      entity.teamCompositions = compositions
+      details.push(`Added ${entity.id} team composition "${incomingComposition.name}"`)
+      return true
+    }
+
+    if (mode !== BulkListUpdateMode.REPLACE) {
+      details.push(
+        `No team composition change needed for ${entity.id} ("${incomingComposition.name}" already exists)`,
+      )
+      return false
+    }
+
+    if (this.areTeamCompositionsEqual(compositions[matchingIndex], incomingComposition)) {
+      details.push(
+        `No team composition change needed for ${entity.id} ("${incomingComposition.name}")`,
+      )
+      return false
+    }
+
+    const replacedName = compositions[matchingIndex].name
+    compositions[matchingIndex] = incomingComposition
+    entity.teamCompositions = compositions
+    details.push(
+      `Replaced ${entity.id} team composition "${replacedName}" with "${incomingComposition.name}"`,
+    )
+    return true
+  }
+
   private applyReplaceTeamMemberBulkOperation(
     entity: CharacterEntity,
     operation: CharacterBulkOperationDto,
@@ -609,6 +670,36 @@ export class CharactersService {
 
     entity.teamCompositions = compositions
     return true
+  }
+
+  private areTeamCompositionsEqual(left: TeamComposition, right: TeamComposition): boolean {
+    return (
+      left.name === right.name &&
+      left.role === right.role &&
+      this.areTeamVariantsEqual(left.bis, right.bis) &&
+      this.areOptionalTeamVariantsEqual(left.f2p, right.f2p)
+    )
+  }
+
+  private areOptionalTeamVariantsEqual(
+    left: TeamComposition['f2p'],
+    right: TeamComposition['f2p'],
+  ): boolean {
+    if (!left || !right) {
+      return !left && !right
+    }
+
+    return this.areTeamVariantsEqual(left, right)
+  }
+
+  private areTeamVariantsEqual(
+    left: TeamComposition['bis'],
+    right: TeamComposition['bis'],
+  ): boolean {
+    return (
+      this.areStringArraysEqual(left.characters, right.characters) &&
+      (left.description ?? undefined) === (right.description ?? undefined)
+    )
   }
 
   private teamCompositionMatches(

@@ -147,9 +147,10 @@ export class CharactersController {
   @Patch('bulk')
   @ApiBearerAuth()
   @ApiOperation({
-    summary: 'Bulk update nested character recommendations and team compositions (requires authentication)',
+    summary:
+      'Bulk update nested character recommendations and team compositions (requires authentication)',
     description:
-      'Use this endpoint to update many characters at once without rewriting full character payloads. It supports two admin workflows: adding IDs into teammate recommendation buckets, and replacing a specific slot inside matched team compositions. Start with `dryRun: true` to preview the result safely in Swagger before persisting changes.',
+      'Use this endpoint to update many characters at once without rewriting full character payloads. It supports admin workflows for adding IDs into teammate recommendation buckets, adding or replacing full team suggestions, and replacing a specific slot inside matched team compositions. Start with `dryRun: true` to preview the result safely in Swagger before persisting changes.',
   })
   @ApiBody({
     description: 'Bulk character operations with optional dry-run preview support',
@@ -183,6 +184,30 @@ export class CharactersController {
               variant: 'bis',
               slotIndex: 3,
               newCharacterId: 'dhpt',
+            },
+          ],
+          dryRun: true,
+        },
+      },
+      addBreakTeamSuggestion: {
+        summary: 'Add a full team suggestion to multiple characters',
+        value: {
+          operations: [
+            {
+              type: 'upsert_team_composition',
+              characterIds: ['firefly', 'rappa', 'boothill'],
+              teamComposition: {
+                name: 'Break Team',
+                role: 'Main DPS',
+                bis: {
+                  characters: ['firefly', 'htb', 'ruan-mei', 'gallagher'],
+                  description: 'Premium break setup',
+                },
+                f2p: {
+                  characters: ['firefly', 'asta', 'htb', 'gallagher'],
+                },
+              },
+              mode: 'append_unique',
             },
           ],
           dryRun: true,
@@ -256,7 +281,9 @@ export class CharactersController {
   })
   @ApiResponse({ status: 400, description: 'Invalid bulk update payload' })
   @ApiResponse({ status: 401, description: 'Unauthorized' })
-  bulkUpdateCharacters(@Body() bulkUpdate: BulkCharacterUpdateDto): Promise<BulkCharacterUpdateResponseDto> {
+  bulkUpdateCharacters(
+    @Body() bulkUpdate: BulkCharacterUpdateDto,
+  ): Promise<BulkCharacterUpdateResponseDto> {
     return this.charactersService.bulkUpdateCharacters(bulkUpdate)
   }
 
