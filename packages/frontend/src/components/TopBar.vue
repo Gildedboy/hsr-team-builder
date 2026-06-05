@@ -185,7 +185,7 @@
                 <div v-else-if="error && !hasVersionInfo" class="mb-3">
                   <div class="text-warning small">
                     <i class="fas fa-exclamation-triangle me-1"></i>
-                    Unable to load latest version info. Showing cached content.
+                    Unable to load version information.
                   </div>
                 </div>
 
