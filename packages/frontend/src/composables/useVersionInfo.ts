@@ -13,22 +13,6 @@ export interface VersionInfo {
   roadmapItems?: string[]
 }
 
-const fallbackVersionContent: Record<string, Omit<VersionInfo, 'version' | 'releaseDate'>> = {
-  'v4.3.2': {
-    title: 'Team Suggestions and Prydwen Logo Update',
-    description:
-      'Adds bulk team suggestion updates for admins and switches the Prydwen link badge to the official logo asset.',
-    features: [
-      'Bulk updater can add full team composition suggestions across multiple characters',
-      'Bulk team composition updates support append-only and replace modes',
-      'Prydwen links now use the official downloaded logo asset',
-    ],
-    bugFixes: [
-      'Version info fallback no longer shows stale release notes when the API record is missing',
-    ],
-  },
-}
-
 export function useVersionInfo() {
   const currentVersionInfo = ref<VersionInfo | null>(null)
   const roadmapItems = ref<string[]>([])
@@ -38,7 +22,6 @@ export function useVersionInfo() {
   const roadmapError = ref<string | null>(null)
   const RETRY_DELAY_MS = 10000
 
-  let versionRetryTimer: ReturnType<typeof setTimeout> | null = null
   let roadmapRetryTimer: ReturnType<typeof setTimeout> | null = null
 
   const configuredAppVersion = import.meta.env.VITE_APP_VERSION?.trim()
@@ -50,13 +33,6 @@ export function useVersionInfo() {
   const appVersion = computed(
     () => currentVersionInfo.value?.version || configuredAppVersion || 'latest',
   )
-
-  const clearVersionRetryTimer = () => {
-    if (versionRetryTimer) {
-      clearTimeout(versionRetryTimer)
-      versionRetryTimer = null
-    }
-  }
 
   const clearRoadmapRetryTimer = () => {
     if (roadmapRetryTimer) {
@@ -82,32 +58,10 @@ export function useVersionInfo() {
 
       const data = await response.json()
       currentVersionInfo.value = data
-      clearVersionRetryTimer()
     } catch (err) {
       error.value = err instanceof Error ? err.message : 'Failed to load version information'
-      console.warn('Version info API unavailable, using fallback content')
-
-      const fallbackVersion = configuredAppVersion || 'latest'
-      const fallbackContent = fallbackVersionContent[fallbackVersion] ?? {
-        title: `Version ${fallbackVersion}`,
-        description:
-          'Release notes for this deployed version are not available from the version API yet.',
-        features: [],
-        bugFixes: [],
-      }
-
-      currentVersionInfo.value = {
-        version: fallbackVersion,
-        releaseDate: new Date().toISOString().split('T')[0],
-        ...fallbackContent,
-      }
-
-      if (!versionRetryTimer) {
-        versionRetryTimer = setTimeout(() => {
-          versionRetryTimer = null
-          void fetchVersionInfo()
-        }, RETRY_DELAY_MS)
-      }
+      currentVersionInfo.value = null
+      console.warn('Version info API unavailable')
     } finally {
       isLoading.value = false
     }
