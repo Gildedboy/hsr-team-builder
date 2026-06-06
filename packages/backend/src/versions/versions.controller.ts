@@ -105,15 +105,21 @@ export class VersionsController {
   @Get(':version')
   @ApiOperation({ summary: 'Get version by version string' })
   @ApiParam({ name: 'version', description: 'Version string (e.g., v2.6.2)' })
-  @ApiResponse({ status: 200, description: 'Version details' })
-  @ApiResponse({ status: 404, description: 'Version not found' })
+  @ApiResponse({ status: 200, description: 'Version details, falling back to latest if missing' })
+  @ApiResponse({ status: 404, description: 'No versions available' })
   async findOne(@Param('version') version: string) {
     try {
       const found = await this.versionsService.findOne(version)
       return found
     } catch (error) {
       if (error instanceof Error && error.message.includes('not found')) {
-        throw new HttpException(`Version ${version} not found`, HttpStatus.NOT_FOUND)
+        const latestVersion = await this.versionsService.getLatestVersion()
+
+        if (latestVersion) {
+          return latestVersion
+        }
+
+        throw new HttpException('No versions available', HttpStatus.NOT_FOUND)
       }
       throw error
     }

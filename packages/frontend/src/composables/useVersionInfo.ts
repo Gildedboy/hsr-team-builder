@@ -20,26 +20,13 @@ export function useVersionInfo() {
   const isLoadingRoadmap = ref(false)
   const error = ref<string | null>(null)
   const roadmapError = ref<string | null>(null)
-  const RETRY_DELAY_MS = 10000
-
-  let roadmapRetryTimer: ReturnType<typeof setTimeout> | null = null
 
   const configuredAppVersion = import.meta.env.VITE_APP_VERSION?.trim()
-  const versionEndpoint = configuredAppVersion
-    ? `${API_BASE_URL}/versions/${configuredAppVersion}`
-    : `${API_BASE_URL}/versions/latest`
 
   // Use the deployed app version when available, otherwise show the latest API version in dev.
   const appVersion = computed(
     () => currentVersionInfo.value?.version || configuredAppVersion || 'latest',
   )
-
-  const clearRoadmapRetryTimer = () => {
-    if (roadmapRetryTimer) {
-      clearTimeout(roadmapRetryTimer)
-      roadmapRetryTimer = null
-    }
-  }
 
   const fetchVersionInfo = async () => {
     if (isLoading.value) {
@@ -50,14 +37,23 @@ export function useVersionInfo() {
     error.value = null
 
     try {
-      const response = await fetch(versionEndpoint)
+      const response = await fetch(
+        configuredAppVersion ? `${API_BASE_URL}/versions` : `${API_BASE_URL}/versions/latest`,
+      )
 
       if (!response.ok) {
         throw new Error(`Failed to fetch version info: ${response.status}`)
       }
 
       const data = await response.json()
-      currentVersionInfo.value = data
+      if (configuredAppVersion && Array.isArray(data)) {
+        currentVersionInfo.value =
+          data.find((versionInfo: VersionInfo) => versionInfo.version === configuredAppVersion) ||
+          data[0] ||
+          null
+      } else {
+        currentVersionInfo.value = data
+      }
     } catch (err) {
       error.value = err instanceof Error ? err.message : 'Failed to load version information'
       currentVersionInfo.value = null
@@ -84,7 +80,6 @@ export function useVersionInfo() {
 
       const data = await response.json()
       roadmapItems.value = Array.isArray(data) ? data : []
-      clearRoadmapRetryTimer()
     } catch (err) {
       roadmapError.value = err instanceof Error ? err.message : 'Failed to load roadmap'
       console.warn('Roadmap API unavailable, using fallback content')
@@ -93,13 +88,6 @@ export function useVersionInfo() {
       roadmapItems.value = [
         'Allow users to pick their owned characters, store locally, and recommend teams based on their roster',
       ]
-
-      if (!roadmapRetryTimer) {
-        roadmapRetryTimer = setTimeout(() => {
-          roadmapRetryTimer = null
-          void fetchRoadmap()
-        }, RETRY_DELAY_MS)
-      }
     } finally {
       isLoadingRoadmap.value = false
     }
