@@ -745,7 +745,6 @@ export class CharactersService {
         return { message: 'Database already seeded', count: existingCount }
       }
 
-      // Complete character dataset (15+ key characters from main branch data)
       const seedData = allCharactersSeedData
 
       const characters: CharacterEntity[] = []

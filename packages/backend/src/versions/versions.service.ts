@@ -23,63 +23,12 @@ export class VersionsService {
   ) {}
 
   async seedVersions(): Promise<{ message: string; count: number }> {
-    const seedData = [
-      {
-        version: 'v2.6.2',
-        title: 'Responsive Character Details Fix',
-        description: 'Improved mobile and desktop experience with better character detail layouts.',
-        releaseDate: '2025-11-01',
-        features: [
-          'Responsive character details layout improvements',
-          'Better mobile experience across all screen sizes',
-          'Fixed text crowding on medium screens',
-          'Improved character info visibility',
-          'Dynamic version information system',
-        ],
-        bugFixes: [
-          'Character details no longer hidden on smaller screens',
-          'Mobile layout properly activates at correct breakpoints',
-          'Fixed minimum width causing horizontal scroll issues',
-        ],
-        breakingChanges: [],
-        knownIssues: [],
-        isActive: true,
-        isPrerelease: false,
-      },
-      {
-        version: 'v2.6.1',
-        title: 'Performance Improvements',
-        description: 'General performance improvements and bug fixes.',
-        releaseDate: '2025-10-30',
-        features: ['Performance optimizations', 'Improved API response times'],
-        bugFixes: ['Various stability improvements', 'Memory usage optimizations'],
-        breakingChanges: [],
-        knownIssues: [],
-        isActive: true,
-        isPrerelease: false,
-      },
-      {
-        version: 'v2.6.0',
-        title: 'Major Feature Release',
-        description: 'New features and improvements to the team building experience.',
-        releaseDate: '2025-10-25',
-        features: [
-          'Enhanced team recommendations',
-          'Improved character filtering',
-          'Better search functionality',
-        ],
-        bugFixes: ['Fixed various UI issues', 'Improved mobile responsiveness'],
-        breakingChanges: [],
-        knownIssues: [],
-        isActive: true,
-        isPrerelease: false,
-      },
-    ]
+    const seedData: CreateVersionDto[] = []
 
     let seededCount = 0
     for (const versionData of seedData) {
       try {
-        await this.create(versionData as CreateVersionDto)
+        await this.create(versionData)
         seededCount++
       } catch (error) {
         if (error instanceof Error && error.message.includes('already exists')) {
