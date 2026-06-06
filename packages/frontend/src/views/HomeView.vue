@@ -2,6 +2,7 @@
 import TopBar from '@/components/TopBar.vue'
 import TeamRecommendations from '@/components/TeamRecommendations.vue'
 import RoleTabsSection from '@/components/RoleTabsSection.vue'
+import RosterImportModal from '@/components/RosterImportModal.vue'
 import { getCharacterAvatar, handleImageError, getCharacterImage } from '@/data/avatars'
 import { getLightconeImage, handleLightconeImageError } from '@/data/lightcones'
 import { useHomeView } from '@/composables/useHomeView'
@@ -24,6 +25,7 @@ const {
   saveRosterEditMode,
   selectAllNonFreeCharacters,
   hideAllNonFreeCharacters,
+  applyImportedOwnedCharacterIds,
   toggleCharacterAvailability,
   isCharacterRecommended,
   getRecommendationTier,
@@ -142,6 +144,21 @@ const showLightconeModal = (lightcone: Lightcone) => {
 
 const hideLightconeModal = () => {
   lightconeModal.value.show = false
+}
+
+const isRosterImportModalOpen = ref(false)
+
+const openRosterImportModal = () => {
+  isRosterImportModalOpen.value = true
+}
+
+const closeRosterImportModal = () => {
+  isRosterImportModalOpen.value = false
+}
+
+const applyRosterImport = (ownedCharacterIds: string[]) => {
+  applyImportedOwnedCharacterIds(ownedCharacterIds, characters.value)
+  closeRosterImportModal()
 }
 
 const disabledCharacterCount = computed(() => disabledCharacterIds.value.length)
@@ -862,6 +879,13 @@ const getRecommendationTierForRoster = (characterId: string) =>
               </button>
               <button
                 v-if="!isRosterEditMode"
+                class="btn btn-success btn-sm fw-semibold rounded-pill"
+                @click="openRosterImportModal()"
+              >
+                Import
+              </button>
+              <button
+                v-if="!isRosterEditMode"
                 class="btn btn-outline-info btn-sm fw-semibold rounded-pill"
                 @click="enterRosterEditMode()"
               >
@@ -948,6 +972,13 @@ const getRecommendationTierForRoster = (characterId: string) =>
         />
       </div>
     </div>
+
+    <RosterImportModal
+      v-if="isRosterImportModalOpen"
+      :characters="characters"
+      @close="closeRosterImportModal"
+      @apply="applyRosterImport"
+    />
 
     <!-- Lightcone Modal -->
     <div

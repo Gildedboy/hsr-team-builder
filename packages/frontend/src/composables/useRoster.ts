@@ -273,6 +273,20 @@ export function useRoster() {
     )
   }
 
+  const applyImportedOwnedCharacterIds = (ownedCharacterIds: string[], characters: Character[]) => {
+    const ownedIds = new Set(ownedCharacterIds)
+    const nextDisabledIds = new Set(
+      characters
+        .map((character) => character.id)
+        .filter((characterId) => !isFreeCharacterId(characterId) && !ownedIds.has(characterId)),
+    )
+
+    savedDisabledCharacterIds.value = nextDisabledIds
+    stagedDisabledCharacterIds.value = cloneIdSet(nextDisabledIds)
+    persistRosterConfig(savedDisabledCharacterIds.value)
+    isRosterEditMode.value = false
+  }
+
   const toggleCharacterAvailability = (characterId: string) => {
     if (!isRosterEditMode.value || isFreeCharacterId(characterId)) {
       return
@@ -400,6 +414,7 @@ export function useRoster() {
     saveRosterEditMode,
     selectAllNonFreeCharacters,
     hideAllNonFreeCharacters,
+    applyImportedOwnedCharacterIds,
     toggleCharacterAvailability,
     getResolvedTeammateSections,
     getResolvedTeamCompositions,
