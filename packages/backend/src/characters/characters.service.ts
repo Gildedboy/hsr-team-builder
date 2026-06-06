@@ -14,7 +14,6 @@ import { Character } from '../types/Character'
 import { CharacterEntity } from '../entities/character.entity'
 import { LightconeEntity } from '../entities/lightcone.entity'
 import { CharacterLightconeEntity } from '../entities/character-lightcone.entity'
-import { allCharactersSeedData } from '../data/allCharactersData'
 import {
   BulkCharacterOperationType,
   BulkCharacterUpdateDto,
@@ -737,42 +736,12 @@ export class CharactersService {
   }
 
   async seedCharacters(): Promise<{ message: string; count: number }> {
-    try {
-      // Check if characters already exist
-      const existingCount = await this.characterRepository.count()
-      if (existingCount > 0) {
-        this.logger.log(`Database already has ${existingCount} characters, skipping seed`)
-        return { message: 'Database already seeded', count: existingCount }
-      }
+    const existingCount = await this.characterRepository.count()
+    this.logger.log(
+      `Character seed data is not bundled. Database currently has ${existingCount} characters.`,
+    )
 
-      // Complete character dataset (15+ key characters from main branch data)
-      const seedData = allCharactersSeedData
-
-      const characters: CharacterEntity[] = []
-
-      for (const data of seedData) {
-        const character = new CharacterEntity()
-        character.id = data.id
-        character.name = data.name
-        character.element = data.element
-        character.path = data.path
-        character.rarity = data.rarity
-        character.roles = data.roles
-        character.archetype = data.archetype
-        character.labels = data.labels
-        character.teammateRecommendations = data.teammateRecommendations ?? null
-        character.teamCompositions = data.teamCompositions ?? null
-        characters.push(character)
-      }
-
-      await this.characterRepository.save(characters)
-      this.logger.log(`Successfully seeded ${characters.length} characters`)
-
-      return { message: 'Database seeded successfully', count: characters.length }
-    } catch (error) {
-      this.logger.error('Failed to seed characters:', error)
-      throw new InternalServerErrorException('Failed to seed database')
-    }
+    return { message: 'No character seed data configured', count: existingCount }
   }
 
   async clearCharacters(): Promise<{ message: string; cleared: number }> {

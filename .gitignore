@@ -36,3 +36,6 @@ coverage
 
 .codex
 .local-notes/
+
+# Local HSR scanner exports
+archive_output-*.json

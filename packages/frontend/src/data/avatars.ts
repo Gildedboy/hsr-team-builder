@@ -1,7 +1,7 @@
 import { useAvatarPreference } from '@/composables/useAvatarPreference'
 
 // Character ID to avatar mapping (based on Honkai Star Rail character IDs)
-const characterAvatarMap: Record<string, string> = {
+export const characterAvatarMap: Record<string, string> = {
   // Main characters (1000 series)
   'dan-heng': '1002',
   'march-7th': '1001',
@@ -86,11 +86,10 @@ const characterAvatarMap: Record<string, string> = {
   evanescia: '1505',
   'silver-wolf-lv-999': '1506',
   'mortenax-blade': '1507',
-  'male-elation-trailblazer': '8009',
-  'female-elation-trailblazer': '8010',
 }
 
-const trailblazerAssetPairs: Record<string, { caelus: string; stelle: string }> = {
+export const trailblazerAssetPairs: Record<string, { caelus: string; stelle: string }> = {
+  // Odd IDs are Caelus, even IDs are Stelle. Ownership imports collapse both genders by path.
   'destruction-trailblazer': { caelus: '8001', stelle: '8002' },
   'preservation-trailblazer': { caelus: '8003', stelle: '8004' },
   'fire-trailblazer': { caelus: '8003', stelle: '8004' },
@@ -107,6 +106,16 @@ const resolveAvatarAssetId = (characterId: string) => {
   }
 
   return characterAvatarMap[characterId]
+}
+
+export const getCharacterAvatarAssetIds = (characterId: string): string[] => {
+  const trailblazerAssetPair = trailblazerAssetPairs[characterId]
+  if (trailblazerAssetPair) {
+    return [trailblazerAssetPair.caelus, trailblazerAssetPair.stelle]
+  }
+
+  const avatarId = characterAvatarMap[characterId]
+  return avatarId ? [avatarId] : []
 }
 
 export const getCharacterAvatar = (characterId: string): string => {
