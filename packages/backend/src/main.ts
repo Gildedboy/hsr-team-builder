@@ -41,19 +41,22 @@ async function bootstrap() {
     'http://localhost:4173',
     process.env.PRODUCTION_DOMAIN || 'https://hsr-team-builder.gilded.dev',
   ]
+  const isAllowedOrigin = (origin?: string) => !origin || allowedOrigins.includes(origin)
+
+  app.use((req, res, next) => {
+    const origin = req.headers.origin
+
+    if (origin && !isAllowedOrigin(origin)) {
+      logger.warn(`Rejected CORS origin ${origin} for ${req.method} ${req.originalUrl || req.url}`)
+      return res.status(403).json({ statusCode: 403, message: 'CORS origin not allowed' })
+    }
+
+    next()
+  })
 
   app.enableCors({
     origin: (origin, callback) => {
-      // Allow requests with no origin (mobile apps, etc.)
-      if (!origin) {
-        return callback(null, true)
-      }
-
-      if (allowedOrigins.includes(origin)) {
-        return callback(null, true)
-      }
-
-      return callback(new Error('Not allowed by CORS'), false)
+      return callback(null, isAllowedOrigin(origin))
     },
     methods: ['GET', 'POST', 'PUT', 'PATCH', 'DELETE'],
     credentials: true,
