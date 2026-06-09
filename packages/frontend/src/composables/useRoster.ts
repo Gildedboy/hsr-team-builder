@@ -10,6 +10,7 @@ import {
 
 interface StoredRosterConfig {
   disabledCharacterIds: string[]
+  importedOwnedCharacterIds?: string[]
 }
 
 export type ResolvedCharacterKind = 'owned' | 'free' | 'fallback' | 'unavailable' | 'custom'
@@ -44,6 +45,7 @@ export interface ResolvedTeamComposition {
 
 const savedDisabledCharacterIds = ref<Set<string>>(new Set())
 const stagedDisabledCharacterIds = ref<Set<string>>(new Set())
+const importedOwnedCharacterIds = ref<Set<string> | null>(null)
 const isRosterEditMode = ref(false)
 
 let hasLoadedRosterState = false
@@ -58,7 +60,16 @@ const sanitizeDisabledCharacterIds = (value: unknown): string[] => {
   return value
     .filter((entry): entry is string => typeof entry === 'string' && entry.trim().length > 0)
     .map((entry) => entry.trim())
-    .filter((entry) => !isFreeCharacterId(entry))
+}
+
+const sanitizeCharacterIds = (value: unknown): string[] => {
+  if (!Array.isArray(value)) {
+    return []
+  }
+
+  return value
+    .filter((entry): entry is string => typeof entry === 'string' && entry.trim().length > 0)
+    .map((entry) => entry.trim())
 }
 
 const loadStoredRosterConfig = (): StoredRosterConfig => {
@@ -75,19 +86,24 @@ const loadStoredRosterConfig = (): StoredRosterConfig => {
     const parsed = JSON.parse(rawValue) as Partial<StoredRosterConfig> | null
     return {
       disabledCharacterIds: sanitizeDisabledCharacterIds(parsed?.disabledCharacterIds),
+      importedOwnedCharacterIds: sanitizeCharacterIds(parsed?.importedOwnedCharacterIds),
     }
   } catch {
     return { disabledCharacterIds: [] }
   }
 }
 
-const persistRosterConfig = (disabledIds: Set<string>) => {
+const persistRosterConfig = (disabledIds: Set<string>, importedOwnedIds: Set<string> | null) => {
   if (typeof window === 'undefined') {
     return
   }
 
   const config: StoredRosterConfig = {
     disabledCharacterIds: [...disabledIds].sort(),
+  }
+
+  if (importedOwnedIds) {
+    config.importedOwnedCharacterIds = [...importedOwnedIds].sort()
   }
 
   window.localStorage.setItem(ROSTER_STORAGE_KEY, JSON.stringify(config))
@@ -101,6 +117,9 @@ const ensureRosterState = () => {
   const storedConfig = loadStoredRosterConfig()
   savedDisabledCharacterIds.value = cloneIdSet(storedConfig.disabledCharacterIds)
   stagedDisabledCharacterIds.value = cloneIdSet(storedConfig.disabledCharacterIds)
+  importedOwnedCharacterIds.value = storedConfig.importedOwnedCharacterIds
+    ? cloneIdSet(storedConfig.importedOwnedCharacterIds)
+    : null
   hasLoadedRosterState = true
 }
 
@@ -120,6 +139,16 @@ const areSetsEqual = (left: Set<string>, right: Set<string>) => {
 
   return true
 }
+
+const buildDisabledCharacterIdsFromImport = (
+  ownedCharacterIds: Set<string>,
+  characters: Character[],
+) =>
+  new Set(
+    characters
+      .map((character) => character.id)
+      .filter((characterId) => !ownedCharacterIds.has(characterId)),
+  )
 
 const buildResolvedEntry = (
   displayedId: string,
@@ -226,8 +255,8 @@ export function useRoster() {
   )
 
   const isCharacterDisabled = (characterId: string, useStaged = isRosterEditMode.value) => {
-    if (isFreeCharacterId(characterId)) {
-      return false
+    if (!useStaged && importedOwnedCharacterIds.value) {
+      return !importedOwnedCharacterIds.value.has(characterId)
     }
 
     const sourceIds = useStaged ? stagedDisabledCharacterIds.value : savedDisabledCharacterIds.value
@@ -235,10 +264,27 @@ export function useRoster() {
   }
 
   const isCharacterAvailable = (characterId: string, useStaged = isRosterEditMode.value) =>
-    isFreeCharacterId(characterId) || !isCharacterDisabled(characterId, useStaged)
+    !isCharacterDisabled(characterId, useStaged)
 
-  const enterRosterEditMode = () => {
-    stagedDisabledCharacterIds.value = cloneIdSet(savedDisabledCharacterIds.value)
+  const getDisabledCharacterIds = (
+    characters: Character[],
+    useStaged = isRosterEditMode.value,
+  ): string[] => {
+    if (useStaged) {
+      return [...stagedDisabledCharacterIds.value].sort()
+    }
+
+    if (importedOwnedCharacterIds.value) {
+      return [...buildDisabledCharacterIdsFromImport(importedOwnedCharacterIds.value, characters)].sort()
+    }
+
+    return [...savedDisabledCharacterIds.value].sort()
+  }
+
+  const enterRosterEditMode = (characters: Character[] = []) => {
+    stagedDisabledCharacterIds.value = importedOwnedCharacterIds.value
+      ? buildDisabledCharacterIdsFromImport(importedOwnedCharacterIds.value, characters)
+      : cloneIdSet(savedDisabledCharacterIds.value)
     isRosterEditMode.value = true
   }
 
@@ -249,11 +295,12 @@ export function useRoster() {
 
   const saveRosterEditMode = () => {
     savedDisabledCharacterIds.value = cloneIdSet(stagedDisabledCharacterIds.value)
-    persistRosterConfig(savedDisabledCharacterIds.value)
+    importedOwnedCharacterIds.value = null
+    persistRosterConfig(savedDisabledCharacterIds.value, importedOwnedCharacterIds.value)
     isRosterEditMode.value = false
   }
 
-  const selectAllNonFreeCharacters = () => {
+  const selectAllCharacters = () => {
     if (!isRosterEditMode.value) {
       return
     }
@@ -261,34 +308,27 @@ export function useRoster() {
     stagedDisabledCharacterIds.value = new Set()
   }
 
-  const hideAllNonFreeCharacters = (characters: Character[]) => {
+  const hideAllCharacters = (characters: Character[]) => {
     if (!isRosterEditMode.value) {
       return
     }
 
-    stagedDisabledCharacterIds.value = new Set(
-      characters
-        .map((character) => character.id)
-        .filter((characterId) => !isFreeCharacterId(characterId)),
-    )
+    stagedDisabledCharacterIds.value = new Set(characters.map((character) => character.id))
   }
 
   const applyImportedOwnedCharacterIds = (ownedCharacterIds: string[], characters: Character[]) => {
     const ownedIds = new Set(ownedCharacterIds)
-    const nextDisabledIds = new Set(
-      characters
-        .map((character) => character.id)
-        .filter((characterId) => !isFreeCharacterId(characterId) && !ownedIds.has(characterId)),
-    )
+    const nextDisabledIds = buildDisabledCharacterIdsFromImport(ownedIds, characters)
 
+    importedOwnedCharacterIds.value = ownedIds
     savedDisabledCharacterIds.value = nextDisabledIds
     stagedDisabledCharacterIds.value = cloneIdSet(nextDisabledIds)
-    persistRosterConfig(savedDisabledCharacterIds.value)
+    persistRosterConfig(savedDisabledCharacterIds.value, importedOwnedCharacterIds.value)
     isRosterEditMode.value = false
   }
 
   const toggleCharacterAvailability = (characterId: string) => {
-    if (!isRosterEditMode.value || isFreeCharacterId(characterId)) {
+    if (!isRosterEditMode.value) {
       return
     }
 
@@ -409,11 +449,12 @@ export function useRoster() {
     isRosterEditMode,
     isCharacterAvailable,
     isCharacterDisabled,
+    getDisabledCharacterIds,
     enterRosterEditMode,
     cancelRosterEditMode,
     saveRosterEditMode,
-    selectAllNonFreeCharacters,
-    hideAllNonFreeCharacters,
+    selectAllCharacters,
+    hideAllCharacters,
     applyImportedOwnedCharacterIds,
     toggleCharacterAvailability,
     getResolvedTeammateSections,
