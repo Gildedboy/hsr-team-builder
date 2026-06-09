@@ -70,6 +70,8 @@ Backend production deploys are handled by Railway after backend changes reach th
 
 Update the backend Versions REST API for user-visible fixes and features so the app changelog/version metadata matches the release.
 
+This section applies to the production Versions API. QA has its own version data and does not normally need manual version records for production releases.
+
 The production API base URL is:
 
 ```text
@@ -112,7 +114,9 @@ Example body:
 }
 ```
 
-Keep version copy public-facing and non-technical. Write it in English, avoid explicit code or implementation details, and do not mention internal root causes unless the user asks for that level of detail. Prefer broad phrasing such as "Minor Fixes", "Small improvements", or "Applied minor fixes and polish" for small fix releases.
+Keep every part of the version body public-facing and non-technical, including `title`, `description`, `features`, `bugFixes`, `knownIssues`, and `roadmapItems`. Normal users read this copy in the app, so write it in clear English product language. Avoid code terms, implementation details, internal root causes, endpoint names, branch names, package names, and database details unless the user explicitly asks for that level of detail.
+
+For feature releases, describe the user-visible capability or workflow improvement, not how it was built. For small fix releases, prefer broad phrasing such as "Minor Fixes", "Small improvements", or "Applied minor fixes and polish".
 
 If the version exists and needs correction, prepare a Yaak-ready body for authenticated `PATCH /versions/:version` for partial changes or `PUT /versions/:version` to replace the full record.
 
