@@ -53,7 +53,7 @@ Use this process for both fixes and new features.
 
 Frontend production deploys require a new version tag.
 
-After the PR is merged:
+After the PR is merged, create the tag from the merged `main` commit:
 
 ```bash
 git switch main
@@ -65,6 +65,54 @@ git push origin v4.3.6
 Pushing a `v*` tag triggers the production frontend deploy workflow.
 
 Backend production deploys are handled by Railway after backend changes reach the configured production branch. No frontend version tag is needed for backend-only changes unless the frontend also changed and needs a production deploy.
+
+## Version API Updates
+
+Update the backend Versions REST API for user-visible fixes and features so the app changelog/version metadata matches the release.
+
+The production API base URL is:
+
+```text
+https://api.hsr-team-builder.gilded.dev
+```
+
+Before creating or updating a version, ask the user to check whether the exact version already exists in Yaak:
+
+```text
+GET https://api.hsr-team-builder.gilded.dev/versions/v4.3.6
+```
+
+Important: `GET /versions/:version` can fall back to the latest version when the requested version is missing. Confirm the response body has the exact `version` value being released, such as `"version": "v4.3.6"`.
+
+If the version does not exist, prepare a Yaak-ready JSON body for the user to send with authenticated `POST /versions`.
+
+```text
+POST https://api.hsr-team-builder.gilded.dev/versions
+Authorization: Bearer <jwt>
+Content-Type: application/json
+```
+
+Example body:
+
+```json
+{
+  "version": "v4.3.6",
+  "title": "Roster Startup Fix",
+  "description": "Fixed first-load roster ownership state for users without an imported roster.",
+  "releaseDate": "2026-06-09",
+  "features": [],
+  "bugFixes": [
+    "Fixed fresh and legacy users seeing every character as not owned."
+  ],
+  "breakingChanges": [],
+  "knownIssues": [],
+  "roadmapItems": [],
+  "isActive": true,
+  "isPrerelease": false
+}
+```
+
+If the version exists and needs correction, prepare a Yaak-ready body for authenticated `PATCH /versions/:version` for partial changes or `PUT /versions/:version` to replace the full record.
 
 ## QA Deploys
 
