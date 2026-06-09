@@ -16,15 +16,15 @@ import type { Character, Lightcone } from '@hsr-team-builder/shared'
 // Use API-based characters
 const { characters, loadCharacters } = useCharactersApi()
 const {
-  disabledCharacterIds,
   hasStagedChanges,
   isRosterEditMode,
   isCharacterDisabled,
+  getDisabledCharacterIds,
   enterRosterEditMode,
   cancelRosterEditMode,
   saveRosterEditMode,
-  selectAllNonFreeCharacters,
-  hideAllNonFreeCharacters,
+  selectAllCharacters,
+  hideAllCharacters,
   applyImportedOwnedCharacterIds,
   toggleCharacterAvailability,
   isCharacterRecommended,
@@ -161,17 +161,16 @@ const applyRosterImport = (ownedCharacterIds: string[]) => {
   closeRosterImportModal()
 }
 
-const disabledCharacterCount = computed(() => disabledCharacterIds.value.length)
-const totalNonFreeCharacterCount = computed(
-  () => characters.value.filter((character) => !isFreeCharacterId(character.id)).length,
+const currentDisabledCharacterIds = computed(() => getDisabledCharacterIds(characters.value))
+const disabledCharacterCount = computed(() => currentDisabledCharacterIds.value.length)
+const totalCharacterCount = computed(() => characters.value.length)
+const areAllCharactersOwned = computed(
+  () => totalCharacterCount.value > 0 && disabledCharacterCount.value === 0,
 )
-const areAllNonFreeCharactersOwned = computed(
-  () => totalNonFreeCharacterCount.value > 0 && disabledCharacterCount.value === 0,
-)
-const areAllNonFreeCharactersHidden = computed(
+const areAllCharactersHidden = computed(
   () =>
-    totalNonFreeCharacterCount.value > 0 &&
-    disabledCharacterCount.value === totalNonFreeCharacterCount.value,
+    totalCharacterCount.value > 0 &&
+    disabledCharacterCount.value === totalCharacterCount.value,
 )
 
 const isRecommendedForRoster = (characterId: string) =>
@@ -843,7 +842,7 @@ const getRecommendationTierForRoster = (characterId: string) =>
           </div>
           <div class="d-flex align-items-center gap-2">
             <div class="legend-color" style="background-color: #17a2b8"></div>
-            <span class="text-white legend-text">Free / Locked</span>
+            <span class="text-white legend-text">Free</span>
           </div>
           <div class="d-flex align-items-center gap-2">
             <div class="legend-color" style="background-color: #ffc107"></div>
@@ -863,7 +862,7 @@ const getRecommendationTierForRoster = (characterId: string) =>
               <p class="text-secondary mb-0 small">
                 {{
                   isRosterEditMode
-                    ? 'Edit directly on the grid. Free characters stay locked and changes are only saved when you confirm.'
+                    ? 'Edit directly on the grid. Changes are only saved when you confirm.'
                     : 'Use Edit Roster to mark which characters you have, then save the grid to match your account.'
                 }}
               </p>
@@ -887,28 +886,28 @@ const getRecommendationTierForRoster = (characterId: string) =>
               <button
                 v-if="!isRosterEditMode"
                 class="btn btn-outline-info btn-sm fw-semibold rounded-pill"
-                @click="enterRosterEditMode()"
+                @click="enterRosterEditMode(characters)"
               >
                 Edit Roster
               </button>
               <template v-else>
                 <button
                   :class="
-                    areAllNonFreeCharactersOwned
+                    areAllCharactersOwned
                       ? 'btn btn-success btn-sm fw-semibold rounded-pill'
                       : 'btn btn-outline-success btn-sm fw-semibold rounded-pill'
                   "
-                  @click="selectAllNonFreeCharacters()"
+                  @click="selectAllCharacters()"
                 >
                   Select All
                 </button>
                 <button
                   :class="
-                    areAllNonFreeCharactersHidden
+                    areAllCharactersHidden
                       ? 'btn btn-danger btn-sm fw-semibold rounded-pill'
                       : 'btn btn-outline-danger btn-sm fw-semibold rounded-pill'
                   "
-                  @click="hideAllNonFreeCharacters(characters)"
+                  @click="hideAllCharacters(characters)"
                 >
                   Hide All
                 </button>
