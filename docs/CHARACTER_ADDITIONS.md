@@ -25,6 +25,17 @@ For Mortenax Blade:
 
 The character and lightcone IDs used in Yaak must match these slugs exactly. Otherwise the API data will load but the UI will fall back to placeholder images.
 
+## Recommendation Research
+
+Before drafting Yaak bodies for a new character, research current character guidance from build/team sites such as Prydwen and Game8. Use those sources to shape:
+
+- teammate recommendation groups
+- best-in-slot, generalist, and free-to-play team suggestions
+- lightcone recommendations and notes
+- role, archetype, and label choices
+
+Do not invent teammate, lightcone, or team composition data from memory. Cross-check at least two sources when possible, and tell the user which sources informed the Yaak body. If reliable sources disagree or do not yet have complete guidance, leave uncertain recommendations empty or mark them for user confirmation instead of presenting them as final.
+
 ## Yaak API Order
 
 Create the lightcone before creating or updating the character, because character lightcone links reference an existing lightcone ID.
