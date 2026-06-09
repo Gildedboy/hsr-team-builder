@@ -97,12 +97,12 @@ Example body:
 ```json
 {
   "version": "v4.3.6",
-  "title": "Roster Startup Fix",
-  "description": "Fixed first-load roster ownership state for users without an imported roster.",
+  "title": "Minor Fixes",
+  "description": "Small improvements and fixes to keep the app experience consistent.",
   "releaseDate": "2026-06-09",
   "features": [],
   "bugFixes": [
-    "Fixed fresh and legacy users seeing every character as not owned."
+    "Applied minor fixes and polish."
   ],
   "breakingChanges": [],
   "knownIssues": [],
@@ -111,6 +111,8 @@ Example body:
   "isPrerelease": false
 }
 ```
+
+Keep version copy public-facing and non-technical. Write it in English, avoid explicit code or implementation details, and do not mention internal root causes unless the user asks for that level of detail. Prefer broad phrasing such as "Minor Fixes", "Small improvements", or "Applied minor fixes and polish" for small fix releases.
 
 If the version exists and needs correction, prepare a Yaak-ready body for authenticated `PATCH /versions/:version` for partial changes or `PUT /versions/:version` to replace the full record.
 
