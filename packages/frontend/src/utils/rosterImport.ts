@@ -1,5 +1,5 @@
 import type { Character } from '@hsr-team-builder/shared'
-import { getCharacterAvatarAssetIds } from '@/data/avatars'
+import { characterAvatarMap, getCharacterAvatarAssetIds, trailblazerAssetPairs } from '@/data/avatars'
 
 export interface ImportedRosterCharacter {
   archiveId: string
@@ -44,6 +44,20 @@ const isSafeArchiveId = (value: string) => /^\d{4}$/.test(value)
 
 const buildCharacterIdByArchiveId = (characters: Character[]) => {
   const characterIdByArchiveId = new Map<string, string>()
+
+  for (const [characterId, avatarId] of Object.entries(characterAvatarMap)) {
+    characterIdByArchiveId.set(avatarId, characterId)
+
+    const baseAvatarId = getBaseAvatarId(avatarId)
+    if (baseAvatarId) {
+      characterIdByArchiveId.set(baseAvatarId, characterId)
+    }
+  }
+
+  for (const [characterId, assetPair] of Object.entries(trailblazerAssetPairs)) {
+    characterIdByArchiveId.set(assetPair.caelus, characterId)
+    characterIdByArchiveId.set(assetPair.stelle, characterId)
+  }
 
   for (const character of characters) {
     for (const avatarId of getCharacterAvatarAssetIds(character.id)) {
@@ -96,21 +110,21 @@ export const parseReliquaryRosterArchive = (
     const characterId = characterIdByArchiveId.get(archiveId)
     const character = characterId ? characterById.get(characterId) : undefined
 
-    if (!character) {
+    if (!characterId) {
       unmatchedCharacters.push({ archiveId, archiveName })
       continue
     }
 
-    if (matchedCharacterIds.has(character.id)) {
+    if (matchedCharacterIds.has(characterId)) {
       continue
     }
 
-    matchedCharacterIds.add(character.id)
+    matchedCharacterIds.add(characterId)
     matchedCharacters.push({
       archiveId,
       archiveName,
-      characterId: character.id,
-      characterName: character.name,
+      characterId,
+      characterName: character?.name || archiveName || characterId,
     })
   }
 

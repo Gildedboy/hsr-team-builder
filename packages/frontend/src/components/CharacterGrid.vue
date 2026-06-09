@@ -31,13 +31,13 @@
       "
     >
       <div class="character-state-badges">
-        <span v-if="isFreeCharacter(char.id)" class="state-badge free-badge">Free</span>
-        <span v-else-if="isRosterEditMode" class="state-badge edit-badge">
+        <span v-if="isRosterEditMode" class="state-badge edit-badge">
           {{ isCharacterDisabled(char.id) ? 'Not Owned' : 'Owned' }}
         </span>
         <span v-else-if="isCharacterDisabled(char.id)" class="state-badge unavailable-badge">
           Not Owned
         </span>
+        <span v-else-if="isFreeCharacter(char.id)" class="state-badge free-badge">Free</span>
       </div>
       <img
         :src="getCharacterAvatar(char.id)"
