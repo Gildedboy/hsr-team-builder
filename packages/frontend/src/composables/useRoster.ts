@@ -84,9 +84,13 @@ const loadStoredRosterConfig = (): StoredRosterConfig => {
     }
 
     const parsed = JSON.parse(rawValue) as Partial<StoredRosterConfig> | null
+    const importedOwnedCharacterIds = Array.isArray(parsed?.importedOwnedCharacterIds)
+      ? sanitizeCharacterIds(parsed.importedOwnedCharacterIds)
+      : undefined
+
     return {
       disabledCharacterIds: sanitizeDisabledCharacterIds(parsed?.disabledCharacterIds),
-      importedOwnedCharacterIds: sanitizeCharacterIds(parsed?.importedOwnedCharacterIds),
+      importedOwnedCharacterIds,
     }
   } catch {
     return { disabledCharacterIds: [] }
