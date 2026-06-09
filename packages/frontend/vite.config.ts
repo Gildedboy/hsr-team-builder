@@ -21,6 +21,9 @@ export default defineConfig({
       'Cache-Control': 'no-cache',
     },
   },
+  preview: {
+    allowedHosts: ['hsr-team-builder-frontend-qa.up.railway.app', 'qa.hsr-team-builder.gilded.dev'],
+  },
   build: {
     // Enable long-term caching through file hashing
     rollupOptions: {

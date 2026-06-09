@@ -24,8 +24,18 @@ export class VersionsClient extends BaseApiClient {
     return this.parseJson<VersionInfo>(response)
   }
 
+  async listJson(): Promise<VersionInfo[]> {
+    const response = await this.list()
+    return this.parseJson<VersionInfo[]>(response)
+  }
+
   async changelogJson(): Promise<VersionInfo[]> {
     const response = await this.changelog()
     return this.parseJson<VersionInfo[]>(response)
+  }
+
+  async roadmapJson(): Promise<unknown[]> {
+    const response = await this.roadmap()
+    return this.parseJson<unknown[]>(response)
   }
 }

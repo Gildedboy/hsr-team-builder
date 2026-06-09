@@ -18,4 +18,19 @@ test.describe('character recommendations', () => {
 
     await homePage.clearSelection()
   })
+
+  test('user can choose a character, choose another, and see the page update', async ({
+    homePage,
+  }) => {
+    await homePage.gotoHome()
+    await homePage.selectCharacterFromSearch('Kafka')
+    await homePage.expectCharacterDetailsVisible('Kafka')
+    await homePage.expectRecommendationsVisible('Kafka')
+
+    await homePage.selectCharacterFromSearch('Firefly')
+
+    await homePage.expectCharacterDetailsVisible('Firefly')
+    await homePage.expectRecommendationsVisible('Firefly')
+    await homePage.expectRecommendationsHidden('Kafka')
+  })
 })

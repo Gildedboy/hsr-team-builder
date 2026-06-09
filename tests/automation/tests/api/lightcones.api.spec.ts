@@ -12,4 +12,16 @@ test.describe('lightcones API', () => {
       expectValidLightcone(lightcones[0])
     }
   })
+
+  test('returns a lightcone detail for an id from the list', async ({ lightconesClient }) => {
+    const lightcones = await lightconesClient.listJson()
+    expect(lightcones.length, 'lightcones are seeded').toBeGreaterThan(0)
+
+    const response = await lightconesClient.getById(lightcones[0].id)
+    expectOkJson(response)
+
+    const lightcone = await lightconesClient.getByIdJson(lightcones[0].id)
+    expectValidLightcone(lightcone)
+    expect(lightcone.id).toBe(lightcones[0].id)
+  })
 })

@@ -15,4 +15,9 @@ export class LightconesClient extends BaseApiClient {
     const response = await this.list()
     return this.parseJson<Lightcone[]>(response)
   }
+
+  async getByIdJson(lightconeId: string): Promise<Lightcone> {
+    const response = await this.getById(lightconeId)
+    return this.parseJson<Lightcone>(response)
+  }
 }
