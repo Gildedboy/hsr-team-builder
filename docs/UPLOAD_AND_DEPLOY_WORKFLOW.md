@@ -6,6 +6,8 @@ Use this process for both fixes and new features.
 
 - `main` is the source branch for completed application changes.
 - `qa` is a mirror branch of `main` for the QA environment.
+- In this repo, "mirror" means QA should receive the same product features, fixes, runtime behavior, and user-facing app changes as `main`. It does not require identical Git history.
+- Git history matters on `main`; `qa` is only an environment branch for QA/student testing and can be recreated from `main` if needed.
 - Do not develop directly on `qa`.
 - Any feature or fix that reaches `main` should also reach `qa`.
 - If work is accidentally started on `qa`, save the patch, restore `qa` to match its remote state, switch back to `main`, create a normal work branch, and apply the patch there.
