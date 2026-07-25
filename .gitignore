@@ -39,3 +39,6 @@ coverage
 
 # Local HSR scanner exports
 archive_output-*.json
+
+# Private per-clone QA infrastructure runbook
+tests/automation/docs/QA_RAILWAY_SETUP.local.md
