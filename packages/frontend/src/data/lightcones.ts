@@ -162,6 +162,9 @@ const lightconeAssetMap: Record<string, string> = {
   'welcome-to-the-cosmic-city': '23057',
   'until-the-flowers-bloom-again': '23058',
   'reforged-in-hellfire': '23059',
+  'a-star-that-lights-the-night': '23060',
+  'flickering-stars': '23061',
+  'i-am-as-you-behold': '23062',
 
   // 5-star simulated universe lightcones (24xxx)
   'on-the-fall-of-an-aeon': '24000',

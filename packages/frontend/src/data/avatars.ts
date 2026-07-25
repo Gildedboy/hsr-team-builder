@@ -86,6 +86,9 @@ export const characterAvatarMap: Record<string, string> = {
   evanescia: '1505',
   'silver-wolf-lv-999': '1506',
   'mortenax-blade': '1507',
+  'rin-tohsaka': '1508',
+  gilgamesh: '1509',
+  'himeko-nova': '1510',
 }
 
 export const trailblazerAssetPairs: Record<string, { caelus: string; stelle: string }> = {
