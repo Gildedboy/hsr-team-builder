@@ -1,37 +1,46 @@
 # QA Railway Setup
 
-This document lists what is needed to verify and run the QA environment from `tests/automation`.
+This agent-facing runbook describes how to verify and operate the QA environment without publishing
+deployment-specific identifiers. Production remains on its production URLs, and QA deploys from the
+`qa` branch into separate QA services and data stores.
 
-The goal is to keep `qa` as a long-lived environment branch and deploy QA services from that branch. Production stays on the current production URLs.
+## Private Per-Clone Configuration
 
-## Current Status
+Exact Railway identifiers, service names, domains, ports, and ready-to-run commands belong in:
 
-QA is configured in Railway under the `hsr-team-builder` project:
+```text
+tests/automation/docs/QA_RAILWAY_SETUP.local.md
+```
 
-| Item | Value |
-| --- | --- |
-| Railway project | `hsr-team-builder` |
-| Railway project ID | `f17b9df1-fbc0-42ee-9a79-6630e21e434b` |
-| QA environment | `qa` |
-| QA branch | `qa` |
-| Backend service | `hsr-team-builder` |
-| Frontend service | `hsr-team-builder frontend` |
-| Postgres service | `Postgres` |
-| Redis service | `Redis` |
-| QA frontend URL | `https://qa.hsr-team-builder.gilded.dev` |
-| QA backend URL | `https://api-qa.hsr-team-builder.gilded.dev` |
+That path is ignored by Git. When the local file is absent, create it from
+`QA_RAILWAY_SETUP.local.example.md` and populate it through authenticated Railway access or an
+approved private source. Never commit the local file, Railway tokens, database URLs, Redis URLs,
+JWT secrets, or admin credentials.
 
-The Railway CLI is installed locally:
+Agents should read the local file when it exists, but must not quote its infrastructure values in
+commits, pull requests, logs, or user-facing responses.
+
+## Required Local Values
+
+The private runbook should provide these values for the current clone:
+
+- Railway project ID
+- QA environment and branch
+- backend and frontend service names
+- Postgres and Redis service names
+- QA frontend and backend URLs
+- custom-domain target ports when non-default
+
+The Railway CLI must be authenticated before using those values:
 
 ```bash
+railway whoami
 railway --version
 ```
 
-Do not commit Railway tokens or admin credentials.
-
 ## Backend QA Variables
 
-Set these on the backend QA service:
+Configure the backend QA service with values belonging only to QA:
 
 ```env
 NODE_ENV=production
@@ -40,144 +49,120 @@ REDIS_URL=<qa-redis-url>
 JWT_SECRET=<qa-only-strong-secret>
 ADMIN_USERNAME=<qa-admin-username>
 ADMIN_PASSWORD=<qa-admin-password>
-PRODUCTION_DOMAIN=https://qa.hsr-team-builder.gilded.dev
-ALLOWED_ORIGINS=https://qa.hsr-team-builder.gilded.dev
+PRODUCTION_DOMAIN=<qa-frontend-url>
+ALLOWED_ORIGINS=<qa-frontend-url>
 ```
 
-Notes:
-
-- Railway injects `PORT` at runtime. The current QA custom domains target port `8080`.
-- `DATABASE_URL` and `REDIS_URL` must point to QA resources, not production.
-- `JWT_SECRET`, `ADMIN_USERNAME`, and `ADMIN_PASSWORD` must not use placeholder values.
-- QA admin credentials should be QA-only shared class credentials, not a personal or production login.
-- `PRODUCTION_DOMAIN` and `ALLOWED_ORIGINS` must include the QA frontend URL so browser requests pass CORS.
-- If the frontend has multiple QA URLs, use comma-separated `ALLOWED_ORIGINS`.
+Railway normally injects `PORT`. Confirm the custom domain targets the actual runtime port. QA data
+stores and credentials must be separate from production.
 
 ## Frontend QA Variables
 
-Set these on the frontend QA build/deploy service:
+Configure the QA frontend build with:
 
 ```env
-VITE_API_URL=https://api-qa.hsr-team-builder.gilded.dev
+VITE_API_URL=<qa-backend-url>
 VITE_APP_VERSION=qa
 ```
 
-The frontend chooses its API at build time through `VITE_API_URL`, so the QA frontend must be built with the QA API URL.
+The frontend chooses its API at build time, so a QA frontend must never be built with the production
+API URL.
 
 ## Branch Deploy Settings
 
-For each QA service in Railway, confirm:
+Confirm both QA services deploy from the `qa` branch and use the repository's current package build
+and start commands. Do not change the production service branch to `qa`.
 
-| Setting | Expected |
+Expected package locations:
+
+| Service | Root directory |
 | --- | --- |
-| Source repo | `Gildedboy/hsr-team-builder` |
-| Branch | `qa` |
-| Backend root directory | `packages/backend` |
-| Backend build command | `npm run build` |
-| Backend start command | `npm run start:prod` |
-| Frontend root directory | `/` |
-| Frontend build command | `npm run build -w @hsr-team-builder/shared && npm run build -w @hsr-team-builder/frontend` |
-| Frontend start command | `npm run preview -w @hsr-team-builder/frontend -- --host 0.0.0.0 --port $PORT` |
-| Custom domain target ports | `8080` for both frontend and backend |
-| Sleep when inactive | Enabled for QA services. |
-| Auto deploy | Enabled for pushes to `qa`, if desired. |
-| Production branch | Do not change production to `qa`. |
+| Backend | `packages/backend` |
+| Frontend | repository root |
+
+Use `docs/UPLOAD_AND_DEPLOY_WORKFLOW.md` for branch synchronization. The `qa` branch is an environment
+mirror, not the source branch for product development.
 
 ## Automation QA Variables
 
 For local or CI automation against QA:
 
 ```env
-FRONTEND_BASE_URL=https://qa.hsr-team-builder.gilded.dev
-BACKEND_BASE_URL=https://api-qa.hsr-team-builder.gilded.dev
-BASE_URL=https://qa.hsr-team-builder.gilded.dev
-API_BASE_URL=https://api-qa.hsr-team-builder.gilded.dev
+FRONTEND_BASE_URL=<qa-frontend-url>
+BACKEND_BASE_URL=<qa-backend-url>
+BASE_URL=<qa-frontend-url>
+API_BASE_URL=<qa-backend-url>
 TEST_ENV=qa
 ENABLE_API_MUTATION_TESTS=true
 ADMIN_USERNAME=<qa-admin-username>
 ADMIN_PASSWORD=<qa-admin-password>
 ```
 
-The mutating API spec is skipped unless both of these are set:
+Mutating API tests require both `TEST_ENV=qa` and `ENABLE_API_MUTATION_TESTS=true`. Never enable them
+against production.
 
-```env
-TEST_ENV=qa
-ENABLE_API_MUTATION_TESTS=true
-```
+## CLI Verification
 
-## CLI Verification Commands
+Use the private runbook values without printing secrets:
 
 ```bash
-railway list --json
-railway variables --project f17b9df1-fbc0-42ee-9a79-6630e21e434b --environment qa --service hsr-team-builder --json
+railway variables \
+  --project "$RAILWAY_PROJECT_ID" \
+  --environment "$QA_ENVIRONMENT" \
+  --service "$QA_BACKEND_SERVICE" \
+  --json
 ```
 
-List backend variables carefully because output may include raw secret values:
-
-```bash
-railway variables --project f17b9df1-fbc0-42ee-9a79-6630e21e434b --environment qa --service hsr-team-builder --json
-```
-
-When reporting results, summarize whether required keys exist. Do not paste secret values.
+Variable output may contain raw secrets. Report only whether required keys exist.
 
 ## Automation Commands
 
-From `tests/automation`:
+Run from `tests/automation`:
 
 ```bash
 npm run typecheck
 npm run lint
-FRONTEND_BASE_URL=https://qa.hsr-team-builder.gilded.dev BACKEND_BASE_URL=https://api-qa.hsr-team-builder.gilded.dev TEST_ENV=qa npm run test:smoke
-FRONTEND_BASE_URL=https://qa.hsr-team-builder.gilded.dev BACKEND_BASE_URL=https://api-qa.hsr-team-builder.gilded.dev TEST_ENV=qa npm run test:api
+FRONTEND_BASE_URL="$QA_FRONTEND_URL" BACKEND_BASE_URL="$QA_BACKEND_URL" TEST_ENV=qa npm run test:smoke
+FRONTEND_BASE_URL="$QA_FRONTEND_URL" BACKEND_BASE_URL="$QA_BACKEND_URL" TEST_ENV=qa npm run test:api
 ```
 
-Run QA mutation tests only after confirming the QA database is disposable or restorable:
-
-```bash
-FRONTEND_BASE_URL=https://qa.hsr-team-builder.gilded.dev \
-BACKEND_BASE_URL=https://api-qa.hsr-team-builder.gilded.dev \
-TEST_ENV=qa \
-ENABLE_API_MUTATION_TESTS=true \
-ADMIN_USERNAME=<qa-admin-username> \
-ADMIN_PASSWORD=<qa-admin-password> \
-npm run test:api
-```
+Only run mutation tests after confirming the QA database is disposable or restorable.
 
 ## Verification Checklist
 
-Before enabling QA mutation tests:
-
-- `qa` branch exists and is pushed.
-- Backend QA service deploys from `qa`.
-- Frontend QA service deploys from `qa`.
-- QA database is separate from production.
-- QA Redis is separate from production.
-- QA backend accepts requests from QA frontend origin.
+- `qa` exists and both QA services deploy from it.
+- QA Postgres and Redis are separate from production.
+- The QA backend accepts the QA frontend origin.
 - Swagger loads on the QA backend at `/swagger`.
-- `GET /characters`, `GET /versions/latest`, `GET /teams/popular`, and `GET /lightcones` work on QA.
-- Admin login works on QA with QA credentials.
-- Mutating tests are disabled for production and enabled only with explicit QA flags.
+- Character, version, team, and lightcone GET endpoints work on QA.
+- QA-only admin login works.
+- Mutation flags are disabled for production.
 
 ## Refresh QA Data From Production
 
-Use this only when QA should be overwritten with a fresh copy of production data.
+This is an authorized-maintainer operation. It intentionally overwrites QA and must never target the
+production database.
+
+1. Authenticate the Railway CLI.
+2. Load exact identifiers from `QA_RAILWAY_SETUP.local.md`.
+3. Resolve the production and QA database URLs without printing them.
+4. Create a timestamped production dump.
+5. Create a timestamped pre-restore QA dump.
+6. Restore the production dump into QA using `--clean --if-exists --no-owner --no-acl`.
+7. Flush only the QA Redis database.
+8. Verify QA GET endpoints and admin login.
+9. Keep or securely dispose of temporary dumps according to the operator's retention policy.
+
+Generic command shape:
 
 ```bash
-STAMP=$(date -u +%Y%m%dT%H%M%SZ)
+PROD_URL=$(railway variables --project "$RAILWAY_PROJECT_ID" --environment production --service "$POSTGRES_SERVICE" --json | jq -r .DATABASE_PUBLIC_URL)
+QA_URL=$(railway variables --project "$RAILWAY_PROJECT_ID" --environment "$QA_ENVIRONMENT" --service "$POSTGRES_SERVICE" --json | jq -r .DATABASE_PUBLIC_URL)
 
-PROD_URL=$(railway variables --project f17b9df1-fbc0-42ee-9a79-6630e21e434b --environment production --service Postgres --json | jq -r .DATABASE_PUBLIC_URL)
-QA_URL=$(railway variables --project f17b9df1-fbc0-42ee-9a79-6630e21e434b --environment qa --service Postgres --json | jq -r .DATABASE_PUBLIC_URL)
-
-pg_dump --format=custom --no-owner --no-acl --file "/tmp/hsr-prod-$STAMP.dump" "$PROD_URL"
-pg_dump --format=custom --no-owner --no-acl --file "/tmp/hsr-qa-before-restore-$STAMP.dump" "$QA_URL"
-
-pg_restore --clean --if-exists --no-owner --no-acl --dbname "$QA_URL" "/tmp/hsr-prod-$STAMP.dump"
+pg_dump --format=custom --no-owner --no-acl --file "$PROD_DUMP" "$PROD_URL"
+pg_dump --format=custom --no-owner --no-acl --file "$QA_BACKUP" "$QA_URL"
+pg_restore --clean --if-exists --no-owner --no-acl --dbname "$QA_URL" "$PROD_DUMP"
 ```
 
-Flush QA Redis after restoring the database:
-
-```bash
-QA_REDIS_URL=$(railway variables --project f17b9df1-fbc0-42ee-9a79-6630e21e434b --environment qa --service Redis --json | jq -r .REDIS_PUBLIC_URL)
-
-REDIS_URL="$QA_REDIS_URL" node --input-type=module -e "import { createClient } from 'redis'; const client = createClient({ url: process.env.REDIS_URL }); await client.connect(); await client.flushDb(); await client.quit(); console.log('QA Redis cache flushed');"
-```
+Resolve the QA Redis URL through authenticated Railway access and flush only that database. The
+private per-clone runbook may contain the exact command, but the public repository must not.
