@@ -91,6 +91,7 @@ const lightconeAssetMap: Record<string, string> = {
   'see-you-at-the-end': '21062',
   'mushy-shroomys-adventures': '21064',
   'todays-good-luck': '21065',
+  'a-little-getaway': '21066',
 
   // 4-star event lightcones (22xxx series)
   'before-the-tutorial-mission-starts': '22000',
@@ -101,6 +102,7 @@ const lightconeAssetMap: Record<string, string> = {
   'the-forever-victual': '22005',
   'fly-into-a-pink-tomorrow': '22006',
   'tomorrow-together': '22007',
+  'race-to-the-horizon': '22008',
 
   // 5-star lightcones (23xxx)
   'night-on-the-milky-way': '23000',
@@ -158,6 +160,7 @@ const lightconeAssetMap: Record<string, string> = {
   'this-love-forever': '23052',
   'dazzled-by-a-flowery-world': '23053',
   'when-she-decided-to-see': '23054',
+  'colors-for-tomorrow': '23055',
   'the-finale-of-a-lie': '23056',
   'welcome-to-the-cosmic-city': '23057',
   'until-the-flowers-bloom-again': '23058',
@@ -165,6 +168,8 @@ const lightconeAssetMap: Record<string, string> = {
   'a-star-that-lights-the-night': '23060',
   'flickering-stars': '23061',
   'i-am-as-you-behold': '23062',
+  'rise-and-sing': '23063',
+  'summer-rides-the-surf': '23064',
 
   // 5-star simulated universe lightcones (24xxx)
   'on-the-fall-of-an-aeon': '24000',
