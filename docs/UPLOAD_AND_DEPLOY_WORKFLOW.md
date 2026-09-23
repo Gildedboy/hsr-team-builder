@@ -139,8 +139,13 @@ Pushing `qa` triggers the Railway QA auto-deploy.
 
 ## Version Tags
 
-- Use the next frontend version tag after the latest existing tag.
-- Example: if the latest tag is `v4.3.5`, the next frontend deploy tag is `v4.3.6`.
+- For character/content releases tied to a Honkai: Star Rail patch, use the HSR patch version as the
+  frontend tag (for example, HSR 4.6 uses `v4.6`) and create the matching exact version in the
+  production Versions API after the character and reciprocal data is verified. The app uses the
+  deploy tag as `VITE_APP_VERSION`, so the API row must have the same `version` value for the right
+  release notes to appear.
+- For app-only fixes not tied to an HSR patch, use the next frontend patch tag after the latest
+  existing tag. Example: if the latest tag is `v4.3.5`, the next app-only fix tag is `v4.3.6`.
 - Create tags from the merged `main` commit, not from a feature branch or `qa`.
 
 ## Important Checks

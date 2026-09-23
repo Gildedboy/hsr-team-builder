@@ -240,12 +240,86 @@ npm run build-only -w @hsr-team-builder/frontend
 
 Also confirm the production image URLs return HTTP 200 after the tagged frontend deployment.
 
+## Yaak CLI and Authenticated API Workflow
+
+Yaak's CLI can use the same local database as the installed Yaak application. This lets an
+authenticated Yaak session be reused without copying a JWT into a shell command:
+
+```bash
+npm install -g @yaakapp/cli
+yaak workspace list
+yaak request list <workspace-id>
+yaak request show <request-id>
+yaak request send <request-id>
+```
+
+Use the authenticated Yaak request for protected `POST`, `PATCH`, and bulk operations. Public `GET`
+requests may still be used for independent verification. If a direct shell request returns `401`,
+do not ask the user to expose their JWT; send the saved Yaak request instead.
+
+The direct and reciprocal phases are separate:
+
+1. `GET` all new and affected records first.
+2. Create lightcones, then create the three character records.
+3. Patch each new character with its complete reviewed arrays.
+4. Rebuild the reciprocal bulk from the final `GET` responses. Never reuse a stale bulk body after a
+   character's teams or teammate sections change.
+5. Send the bulk with `dryRun: true`, review `updatedCharacterIds`, `skippedCharacterIds`, preserved
+   arrays, and changed buckets, then resend the identical body with only `dryRun: false` changed.
+6. Independently `GET` every affected record.
+7. Create the version record last.
+
+When a character is only a one-way F2P option and its existing record uses generic buckets, do not
+force a reciprocal update. For example, Gallagher can remain a F2P option on Aventurine without
+adding Aventurine to Gallagher's generic recommendations.
+
+## Fribbels Public Asset Source
+
+Character avatars, detail previews, and lightcones may be sourced from the public
+`fribbels/hsr-optimizer` repository. Use the raw file URLs from its `public/assets` tree rather than
+GitHub HTML pages. For every asset:
+
+- confirm the raw URL returns HTTP 200;
+- inspect the downloaded image and dimensions;
+- map the game asset ID to the API slug in the frontend data files;
+- keep the API slug, frontend mapping, and Yaak body identical;
+- verify the production image URL after the frontend deployment.
+
+Record the upstream commit or source path when the asset set is version-sensitive. Do not generate a
+replacement image when the matching public Fribbels asset exists.
+
 ## Version API
 
 Create the version record only after the assets, direct records, and reciprocal updates are complete.
 Before posting, call `GET /versions/<version>` and compare the response body's `version` field with
 the requested version. This endpoint can fall back to the latest version when the requested record is
 missing, so an HTTP 200 alone does not prove the version exists.
+
+### Use the Honkai: Star Rail patch version for character releases
+
+For a character/content release tied to a Honkai: Star Rail patch, use that game's version number as
+the frontend deployment version and create the matching row in the API Versions table. For example,
+an HSR 4.6 character release uses `v4.6` for the production frontend tag and `versions.version`.
+`.github/workflows/deploy.yml` passes the deployment tag's display version to `VITE_APP_VERSION`,
+and `useVersionInfo` looks for an API version row with that exact value. The API row is required for
+the deployed app to show the right release information; a tag does not create the row automatically.
+
+Do not bump to an unrelated semver patch such as `v4.6.1` for a character release unless that is
+explicitly the requested HSR patch identifier. Ordinary app fixes not tied to an HSR character
+release follow `docs/UPLOAD_AND_DEPLOY_WORKFLOW.md` instead.
+
+The release sequence is:
+
+1. Confirm the target HSR patch version with the user and use the same `vX.Y` value for the deploy
+   tag and API record.
+2. Deploy the frontend from the merged `main` commit using that tag.
+3. After all lightcone, character, and reciprocal API work is complete, create the matching version
+   row through Yaak. Write user-facing release notes that name the characters and visible additions.
+4. Verify `GET /versions` contains the exact target version. Also call `GET /versions/<version>` and
+   confirm the response body's `version` is exact; this route may return the latest row as a fallback
+   when the requested version is missing.
+5. Confirm the deployed app displays that same version and its matching release notes. If there is no
+   exact API row, the frontend can display a different version's notes.
 
 Keep character-release entries minimal and public-facing:
 
@@ -264,8 +338,8 @@ POST `/versions`
 ```
 
 Optional arrays default to empty and activation defaults are supplied by the backend, so omit them
-when a minimal record is requested. After POST returns HTTP 201, GET the exact version and verify the
-body again.
+when a minimal record is requested. After POST returns HTTP 201, GET `/versions` and the exact
+`/versions/<version>` route; verify both show the target version and the intended release notes.
 
 ## Production Checklist
 
