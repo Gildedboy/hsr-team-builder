@@ -92,6 +92,10 @@ export const characterAvatarMap: Record<string, string> = {
   'robin-summeretto': '1512',
   'aventurine-waveflair': '1513',
   pearl: '1503',
+  aha: '1511',
+  // Future assets only (Fribbels 4.8v1); no API records yet.
+  ellen: '1514',
+  'astra-yao': '1515',
 }
 
 export const trailblazerAssetPairs: Record<string, { caelus: string; stelle: string }> = {

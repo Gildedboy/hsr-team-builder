@@ -103,6 +103,7 @@ const lightconeAssetMap: Record<string, string> = {
   'fly-into-a-pink-tomorrow': '22006',
   'tomorrow-together': '22007',
   'race-to-the-horizon': '22008',
+  'see-you-at-the-worlds-end': '22009',
 
   // 5-star lightcones (23xxx)
   'night-on-the-milky-way': '23000',
@@ -170,6 +171,10 @@ const lightconeAssetMap: Record<string, string> = {
   'i-am-as-you-behold': '23062',
   'rise-and-sing': '23063',
   'summer-rides-the-surf': '23064',
+  'upon-the-first-echo-of-aha': '23065',
+  // Future assets only (Fribbels 4.8v1); no API records yet.
+  'no-shifts-on-rainy-days': '23066',
+  'shine-bright-like-her': '23067',
 
   // 5-star simulated universe lightcones (24xxx)
   'on-the-fall-of-an-aeon': '24000',
